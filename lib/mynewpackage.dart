@@ -19,16 +19,18 @@ class _MyPackageState extends State<MyPackage> {
   Widget build(BuildContext context) {
     return  Scaffold(
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("Welcome to my package"),
-            ElevatedButton(onPressed: (){
-              Get.to(SecondScreen());
-            }, child: Text("Next"))
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("Welcome to my package"),
+              ElevatedButton(onPressed: (){
+                Get.to(SecondScreen());
+              }, child: Text("Next"))
 
-          ],
+            ],
+          ),
         ),
       ),
     );
