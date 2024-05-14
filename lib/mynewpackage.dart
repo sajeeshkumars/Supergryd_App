@@ -21,6 +21,7 @@ class _MyPackageState extends State<MyPackage> {
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text("Welcome to my package"),
             ElevatedButton(onPressed: (){

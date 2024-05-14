@@ -16,9 +16,14 @@ class _SecondScreenState extends State<SecondScreen> {
     return Scaffold(
       body: SafeArea(
         child:Center(
-          child: ElevatedButton(onPressed: () {
-            Get.back();
-          }, child: Text("Back"),),
+          child: Column(
+            children: [
+              Text("Welcome to my package Second screen"),
+              ElevatedButton(onPressed: () {
+                Get.back();
+              }, child: Text("Back"),),
+            ],
+          ),
         ) ,
       ),
     );
