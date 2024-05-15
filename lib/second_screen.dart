@@ -17,6 +17,8 @@ class _SecondScreenState extends State<SecondScreen> {
       body: SafeArea(
         child:Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text("Welcome to my package Second screen"),
               ElevatedButton(onPressed: () {
