@@ -4,11 +4,14 @@ import 'package:get/get.dart';
 
 
 class SecondScreen extends StatefulWidget {
-  const SecondScreen({super.key});
+   const SecondScreen({super.key, required this.title});
+
+ final  String title;
 
   @override
   State<SecondScreen> createState() => _SecondScreenState();
 }
+
 
 class _SecondScreenState extends State<SecondScreen> {
   @override
@@ -20,7 +23,7 @@ class _SecondScreenState extends State<SecondScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Welcome to my package Second screen"),
+              Text(widget.title),
               ElevatedButton(onPressed: () {
                 Get.back();
               }, child: Text("Back"),),
