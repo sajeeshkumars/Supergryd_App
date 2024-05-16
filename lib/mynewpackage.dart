@@ -1,17 +1,21 @@
 library mynewpackage;
 
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mynewpackage/second_screen.dart';
+import 'package:mynewpackage/app/modules/food/views/food_view.dart';
+import 'package:mynewpackage/app/modules/home/views/home_view.dart';
+import 'package:mynewpackage/app/routes/app_pages.dart';
 
+import 'app/modules/home/controllers/home_controller.dart';
 import 'controller.dart';
 
+export 'package:mynewpackage/app/routes/app_pages.dart';
 
 
 class MyPackage extends StatefulWidget {
-  const MyPackage({super.key});
+  final String? route;
+  const MyPackage({super.key,  this.route});
 
   @override
   State<MyPackage> createState() => _MyPackageState();
@@ -19,34 +23,24 @@ class MyPackage extends StatefulWidget {
 
 class _MyPackageState extends State<MyPackage> {
   ProductController controller = Get.put(ProductController());
+
   @override
   void initState() {
     controller.getProducts();
+    Get.lazyPut<HomeController>(
+          () => HomeController(),
+    );
     // TODO: implement initState
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(
-         () {
-          return controller.isLoading.value ? const Center(child: CircularProgressIndicator()):
-          ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount:controller.response?.data?.length ,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: InkWell(
-                  onTap: (){
-                    Get.to(SecondScreen());
-                  },
-                    child: Text(controller.response!.data?[index].name ?? "")),
-              );
-            },
-          );
-        }
-      ),
-    );
+
+    return switch(widget.route){
+      Routes.FOOD =>  const FoodView(),
+      // TODO: Handle this case.
+      _ => const HomeView(),
+    };
 
 
       }
