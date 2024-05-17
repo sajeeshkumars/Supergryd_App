@@ -10,5 +10,8 @@
   "furniture": "Furniture",
   "courier": "Courier",
   "grocery": "Grocery",
-  "others": "Others"
+  "others": "Others",
+  "select_your_delivery_location": "Select Your Delivery Location",
+  "add_new_address": "Add New Address",
+  "saved_address": "Saved Address"
 }
