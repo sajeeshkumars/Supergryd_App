@@ -2,6 +2,7 @@
 class Assets {
   Assets._();
 
+  static const String assetsSample = 'lib/assets/Sample.png';
   static const String bindingsFoodBinding = 'lib/app/modules/food/bindings/food_binding.dart';
   static const String bindingsHomeBinding = 'lib/app/modules/home/bindings/home_binding.dart';
   static const String controllersFoodController = 'lib/app/modules/food/controllers/food_controller.dart';
@@ -13,8 +14,10 @@ class Assets {
   static const String iconsFurniture = 'lib/assets/icons/furniture.svg';
   static const String iconsGifts = 'lib/assets/icons/gifts.svg';
   static const String iconsGrocery = 'lib/assets/icons/grocery.svg';
+  static const String iconsHomeIcon = 'lib/assets/icons/homeIcon.svg';
   static const String iconsHomeService = 'lib/assets/icons/home-service.svg';
   static const String iconsLocation = 'lib/assets/icons/location.svg';
+  static const String iconsOffice = 'lib/assets/icons/office.svg';
   static const String iconsOthers = 'lib/assets/icons/others.svg';
   static const String iconsSalonService = 'lib/assets/icons/salon-service.svg';
   static const String imagesImageNotFound = 'lib/assets/images/image_not_found.png';

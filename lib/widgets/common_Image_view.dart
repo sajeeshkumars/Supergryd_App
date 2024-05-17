@@ -33,7 +33,7 @@ class CommonImageView extends StatelessWidget {
     this.width,
     this.color,
     this.fit = BoxFit.contain,
-    this.placeHolder = Assets.imagesImageNotFound,
+    this.placeHolder = "packages/mynewpackage/${Assets.imagesImageNotFound}",
     this.isCircleImage = false,
   });
 
@@ -91,7 +91,7 @@ class CommonImageView extends StatelessWidget {
                 backgroundColor: Colors.grey.shade100,
               ),
             ),
-            errorWidget: (context, url, error) =>     placeHolder == Assets.imagesImageNotFound
+            errorWidget: (context, url, error) =>     placeHolder == "packages/mynewpackage/${Assets.imagesImageNotFound}"
                 ? Image.asset(
               placeHolder,
               height: height,
@@ -129,7 +129,7 @@ class CommonImageView extends StatelessWidget {
             backgroundColor: Colors.grey.shade100,
           ),
         ),
-        errorWidget: (context, url, error) =>     placeHolder == Assets.imagesImageNotFound
+        errorWidget: (context, url, error) =>     placeHolder == "packages/mynewpackage/${Assets.imagesImageNotFound}"
             ? Image.asset(
           placeHolder,
           height: height,
