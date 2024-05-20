@@ -2,14 +2,17 @@
 class Assets {
   Assets._();
 
-  static const String assetsSample = 'lib/assets/Sample.png';
   static const String bindingsFoodBinding = 'lib/app/modules/food/bindings/food_binding.dart';
   static const String bindingsHomeBinding = 'lib/app/modules/home/bindings/home_binding.dart';
+  static const String bindingsRestaurantsAndDishesListingBinding = 'lib/app/modules/restaurants_and_dishes_listing/bindings/restaurants_and_dishes_listing_binding.dart';
   static const String controllersFoodController = 'lib/app/modules/food/controllers/food_controller.dart';
   static const String controllersHomeController = 'lib/app/modules/home/controllers/home_controller.dart';
+  static const String controllersRestaurantsAndDishesListingController = 'lib/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
+  static const String iconsAddIcon = 'lib/assets/icons/add_icon.svg';
   static const String iconsCab = 'lib/assets/icons/cab.svg';
   static const String iconsCourier = 'lib/assets/icons/courier.svg';
+  static const String iconsEgg = 'lib/assets/icons/egg.svg';
   static const String iconsFood = 'lib/assets/icons/food.svg';
   static const String iconsFurniture = 'lib/assets/icons/furniture.svg';
   static const String iconsGifts = 'lib/assets/icons/gifts.svg';
@@ -17,18 +20,25 @@ class Assets {
   static const String iconsHomeIcon = 'lib/assets/icons/homeIcon.svg';
   static const String iconsHomeService = 'lib/assets/icons/home-service.svg';
   static const String iconsLocation = 'lib/assets/icons/location.svg';
+  static const String iconsNonVeg = 'lib/assets/icons/non-veg.svg';
+  static const String iconsOffer = 'lib/assets/icons/offer.svg';
   static const String iconsOffice = 'lib/assets/icons/office.svg';
   static const String iconsOthers = 'lib/assets/icons/others.svg';
   static const String iconsSalonService = 'lib/assets/icons/salon-service.svg';
+  static const String iconsShopIcon = 'lib/assets/icons/shop_icon.svg';
+  static const String iconsStar = 'lib/assets/icons/Star.svg';
+  static const String iconsVeg = 'lib/assets/icons/veg.svg';
+  static const String imagesChickenBiriyani = 'lib/assets/images/Chicken_Biriyani.jpg';
+  static const String imagesEggChilly = 'lib/assets/images/Egg_Chilly.jpg';
+  static const String imagesImage1 = 'lib/assets/images/image1.jpg';
+  static const String imagesImage2 = 'lib/assets/images/image2.jpg';
+  static const String imagesImage3 = 'lib/assets/images/image3.jpg';
+  static const String imagesImage4 = 'lib/assets/images/image4.jpg';
   static const String imagesImageNotFound = 'lib/assets/images/image_not_found.png';
-  static const String imagesIntro1 = 'lib/assets/images/intro1.png';
+  static const String imagesMasalaDosa = 'lib/assets/images/Masala_Dosa.jpg';
   static const String libApiService = 'lib/api_service.dart';
   static const String libAppColors = 'lib/app_colors.dart';
-  static const String libController = 'lib/controller.dart';
-  static const String libDataSource = 'lib/data_source.dart';
   static const String libMynewpackage = 'lib/mynewpackage.dart';
-  static const String libProducttResponse = 'lib/productt_response.dart';
-  static const String libRepo = 'lib/repo.dart';
   static const String libSecondScreen = 'lib/second_screen.dart';
   static const String libSizeUtils = 'lib/size_utils.dart';
   static const String localesEnUS = 'lib/locales/en_US.json';
@@ -36,6 +46,7 @@ class Assets {
   static const String routesAppRoutes = 'lib/app/routes/app_routes.dart';
   static const String viewsFoodView = 'lib/app/modules/food/views/food_view.dart';
   static const String viewsHomeView = 'lib/app/modules/home/views/home_view.dart';
+  static const String viewsRestaurantsAndDishesListingView = 'lib/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
   static const String widgetsCommonImageView = 'lib/widgets/common_Image_view.dart';
 
 }

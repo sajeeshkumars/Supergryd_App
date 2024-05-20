@@ -8,7 +8,7 @@ import 'package:mynewpackage/app/modules/home/views/home_view.dart';
 import 'package:mynewpackage/app/routes/app_pages.dart';
 
 import 'app/modules/home/controllers/home_controller.dart';
-import 'controller.dart';
+import 'app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
 
 export 'package:mynewpackage/app/routes/app_pages.dart';
 
@@ -22,14 +22,13 @@ class MyPackage extends StatefulWidget {
 }
 
 class _MyPackageState extends State<MyPackage> {
-  ProductController controller = Get.put(ProductController());
 
   @override
   void initState() {
-    controller.getProducts();
     Get.lazyPut<HomeController>(
           () => HomeController(),
     );
+    Get.lazyPut(()=>RestaurantsAndDishesListingController());
     // TODO: implement initState
     super.initState();
   }
