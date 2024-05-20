@@ -16,8 +16,9 @@ import '../controllers/restaurants_and_dishes_listing_controller.dart';
 class RestaurantsAndDishesListingView
     extends GetView<RestaurantsAndDishesListingController> {
    RestaurantsAndDishesListingView({super.key});
-
    final HomeController homeController = Get.put(HomeController());
+
+  final RestaurantsAndDishesListingController controller = Get.put(RestaurantsAndDishesListingController());
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

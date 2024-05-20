@@ -1,6 +1,7 @@
 library mynewpackage;
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/food/views/food_view.dart';
@@ -37,7 +38,6 @@ class _MyPackageState extends State<MyPackage> {
 
     return switch(widget.route){
       Routes.FOOD =>  const FoodView(),
-      // TODO: Handle this case.
       _ => const HomeView(),
     };
 
