@@ -2,12 +2,14 @@
 class Assets {
   Assets._();
 
-  static const String bindingsFoodBinding = 'lib/app/modules/food/bindings/food_binding.dart';
+  static const String authenticationAuthenticationRepo = 'lib/app/authentication/authentication_repo.dart';
+  static const String authenticationAuthenticationService = 'lib/app/authentication/authentication_service.dart';
   static const String bindingsHomeBinding = 'lib/app/modules/home/bindings/home_binding.dart';
   static const String bindingsRestaurantsAndDishesListingBinding = 'lib/app/modules/restaurants_and_dishes_listing/bindings/restaurants_and_dishes_listing_binding.dart';
-  static const String controllersFoodController = 'lib/app/modules/food/controllers/food_controller.dart';
   static const String controllersHomeController = 'lib/app/modules/home/controllers/home_controller.dart';
   static const String controllersRestaurantsAndDishesListingController = 'lib/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
+  static const String dataHomeRepository = 'lib/app/modules/home/data/home_repository.dart';
+  static const String dataHomeService = 'lib/app/modules/home/data/home_service.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String iconsAddIcon = 'lib/assets/icons/add_icon.svg';
   static const String iconsCab = 'lib/assets/icons/cab.svg';
@@ -36,15 +38,18 @@ class Assets {
   static const String imagesImage4 = 'lib/assets/images/image4.jpg';
   static const String imagesImageNotFound = 'lib/assets/images/image_not_found.png';
   static const String imagesMasalaDosa = 'lib/assets/images/Masala_Dosa.jpg';
-  static const String libApiService = 'lib/api_service.dart';
   static const String libAppColors = 'lib/app_colors.dart';
+  static const String libDependecy = 'lib/dependecy.dart';
   static const String libMynewpackage = 'lib/mynewpackage.dart';
-  static const String libSecondScreen = 'lib/second_screen.dart';
   static const String libSizeUtils = 'lib/size_utils.dart';
-  static const String localesEnUS = 'lib/locales/en_US.json';
+  static const String localesEnUS = 'lib/assets/locales/en_US.json';
+  static const String modelAuthenticationRequestModel = 'lib/app/authentication/model/authentication_request_model.dart';
+  static const String modelRefreshTokenModel = 'lib/model/refresh_token_model.dart';
   static const String routesAppPages = 'lib/app/routes/app_pages.dart';
   static const String routesAppRoutes = 'lib/app/routes/app_routes.dart';
-  static const String viewsFoodView = 'lib/app/modules/food/views/food_view.dart';
+  static const String servicesApiService = 'lib/services/api_service.dart';
+  static const String servicesConfig = 'lib/services/config.dart';
+  static const String storageStorage = 'lib/storage/storage.dart';
   static const String viewsHomeView = 'lib/app/modules/home/views/home_view.dart';
   static const String viewsRestaurantsAndDishesListingView = 'lib/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
   static const String widgetsCommonImageView = 'lib/widgets/common_Image_view.dart';
