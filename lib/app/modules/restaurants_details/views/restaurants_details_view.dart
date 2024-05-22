@@ -30,6 +30,7 @@ class RestaurantsDetailsView extends GetView<RestaurantsDetailsController> {
         backgroundColor: AppColors.backgroundColor,
       ),
       body: SingleChildScrollView(
+<<<<<<< HEAD
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
@@ -59,6 +60,41 @@ class RestaurantsDetailsView extends GetView<RestaurantsDetailsController> {
                   },
                   itemCount: 5)
             ],
+=======
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                const BannerAndRatingWidget(),
+                const SizedBox(
+                  height: 20,
+                ),
+                const SearchWidget(),
+                const SizedBox(
+                  height: 20,
+                ),
+                const ChipWidget(),
+                const SizedBox(
+                  height: 20,
+                ),
+                ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return DishCard(
+                        index: index,
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(
+                        height: 10,
+                      );
+                    },
+                    itemCount: 5)
+              ],
+            ),
+>>>>>>> e502e169af1ee0a6654f2e252483d800660b6b91
           ),
         ),
       ),
@@ -66,10 +102,17 @@ class RestaurantsDetailsView extends GetView<RestaurantsDetailsController> {
   }
 }
 
-class ChipWidget extends StatelessWidget {
+class ChipWidget extends StatefulWidget {
   const ChipWidget({
     super.key,
   });
+
+  @override
+  State<ChipWidget> createState() => _ChipWidgetState();
+}
+
+class _ChipWidgetState extends State<ChipWidget> {
+  int selectedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -90,10 +133,16 @@ class ChipWidget extends StatelessWidget {
     return SizedBox(
       height: 50,
       child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Chip(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+            child: Chip(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50.0),
                 side: const BorderSide(color: Colors.grey),
@@ -101,25 +150,36 @@ class ChipWidget extends StatelessWidget {
               label: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SvgPicture.asset(chipImages[index]),
+                  SvgPicture.asset(
+                    chipImages[index],
+                    color: selectedIndex == index ? Colors.white : null,
+                  ),
                   const SizedBox(
                     width: 5,
                   ),
                   Text(
                     chipTitles[index],
-                    style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color:
+                          selectedIndex == index ? Colors.white : Colors.black,
+                    ),
                   ),
                 ],
               ),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(
-              width: 10,
-            );
-          },
-          itemCount: 5),
+              backgroundColor:
+                  selectedIndex == index ? AppColors.primaryColor : null,
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const SizedBox(
+            width: 10,
+          );
+        },
+        itemCount: 5,
+      ),
     );
   }
 }
@@ -278,7 +338,11 @@ class _BannerCarousalState extends State<BannerCarousal> {
               autoPlay: true,
               // height: MediaQuery.of(context).size.height * 0.29,
               viewportFraction: 1.2,
+<<<<<<< HEAD
               // aspectRatio: 20 / 10,
+=======
+              aspectRatio: 16 / 8.5,
+>>>>>>> e502e169af1ee0a6654f2e252483d800660b6b91
               onPageChanged: (index, reason) {
                 setState(() {
                   activeIndex = index;
@@ -299,7 +363,7 @@ class _BannerCarousalState extends State<BannerCarousal> {
                       "packages/mynewpackage/lib/assets/images/banner.jpg",
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.3,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     ),
                   );
                 },
@@ -344,15 +408,10 @@ class BannerAndRatingWidget extends StatelessWidget {
         children: [
           Column(
             children: [
-              // ClipRRect(
-              //   borderRadius: BorderRadius.circular(15),
-              //   child: Image.asset(
-              //       "packages/mynewpackage/lib/assets/images/banner.jpg"),
-              // ),
               const BannerCarousal(),
               const Padding(
                 padding:
-                    EdgeInsets.only(left: 150, right: 10, top: 10, bottom: 10),
+                    EdgeInsets.only(left: 150, right: 10, top: 10, bottom: 5),
                 child: Text(
                   "This popular, unassuming eatery dishes up an array of traditional Indian fare.",
                   style: TextStyle(
@@ -364,7 +423,7 @@ class BannerAndRatingWidget extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 150, right: 10, top: 10, bottom: 10),
+                    left: 150, right: 10, top: 5, bottom: 10),
                 child: Row(
                   children: [
                     Chip(

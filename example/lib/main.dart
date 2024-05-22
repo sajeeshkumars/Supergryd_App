@@ -3,9 +3,15 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mynewpackage/dependecy.dart';
 import 'package:mynewpackage/mynewpackage.dart';
 
+<<<<<<< HEAD
 void main() {
 
 
+=======
+
+void main() async{
+  await DependencyCreator.init();
+>>>>>>> e502e169af1ee0a6654f2e252483d800660b6b91
   runApp(const MyApp());
 }
 
@@ -36,10 +42,9 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        fontFamily: "Poetsen One",
       ),
       home: const MyPackage(clientId: 'SGD_test_a0aefba9-5ffe-4661-8ef0-6b332371fe66', clientSecrete: 'SGD_test_a8e77599-9242-44f7-9a0d-4321a7ccbd5e',),
     );
   }
 }
-
-
