@@ -307,7 +307,7 @@ packages:
   mynewpackage:
     dependency: "direct main"
     description:
-      path: "/Users/aswinvshaji/Documents/Git/package_test"
+      path: "C:\\Users\\najib\\StudioProjects\\mynewpackage"
       relative: false
     source: path
     version: "0.0.1"

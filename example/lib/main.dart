@@ -5,9 +5,7 @@ import 'package:mynewpackage/mynewpackage.dart';
 
 
 
-
-
-void main() async {
+void main() async{
   await DependencyCreator.init();
   runApp(const MyApp());
 }
