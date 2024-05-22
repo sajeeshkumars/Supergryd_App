@@ -30,37 +30,35 @@ class RestaurantsDetailsView extends GetView<RestaurantsDetailsController> {
         backgroundColor: AppColors.backgroundColor,
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                const BannerAndRatingWidget(),
-                const SizedBox(
-                  height: 20,
-                ),
-                const SearchWidget(),
-                const SizedBox(
-                  height: 20,
-                ),
-                const ChipWidget(),
-                const SizedBox(
-                  height: 20,
-                ),
-                ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return const DishCard();
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 10,
-                      );
-                    },
-                    itemCount: 5)
-              ],
-            ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              const BannerAndRatingWidget(),
+              const SizedBox(
+                height: 20,
+              ),
+              const SearchWidget(),
+              const SizedBox(
+                height: 20,
+              ),
+              const ChipWidget(),
+              const SizedBox(
+                height: 20,
+              ),
+              ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return const DishCard();
+                  },
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      height: 10,
+                    );
+                  },
+                  itemCount: 5)
+            ],
           ),
         ),
       ),
@@ -274,13 +272,13 @@ class _BannerCarousalState extends State<BannerCarousal> {
     return Stack(
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width - 10,
+          // width: MediaQuery.of(context).size.width,
           child: CarouselSlider(
             options: CarouselOptions(
               autoPlay: true,
-              height: MediaQuery.of(context).size.height * 0.29,
+              // height: MediaQuery.of(context).size.height * 0.29,
               viewportFraction: 1.2,
-              aspectRatio: 16 / 9,
+              // aspectRatio: 20 / 10,
               onPageChanged: (index, reason) {
                 setState(() {
                   activeIndex = index;
@@ -291,7 +289,7 @@ class _BannerCarousalState extends State<BannerCarousal> {
               return Builder(
                 builder: (BuildContext context) {
                   return Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
+                    width: MediaQuery.of(context).size.width * 0.94,
                     margin: const EdgeInsets.symmetric(horizontal: 5.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -339,6 +337,7 @@ class BannerAndRatingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(15)),
       child: Stack(

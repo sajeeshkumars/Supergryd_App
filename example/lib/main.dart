@@ -3,8 +3,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mynewpackage/dependecy.dart';
 import 'package:mynewpackage/mynewpackage.dart';
 
-void main() async{
-  await DependencyCreator.init();
+void main() {
 
 
   runApp(const MyApp());
