@@ -3,17 +3,15 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mynewpackage/dependecy.dart';
 import 'package:mynewpackage/mynewpackage.dart';
 
-<<<<<<< HEAD
-void main() {
 
 
-=======
 
-void main() async{
+
+void main() async {
   await DependencyCreator.init();
->>>>>>> e502e169af1ee0a6654f2e252483d800660b6b91
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

@@ -1,10 +1,6 @@
 // DO NOT EDIT. This is code generated via package:get_cli/get_cli.dart
 
-<<<<<<< HEAD
 // ignore_for_file: lines_longer_than_80_chars
-=======
-// ignore_for_file: lines_longer_than_80_chars, constant_identifier_names
->>>>>>> e502e169af1ee0a6654f2e252483d800660b6b91
 // ignore: avoid_classes_with_only_static_members
 class AppTranslation {
   static Map<String, Map<String, String>> translations = {

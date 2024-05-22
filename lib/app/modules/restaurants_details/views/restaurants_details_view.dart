@@ -30,37 +30,6 @@ class RestaurantsDetailsView extends GetView<RestaurantsDetailsController> {
         backgroundColor: AppColors.backgroundColor,
       ),
       body: SingleChildScrollView(
-<<<<<<< HEAD
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              const BannerAndRatingWidget(),
-              const SizedBox(
-                height: 20,
-              ),
-              const SearchWidget(),
-              const SizedBox(
-                height: 20,
-              ),
-              const ChipWidget(),
-              const SizedBox(
-                height: 20,
-              ),
-              ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return const DishCard();
-                  },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      height: 10,
-                    );
-                  },
-                  itemCount: 5)
-            ],
-=======
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -94,7 +63,6 @@ class RestaurantsDetailsView extends GetView<RestaurantsDetailsController> {
                     itemCount: 5)
               ],
             ),
->>>>>>> e502e169af1ee0a6654f2e252483d800660b6b91
           ),
         ),
       ),
@@ -163,13 +131,13 @@ class _ChipWidgetState extends State<ChipWidget> {
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color:
-                          selectedIndex == index ? Colors.white : Colors.black,
+                      selectedIndex == index ? Colors.white : Colors.black,
                     ),
                   ),
                 ],
               ),
               backgroundColor:
-                  selectedIndex == index ? AppColors.primaryColor : null,
+              selectedIndex == index ? AppColors.primaryColor : null,
             ),
           );
         },
@@ -225,8 +193,8 @@ class SearchWidgetState extends State<SearchWidget> {
     searchController.text = _speechToText.isListening
         ? _lastWords
         : _speechEnabled
-            ? 'Tap the microphone to start listening...'
-            : 'Speech not available';
+        ? 'Tap the microphone to start listening...'
+        : 'Speech not available';
     setState(() {
       micSize = 60.0;
     });
@@ -332,17 +300,13 @@ class _BannerCarousalState extends State<BannerCarousal> {
     return Stack(
       children: [
         SizedBox(
-          // width: MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.width - 10,
           child: CarouselSlider(
             options: CarouselOptions(
               autoPlay: true,
               // height: MediaQuery.of(context).size.height * 0.29,
               viewportFraction: 1.2,
-<<<<<<< HEAD
-              // aspectRatio: 20 / 10,
-=======
               aspectRatio: 16 / 8.5,
->>>>>>> e502e169af1ee0a6654f2e252483d800660b6b91
               onPageChanged: (index, reason) {
                 setState(() {
                   activeIndex = index;
@@ -353,7 +317,7 @@ class _BannerCarousalState extends State<BannerCarousal> {
               return Builder(
                 builder: (BuildContext context) {
                   return Container(
-                    width: MediaQuery.of(context).size.width * 0.94,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     margin: const EdgeInsets.symmetric(horizontal: 5.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -401,7 +365,6 @@ class BannerAndRatingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(15)),
       child: Stack(
@@ -411,7 +374,7 @@ class BannerAndRatingWidget extends StatelessWidget {
               const BannerCarousal(),
               const Padding(
                 padding:
-                    EdgeInsets.only(left: 150, right: 10, top: 10, bottom: 5),
+                EdgeInsets.only(left: 150, right: 10, top: 10, bottom: 5),
                 child: Text(
                   "This popular, unassuming eatery dishes up an array of traditional Indian fare.",
                   style: TextStyle(
