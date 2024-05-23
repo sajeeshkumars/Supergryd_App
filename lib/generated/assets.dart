@@ -12,6 +12,10 @@ class Assets {
   static const String controllersRestaurantsDetailsController = 'lib/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
   static const String dataHomeRepository = 'lib/app/modules/home/data/home_repository.dart';
   static const String dataHomeService = 'lib/app/modules/home/data/home_service.dart';
+  static const String dataRestaurantAndDishListingRepo = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_repo.dart';
+  static const String dataRestaurantAndDishListingService = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_service.dart';
+  static const String dataRestaurantListingRequest = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_listing_request.dart';
+  static const String dataRestaurantListingResponse = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_listing_response.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String iconsAddIcon = 'lib/assets/icons/add_icon.svg';
   static const String iconsCab = 'lib/assets/icons/cab.svg';

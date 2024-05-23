@@ -32,7 +32,6 @@ dependencies:
     sdk: flutter
   mynewpackage:
     path: C:\Users\najib\StudioProjects\mynewpackage
-#    path: /Users/aswinvshaji/Documents/Git/package_test
   get: ^4.6.6
 
 
@@ -79,9 +78,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Poetsen One
+    - family: Mullish
       fonts:
-        - asset: fonts/PoetsenOne-Regular.ttf
+        - asset: fonts/Mulish-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
