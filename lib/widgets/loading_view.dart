@@ -5,7 +5,7 @@ import 'package:mynewpackage/widgets/please_wait_dialogue.dart';
 
 
 class LoadingView extends StatelessWidget {
-   const LoadingView(
+  const LoadingView(
       {super.key,
         required this.isAsyncCall,
         required this.child,

@@ -7,13 +7,13 @@ AuthenticationResponse authenticationResponseFromJson(String str) => Authenticat
 String authenticationResponseToJson(AuthenticationResponse data) => json.encode(data.toJson());
 class AuthenticationResponse {
   AuthenticationResponse({
-      num? status, 
-      String? message, 
-      Data? data,}){
+    num? status,
+    String? message,
+    Data? data,}){
     _status = status;
     _message = message;
     _data = data;
-}
+  }
 
   AuthenticationResponse.fromJson(dynamic json) {
     _status = json['status'];
@@ -23,13 +23,13 @@ class AuthenticationResponse {
   num? _status;
   String? _message;
   Data? _data;
-AuthenticationResponse copyWith({  num? status,
-  String? message,
-  Data? data,
-}) => AuthenticationResponse(  status: status ?? _status,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+  AuthenticationResponse copyWith({  num? status,
+    String? message,
+    Data? data,
+  }) => AuthenticationResponse(  status: status ?? _status,
+    message: message ?? _message,
+    data: data ?? _data,
+  );
   num? get status => _status;
   String? get message => _message;
   Data? get data => _data;
@@ -55,15 +55,15 @@ Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
 class Data {
   Data({
-      String? accessToken, 
-      String? refreshToken, 
-      String? accessTokenExpiry, 
-      String? refreshTokenExpiry,}){
+    String? accessToken,
+    String? refreshToken,
+    String? accessTokenExpiry,
+    String? refreshTokenExpiry,}){
     _accessToken = accessToken;
     _refreshToken = refreshToken;
     _accessTokenExpiry = accessTokenExpiry;
     _refreshTokenExpiry = refreshTokenExpiry;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _accessToken = json['accessToken'];
@@ -75,15 +75,15 @@ class Data {
   String? _refreshToken;
   String? _accessTokenExpiry;
   String? _refreshTokenExpiry;
-Data copyWith({  String? accessToken,
-  String? refreshToken,
-  String? accessTokenExpiry,
-  String? refreshTokenExpiry,
-}) => Data(  accessToken: accessToken ?? _accessToken,
-  refreshToken: refreshToken ?? _refreshToken,
-  accessTokenExpiry: accessTokenExpiry ?? _accessTokenExpiry,
-  refreshTokenExpiry: refreshTokenExpiry ?? _refreshTokenExpiry,
-);
+  Data copyWith({  String? accessToken,
+    String? refreshToken,
+    String? accessTokenExpiry,
+    String? refreshTokenExpiry,
+  }) => Data(  accessToken: accessToken ?? _accessToken,
+    refreshToken: refreshToken ?? _refreshToken,
+    accessTokenExpiry: accessTokenExpiry ?? _accessTokenExpiry,
+    refreshTokenExpiry: refreshTokenExpiry ?? _refreshTokenExpiry,
+  );
   String? get accessToken => _accessToken;
   String? get refreshToken => _refreshToken;
   String? get accessTokenExpiry => _accessTokenExpiry;

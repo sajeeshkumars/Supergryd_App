@@ -7,13 +7,13 @@ CreateUserResponse createUserResponseFromJson(String str) => CreateUserResponse.
 String createUserResponseToJson(CreateUserResponse data) => json.encode(data.toJson());
 class CreateUserResponse {
   CreateUserResponse({
-      num? status, 
-      String? message, 
-      Data? data,}){
+    num? status,
+    String? message,
+    Data? data,}){
     _status = status;
     _message = message;
     _data = data;
-}
+  }
 
   CreateUserResponse.fromJson(dynamic json) {
     _status = json['status'];
@@ -23,13 +23,13 @@ class CreateUserResponse {
   num? _status;
   String? _message;
   Data? _data;
-CreateUserResponse copyWith({  num? status,
-  String? message,
-  Data? data,
-}) => CreateUserResponse(  status: status ?? _status,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+  CreateUserResponse copyWith({  num? status,
+    String? message,
+    Data? data,
+  }) => CreateUserResponse(  status: status ?? _status,
+    message: message ?? _message,
+    data: data ?? _data,
+  );
   num? get status => _status;
   String? get message => _message;
   Data? get data => _data;
@@ -56,17 +56,17 @@ Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
 class Data {
   Data({
-      String? id, 
-      String? phoneNumber, 
-      num? v, 
-      String? hostId, 
-      String? phoneCode,}){
+    String? id,
+    String? phoneNumber,
+    num? v,
+    String? hostId,
+    String? phoneCode,}){
     _id = id;
     _phoneNumber = phoneNumber;
     _v = v;
     _hostId = hostId;
     _phoneCode = phoneCode;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _id = json['_id'];
@@ -80,17 +80,17 @@ class Data {
   num? _v;
   String? _hostId;
   String? _phoneCode;
-Data copyWith({  String? id,
-  String? phoneNumber,
-  num? v,
-  String? hostId,
-  String? phoneCode,
-}) => Data(  id: id ?? _id,
-  phoneNumber: phoneNumber ?? _phoneNumber,
-  v: v ?? _v,
-  hostId: hostId ?? _hostId,
-  phoneCode: phoneCode ?? _phoneCode,
-);
+  Data copyWith({  String? id,
+    String? phoneNumber,
+    num? v,
+    String? hostId,
+    String? phoneCode,
+  }) => Data(  id: id ?? _id,
+    phoneNumber: phoneNumber ?? _phoneNumber,
+    v: v ?? _v,
+    hostId: hostId ?? _hostId,
+    phoneCode: phoneCode ?? _phoneCode,
+  );
   String? get id => _id;
   String? get phoneNumber => _phoneNumber;
   num? get v => _v;

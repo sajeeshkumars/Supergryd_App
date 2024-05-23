@@ -57,7 +57,7 @@ class _MyPackageState extends State<MyPackage> {
 
     return switch(widget.route){
       Routes.RESTAURANTS_AND_DISHES_LISTING => RestaurantsAndDishesListingView(),
-      _ =>  const HomeView(),
+      _ => const HomeView(),
     };
 
 

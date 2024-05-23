@@ -55,6 +55,7 @@ class Assets {
   static const String modelCreateUserRequestModel = 'lib/app/authentication/model/create_user_request_model.dart';
   static const String modelCreateUserResponse = 'lib/app/authentication/model/create_user_response.dart';
   static const String modelRefreshTokenModel = 'lib/model/refresh_token_model.dart';
+  static const String modelServiceCategoryResponse = 'lib/app/authentication/model/service_category_response.dart';
   static const String modelsServiceCategoryResponse = 'lib/app/modules/home/data/models/service_category_response.dart';
   static const String routesAppPages = 'lib/app/routes/app_pages.dart';
   static const String routesAppRoutes = 'lib/app/routes/app_routes.dart';

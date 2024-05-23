@@ -6,11 +6,11 @@ CreateUserRequestModel createUserRequestModelFromJson(String str) => CreateUserR
 String createUserRequestModelToJson(CreateUserRequestModel data) => json.encode(data.toJson());
 class CreateUserRequestModel {
   CreateUserRequestModel({
-      String? phoneNumber, 
-      String? phoneCode,}){
+    String? phoneNumber,
+    String? phoneCode,}){
     _phoneNumber = phoneNumber;
     _phoneCode = phoneCode;
-}
+  }
 
   CreateUserRequestModel.fromJson(dynamic json) {
     _phoneNumber = json['phone_number'];
@@ -18,11 +18,11 @@ class CreateUserRequestModel {
   }
   String? _phoneNumber;
   String? _phoneCode;
-CreateUserRequestModel copyWith({  String? phoneNumber,
-  String? phoneCode,
-}) => CreateUserRequestModel(  phoneNumber: phoneNumber ?? _phoneNumber,
-  phoneCode: phoneCode ?? _phoneCode,
-);
+  CreateUserRequestModel copyWith({  String? phoneNumber,
+    String? phoneCode,
+  }) => CreateUserRequestModel(  phoneNumber: phoneNumber ?? _phoneNumber,
+    phoneCode: phoneCode ?? _phoneCode,
+  );
   String? get phoneNumber => _phoneNumber;
   String? get phoneCode => _phoneCode;
 

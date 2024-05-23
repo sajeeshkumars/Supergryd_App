@@ -12,9 +12,6 @@ import '../../../../generated/assets.dart';
 import '../../../../widgets/common_Image_view.dart';
 import '../controllers/restaurants_and_dishes_listing_controller.dart';
 
-
-
-
 class RestaurantsAndDishesListingView
     extends StatelessWidget {
   RestaurantsAndDishesListingView({super.key});

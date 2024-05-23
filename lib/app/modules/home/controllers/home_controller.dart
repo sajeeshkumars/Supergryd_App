@@ -158,23 +158,23 @@ class HomeController extends GetxController {
 
     if(result == true){
       await authRepository.authenticate(requestModel.toJson()).then((value) {
-        if (value.status == 200) {
+      if (value.status == 200) {
           isLoading(false);
 
           debugPrint("after success${isLoading.value}");
 
 
-          debugPrint("authenticated");
+        debugPrint("authenticated");
           debugPrint("${value.message}");
           debugPrint("token${value.data?.refreshToken}");
-          storage.writeAccessToken(value.data?.accessToken ?? "");
+        storage.writeAccessToken(value.data?.accessToken ?? "");
           debugPrint("access token ${storage.getAccessToken()}");
-          storage.writeRefreshToken(value.data?.refreshToken ?? "");
+        storage.writeRefreshToken(value.data?.refreshToken ?? "");
           storage.writeIsAuthenticated(true);
           createUser();
           getServices();
 
-        } else {
+      } else {
           debugPrint("after failure${value.message}");
 
           ScaffoldMessenger.of(Get.context!).showSnackBar(
