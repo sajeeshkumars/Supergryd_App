@@ -6,62 +6,100 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
+import 'package:mynewpackage/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
 import 'package:mynewpackage/app_colors.dart';
+import 'package:mynewpackage/widgets/loading_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
-import '../controllers/restaurants_details_controller.dart';
+class RestaurantsDetailsView extends StatefulWidget {
+  const RestaurantsDetailsView({super.key, required this.restaurantId});
 
-class RestaurantsDetailsView extends GetView<RestaurantsDetailsController> {
-  const RestaurantsDetailsView({super.key});
+  final String restaurantId;
+
+  @override
+  State<RestaurantsDetailsView> createState() => _RestaurantsDetailsViewState();
+}
+
+class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
+  RestaurantsDetailsController restaurantsDetailsController =
+  Get.put(RestaurantsDetailsController());
+  @override
+  void initState() {
+    restaurantsDetailsController.getRestaurantdetails(
+        restaurantId: widget.restaurantId, page: 1, limit: 1);
+    Get.lazyPut(() => RestaurantsDetailsController());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: const Text(
-          'Imperio Restaurant',
-          style: TextStyle(fontWeight: FontWeight.w500),
-        ),
+        title: Obx(() {
+          return Text(
+            restaurantsDetailsController
+                .restaurantDetails.firstOrNull?.branchName ??
+                '',
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          );
+        }),
         backgroundColor: AppColors.backgroundColor,
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                const BannerAndRatingWidget(),
-                const SizedBox(
-                  height: 20,
-                ),
-                const SearchWidget(),
-                const SizedBox(
-                  height: 20,
-                ),
-                const ChipWidget(),
-                const SizedBox(
-                  height: 20,
-                ),
-                ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return DishCard(
-                        index: index,
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 10,
-                      );
-                    },
-                    itemCount: 5)
-              ],
+      body: LoadingView(
+        isAsyncCall: restaurantsDetailsController.isLoading,
+        showBackGroundData: false,
+        authenticated: true.obs,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  const BannerAndRatingWidget(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const SearchWidget(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const ChipWidget(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Obx(
+                          () {
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return DishCard(
+                              dishName: restaurantsDetailsController.restaurantDetails[index].storeProducts?.name ?? '',
+                              price: restaurantsDetailsController
+                                  .restaurantDetails[index].storeProducts?.price ?? '',
+                              rating: restaurantsDetailsController
+                                  .restaurantDetails[index].storeProducts?.rating ?? 0,
+                              index: index,
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(
+                              height: 10,
+                            );
+                          },
+                          itemCount: restaurantsDetailsController.restaurantDetails.length,
+                        );
+                      }
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -131,13 +169,13 @@ class _ChipWidgetState extends State<ChipWidget> {
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color:
-                          selectedIndex == index ? Colors.white : Colors.black,
+                      selectedIndex == index ? Colors.white : Colors.black,
                     ),
                   ),
                 ],
               ),
               backgroundColor:
-                  selectedIndex == index ? AppColors.primaryColor : null,
+              selectedIndex == index ? AppColors.primaryColor : null,
             ),
           );
         },
@@ -193,8 +231,8 @@ class SearchWidgetState extends State<SearchWidget> {
     searchController.text = _speechToText.isListening
         ? _lastWords
         : _speechEnabled
-            ? 'Tap the microphone to start listening...'
-            : 'Speech not available';
+        ? 'Tap the microphone to start listening...'
+        : 'Speech not available';
     setState(() {
       micSize = 60.0;
     });
@@ -374,7 +412,7 @@ class BannerAndRatingWidget extends StatelessWidget {
               const BannerCarousal(),
               const Padding(
                 padding:
-                    EdgeInsets.only(left: 150, right: 10, top: 10, bottom: 5),
+                EdgeInsets.only(left: 150, right: 10, top: 10, bottom: 5),
                 child: Text(
                   "This popular, unassuming eatery dishes up an array of traditional Indian fare.",
                   style: TextStyle(
@@ -384,48 +422,45 @@ class BannerAndRatingWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 150, right: 10, top: 5, bottom: 10),
-                child: Row(
-                  children: [
-                    Chip(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        side: const BorderSide(color: Colors.grey),
-                      ),
-                      label: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SvgPicture.asset(
-                              "packages/mynewpackage/lib/assets/icons/Star.svg"),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          const Text(
-                            "4.1(10k+)",
-                            style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w600),
-                          )
-                        ],
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Chip(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                      side: const BorderSide(color: Colors.grey),
                     ),
-                    const SizedBox(
-                      width: 5,
+                    label: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset(
+                            "packages/mynewpackage/lib/assets/icons/Star.svg"),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Text(
+                          "4.1(10k+)",
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w600),
+                        )
+                      ],
                     ),
-                    Chip(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        side: const BorderSide(color: Colors.grey),
-                      ),
-                      label: const Text(
-                        "1.6km",
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.w600),
-                      ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Chip(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                      side: const BorderSide(color: Colors.grey),
                     ),
-                  ],
-                ),
+                    label: const Text(
+                      "1.6km",
+                      style: TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
               )
             ],
           ),

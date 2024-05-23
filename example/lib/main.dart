@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
         fontFamily: "Mullish",
+
       ),
       home: const MyPackage(clientId: 'SGD_test_a0aefba9-5ffe-4661-8ef0-6b332371fe66', clientSecrete: 'SGD_test_a8e77599-9242-44f7-9a0d-4321a7ccbd5e',),
     );

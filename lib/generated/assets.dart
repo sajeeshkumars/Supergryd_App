@@ -10,10 +10,13 @@ class Assets {
   static const String controllersHomeController = 'lib/app/modules/home/controllers/home_controller.dart';
   static const String controllersRestaurantsAndDishesListingController = 'lib/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
   static const String controllersRestaurantsDetailsController = 'lib/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
+  static const String dataGetRestaurantDetailsResponse = 'lib/app/modules/restaurants_details/data/get_restaurant_details_response.dart';
   static const String dataHomeRepository = 'lib/app/modules/home/data/home_repository.dart';
   static const String dataHomeService = 'lib/app/modules/home/data/home_service.dart';
   static const String dataRestaurantAndDishListingRepo = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_repo.dart';
   static const String dataRestaurantAndDishListingService = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_service.dart';
+  static const String dataRestaurantDetailsRepository = 'lib/app/modules/restaurants_details/data/restaurant_details_repository.dart';
+  static const String dataRestaurantDetailsService = 'lib/app/modules/restaurants_details/data/restaurant_details_service.dart';
   static const String dataRestaurantListingRequest = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_listing_request.dart';
   static const String dataRestaurantListingResponse = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_listing_response.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';

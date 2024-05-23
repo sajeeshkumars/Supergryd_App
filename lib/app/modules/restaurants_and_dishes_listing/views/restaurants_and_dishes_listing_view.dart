@@ -158,25 +158,23 @@ class RestaurantsAndDishesListingView
                       ),
                     ),
                   ),
-                  LoadingView(
-                    isAsyncCall: controller.isLoading,
-                    showBackGroundData: false,
-                    authenticated: true.obs,
-                    child: Expanded(
-                      child: ListView.builder(
-                        itemCount: controller.vegNames.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              onTap: () {},
-                              child: DishCard(
-                                index: index,
-                              ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: controller.vegNames.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {},
+                            child:  DishCard(
+                              dishName: "Egg Friend Rice",
+                              index: index,
+                              price: "200",
+                              rating: 4.5,
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -191,10 +189,14 @@ class RestaurantsAndDishesListingView
 
 class DishCard extends StatefulWidget {
   final int index;
-  const DishCard({
+   DishCard({
     super.key,
-    required this.index,
+    required this.index, required this.dishName, required this.price, required this.rating,
   });
+
+  String dishName;
+  String price;
+  num rating;
 
   @override
   State<DishCard> createState() => _DishCardState();
@@ -273,7 +275,7 @@ class _DishCardState extends State<DishCard> {
                         side: BorderSide(color: AppColors.borderColor),
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.5,
+                        // width: MediaQuery.of(context).size.width * 0.6,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -292,6 +294,7 @@ class _DishCardState extends State<DishCard> {
                                 ),
                               ],
                             ),
+                            SizedBox(width: 3,),
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -332,7 +335,7 @@ class _DishCardState extends State<DishCard> {
                                                 color: Colors.white),
                                           ),
                                           const SizedBox(
-                                            width: 8,
+                                            width: 3,
                                           ),
                                           Text(
                                             '$_count',
@@ -340,7 +343,7 @@ class _DishCardState extends State<DishCard> {
                                                 color: Colors.white),
                                           ),
                                           const SizedBox(
-                                            width: 8,
+                                            width: 3,
                                           ),
                                           InkWell(
                                             onTap: _decrementCount,
@@ -388,7 +391,7 @@ class RestaurantList extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
             onTap: () {
-              Get.to(const RestaurantsDetailsView());
+              Get.to( RestaurantsDetailsView(restaurantId: controller.restaurantList[index].id.toString(),));
             },
             child: Container(
                 color: AppColors.backgroundColor,
