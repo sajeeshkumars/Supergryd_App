@@ -32,7 +32,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
   @override
   void initState() {
     restaurantsDetailsController.getRestaurantdetails(
-        restaurantId: widget.restaurantId, page: 1, limit: 1);
+        restaurantId: widget.restaurantId, initial: true);
     Get.lazyPut(() => RestaurantsDetailsController());
     super.initState();
   }
@@ -56,37 +56,43 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
         isAsyncCall: restaurantsDetailsController.isLoading,
         showBackGroundData: false,
         authenticated: true.obs,
-        child: SingleChildScrollView(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  const BannerAndRatingWidget(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const SearchWidget(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const ChipWidget(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Obx(
-                          () {
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (scrollInfo) {
+            return restaurantsDetailsController.onScrollOngoing(scrollInfo,
+                restaurantId: widget.restaurantId);
+          },
+          child: Obx(() {
+            return restaurantsDetailsController.restaurantDetails.isEmpty
+                ? const Center(
+              child: Text("No data found!"),
+            )
+                : SingleChildScrollView(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      const BannerAndRatingWidget(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const SearchWidget(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const ChipWidget(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Obx(() {
                         return ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             return DishCard(
-                              dishName: restaurantsDetailsController.restaurantDetails[index].storeProducts?.name ?? '',
-                              price: restaurantsDetailsController
-                                  .restaurantDetails[index].storeProducts?.price ?? '',
-                              rating: restaurantsDetailsController
-                                  .restaurantDetails[index].storeProducts?.rating ?? 0,
-                              index: index,
+                              restaurant:restaurantsDetailsController
+                                  .restaurantDetails[index] ,
+                              index: index, isDishes: false,
                             );
                           },
                           separatorBuilder: (context, index) {
@@ -94,14 +100,16 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
                               height: 10,
                             );
                           },
-                          itemCount: restaurantsDetailsController.restaurantDetails.length,
+                          itemCount: restaurantsDetailsController
+                              .restaurantDetails.length,
                         );
-                      }
-                  )
-                ],
+                      })
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          }),
         ),
       ),
     );
@@ -337,8 +345,9 @@ class _BannerCarousalState extends State<BannerCarousal> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width - 10,
+        Container(
+          decoration: BoxDecoration(
+               borderRadius: BorderRadius.circular(25)),
           child: CarouselSlider(
             options: CarouselOptions(
               autoPlay: true,
@@ -354,18 +363,13 @@ class _BannerCarousalState extends State<BannerCarousal> {
             items: [1, 2, 3, 4, 5].map((i) {
               return Builder(
                 builder: (BuildContext context) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    clipBehavior: Clip.hardEdge,
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(25),
                     child: Image.asset(
                       "packages/mynewpackage/lib/assets/images/banner.jpg",
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.3,
-                      fit: BoxFit.contain,
+                      fit: BoxFit.cover,
                     ),
                   );
                 },
@@ -404,70 +408,75 @@ class BannerAndRatingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(15)),
+          color: Colors.white, borderRadius: BorderRadius.circular(25)),
       child: Stack(
         children: [
           Column(
             children: [
               const BannerCarousal(),
-              const Padding(
+               Padding(
                 padding:
-                EdgeInsets.only(left: 150, right: 10, top: 10, bottom: 5),
-                child: Text(
-                  "This popular, unassuming eatery dishes up an array of traditional Indian fare.",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    color: Color.fromRGBO(69, 84, 97, 1),
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Chip(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0),
-                      side: const BorderSide(color: Colors.grey),
+                const EdgeInsets.only(left: 120, right: 10, top: 10, bottom: 15),
+                child: Column(
+                  children: [
+                    const Text(
+                      "This popular, unassuming eatery dishes up an array of traditional Indian fare.",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: Color.fromRGBO(69, 84, 97, 1),
+                      ),
                     ),
-                    label: Row(
-                      mainAxisSize: MainAxisSize.min,
+                    Row(
                       children: [
-                        SvgPicture.asset(
-                            "packages/mynewpackage/lib/assets/icons/Star.svg"),
+                        Chip(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0),
+                            side: BorderSide(color: Colors.grey),
+                          ),
+                          label: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(
+                                  "packages/mynewpackage/lib/assets/icons/Star.svg"),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Text(
+                                "4.1(10k+)",
+                                style: TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
+                        ),
                         const SizedBox(
                           width: 5,
                         ),
-                        const Text(
-                          "4.1(10k+)",
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.w600),
-                        )
+                        Chip(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0),
+                            side: const BorderSide(color: Colors.grey),
+                          ),
+                          label: const Text(
+                            "1.6km",
+                            style: TextStyle(
+                                fontSize: 10, fontWeight: FontWeight.w600),
+                          ),
+                        ),
                       ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Chip(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0),
-                      side: const BorderSide(color: Colors.grey),
-                    ),
-                    label: const Text(
-                      "1.6km",
-                      style: TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ],
-              )
+                    )
+                  ],
+                ),
+              ),
+
             ],
           ),
           Positioned(
             top: 160,
-            left: 20,
+            left: 10,
             child: Image.asset(
+              width: 100,
                 "packages/mynewpackage/lib/assets/images/restaurant-logo.png"),
           ),
         ],

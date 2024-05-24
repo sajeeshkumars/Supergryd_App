@@ -10,6 +10,8 @@ class Assets {
   static const String controllersHomeController = 'lib/app/modules/home/controllers/home_controller.dart';
   static const String controllersRestaurantsAndDishesListingController = 'lib/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
   static const String controllersRestaurantsDetailsController = 'lib/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
+  static const String coreUtility = 'lib/app/core/utility.dart';
+  static const String dataDishListingResponse = 'lib/app/modules/restaurants_and_dishes_listing/data/dish_listing_response.dart';
   static const String dataGetRestaurantDetailsResponse = 'lib/app/modules/restaurants_details/data/get_restaurant_details_response.dart';
   static const String dataHomeRepository = 'lib/app/modules/home/data/home_repository.dart';
   static const String dataHomeService = 'lib/app/modules/home/data/home_service.dart';

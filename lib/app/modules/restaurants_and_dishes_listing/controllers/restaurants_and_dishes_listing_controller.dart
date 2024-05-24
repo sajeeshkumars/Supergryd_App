@@ -5,6 +5,7 @@ import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/res
 import 'package:mynewpackage/storage/storage.dart';
 
 import '../../../../generated/assets.dart';
+import '../data/dish_listing_response.dart';
 import '../data/restaurant_listing_request.dart' as restaurant_request;
 import '../data/restaurant_listing_response.dart';
 
@@ -27,12 +28,16 @@ class RestaurantsAndDishesListingController extends GetxController {
   List<RxBool> isUnavailable = [false.obs,true.obs,];
   RxInt selectedCategory = 0.obs;
   RxBool isLoading = false.obs;
+  RxBool isLoadingDishes = false.obs;
   AppStorage appStorage = Get.find();
   RestaurantAndDishRepository restaurantAndDishRepository = RestaurantAndDishRepository();
   RestaurantListingResult? restaurantListingResult;
   RxList<RestaurantData> restaurantList = <RestaurantData>[].obs;
-  RxBool isLoadingMore = false.obs;
+  RxList<Dishes> dishList = <Dishes>[].obs;
+  RxBool isRestaurantsLoadingMore = false.obs;
+  RxBool isDishesLoadingMore = false.obs;
   bool isHaveRestaurantData = false;
+  bool isHaveDishes = false;
 
 
 
@@ -76,6 +81,8 @@ class RestaurantsAndDishesListingController extends GetxController {
     );
     await restaurantAndDishRepository.getRestaurants(request.toJson()).then((value) {
       if (value.status == 200) {
+        getDishes(initial: true);
+
         if (initial) {
           restaurantList.value = value.data?.restaurantData ?? [];
           isLoading(false);
@@ -83,16 +90,54 @@ class RestaurantsAndDishesListingController extends GetxController {
           restaurantList.addAll(value.data?.restaurantData ?? []);
         }
         if ((value.data?.restaurantData ?? []).isNotEmpty) {
-          isLoadingMore.value = false;
+          isRestaurantsLoadingMore.value = false;
           isHaveRestaurantData = true;
         } else {
           isHaveRestaurantData = false;
-          isLoadingMore.value = false;
+          isRestaurantsLoadingMore.value = false;
         }
         // isLoading(false);
         // restaurantListingResult = value.data;
 
       } else {
+        isLoading(false);
+
+
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+            SnackBar(content: Text(value.message.toString() ?? "",),backgroundColor: Colors.red,));
+      }
+    });
+  }
+
+  void getDishes({required bool initial}) async {
+
+    if (initial) {
+      page = 1;
+      limit = 10;
+      isLoadingDishes(true);
+      dishList.clear();
+    }
+
+
+    await restaurantAndDishRepository.getDishes(page: page, limit: limit).then((value) {
+      if (value.status == 200) {
+        if (initial) {
+          dishList.value = value.data?.dishes ?? [];
+          isLoadingDishes(false);
+        } else {
+          dishList.addAll(value.data?.dishes ?? []);
+        }
+        if ((value.data?.dishes ?? []).isNotEmpty) {
+          isDishesLoadingMore.value = false;
+          isHaveDishes = true;
+        } else {
+          isHaveDishes = false;
+          isDishesLoadingMore.value = false;
+        }
+
+
+      } else {
+        isLoadingDishes(false);
 
 
         ScaffoldMessenger.of(Get.context!).showSnackBar(
@@ -103,17 +148,32 @@ class RestaurantsAndDishesListingController extends GetxController {
 
 
   bool onScrollOngoing(ScrollNotification scrollInfo) {
-    if (!isLoadingMore.value &&
+    if (!isRestaurantsLoadingMore.value &&
         scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
         isHaveRestaurantData) {
       page = page + 1;
       if (isHaveRestaurantData) {
-        isLoadingMore.value = true;
+        isRestaurantsLoadingMore.value = true;
         getRestaurants(
           initial: false,
         );
       } else {
-        isLoadingMore.value = false;
+        isRestaurantsLoadingMore.value = false;
+      }
+    }
+    return false;
+  }
+
+  bool onScrollDishes(ScrollNotification scrollInfo) {
+    if (!isDishesLoadingMore.value &&
+        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+        isHaveDishes) {
+      page = page + 1;
+      if (isHaveDishes) {
+        isDishesLoadingMore.value = true;
+       getDishes(initial: false);
+      } else {
+        isDishesLoadingMore.value = false;
       }
     }
     return false;
