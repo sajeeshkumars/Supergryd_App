@@ -6,6 +6,7 @@ import 'package:mynewpackage/app/authentication/authentication_repo.dart';
 import 'package:mynewpackage/app/authentication/model/authentication_request_model.dart';
 import 'package:mynewpackage/app/authentication/model/create_user_request_model.dart';
 import 'package:mynewpackage/app/modules/home/data/home_repository.dart';
+import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
 import 'package:mynewpackage/storage/storage.dart';
 
 import '../../../../app_colors.dart';
@@ -38,12 +39,31 @@ class HomeController extends GetxController {
     Assets.iconsGrocery,
     Assets.iconsOthers
   ];
-  List addressTypeImage = [Assets.iconsHomeIcon, Assets.iconsOffice];
-  List addressHeading = ["Home", "Office"];
+  List addressTypeImage = [Assets.iconsHomeIcon, Assets.iconsOffice,Assets.iconsOffice];
+  List addressHeading = ["Home", "Office","Seeroo"];
   List addressDescription = [
     "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India",
-    "No. 63, 1st Floor, 14th Cross, 9th Main Road,Indiranagar, Bengaluru, Karnataka 560038, India"
+    "No. 63, 1st Floor, 14th Cross, 9th Main Road,Indiranagar, Bengaluru, Karnataka 560038, India",
+    "XIII/330, Santhigiri Campus, Cochin, NAD Rd, North Kalamassery, HMT Kalamassery, Kerala 683503",
   ];
+  Map<String, dynamic> locationCoordinates = {
+    "Home": {
+      "lat": 13.094478,
+      "long": 77.720049,
+    },
+    "Office": {
+      "lat": 13.094478,
+      "long": 77.720049,
+    },
+    "Seeroo": {
+      "lat": 10.064598219780601,
+      "long": 76.35120398465857,
+    }
+  };
+  RxMap selectedLocationCoordinates = {
+    "lat": 13.094478,
+    "long": 77.720049,
+  }.obs;
   RxString address = '"No. 63, 1st Floor, 14th Cross, 9th Main Road,Indiranagar, Bengaluru, Karnataka 560038, India"'.obs;
   RxBool isLoading = false.obs;
   AppStorage storage = AppStorage();
@@ -55,9 +75,11 @@ class HomeController extends GetxController {
 
 
 
+
+
+
   @override
   void onInit() {
-    debugPrint("hi");
     super.onInit();
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   showAddressSelectionBottomSheet(context: Get.context!);
@@ -75,7 +97,7 @@ class HomeController extends GetxController {
   }
 
 
-  void showAddressSelectionBottomSheet({required BuildContext context}) {
+  void showAddressSelectionBottomSheet({required BuildContext context,}) {
     showModalBottomSheet(
       isDismissible: false,
       context: context,
@@ -111,7 +133,7 @@ class HomeController extends GetxController {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: addressTypeImage.length,
+                  itemCount: addressDescription.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -119,6 +141,11 @@ class HomeController extends GetxController {
                         onTap: () {
                           address.value = addressDescription[index];
                           debugPrint("value ${address.value}");
+                          selectedLocationCoordinates.value =
+                          locationCoordinates[addressHeading[index]];
+                          debugPrint("value ${address.value}");
+                          debugPrint(
+                              "selectedLocationCordinates $selectedLocationCoordinates");
                           Get.back();
                         },
                         child: Container(

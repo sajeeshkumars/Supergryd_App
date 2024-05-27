@@ -8,9 +8,9 @@ import '../size_utils.dart';
 
 
 class AuthenticationDialog extends StatelessWidget {
-  const AuthenticationDialog({super.key, this.documentsUploaded = false});
+  const AuthenticationDialog({super.key, this.authenticated = false});
 
-  final bool documentsUploaded;
+  final bool authenticated;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class AuthenticationDialog extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         color: AppColors.backgroundColor),
-                    width: documentsUploaded ? loaderBackground : Get.width,
+                    width: authenticated ? loaderBackground : Get.width,
                     child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       SpinKitRing(
@@ -32,8 +32,8 @@ class AuthenticationDialog extends StatelessWidget {
                         size: 40,
                         lineWidth: 3,
                       ),
-                      documentsUploaded ? SizedBox() : SizedBox(width: marginTimer),
-                      documentsUploaded
+                      authenticated ? SizedBox() : SizedBox(width: marginTimer),
+                      authenticated
                           ? SizedBox()
                           : const Expanded(
                         child: Text(

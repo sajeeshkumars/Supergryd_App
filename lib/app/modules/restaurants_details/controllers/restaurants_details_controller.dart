@@ -14,7 +14,7 @@ class RestaurantsDetailsController extends GetxController {
   RestaurantDetailsRepository restaurantDetailsRepository =
   Get.put(RestaurantDetailsRepository());
   RxList<Restaurant> restaurantDetails =
-      List<Restaurant>.empty(growable: true).obs;
+      <Restaurant>[].obs;
 
   Future<bool> getRestaurantdetails(
       {required String restaurantId, required bool initial}) async {

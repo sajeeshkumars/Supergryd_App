@@ -2,16 +2,14 @@
 "your_location": "Your Location",
   "hi": "Hi",
   "explore_the_popular_category": "Explore The Popular Categories",
-  "food": "Food",
-  "cabs": "Cabs",
-  "Salon_services": "Salon Services",
-  "home_services": "Home Services",
-  "gifts": "Gifts",
-  "furniture": "Furniture",
-  "courier": "Courier",
-  "grocery": "Grocery",
   "others": "Others",
   "select_your_delivery_location": "Select Your Delivery Location",
   "add_new_address": "Add New Address",
-  "saved_address": "Saved Address"
+  "saved_address": "Saved Address",
+  "no_service_message": "Currently we are not serviceable in your location.\nWe are on a process of increasing our service area.",
+  "notify_service": "We will notify you once we start our service in your area",
+  "Search_in": "Search in",
+  "km": "km",
+  "restaurants": "Restaurants",
+  "dishes": "Dishes"
 }

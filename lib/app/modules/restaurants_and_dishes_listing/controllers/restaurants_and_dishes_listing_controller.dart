@@ -5,6 +5,7 @@ import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/res
 import 'package:mynewpackage/storage/storage.dart';
 
 import '../../../../generated/assets.dart';
+import '../../home/controllers/home_controller.dart';
 import '../data/dish_listing_response.dart';
 import '../data/restaurant_listing_request.dart' as restaurant_request;
 import '../data/restaurant_listing_response.dart';
@@ -14,12 +15,6 @@ class RestaurantsAndDishesListingController extends GetxController {
 
 
   List restaurantImages = [Assets.imagesImage1,Assets.imagesImage2,Assets.imagesImage3];
-  List nonVegImages = [Assets.imagesChickenBiriyani,Assets.imagesChickenBiriyani,Assets.imagesChickenBiriyani,Assets.imagesChickenBiriyani];
-  List vegImages = [Assets.imagesMasalaDosa,Assets.imagesMasalaDosa,Assets.imagesMasalaDosa,Assets.imagesMasalaDosa];
-  List eggImages = [Assets.imagesEggChilly,Assets.imagesEggChilly,Assets.imagesEggChilly,Assets.imagesEggChilly];
-  List vegNames = ["Panner Biriyani","veg Biriyani","Vegitable Noodles","Masala Dosa"];
-  List eggNames = ['Egg fried Rice',"Egg fried Rice","Egg fried Rice","Egg fried Rice"];
-  List nonVegNames = ['Chicken Biriyani',"Chicken Biriyani","Chicken Biriyani","Chicken Biriyani"];
   List ratings = ['4.1(10k+)','4.5(7k+)'];
   List filters = ["Veg","Egg","Non Veg"];
   List filterImages = [Assets.iconsVeg,Assets.iconsEgg,Assets.iconsNonVeg];
@@ -38,6 +33,8 @@ class RestaurantsAndDishesListingController extends GetxController {
   RxBool isDishesLoadingMore = false.obs;
   bool isHaveRestaurantData = false;
   bool isHaveDishes = false;
+  final HomeController homeController = Get.find();
+
 
 
 
@@ -48,7 +45,10 @@ class RestaurantsAndDishesListingController extends GetxController {
 
   @override
   void onInit() {
-    getRestaurants(initial: true);
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getRestaurants(initial: true);
+
+    // });
     super.onInit();
   }
 
@@ -72,8 +72,14 @@ class RestaurantsAndDishesListingController extends GetxController {
       restaurantList.clear();
     }
 
-    restaurant_request.RestaurantListingRequest request = restaurant_request.RestaurantListingRequest(
-      location:restaurant_request.Location(lat: 13.094478,long: 77.720049),
+    restaurant_request.RestaurantListingRequest request =
+    restaurant_request.RestaurantListingRequest(
+        location: homeController.selectedLocationCoordinates.isEmpty
+            ? restaurant_request.Location(lat: 13.094478, long: 77.720049)
+            : restaurant_request.Location(
+          lat: homeController.selectedLocationCoordinates['lat'],
+          long: homeController.selectedLocationCoordinates['long'],
+        ),
       page: page,
       limit: limit,
       userId: appStorage.getUserId(),
@@ -85,6 +91,7 @@ class RestaurantsAndDishesListingController extends GetxController {
 
         if (initial) {
           restaurantList.value = value.data?.restaurantData ?? [];
+          debugPrint("restaurant list ${restaurantList.length}");
           isLoading(false);
         } else {
           restaurantList.addAll(value.data?.restaurantData ?? []);

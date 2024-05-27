@@ -1,15 +1,11 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/core/utility.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/views/restaurants_details_view.dart';
-import 'package:mynewpackage/widgets/loading_view.dart';
 
 import '../../../../app_colors.dart';
 import '../../../../generated/assets.dart';
@@ -18,13 +14,14 @@ import '../../restaurants_details/data/get_restaurant_details_response.dart';
 import '../controllers/restaurants_and_dishes_listing_controller.dart';
 import '../data/dish_listing_response.dart';
 
-class RestaurantsAndDishesListingView
-    extends StatelessWidget {
+class RestaurantsAndDishesListingView extends StatelessWidget {
   RestaurantsAndDishesListingView({super.key});
 
   final HomeController homeController = Get.put(HomeController());
 
-  final RestaurantsAndDishesListingController controller = Get.put(RestaurantsAndDishesListingController());
+  final RestaurantsAndDishesListingController controller =
+      Get.put(RestaurantsAndDishesListingController());
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -35,7 +32,7 @@ class RestaurantsAndDishesListingView
           backgroundColor: AppColors.backgroundColor,
           title: InkWell(
             onTap: () {
-              homeController.showAddressSelectionBottomSheet(context: context);
+             homeController.showAddressSelectionBottomSheet(context: context);
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,107 +88,148 @@ class RestaurantsAndDishesListingView
             ],
           ),
         ),
-        body: LoadingView(
-          isAsyncCall: controller.isLoading,
-          showBackGroundData: false,
-          authenticated: true.obs,
-          child: TabBarView(
-            children: <Widget>[
-              NotificationListener<ScrollNotification>(
-                  onNotification: controller.onScrollOngoing,
-                  child: RestaurantList(controller: controller)),
-              Column(
-                children: [
-                  Row(
-                    children: List.generate(
-                      controller.filterImages.length,
-                      (index) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          splashFactory: NoSplash.splashFactory,
-                          onTap: () {
-                            controller.selectedCategory.value = index;
-                          },
-                          child: Obx(() {
-                            return Container(
-                              height: 35,
-                              width: 85,
-                              decoration: BoxDecoration(
-                                color: controller.selectedCategory.value == index
-                                    ? AppColors.primaryColor
-                                    : AppColors.white,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(40),
-                                ),
-                                border: Border.all(
-                                  color: AppColors.borderColor,
-                                  style: BorderStyle.solid,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    controller.selectedCategory.value == index
-                                        ? CommonImageView(
-                                            svgPath:
-                                                "packages/mynewpackage/${controller.filterImages[index]}",
-                                            color: AppColors.white,
-                                          )
-                                        : CommonImageView(
-                                            svgPath:
-                                                "packages/mynewpackage/${controller.filterImages[index]}"),
-                                    Text(
-                                      controller.filters[index],
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color:
-                                              controller.selectedCategory.value ==
-                                                      index
-                                                  ? AppColors.white
-                                                  : Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                        ),
+        body: Obx(() {
+          return controller.isLoading.value
+              ?  Center(child: CircularProgressIndicator(color: AppColors.primaryColor,))
+              : controller.restaurantList.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CommonImageView(
+                            svgPath:
+                                'packages/mynewpackage/lib/assets/icons/not_available_at_location.svg',
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            "Hi Sajeesh,",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 20),
+                          ),
+                          const Text(
+                            "Currently we are not serviceable in your location.\nWe are on a process of increasing our service area.",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 14),
+                          ),
+                          const Text(
+                            "We will notify you once we start our service in your area",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                color: Color(0xff2C9649)),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                  NotificationListener<ScrollNotification>(
-                    onNotification: controller.onScrollDishes,
-                    child: Obx(
-                       () {
-                        return controller.isLoadingDishes.value ? CircularProgressIndicator(): Expanded(
-                          child: ListView.builder(
-                            itemCount: controller.dishList.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                  onTap: () {},
-                                  child:  DishCard(
-                                    dish: controller.dishList[index],
-                                    index: index, isDishes: true,
-
+                    )
+                  : TabBarView(
+                      children: <Widget>[
+                        NotificationListener<ScrollNotification>(
+                            onNotification: controller.onScrollOngoing,
+                            child: RestaurantList(controller: controller)),
+                        Column(
+                          children: [
+                            Row(
+                              children: List.generate(
+                                controller.filterImages.length,
+                                (index) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: InkWell(
+                                    splashFactory: NoSplash.splashFactory,
+                                    onTap: () {
+                                      controller.selectedCategory.value = index;
+                                    },
+                                    child: Obx(() {
+                                      return Container(
+                                        height: 35,
+                                        width: 85,
+                                        decoration: BoxDecoration(
+                                          color: controller
+                                                      .selectedCategory.value ==
+                                                  index
+                                              ? AppColors.primaryColor
+                                              : AppColors.white,
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(40),
+                                          ),
+                                          border: Border.all(
+                                            color: AppColors.borderColor,
+                                            style: BorderStyle.solid,
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5, vertical: 5),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              controller.selectedCategory
+                                                          .value ==
+                                                      index
+                                                  ? CommonImageView(
+                                                      svgPath:
+                                                          "packages/mynewpackage/${controller.filterImages[index]}",
+                                                      color: AppColors.white,
+                                                    )
+                                                  : CommonImageView(
+                                                      svgPath:
+                                                          "packages/mynewpackage/${controller.filterImages[index]}"),
+                                              Text(
+                                                controller.filters[index],
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: controller
+                                                                .selectedCategory
+                                                                .value ==
+                                                            index
+                                                        ? AppColors.white
+                                                        : Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }),
                                   ),
                                 ),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+                              ),
+                            ),
+                            NotificationListener<ScrollNotification>(
+                              onNotification: controller.onScrollDishes,
+                              child: Obx(() {
+                                return controller.isLoadingDishes.value
+                                    ?  CircularProgressIndicator(color: AppColors.primaryColor)
+                                    : Expanded(
+                                        child: ListView.builder(
+                                          itemCount: controller.dishList.length,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: InkWell(
+                                                onTap: () {},
+                                                child: DishCard(
+                                                  dish: controller
+                                                      .dishList[index],
+                                                  index: index,
+                                                  isDishes: true,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      );
+                              }),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+        }),
       ),
     );
   }
@@ -199,15 +237,17 @@ class RestaurantsAndDishesListingView
 
 class DishCard extends StatefulWidget {
   final int index;
-   DishCard({
-    super.key,
-    required this.index,  this.dish,this.restaurant,required this.isDishes
-  });
 
-  Dishes? dish;
-  Restaurant? restaurant;
-  bool isDishes;
+  const DishCard(
+      {super.key,
+      required this.index,
+      this.dish,
+      this.restaurant,
+      required this.isDishes});
 
+  final Dishes? dish;
+  final Restaurant? restaurant;
+  final bool isDishes;
 
   @override
   State<DishCard> createState() => _DishCardState();
@@ -250,7 +290,10 @@ class _DishCardState extends State<DishCard> {
                     width: 120,
                     child: CommonImageView(
                       fit: BoxFit.fitHeight,
-                      url: widget.isDishes ? widget.dish?.storeProducts?.images?.imageMobile : widget.restaurant?.storeProducts?.images?.imageMobile,
+                      url: widget.isDishes
+                          ? widget.dish?.storeProducts?.images?.imageMobile
+                          : widget
+                              .restaurant?.storeProducts?.images?.imageMobile,
                     ),
                   ),
                 ),
@@ -260,18 +303,21 @@ class _DishCardState extends State<DishCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Text(
-                        (   widget.isDishes ? widget.dish?.storeProducts?.productCategories?.name :
-
-                        widget.restaurant?.storeProducts?.productCategories?.name ) ?? "",
+                        Text(
+                          (widget.isDishes
+                                  ? widget.dish?.storeProducts
+                                      ?.name
+                                  : widget.restaurant?.storeProducts?.name) ??
+                              "",
                           style: const TextStyle(
                             fontSize: 16,
-                            overflow: TextOverflow.ellipsis,
+                            // overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(height: 5),
-                         Text("₹${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.storeProducts?.price)}"),
+                        Text(
+                            "₹${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.storeProducts?.price)}"),
                         Chip(
                           label: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -280,10 +326,9 @@ class _DishCardState extends State<DishCard> {
                                 svgPath:
                                     "packages/mynewpackage/${Assets.iconsStar}",
                               ),
-                               Text(
-                                "${(widget.isDishes ? widget.dish?.storeProducts?.rating :widget.restaurant?.storeProducts?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating:
-                                widget.restaurant?.storeProducts?.productDetails?.countOfRating)})",
-                                style: TextStyle(
+                              Text(
+                                "${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.storeProducts?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating : widget.restaurant?.storeProducts?.productDetails?.countOfRating)})",
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12,
                                 ),
@@ -305,31 +350,26 @@ class _DishCardState extends State<DishCard> {
                             const SizedBox(width: 5),
                             Expanded(
                               child: Text(
-                                "${(widget.isDishes ? widget.dish?.storeProducts?.name : widget.restaurant?.storeProducts?.name)}",
+                                "${(widget.isDishes ? widget.dish?.branchName : widget.restaurant?.branchName)}",
                                 style: TextStyle(
-                                  overflow: TextOverflow.ellipsis,
+                                    overflow: TextOverflow.ellipsis,
                                     color: AppColors.textLightColor),
                               ),
                             ),
-                            SizedBox(width: 3,),
+                            const SizedBox(
+                              width: 3,
+                            ),
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 if (_count == 0)
                                   InkWell(
-                                    onTap:_incrementCount,
+                                    onTap: _incrementCount,
                                     child: CommonImageView(
                                       svgPath:
-                                      "packages/mynewpackage/${Assets.iconsAddIcon}",
+                                          "packages/mynewpackage/${Assets.iconsAddIcon}",
                                     ),
                                   ),
-                                // IconButton(
-                                //   icon: CommonImageView(
-                                //     svgPath:
-                                //     "packages/mynewpackage/${Assets.iconsAddIcon}",
-                                //   ),
-                                //   onPressed: _incrementCount,
-                                // ),
                                 if (_count > 0) ...[
                                   Container(
                                     decoration: BoxDecoration(
@@ -374,13 +414,8 @@ class _DishCardState extends State<DishCard> {
                                 ],
                               ],
                             ),
-
-
                           ],
-
                         ),
-
-
                       ],
                     ),
                   ),
@@ -411,7 +446,9 @@ class RestaurantList extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
             onTap: () {
-              Get.to( RestaurantsDetailsView(restaurantId: controller.restaurantList[index].id.toString(),));
+              Get.to(RestaurantsDetailsView(
+                restaurantId: controller.restaurantList[index].id.toString(),
+              ));
             },
             child: Container(
                 color: AppColors.backgroundColor,
@@ -423,69 +460,80 @@ class RestaurantList extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child:CommonImageView(
-                                      imagePath:
-                                          "packages/mynewpackage/${controller.restaurantImages[index]}",
+                        child:
+                        // CommonImageView(
+                        //   height: 175,
+                        //   width: 400,
+                        //   url:
+                        //       controller.restaurantList[index].images?.first.image,
+                        // ),
+                        controller.restaurantList[index].offers?.first.offer != ""
+                        ? Stack(children: [
+                            controller.restaurantList[index].isAvailable == 2
+                                ? ImageFiltered(
+                                    imageFilter: ImageFilter.blur(
+                                        sigmaX: 4.0, sigmaY: 4.0),
+                                    child: CommonImageView(
+                                      url: controller.restaurantList[index].images?.first.image,
+                                      fit: BoxFit.cover,
+                                      height: 175,
+                                        width: 400,
                                     ),
-                        // controller.hasOffer[index].value == true
-                            // ? Stack(children: [
-                            //     controller.isUnavailable[index].value == true
-                            //         ? ImageFiltered(
-                            //             imageFilter: ImageFilter.blur(
-                            //                 sigmaX: 4.0, sigmaY: 4.0),
-                            //             child: Image.asset(
-                            //               "packages/mynewpackage/${controller.restaurantImages[index]}",
-                            //               fit: BoxFit.cover,
-                            //             ),
-                            //           )
-                            //         : CommonImageView(
-                            //             imagePath:
-                            //                 "packages/mynewpackage/${controller.restaurantImages[index]}",
-                            //           ),
-                            //     controller.isUnavailable[index].value == false
-                            //         ? CommonImageView(
-                            //             svgPath:
-                            //                 "packages/mynewpackage/${Assets.iconsOffer}",
-                            //           )
-                            //         : ImageFiltered(
-                            //             imageFilter: ImageFilter.blur(
-                            //                 sigmaX: 4.0, sigmaY: 4.0),
-                            //             child: SvgPicture.asset(
-                            //               "packages/mynewpackage/${Assets.iconsOffer}",
-                            //               fit: BoxFit.cover,
-                            //             ),
-                            //           ),
-                            //     Padding(
-                            //       padding: const EdgeInsets.all(5.0),
-                            //       child: Text(
-                            //         "30% OFF",
-                            //         style: TextStyle(
-                            //             fontSize: 16,
-                            //             fontWeight: FontWeight.w600,
-                            //             color: AppColors.white),
-                            //       ),
-                            //     ),
-                            //     Positioned(
-                            //         top: 30,
-                            //         left: 5,
-                            //         child: Text("Upto ₹75",
-                            //             style: TextStyle(
-                            //                 fontSize: 14,
-                            //                 color: AppColors.white))),
-                            //   ])
-                            // : controller.isUnavailable[index].value == false
-                            //     ? CommonImageView(
-                            //         imagePath:
-                            //             "packages/mynewpackage/${controller.restaurantImages[index]}")
-                            //     :
-                    // ImageFiltered(
-                    //                 imageFilter: ImageFilter.blur(
-                    //                     sigmaX: 4.0, sigmaY: 4.0),
-                    //                 child: Image.asset(
-                    //                   "packages/mynewpackage/${controller.restaurantImages[index]}",
-                    //                   fit: BoxFit.cover,
-                    //                 ),
-                    //               ),
+                                  )
+                                : CommonImageView(
+                                    url:
+                                    controller.restaurantList[index].images?.first.image,
+                              height: 175,
+                              width: 400,
+                                  ),
+                          controller.restaurantList[index].isAvailable == 1
+                                ? CommonImageView(
+                                    svgPath:
+                                        "packages/mynewpackage/${Assets.iconsOffer}",
+                                  )
+                                : ImageFiltered(
+                                    imageFilter: ImageFilter.blur(
+                                        sigmaX: 4.0, sigmaY: 4.0),
+                                    child: SvgPicture.asset(
+                                      "packages/mynewpackage/${Assets.iconsOffer}",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text(
+                                controller.restaurantList[index].offers?.first.offer ?? "",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.white),
+                              ),
+                            ),
+                            Positioned(
+                                top: 30,
+                                left: 5,
+                                child: Text("Upto ₹75",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: AppColors.white))),
+                          ])
+                        : controller.restaurantList[index].isAvailable == 1
+                            ? CommonImageView(
+                            height: 175,
+                            width: 400,
+                                url:
+                                controller.restaurantList[index].images?.first.image)
+                            :
+                        ImageFiltered(
+                                        imageFilter: ImageFilter.blur(
+                                            sigmaX: 4.0, sigmaY: 4.0),
+                                        child: CommonImageView(
+                                          height: 175,
+                                          width: 400,
+                                        url:   controller.restaurantList[index].images?.first.image,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -539,24 +587,24 @@ class RestaurantList extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 5),
                         child: Text(
-                          "${controller.descriptions[index]}",
+                          controller.restaurantList[index].images?.first.description ?? "",
                           style: TextStyle(
                               fontSize: 14, color: AppColors.textColor),
                         ),
                       ),
-                      // controller.isUnavailable[index].value == true
-                      //     ? const Padding(
-                      //         padding: EdgeInsets.symmetric(
-                      //             horizontal: 15, vertical: 5),
-                      //         child: Text(
-                      //           "Currently Unavailable",
-                      //           style: TextStyle(
-                      //               fontSize: 14,
-                      //               color: Colors.red,
-                      //               fontWeight: FontWeight.w500),
-                      //         ),
-                      //       )
-                      //     : const SizedBox.shrink()
+                      controller.restaurantList[index].isAvailable == 1
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 5),
+                              child: Text(
+                                "Currently Unavailable",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            )
+                          : const SizedBox.shrink()
                     ],
                   ),
                 )),

@@ -26,7 +26,7 @@ class LoadingView extends StatelessWidget {
         isLoading: isAsyncCall.value,
         opacity: isAsyncCall.value ? 0.5 : 0.1,
         progressIndicator: AuthenticationDialog(
-          documentsUploaded: authenticated.value,
+          authenticated: authenticated.value,
         ),
         child: showBackGroundData
             ? child

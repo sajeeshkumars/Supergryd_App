@@ -1,17 +1,14 @@
 import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
 import 'package:mynewpackage/app_colors.dart';
+import 'package:mynewpackage/widgets/common_Image_view.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -28,7 +25,8 @@ class RestaurantsDetailsView extends StatefulWidget {
 
 class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
   RestaurantsDetailsController restaurantsDetailsController =
-  Get.put(RestaurantsDetailsController());
+      Get.put(RestaurantsDetailsController());
+
   @override
   void initState() {
     restaurantsDetailsController.getRestaurantdetails(
@@ -45,7 +43,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
         title: Obx(() {
           return Text(
             restaurantsDetailsController
-                .restaurantDetails.firstOrNull?.branchName ??
+                    .restaurantDetails.firstOrNull?.branchName ??
                 '',
             style: const TextStyle(fontWeight: FontWeight.w500),
           );
@@ -61,55 +59,50 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
             return restaurantsDetailsController.onScrollOngoing(scrollInfo,
                 restaurantId: widget.restaurantId);
           },
-          child: Obx(() {
-            return restaurantsDetailsController.restaurantDetails.isEmpty
-                ? const Center(
-              child: Text("No data found!"),
-            )
-                : SingleChildScrollView(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      const BannerAndRatingWidget(),
-                      const SizedBox(
-                        height: 20,
+          child:  SingleChildScrollView(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            const BannerAndRatingWidget(),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                             SearchWidget(controller: restaurantsDetailsController,),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const ChipWidget(),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Obx(() {
+                              return ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return DishCard(
+                                    restaurant: restaurantsDetailsController
+                                        .restaurantDetails[index],
+                                    index: index,
+                                    isDishes: false,
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox(
+                                    height: 10,
+                                  );
+                                },
+                                itemCount: restaurantsDetailsController
+                                    .restaurantDetails.length,
+                              );
+                            })
+                          ],
+                        ),
                       ),
-                      const SearchWidget(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const ChipWidget(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Obx(() {
-                        return ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return DishCard(
-                              restaurant:restaurantsDetailsController
-                                  .restaurantDetails[index] ,
-                              index: index, isDishes: false,
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return const SizedBox(
-                              height: 10,
-                            );
-                          },
-                          itemCount: restaurantsDetailsController
-                              .restaurantDetails.length,
-                        );
-                      })
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }),
+                    ),
+                  )
         ),
       ),
     );
@@ -164,10 +157,11 @@ class _ChipWidgetState extends State<ChipWidget> {
               label: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SvgPicture.asset(
-                    chipImages[index],
+                  CommonImageView(
+                    svgPath:chipImages[index],
                     color: selectedIndex == index ? Colors.white : null,
                   ),
+
                   const SizedBox(
                     width: 5,
                   ),
@@ -177,13 +171,13 @@ class _ChipWidgetState extends State<ChipWidget> {
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color:
-                      selectedIndex == index ? Colors.white : Colors.black,
+                          selectedIndex == index ? Colors.white : Colors.black,
                     ),
                   ),
                 ],
               ),
               backgroundColor:
-              selectedIndex == index ? AppColors.primaryColor : null,
+                  selectedIndex == index ? AppColors.primaryColor : null,
             ),
           );
         },
@@ -199,7 +193,9 @@ class _ChipWidgetState extends State<ChipWidget> {
 }
 
 class SearchWidget extends StatefulWidget {
-  const SearchWidget({super.key});
+  const SearchWidget({super.key, required this.controller});
+
+  final RestaurantsDetailsController controller;
 
   @override
   SearchWidgetState createState() => SearchWidgetState();
@@ -239,8 +235,8 @@ class SearchWidgetState extends State<SearchWidget> {
     searchController.text = _speechToText.isListening
         ? _lastWords
         : _speechEnabled
-        ? 'Tap the microphone to start listening...'
-        : 'Speech not available';
+            ? 'Tap the microphone to start listening...'
+            : 'Speech not available';
     setState(() {
       micSize = 60.0;
     });
@@ -281,7 +277,8 @@ class SearchWidgetState extends State<SearchWidget> {
             child: TextFormField(
               controller: searchController,
               decoration: InputDecoration(
-                hintText: "Search in Imperio Restaurant",
+                hintText: "Search in ${ widget.controller
+                    .restaurantDetails.firstOrNull?.branchName}",
                 hintStyle: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
@@ -341,13 +338,13 @@ class BannerCarousal extends StatefulWidget {
 
 class _BannerCarousalState extends State<BannerCarousal> {
   int activeIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-          decoration: BoxDecoration(
-               borderRadius: BorderRadius.circular(25)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
           child: CarouselSlider(
             options: CarouselOptions(
               autoPlay: true,
@@ -414,9 +411,9 @@ class BannerAndRatingWidget extends StatelessWidget {
           Column(
             children: [
               const BannerCarousal(),
-               Padding(
-                padding:
-                const EdgeInsets.only(left: 120, right: 10, top: 10, bottom: 15),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 120, right: 10, top: 10, bottom: 15),
                 child: Column(
                   children: [
                     const Text(
@@ -432,7 +429,7 @@ class BannerAndRatingWidget extends StatelessWidget {
                         Chip(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(80.0),
-                            side: BorderSide(color: Colors.grey),
+                            side: const BorderSide(color: Colors.grey),
                           ),
                           label: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -469,14 +466,13 @@ class BannerAndRatingWidget extends StatelessWidget {
                   ],
                 ),
               ),
-
             ],
           ),
           Positioned(
             top: 160,
             left: 10,
             child: Image.asset(
-              width: 100,
+                width: 100,
                 "packages/mynewpackage/lib/assets/images/restaurant-logo.png"),
           ),
         ],

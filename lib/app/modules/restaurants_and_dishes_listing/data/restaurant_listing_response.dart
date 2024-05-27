@@ -1,7 +1,7 @@
 import 'dart:convert';
 /// status : 200
 /// message : "Data retrieve successfully."
-/// data : {"totalCount":3,"restaurantData":[{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-22T10:40:00.815Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.815Z","distanceInKilometer":8.790125931241016},{"_id":"6641acefe25729974b426877","store_id":5,"branch_name":"BLR Airport","created":"2024-05-22T10:40:00.833Z","location":{"type":"Point","coordinates":[77.7069,13.1989]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"BLR Airport","locality_name":"BLR Airport","society_name":"BLR Airport","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.833Z","distanceInKilometer":11.711200728895957}]}
+/// data : {"totalCount":3,"restaurantData":[{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-22T10:40:00.815Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.815Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"distanceInKilometer":8.790125931241016},{"_id":"6641acefe25729974b426877","store_id":5,"branch_name":"BLR Airport","created":"2024-05-22T10:40:00.833Z","location":{"type":"Point","coordinates":[77.7069,13.1989]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"BLR Airport","locality_name":"BLR Airport","society_name":"BLR Airport","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.833Z","offers":[{"offer":"30 % off."}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":5,"total_rating":20,"distanceInKilometer":11.711200728895957}]}
 
 RestaurantListingResponse restaurantListingResponseFromJson(String str) => RestaurantListingResponse.fromJson(json.decode(str));
 String restaurantListingResponseToJson(RestaurantListingResponse data) => json.encode(data.toJson());
@@ -47,7 +47,7 @@ RestaurantListingResponse copyWith({  num? status,
 }
 
 /// totalCount : 3
-/// restaurantData : [{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-22T10:40:00.815Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.815Z","distanceInKilometer":8.790125931241016},{"_id":"6641acefe25729974b426877","store_id":5,"branch_name":"BLR Airport","created":"2024-05-22T10:40:00.833Z","location":{"type":"Point","coordinates":[77.7069,13.1989]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"BLR Airport","locality_name":"BLR Airport","society_name":"BLR Airport","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.833Z","distanceInKilometer":11.711200728895957}]
+/// restaurantData : [{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-22T10:40:00.815Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.815Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"distanceInKilometer":8.790125931241016},{"_id":"6641acefe25729974b426877","store_id":5,"branch_name":"BLR Airport","created":"2024-05-22T10:40:00.833Z","location":{"type":"Point","coordinates":[77.7069,13.1989]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"BLR Airport","locality_name":"BLR Airport","society_name":"BLR Airport","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.833Z","offers":[{"offer":"30 % off."}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":5,"total_rating":20,"distanceInKilometer":11.711200728895957}]
 
 RestaurantListingResult dataFromJson(String str) => RestaurantListingResult.fromJson(json.decode(str));
 String dataToJson(RestaurantListingResult data) => json.encode(data.toJson());
@@ -98,6 +98,11 @@ RestaurantListingResult copyWith({  num? totalCount,
 /// status : false
 /// store_address : "Rajarajeshwari Nagar"
 /// updated : "2024-05-22T10:40:00.815Z"
+/// offers : [{"offer":""}]
+/// is_available : 1
+/// images : [{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}]
+/// rating : 3
+/// total_rating : 23
 /// distanceInKilometer : 8.790125931241016
 
 RestaurantData restaurantDataFromJson(String str) => RestaurantData.fromJson(json.decode(str));
@@ -113,6 +118,11 @@ class RestaurantData {
       bool? status, 
       String? storeAddress, 
       String? updated, 
+      List<Offers>? offers, 
+      num? isAvailable, 
+      List<Images>? images, 
+      num? rating, 
+      num? totalRating, 
       num? distanceInKilometer,}){
     _id = id;
     _storeId = storeId;
@@ -123,6 +133,11 @@ class RestaurantData {
     _status = status;
     _storeAddress = storeAddress;
     _updated = updated;
+    _offers = offers;
+    _isAvailable = isAvailable;
+    _images = images;
+    _rating = rating;
+    _totalRating = totalRating;
     _distanceInKilometer = distanceInKilometer;
 }
 
@@ -141,6 +156,21 @@ class RestaurantData {
     _status = json['status'];
     _storeAddress = json['store_address'];
     _updated = json['updated'];
+    if (json['offers'] != null) {
+      _offers = [];
+      json['offers'].forEach((v) {
+        _offers?.add(Offers.fromJson(v));
+      });
+    }
+    _isAvailable = json['is_available'];
+    if (json['images'] != null) {
+      _images = [];
+      json['images'].forEach((v) {
+        _images?.add(Images.fromJson(v));
+      });
+    }
+    _rating = json['rating'];
+    _totalRating = json['total_rating'];
     _distanceInKilometer = json['distanceInKilometer'];
   }
   String? _id;
@@ -152,6 +182,11 @@ class RestaurantData {
   bool? _status;
   String? _storeAddress;
   String? _updated;
+  List<Offers>? _offers;
+  num? _isAvailable;
+  List<Images>? _images;
+  num? _rating;
+  num? _totalRating;
   num? _distanceInKilometer;
 RestaurantData copyWith({  String? id,
   num? storeId,
@@ -162,6 +197,11 @@ RestaurantData copyWith({  String? id,
   bool? status,
   String? storeAddress,
   String? updated,
+  List<Offers>? offers,
+  num? isAvailable,
+  List<Images>? images,
+  num? rating,
+  num? totalRating,
   num? distanceInKilometer,
 }) => RestaurantData(  id: id ?? _id,
   storeId: storeId ?? _storeId,
@@ -172,6 +212,11 @@ RestaurantData copyWith({  String? id,
   status: status ?? _status,
   storeAddress: storeAddress ?? _storeAddress,
   updated: updated ?? _updated,
+  offers: offers ?? _offers,
+  isAvailable: isAvailable ?? _isAvailable,
+  images: images ?? _images,
+  rating: rating ?? _rating,
+  totalRating: totalRating ?? _totalRating,
   distanceInKilometer: distanceInKilometer ?? _distanceInKilometer,
 );
   String? get id => _id;
@@ -183,6 +228,11 @@ RestaurantData copyWith({  String? id,
   bool? get status => _status;
   String? get storeAddress => _storeAddress;
   String? get updated => _updated;
+  List<Offers>? get offers => _offers;
+  num? get isAvailable => _isAvailable;
+  List<Images>? get images => _images;
+  num? get rating => _rating;
+  num? get totalRating => _totalRating;
   num? get distanceInKilometer => _distanceInKilometer;
 
   Map<String, dynamic> toJson() {
@@ -200,7 +250,79 @@ RestaurantData copyWith({  String? id,
     map['status'] = _status;
     map['store_address'] = _storeAddress;
     map['updated'] = _updated;
+    if (_offers != null) {
+      map['offers'] = _offers?.map((v) => v.toJson()).toList();
+    }
+    map['is_available'] = _isAvailable;
+    if (_images != null) {
+      map['images'] = _images?.map((v) => v.toJson()).toList();
+    }
+    map['rating'] = _rating;
+    map['total_rating'] = _totalRating;
     map['distanceInKilometer'] = _distanceInKilometer;
+    return map;
+  }
+
+}
+
+/// image : "https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg"
+/// description : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"
+
+Images imagesFromJson(String str) => Images.fromJson(json.decode(str));
+String imagesToJson(Images data) => json.encode(data.toJson());
+class Images {
+  Images({
+      String? image, 
+      String? description,}){
+    _image = image;
+    _description = description;
+}
+
+  Images.fromJson(dynamic json) {
+    _image = json['image'];
+    _description = json['description'];
+  }
+  String? _image;
+  String? _description;
+Images copyWith({  String? image,
+  String? description,
+}) => Images(  image: image ?? _image,
+  description: description ?? _description,
+);
+  String? get image => _image;
+  String? get description => _description;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['image'] = _image;
+    map['description'] = _description;
+    return map;
+  }
+
+}
+
+/// offer : ""
+
+Offers offersFromJson(String str) => Offers.fromJson(json.decode(str));
+String offersToJson(Offers data) => json.encode(data.toJson());
+class Offers {
+  Offers({
+      String? offer,}){
+    _offer = offer;
+}
+
+  Offers.fromJson(dynamic json) {
+    _offer = json['offer'];
+  }
+  String? _offer;
+Offers copyWith({  String? offer,
+}) => Offers(  offer: offer ?? _offer,
+);
+  String? get offer => _offer;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['offer'] = _offer;
     return map;
   }
 

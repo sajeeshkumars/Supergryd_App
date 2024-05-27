@@ -96,29 +96,36 @@ Dishes dishesFromJson(String str) => Dishes.fromJson(json.decode(str));
 String dishesToJson(Dishes data) => json.encode(data.toJson());
 class Dishes {
   Dishes({
-      String? id, 
+      String? id,
+    String? branchName,
       StoreProducts? storeProducts,}){
     _id = id;
+    _branchName = branchName;
     _storeProducts = storeProducts;
 }
 
   Dishes.fromJson(dynamic json) {
     _id = json['_id'];
+    _branchName = json['branch_name'];
     _storeProducts = json['storeProducts'] != null ? StoreProducts.fromJson(json['storeProducts']) : null;
   }
   String? _id;
+  String? _branchName;
   StoreProducts? _storeProducts;
 Dishes copyWith({  String? id,
   StoreProducts? storeProducts,
 }) => Dishes(  id: id ?? _id,
+  branchName: branchName ?? _branchName,
   storeProducts: storeProducts ?? _storeProducts,
 );
   String? get id => _id;
+  String? get branchName => _branchName;
   StoreProducts? get storeProducts => _storeProducts;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = _id;
+    map['branch_name'] = _branchName;
     if (_storeProducts != null) {
       map['storeProducts'] = _storeProducts?.toJson();
     }

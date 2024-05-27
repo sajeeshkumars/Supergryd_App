@@ -67,10 +67,11 @@ class ApiService extends GetConnect implements GetxService {
             //  throw Exception("Something Went Wrong");
             return await refreshTokenApi(url, params, method);
           }
-          /*else if (response.statusCode == 403) {
-            showExpiryDialog();
+          else if (response.statusCode == 403) {
+            return await refreshTokenApi(url, params, method);
+
             throw Exception("Something Went Wrong");
-          }*/
+          }
           else if (response.statusCode == 500) {
             throw Exception("Server Error");
           } else {
@@ -112,9 +113,7 @@ class ApiService extends GetConnect implements GetxService {
       debugPrint('refreshTokenStatusCode :${res.statusCode}');
     } catch (e) {
       debugPrint('refreshTokenError');
-      return showingExpiryDialog
-          ? Response()
-          : Response(
+      return  Response(
         body: {
           'status': false,
           'message': "Server Error"

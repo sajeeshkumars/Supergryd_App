@@ -36,6 +36,7 @@ class Assets {
   static const String iconsMenuIcon = 'lib/assets/icons/menu-icon.svg';
   static const String iconsMicIcon = 'lib/assets/icons/mic-icon.svg';
   static const String iconsNonVeg = 'lib/assets/icons/non-veg.svg';
+  static const String iconsNotAvailableAtLocation = 'lib/assets/icons/not_available_at_location.svg';
   static const String iconsOffer = 'lib/assets/icons/offer.svg';
   static const String iconsOffice = 'lib/assets/icons/office.svg';
   static const String iconsOthers = 'lib/assets/icons/others.svg';
