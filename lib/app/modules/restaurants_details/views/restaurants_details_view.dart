@@ -14,10 +14,13 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
+import '../../../core/utility.dart';
+
 class RestaurantsDetailsView extends StatefulWidget {
-  const RestaurantsDetailsView({super.key, required this.restaurantId});
+  const RestaurantsDetailsView({super.key, required this.restaurantId, required this.distance});
 
   final String restaurantId;
+  final num distance;
 
   @override
   State<RestaurantsDetailsView> createState() => _RestaurantsDetailsViewState();
@@ -65,7 +68,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
                           children: [
-                            const BannerAndRatingWidget(),
+                             BannerAndRatingWidget(controller: restaurantsDetailsController, distance: widget.distance,),
                             const SizedBox(
                               height: 20,
                             ),
@@ -330,7 +333,9 @@ class SearchWidgetState extends State<SearchWidget> {
 }
 
 class BannerCarousal extends StatefulWidget {
-  const BannerCarousal({super.key});
+  const BannerCarousal({super.key,required this.controller});
+
+  final RestaurantsDetailsController controller;
 
   @override
   State<BannerCarousal> createState() => _BannerCarousalState();
@@ -362,8 +367,9 @@ class _BannerCarousalState extends State<BannerCarousal> {
                 builder: (BuildContext context) {
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(25),
-                    child: Image.asset(
-                      "packages/mynewpackage/lib/assets/images/banner.jpg",
+                    child: CommonImageView(
+                      url:
+                      widget.controller.restaurantDetails.first.images?.first.image,
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.3,
                       fit: BoxFit.cover,
@@ -398,8 +404,11 @@ class _BannerCarousalState extends State<BannerCarousal> {
 
 class BannerAndRatingWidget extends StatelessWidget {
   const BannerAndRatingWidget({
-    super.key,
+    super.key,required this.controller, required this.distance
   });
+
+  final RestaurantsDetailsController controller;
+  final num distance;
 
   @override
   Widget build(BuildContext context) {
@@ -410,15 +419,15 @@ class BannerAndRatingWidget extends StatelessWidget {
         children: [
           Column(
             children: [
-              const BannerCarousal(),
+               BannerCarousal(controller: controller,),
               Padding(
                 padding: const EdgeInsets.only(
                     left: 120, right: 10, top: 10, bottom: 15),
                 child: Column(
                   children: [
-                    const Text(
-                      "This popular, unassuming eatery dishes up an array of traditional Indian fare.",
-                      style: TextStyle(
+                     Text(
+                      controller.restaurantDetails.first.images?.first.description ?? "",
+                      style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
                         color: Color.fromRGBO(69, 84, 97, 1),
@@ -439,8 +448,8 @@ class BannerAndRatingWidget extends StatelessWidget {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Text(
-                                "4.1(10k+)",
+                               Text(
+                                "${controller.restaurantDetails.first.rating}(${Utility.countConverter(controller.restaurantDetails.first.totalRating)})",
                                 style: TextStyle(
                                     fontSize: 10, fontWeight: FontWeight.w600),
                               )
@@ -455,9 +464,9 @@ class BannerAndRatingWidget extends StatelessWidget {
                             borderRadius: BorderRadius.circular(80.0),
                             side: const BorderSide(color: Colors.grey),
                           ),
-                          label: const Text(
-                            "1.6km",
-                            style: TextStyle(
+                          label:  Text(
+                            "${distance.toStringAsFixed(1)} km",
+                            style: const TextStyle(
                                 fontSize: 10, fontWeight: FontWeight.w600),
                           ),
                         ),

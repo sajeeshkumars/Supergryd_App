@@ -448,6 +448,7 @@ class RestaurantList extends StatelessWidget {
             onTap: () {
               Get.to(RestaurantsDetailsView(
                 restaurantId: controller.restaurantList[index].id.toString(),
+                distance:controller.restaurantList[index].distanceInKilometer ?? 0
               ));
             },
             child: Container(
@@ -592,7 +593,7 @@ class RestaurantList extends StatelessWidget {
                               fontSize: 14, color: AppColors.textColor),
                         ),
                       ),
-                      controller.restaurantList[index].isAvailable == 1
+                      controller.restaurantList[index].isAvailable == 2
                           ? const Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 5),
