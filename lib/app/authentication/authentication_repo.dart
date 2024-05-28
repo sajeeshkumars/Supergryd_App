@@ -22,7 +22,7 @@ class AuthRepository implements AuthService {
     } catch (e,s) {
       debugPrint(s.toString());
       return AuthenticationResponse(
-          message: "Server Error", status: 401);
+          message: "Server Error", status: 500);
     }
   }
 

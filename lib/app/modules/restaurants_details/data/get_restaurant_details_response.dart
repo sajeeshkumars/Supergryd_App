@@ -1,7 +1,7 @@
 import 'dart:convert';
 /// status : 200
 /// message : "Data retrieve successfully."
-/// data : {"totalcount":2,"restaurant":[{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-22T10:40:00.815Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.815Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"storeProducts":{"_id":"6641ad0fe25729974b42885b","product_id":61,"description_big":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","description_small":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","images":{"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_small_size":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_mobile":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg"},"is_active":1,"is_available":1,"name":"KrPuram-Lazeez Bhuna Murgh Biryani (Dum Chicken Biryani - Serves 1)","price":"99.99","price_without_tax":"99.99","product_details":{"product_video_link":null,"count_of_rating":17295},"rating":4.4,"service_provider_id":"663c9cdaef610e62ce6f4add","service_provider_location_id":"6641acefe25729974b4268a0","product_category_id":"6641ad0e4689a408045dba5b","is_veg":0,"productCategories":{"_id":"6641ad0e4689a408045dba5b","name":"Shahi Biryanis","description":"Shahi Biryanis","background_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","api_cat_id":1,"sp_location_id":"6641acefe25729974b426877"}}},{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-22T10:40:00.815Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.815Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"storeProducts":{"_id":"6641ad10e25729974b4288df","product_id":65,"description_big":"Minced chicken kebabs cooked into soft delicious meatballs served with Minty dip.","description_small":"Minced chicken kebabs cooked into soft delicious meatballs served with Minty dip.","images":{"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg","image_small_size":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg","image_mobile":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg"},"is_active":1,"is_available":1,"name":"KrPuram-Murgh Kefta (Chicken Meatball Kebab)","price":"99.99","price_without_tax":"99.99","product_details":{"product_video_link":null,"count_of_rating":17295},"rating":4.4,"service_provider_id":"663c9cdaef610e62ce6f4add","  service_provider_location_id":"6641acefe25729974b4268a0","product_category_id":"6641ad0e4689a408045dba5c","service_provider_location_id":"6641acefe25729974b4268a0","is_veg":0,"productCategories":{"_id":"6641ad0e4689a408045dba5c","name":"Dastaan-E-Kebab","description":null,"background_image":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","api_cat_id":2,"sp_location_id":"6641acefe25729974b426877"}}}]}
+/// data : {"totalcount":2,"restaurant":[{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-28T04:48:36.282Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-28T04:48:36.282Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"service_provider_id":"663c9cdaef610e62ce6f4add","storeProducts":{"_id":"6641ad0fe25729974b42885b","product_id":61,"description_big":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","description_small":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","images":{"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_small_size":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_mobile":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg"},"is_active":1,"is_available":1,"name":"KrPuram-Lazeez Bhuna Murgh Biryani (Dum Chicken Biryani - Serves 1)","price":"99.99","price_without_tax":"99.99","product_details":{"product_video_link":null,"count_of_rating":17295},"rating":4.4,"service_provider_id":"663c9cdaef610e62ce6f4add","service_provider_location_id":"6641acefe25729974b4268a0","product_category_id":"6641ad0e4689a408045dba5b","is_veg":null,"productCategories":{"_id":"6641ad0e4689a408045dba5b","name":"Shahi Biryanis","description":"Shahi Biryanis","background_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","api_cat_id":1,"sp_location_id":"6641acefe25729974b4268a0"}},"restaurantDetails":[{"_id":"663c9cdaef610e62ce6f4add","name":"Bhrouz Biriyani","email":"info@bhrouzbiriyani.com","status":true,"is_deleted":false,"phone_number":"91989544063342","more_service_provider_details":[{}]}]},{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-28T04:48:36.282Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-28T04:48:36.282Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"service_provider_id":"663c9cdaef610e62ce6f4add","storeProducts":{"_id":"6641ad10e25729974b4288df","product_id":65,"description_big":"Minced chicken kebabs cooked into soft delicious meatballs served with Minty dip.","description_small":"Minced chicken kebabs cooked into soft delicious meatballs served with Minty dip.","images":{"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg","image_small_size":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg","image_mobile":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg"},"is_active":1,"is_available":1,"name":"KrPuram-Murgh Kefta (Chicken Meatball Kebab)","price":"99.99","price_without_tax":"99.99","product_details":{"product_video_link":null,"count_of_rating":17295},"rating":4.4,"service_provider_id":"663c9cdaef610e62ce6f4add","  service_provider_location_id":"6641acefe25729974b4268a0","product_category_id":"6641ad0e4689a408045dba5c","service_provider_location_id":"6641acefe25729974b4268a0","is_veg":null,"productCategories":{"_id":"6641ad0e4689a408045dba5c","name":"Dastaan-E-Kebab","description":null,"background_image":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","api_cat_id":2,"sp_location_id":"6641acefe25729974b4268a0"}},"restaurantDetails":[{"_id":"663c9cdaef610e62ce6f4add","name":"Bhrouz Biriyani","email":"info@bhrouzbiriyani.com","status":true,"is_deleted":false,"phone_number":"91989544063342","more_service_provider_details":[{}]}]}]}
 
 GetRestaurantDetailsResponse getRestaurantDetailsResponseFromJson(String str) => GetRestaurantDetailsResponse.fromJson(json.decode(str));
 String getRestaurantDetailsResponseToJson(GetRestaurantDetailsResponse data) => json.encode(data.toJson());
@@ -47,7 +47,7 @@ GetRestaurantDetailsResponse copyWith({  num? status,
 }
 
 /// totalcount : 2
-/// restaurant : [{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-22T10:40:00.815Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.815Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"storeProducts":{"_id":"6641ad0fe25729974b42885b","product_id":61,"description_big":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","description_small":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","images":{"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_small_size":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_mobile":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg"},"is_active":1,"is_available":1,"name":"KrPuram-Lazeez Bhuna Murgh Biryani (Dum Chicken Biryani - Serves 1)","price":"99.99","price_without_tax":"99.99","product_details":{"product_video_link":null,"count_of_rating":17295},"rating":4.4,"service_provider_id":"663c9cdaef610e62ce6f4add","service_provider_location_id":"6641acefe25729974b4268a0","product_category_id":"6641ad0e4689a408045dba5b","is_veg":0,"productCategories":{"_id":"6641ad0e4689a408045dba5b","name":"Shahi Biryanis","description":"Shahi Biryanis","background_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","api_cat_id":1,"sp_location_id":"6641acefe25729974b426877"}}},{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-22T10:40:00.815Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.815Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"storeProducts":{"_id":"6641ad10e25729974b4288df","product_id":65,"description_big":"Minced chicken kebabs cooked into soft delicious meatballs served with Minty dip.","description_small":"Minced chicken kebabs cooked into soft delicious meatballs served with Minty dip.","images":{"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg","image_small_size":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg","image_mobile":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg"},"is_active":1,"is_available":1,"name":"KrPuram-Murgh Kefta (Chicken Meatball Kebab)","price":"99.99","price_without_tax":"99.99","product_details":{"product_video_link":null,"count_of_rating":17295},"rating":4.4,"service_provider_id":"663c9cdaef610e62ce6f4add","  service_provider_location_id":"6641acefe25729974b4268a0","product_category_id":"6641ad0e4689a408045dba5c","service_provider_location_id":"6641acefe25729974b4268a0","is_veg":0,"productCategories":{"_id":"6641ad0e4689a408045dba5c","name":"Dastaan-E-Kebab","description":null,"background_image":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","api_cat_id":2,"sp_location_id":"6641acefe25729974b426877"}}}]
+/// restaurant : [{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-28T04:48:36.282Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-28T04:48:36.282Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"service_provider_id":"663c9cdaef610e62ce6f4add","storeProducts":{"_id":"6641ad0fe25729974b42885b","product_id":61,"description_big":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","description_small":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","images":{"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_small_size":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_mobile":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg"},"is_active":1,"is_available":1,"name":"KrPuram-Lazeez Bhuna Murgh Biryani (Dum Chicken Biryani - Serves 1)","price":"99.99","price_without_tax":"99.99","product_details":{"product_video_link":null,"count_of_rating":17295},"rating":4.4,"service_provider_id":"663c9cdaef610e62ce6f4add","service_provider_location_id":"6641acefe25729974b4268a0","product_category_id":"6641ad0e4689a408045dba5b","is_veg":null,"productCategories":{"_id":"6641ad0e4689a408045dba5b","name":"Shahi Biryanis","description":"Shahi Biryanis","background_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","api_cat_id":1,"sp_location_id":"6641acefe25729974b4268a0"}},"restaurantDetails":[{"_id":"663c9cdaef610e62ce6f4add","name":"Bhrouz Biriyani","email":"info@bhrouzbiriyani.com","status":true,"is_deleted":false,"phone_number":"91989544063342","more_service_provider_details":[{}]}]},{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-28T04:48:36.282Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-28T04:48:36.282Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"service_provider_id":"663c9cdaef610e62ce6f4add","storeProducts":{"_id":"6641ad10e25729974b4288df","product_id":65,"description_big":"Minced chicken kebabs cooked into soft delicious meatballs served with Minty dip.","description_small":"Minced chicken kebabs cooked into soft delicious meatballs served with Minty dip.","images":{"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg","image_small_size":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg","image_mobile":"https://supergrydapi.ritikasingh.site/uploads/dish/PVHISEXG3VP6.jpeg"},"is_active":1,"is_available":1,"name":"KrPuram-Murgh Kefta (Chicken Meatball Kebab)","price":"99.99","price_without_tax":"99.99","product_details":{"product_video_link":null,"count_of_rating":17295},"rating":4.4,"service_provider_id":"663c9cdaef610e62ce6f4add","  service_provider_location_id":"6641acefe25729974b4268a0","product_category_id":"6641ad0e4689a408045dba5c","service_provider_location_id":"6641acefe25729974b4268a0","is_veg":null,"productCategories":{"_id":"6641ad0e4689a408045dba5c","name":"Dastaan-E-Kebab","description":null,"background_image":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/ea53b535-b9a5-4e83-81d2-9cb755ff4ca9.jpeg","api_cat_id":2,"sp_location_id":"6641acefe25729974b4268a0"}},"restaurantDetails":[{"_id":"663c9cdaef610e62ce6f4add","name":"Bhrouz Biriyani","email":"info@bhrouzbiriyani.com","status":true,"is_deleted":false,"phone_number":"91989544063342","more_service_provider_details":[{}]}]}]
 
 Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
@@ -92,18 +92,20 @@ Data copyWith({  num? totalcount,
 /// _id : "6641acefe25729974b4268a0"
 /// store_id : 6
 /// branch_name : "KrPuram"
-/// created : "2024-05-22T10:40:00.815Z"
+/// created : "2024-05-28T04:48:36.282Z"
 /// location : {"type":"Point","coordinates":[77.7044,13.017]}
 /// more_branch_details : [{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}]
 /// status : false
 /// store_address : "Rajarajeshwari Nagar"
-/// updated : "2024-05-22T10:40:00.815Z"
+/// updated : "2024-05-28T04:48:36.282Z"
 /// offers : [{"offer":""}]
 /// is_available : 1
 /// images : [{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}]
 /// rating : 3
 /// total_rating : 23
-/// storeProducts : {"_id":"6641ad0fe25729974b42885b","product_id":61,"description_big":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","description_small":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","images":{"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_small_size":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_mobile":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg"},"is_active":1,"is_available":1,"name":"KrPuram-Lazeez Bhuna Murgh Biryani (Dum Chicken Biryani - Serves 1)","price":"99.99","price_without_tax":"99.99","product_details":{"product_video_link":null,"count_of_rating":17295},"rating":4.4,"service_provider_id":"663c9cdaef610e62ce6f4add","service_provider_location_id":"6641acefe25729974b4268a0","product_category_id":"6641ad0e4689a408045dba5b","is_veg":0,"productCategories":{"_id":"6641ad0e4689a408045dba5b","name":"Shahi Biryanis","description":"Shahi Biryanis","background_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","api_cat_id":1,"sp_location_id":"6641acefe25729974b426877"}}
+/// service_provider_id : "663c9cdaef610e62ce6f4add"
+/// storeProducts : {"_id":"6641ad0fe25729974b42885b","product_id":61,"description_big":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","description_small":"(Boneless, Served with 1 Gulab Jamun & Mint Raita) In this culinary jewel from Behrouz, Tender chicken pieces are marinated with exuberant bhuna spices that are freshly ground and dum pukht with aromatic rice.","images":{"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_small_size":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg","image_mobile":"https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg"},"is_active":1,"is_available":1,"name":"KrPuram-Lazeez Bhuna Murgh Biryani (Dum Chicken Biryani - Serves 1)","price":"99.99","price_without_tax":"99.99","product_details":{"product_video_link":null,"count_of_rating":17295},"rating":4.4,"service_provider_id":"663c9cdaef610e62ce6f4add","service_provider_location_id":"6641acefe25729974b4268a0","product_category_id":"6641ad0e4689a408045dba5b","is_veg":null,"productCategories":{"_id":"6641ad0e4689a408045dba5b","name":"Shahi Biryanis","description":"Shahi Biryanis","background_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","api_cat_id":1,"sp_location_id":"6641acefe25729974b4268a0"}}
+/// restaurantDetails : [{"_id":"663c9cdaef610e62ce6f4add","name":"Bhrouz Biriyani","email":"info@bhrouzbiriyani.com","status":true,"is_deleted":false,"phone_number":"91989544063342","more_service_provider_details":[{}]}]
 
 Restaurant restaurantFromJson(String str) => Restaurant.fromJson(json.decode(str));
 String restaurantToJson(Restaurant data) => json.encode(data.toJson());
@@ -120,10 +122,12 @@ class Restaurant {
       String? updated, 
       List<Offers>? offers, 
       num? isAvailable, 
-      List<Images>? images,
+      List<Images>? images, 
       num? rating, 
       num? totalRating, 
-      StoreProducts? storeProducts,}){
+      String? serviceProviderId, 
+      StoreProducts? storeProducts, 
+      List<RestaurantDetails>? restaurantDetails,}){
     _id = id;
     _storeId = storeId;
     _branchName = branchName;
@@ -138,7 +142,9 @@ class Restaurant {
     _images = images;
     _rating = rating;
     _totalRating = totalRating;
+    _serviceProviderId = serviceProviderId;
     _storeProducts = storeProducts;
+    _restaurantDetails = restaurantDetails;
 }
 
   Restaurant.fromJson(dynamic json) {
@@ -171,7 +177,14 @@ class Restaurant {
     }
     _rating = json['rating'];
     _totalRating = json['total_rating'];
+    _serviceProviderId = json['service_provider_id'];
     _storeProducts = json['storeProducts'] != null ? StoreProducts.fromJson(json['storeProducts']) : null;
+    if (json['restaurantDetails'] != null) {
+      _restaurantDetails = [];
+      json['restaurantDetails'].forEach((v) {
+        _restaurantDetails?.add(RestaurantDetails.fromJson(v));
+      });
+    }
   }
   String? _id;
   num? _storeId;
@@ -187,7 +200,9 @@ class Restaurant {
   List<Images>? _images;
   num? _rating;
   num? _totalRating;
+  String? _serviceProviderId;
   StoreProducts? _storeProducts;
+  List<RestaurantDetails>? _restaurantDetails;
 Restaurant copyWith({  String? id,
   num? storeId,
   String? branchName,
@@ -202,7 +217,9 @@ Restaurant copyWith({  String? id,
   List<Images>? images,
   num? rating,
   num? totalRating,
+  String? serviceProviderId,
   StoreProducts? storeProducts,
+  List<RestaurantDetails>? restaurantDetails,
 }) => Restaurant(  id: id ?? _id,
   storeId: storeId ?? _storeId,
   branchName: branchName ?? _branchName,
@@ -217,7 +234,9 @@ Restaurant copyWith({  String? id,
   images: images ?? _images,
   rating: rating ?? _rating,
   totalRating: totalRating ?? _totalRating,
+  serviceProviderId: serviceProviderId ?? _serviceProviderId,
   storeProducts: storeProducts ?? _storeProducts,
+  restaurantDetails: restaurantDetails ?? _restaurantDetails,
 );
   String? get id => _id;
   num? get storeId => _storeId;
@@ -233,7 +252,9 @@ Restaurant copyWith({  String? id,
   List<Images>? get images => _images;
   num? get rating => _rating;
   num? get totalRating => _totalRating;
+  String? get serviceProviderId => _serviceProviderId;
   StoreProducts? get storeProducts => _storeProducts;
+  List<RestaurantDetails>? get restaurantDetails => _restaurantDetails;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -259,9 +280,87 @@ Restaurant copyWith({  String? id,
     }
     map['rating'] = _rating;
     map['total_rating'] = _totalRating;
+    map['service_provider_id'] = _serviceProviderId;
     if (_storeProducts != null) {
       map['storeProducts'] = _storeProducts?.toJson();
     }
+    if (_restaurantDetails != null) {
+      map['restaurantDetails'] = _restaurantDetails?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
+/// _id : "663c9cdaef610e62ce6f4add"
+/// name : "Bhrouz Biriyani"
+/// email : "info@bhrouzbiriyani.com"
+/// status : true
+/// is_deleted : false
+/// phone_number : "91989544063342"
+/// more_service_provider_details : [{}]
+
+RestaurantDetails restaurantDetailsFromJson(String str) => RestaurantDetails.fromJson(json.decode(str));
+String restaurantDetailsToJson(RestaurantDetails data) => json.encode(data.toJson());
+class RestaurantDetails {
+  RestaurantDetails({
+      String? id, 
+      String? name, 
+      String? email, 
+      bool? status, 
+      bool? isDeleted, 
+      String? phoneNumber, 
+      }){
+    _id = id;
+    _name = name;
+    _email = email;
+    _status = status;
+    _isDeleted = isDeleted;
+    _phoneNumber = phoneNumber;
+}
+
+  RestaurantDetails.fromJson(dynamic json) {
+    _id = json['_id'];
+    _name = json['name'];
+    _email = json['email'];
+    _status = json['status'];
+    _isDeleted = json['is_deleted'];
+    _phoneNumber = json['phone_number'];
+  }
+  String? _id;
+  String? _name;
+  String? _email;
+  bool? _status;
+  bool? _isDeleted;
+  String? _phoneNumber;
+RestaurantDetails copyWith({  String? id,
+  String? name,
+  String? email,
+  bool? status,
+  bool? isDeleted,
+  String? phoneNumber,
+}) => RestaurantDetails(  id: id ?? _id,
+  name: name ?? _name,
+  email: email ?? _email,
+  status: status ?? _status,
+  isDeleted: isDeleted ?? _isDeleted,
+  phoneNumber: phoneNumber ?? _phoneNumber,
+);
+  String? get id => _id;
+  String? get name => _name;
+  String? get email => _email;
+  bool? get status => _status;
+  bool? get isDeleted => _isDeleted;
+  String? get phoneNumber => _phoneNumber;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['_id'] = _id;
+    map['name'] = _name;
+    map['email'] = _email;
+    map['status'] = _status;
+    map['is_deleted'] = _isDeleted;
+    map['phone_number'] = _phoneNumber;
     return map;
   }
 
@@ -282,8 +381,8 @@ Restaurant copyWith({  String? id,
 /// service_provider_id : "663c9cdaef610e62ce6f4add"
 /// service_provider_location_id : "6641acefe25729974b4268a0"
 /// product_category_id : "6641ad0e4689a408045dba5b"
-/// is_veg : 0
-/// productCategories : {"_id":"6641ad0e4689a408045dba5b","name":"Shahi Biryanis","description":"Shahi Biryanis","background_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","api_cat_id":1,"sp_location_id":"6641acefe25729974b426877"}
+/// is_veg : null
+/// productCategories : {"_id":"6641ad0e4689a408045dba5b","name":"Shahi Biryanis","description":"Shahi Biryanis","background_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","hero_image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","icons":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","api_cat_id":1,"sp_location_id":"6641acefe25729974b4268a0"}
 
 StoreProducts storeProductsFromJson(String str) => StoreProducts.fromJson(json.decode(str));
 String storeProductsToJson(StoreProducts data) => json.encode(data.toJson());
@@ -293,7 +392,7 @@ class StoreProducts {
       num? productId, 
       String? descriptionBig, 
       String? descriptionSmall, 
-      DishImages? images,
+      DishImages? dishImages,
       num? isActive, 
       num? isAvailable, 
       String? name, 
@@ -304,7 +403,7 @@ class StoreProducts {
       String? serviceProviderId, 
       String? serviceProviderLocationId, 
       String? productCategoryId, 
-      num? isVeg, 
+      dynamic isVeg, 
       ProductCategories? productCategories,}){
     _id = id;
     _productId = productId;
@@ -359,7 +458,7 @@ class StoreProducts {
   String? _serviceProviderId;
   String? _serviceProviderLocationId;
   String? _productCategoryId;
-  num? _isVeg;
+  dynamic _isVeg;
   ProductCategories? _productCategories;
 StoreProducts copyWith({  String? id,
   num? productId,
@@ -376,13 +475,13 @@ StoreProducts copyWith({  String? id,
   String? serviceProviderId,
   String? serviceProviderLocationId,
   String? productCategoryId,
-  num? isVeg,
+  dynamic isVeg,
   ProductCategories? productCategories,
 }) => StoreProducts(  id: id ?? _id,
   productId: productId ?? _productId,
   descriptionBig: descriptionBig ?? _descriptionBig,
   descriptionSmall: descriptionSmall ?? _descriptionSmall,
-  images: images ?? _images,
+  dishImages: images ?? _images,
   isActive: isActive ?? _isActive,
   isAvailable: isAvailable ?? _isAvailable,
   name: name ?? _name,
@@ -411,7 +510,7 @@ StoreProducts copyWith({  String? id,
   String? get serviceProviderId => _serviceProviderId;
   String? get serviceProviderLocationId => _serviceProviderLocationId;
   String? get productCategoryId => _productCategoryId;
-  num? get isVeg => _isVeg;
+  dynamic get isVeg => _isVeg;
   ProductCategories? get productCategories => _productCategories;
 
   Map<String, dynamic> toJson() {
@@ -451,7 +550,7 @@ StoreProducts copyWith({  String? id,
 /// hero_image : "https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg"
 /// icons : "https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg"
 /// api_cat_id : 1
-/// sp_location_id : "6641acefe25729974b426877"
+/// sp_location_id : "6641acefe25729974b4268a0"
 
 ProductCategories productCategoriesFromJson(String str) => ProductCategories.fromJson(json.decode(str));
 String productCategoriesToJson(ProductCategories data) => json.encode(data.toJson());
@@ -575,7 +674,7 @@ ProductDetails copyWith({  dynamic productVideoLink,
 /// image_mobile : "https://supergrydapi.ritikasingh.site/uploads/dish/WHTP0IVCRM.jpeg"
 
 DishImages dishImagesFromJson(String str) => DishImages.fromJson(json.decode(str));
-String dishImagesToJson(DishImages data) => json.encode(data.toJson());
+String dishImagesToJson(Images data) => json.encode(data.toJson());
 class DishImages {
   DishImages({
       String? productImageUrl, 
@@ -594,7 +693,7 @@ class DishImages {
   String? _productImageUrl;
   String? _imageSmallSize;
   String? _imageMobile;
-DishImages copyWith({  String? productImageUrl,
+  DishImages copyWith({  String? productImageUrl,
   String? imageSmallSize,
   String? imageMobile,
 }) => DishImages(  productImageUrl: productImageUrl ?? _productImageUrl,
@@ -619,10 +718,10 @@ DishImages copyWith({  String? productImageUrl,
 /// description : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"
 
 Images imagesFromJson(String str) => Images.fromJson(json.decode(str));
-String imagesToJson(DishImages data) => json.encode(data.toJson());
+String imagesToJson(Images data) => json.encode(data.toJson());
 class Images {
   Images({
-      String? image,
+      String? image, 
       String? description,}){
     _image = image;
     _description = description;

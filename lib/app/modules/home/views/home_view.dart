@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -81,24 +82,58 @@ class HomeView extends GetView<HomeController> {
             ],
             centerTitle: true,
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Hi Sajeesh,",
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
-                ),
-                const Text("Explore The Popular Categories",
-                    style: TextStyle(
-                      fontSize: 22,
-                    )),
-                const SizedBox(
-                  height: 10,
-                ),
-                Expanded(
-                  child: LayoutBuilder(builder: (context, constraints) {
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 150,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            onTap: () {
+            
+                            },
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CommonImageView(
+                                    height: 100,
+                                    width: 100,
+                                    imagePath: "packages/mynewpackage/${Assets.imagesTopOffer1}",
+                                  ),
+                                ),
+                                SizedBox(height: 5,),
+                                Text("Special Offer")
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+            
+                  const Text(
+                    "Hi Sajeesh,",
+                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+                  ),
+                  const Text("Explore The Popular Categories",
+                      style: TextStyle(
+                        fontSize: 22,
+                      )),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  LayoutBuilder(builder: (context, constraints) {
                     double itemWidth = (constraints.maxWidth) / 3;
                     double itemHeight = itemWidth +
                         MediaQuery.of(context).size.height *
@@ -107,6 +142,7 @@ class HomeView extends GetView<HomeController> {
                       return controller.isLoading.value
                           ?  CircularProgressIndicator(color: AppColors.primaryColor)
                           : GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -165,8 +201,8 @@ class HomeView extends GetView<HomeController> {
                               });
                     });
                   }),
-                ),
-              ],
+                ],
+              ),
             ),
           )),
     );

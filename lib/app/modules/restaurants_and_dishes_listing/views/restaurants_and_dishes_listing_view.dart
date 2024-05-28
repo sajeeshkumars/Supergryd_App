@@ -350,7 +350,7 @@ class _DishCardState extends State<DishCard> {
                             const SizedBox(width: 5),
                             Expanded(
                               child: Text(
-                                "${(widget.isDishes ? widget.dish?.branchName : widget.restaurant?.branchName)}",
+                                "${(widget.isDishes ? widget.dish?.restaurantDetails?.first.name : widget.restaurant?.restaurantDetails?.first.name)}",
                                 style: TextStyle(
                                     overflow: TextOverflow.ellipsis,
                                     color: AppColors.textLightColor),
@@ -462,12 +462,6 @@ class RestaurantList extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child:
-                        // CommonImageView(
-                        //   height: 175,
-                        //   width: 400,
-                        //   url:
-                        //       controller.restaurantList[index].images?.first.image,
-                        // ),
                         controller.restaurantList[index].offers?.first.offer != ""
                         ? Stack(children: [
                             controller.restaurantList[index].isAvailable == 2
@@ -540,7 +534,7 @@ class RestaurantList extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 10),
                         child: Text(
-                          "${controller.restaurantList[index].branchName}",
+                          (controller.restaurantList[index].restaurantDetails?.first.name)! + (' , ${controller.restaurantList[index].branchName.toString()}'),
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w800),
                         ),

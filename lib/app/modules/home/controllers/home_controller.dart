@@ -81,9 +81,9 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   showAddressSelectionBottomSheet(context: Get.context!);
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showAddressSelectionBottomSheet(context: Get.context!);
+    });
   }
 
   @override
@@ -201,14 +201,17 @@ class HomeController extends GetxController {
           createUser();
           getServices();
 
-      } else {
+      }
+      else {
+        isLoading(false);
           debugPrint("after failure${value.message}");
 
           ScaffoldMessenger.of(Get.context!).showSnackBar(
-              SnackBar(content: Text("${value.message}",), backgroundColor: Colors.red,));
+              const SnackBar(content: Text("Unauthorized please check Your Key",), backgroundColor: Colors.red,duration: Duration(minutes: 5)));
         }
       });
     }else{
+      isLoading(false);
       ScaffoldMessenger.of(Get.context!).showSnackBar(
           SnackBar(content: Text("No Internet",), backgroundColor: Colors.red,));
     }

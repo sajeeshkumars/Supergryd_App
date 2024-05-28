@@ -1,7 +1,7 @@
 import 'dart:convert';
 /// status : 200
 /// message : "Data retrieve successfully."
-/// data : {"totalCount":3,"restaurantData":[{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-22T10:40:00.815Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.815Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"distanceInKilometer":8.790125931241016},{"_id":"6641acefe25729974b426877","store_id":5,"branch_name":"BLR Airport","created":"2024-05-22T10:40:00.833Z","location":{"type":"Point","coordinates":[77.7069,13.1989]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"BLR Airport","locality_name":"BLR Airport","society_name":"BLR Airport","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.833Z","offers":[{"offer":"30 % off."}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":5,"total_rating":20,"distanceInKilometer":11.711200728895957}]}
+/// data : {"totalCount":3,"restaurantData":[{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-28T04:48:36.282Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-28T04:48:36.282Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"service_provider_id":"663c9cdaef610e62ce6f4add","distanceInKilometer":8.790125931241016,"restaurantDetails":[{"_id":"663c9cdaef610e62ce6f4add","name":"Bhrouz Biriyani","email":"info@bhrouzbiriyani.com","status":true,"is_deleted":false,"phone_number":"91989544063342","more_service_provider_details":[{}]}]},{"_id":"6641acefe25729974b426877","store_id":5,"branch_name":"BLR Airport","created":"2024-05-28T04:48:36.282Z","location":{"type":"Point","coordinates":[77.7069,13.1989]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"BLR Airport","locality_name":"BLR Airport","society_name":"BLR Airport","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-28T04:48:36.282Z","offers":[{"offer":"30 % off."}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":5,"total_rating":20,"service_provider_id":"663c9cdaef610e62ce6f4add","distanceInKilometer":11.711200728895957,"restaurantDetails":[{"_id":"663c9cdaef610e62ce6f4add","name":"Bhrouz Biriyani","email":"info@bhrouzbiriyani.com","status":true,"is_deleted":false,"phone_number":"91989544063342","more_service_provider_details":[{}]}]}]}
 
 RestaurantListingResponse restaurantListingResponseFromJson(String str) => RestaurantListingResponse.fromJson(json.decode(str));
 String restaurantListingResponseToJson(RestaurantListingResponse data) => json.encode(data.toJson());
@@ -47,7 +47,7 @@ RestaurantListingResponse copyWith({  num? status,
 }
 
 /// totalCount : 3
-/// restaurantData : [{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-22T10:40:00.815Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.815Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"distanceInKilometer":8.790125931241016},{"_id":"6641acefe25729974b426877","store_id":5,"branch_name":"BLR Airport","created":"2024-05-22T10:40:00.833Z","location":{"type":"Point","coordinates":[77.7069,13.1989]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"BLR Airport","locality_name":"BLR Airport","society_name":"BLR Airport","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-22T10:40:00.833Z","offers":[{"offer":"30 % off."}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":5,"total_rating":20,"distanceInKilometer":11.711200728895957}]
+/// restaurantData : [{"_id":"6641acefe25729974b4268a0","store_id":6,"branch_name":"KrPuram","created":"2024-05-28T04:48:36.282Z","location":{"type":"Point","coordinates":[77.7044,13.017]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-28T04:48:36.282Z","offers":[{"offer":""}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":3,"total_rating":23,"service_provider_id":"663c9cdaef610e62ce6f4add","distanceInKilometer":8.790125931241016,"restaurantDetails":[{"_id":"663c9cdaef610e62ce6f4add","name":"Bhrouz Biriyani","email":"info@bhrouzbiriyani.com","status":true,"is_deleted":false,"phone_number":"91989544063342","more_service_provider_details":[{}]}]},{"_id":"6641acefe25729974b426877","store_id":5,"branch_name":"BLR Airport","created":"2024-05-28T04:48:36.282Z","location":{"type":"Point","coordinates":[77.7069,13.1989]},"more_branch_details":[{"city_name":"Bengaluru","landmark":"BLR Airport","locality_name":"BLR Airport","society_name":"BLR Airport","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}],"status":false,"store_address":"Rajarajeshwari Nagar","updated":"2024-05-28T04:48:36.282Z","offers":[{"offer":"30 % off."}],"is_available":1,"images":[{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}],"rating":5,"total_rating":20,"service_provider_id":"663c9cdaef610e62ce6f4add","distanceInKilometer":11.711200728895957,"restaurantDetails":[{"_id":"663c9cdaef610e62ce6f4add","name":"Bhrouz Biriyani","email":"info@bhrouzbiriyani.com","status":true,"is_deleted":false,"phone_number":"91989544063342","more_service_provider_details":[{}]}]}]
 
 RestaurantListingResult dataFromJson(String str) => RestaurantListingResult.fromJson(json.decode(str));
 String dataToJson(RestaurantListingResult data) => json.encode(data.toJson());
@@ -92,18 +92,20 @@ RestaurantListingResult copyWith({  num? totalCount,
 /// _id : "6641acefe25729974b4268a0"
 /// store_id : 6
 /// branch_name : "KrPuram"
-/// created : "2024-05-22T10:40:00.815Z"
+/// created : "2024-05-28T04:48:36.282Z"
 /// location : {"type":"Point","coordinates":[77.7044,13.017]}
 /// more_branch_details : [{"city_name":"Bengaluru","landmark":"KrPuram","locality_name":"KrPuram","society_name":"KrPuram","parent_store_id":111,"onTime":"11:00:00","offTime":"23:00:00","store_code":"PST641121155"}]
 /// status : false
 /// store_address : "Rajarajeshwari Nagar"
-/// updated : "2024-05-22T10:40:00.815Z"
+/// updated : "2024-05-28T04:48:36.282Z"
 /// offers : [{"offer":""}]
 /// is_available : 1
 /// images : [{"image":"https://supergrydapi.ritikasingh.site/uploads/category/3ccdc3fc-c5f7-47fd-b415-f2ee35160363.jpeg","description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble"}]
 /// rating : 3
 /// total_rating : 23
+/// service_provider_id : "663c9cdaef610e62ce6f4add"
 /// distanceInKilometer : 8.790125931241016
+/// restaurantDetails : [{"_id":"663c9cdaef610e62ce6f4add","name":"Bhrouz Biriyani","email":"info@bhrouzbiriyani.com","status":true,"is_deleted":false,"phone_number":"91989544063342","more_service_provider_details":[{}]}]
 
 RestaurantData restaurantDataFromJson(String str) => RestaurantData.fromJson(json.decode(str));
 String restaurantDataToJson(RestaurantData data) => json.encode(data.toJson());
@@ -123,7 +125,9 @@ class RestaurantData {
       List<Images>? images, 
       num? rating, 
       num? totalRating, 
-      num? distanceInKilometer,}){
+      String? serviceProviderId, 
+      num? distanceInKilometer, 
+      List<RestaurantDetails>? restaurantDetails,}){
     _id = id;
     _storeId = storeId;
     _branchName = branchName;
@@ -138,7 +142,9 @@ class RestaurantData {
     _images = images;
     _rating = rating;
     _totalRating = totalRating;
+    _serviceProviderId = serviceProviderId;
     _distanceInKilometer = distanceInKilometer;
+    _restaurantDetails = restaurantDetails;
 }
 
   RestaurantData.fromJson(dynamic json) {
@@ -171,7 +177,14 @@ class RestaurantData {
     }
     _rating = json['rating'];
     _totalRating = json['total_rating'];
+    _serviceProviderId = json['service_provider_id'];
     _distanceInKilometer = json['distanceInKilometer'];
+    if (json['restaurantDetails'] != null) {
+      _restaurantDetails = [];
+      json['restaurantDetails'].forEach((v) {
+        _restaurantDetails?.add(RestaurantDetails.fromJson(v));
+      });
+    }
   }
   String? _id;
   num? _storeId;
@@ -187,7 +200,9 @@ class RestaurantData {
   List<Images>? _images;
   num? _rating;
   num? _totalRating;
+  String? _serviceProviderId;
   num? _distanceInKilometer;
+  List<RestaurantDetails>? _restaurantDetails;
 RestaurantData copyWith({  String? id,
   num? storeId,
   String? branchName,
@@ -202,7 +217,9 @@ RestaurantData copyWith({  String? id,
   List<Images>? images,
   num? rating,
   num? totalRating,
+  String? serviceProviderId,
   num? distanceInKilometer,
+  List<RestaurantDetails>? restaurantDetails,
 }) => RestaurantData(  id: id ?? _id,
   storeId: storeId ?? _storeId,
   branchName: branchName ?? _branchName,
@@ -217,7 +234,9 @@ RestaurantData copyWith({  String? id,
   images: images ?? _images,
   rating: rating ?? _rating,
   totalRating: totalRating ?? _totalRating,
+  serviceProviderId: serviceProviderId ?? _serviceProviderId,
   distanceInKilometer: distanceInKilometer ?? _distanceInKilometer,
+  restaurantDetails: restaurantDetails ?? _restaurantDetails,
 );
   String? get id => _id;
   num? get storeId => _storeId;
@@ -233,7 +252,9 @@ RestaurantData copyWith({  String? id,
   List<Images>? get images => _images;
   num? get rating => _rating;
   num? get totalRating => _totalRating;
+  String? get serviceProviderId => _serviceProviderId;
   num? get distanceInKilometer => _distanceInKilometer;
+  List<RestaurantDetails>? get restaurantDetails => _restaurantDetails;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -259,7 +280,88 @@ RestaurantData copyWith({  String? id,
     }
     map['rating'] = _rating;
     map['total_rating'] = _totalRating;
+    map['service_provider_id'] = _serviceProviderId;
     map['distanceInKilometer'] = _distanceInKilometer;
+    if (_restaurantDetails != null) {
+      map['restaurantDetails'] = _restaurantDetails?.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
+/// _id : "663c9cdaef610e62ce6f4add"
+/// name : "Bhrouz Biriyani"
+/// email : "info@bhrouzbiriyani.com"
+/// status : true
+/// is_deleted : false
+/// phone_number : "91989544063342"
+/// more_service_provider_details : [{}]
+
+RestaurantDetails restaurantDetailsFromJson(String str) => RestaurantDetails.fromJson(json.decode(str));
+String restaurantDetailsToJson(RestaurantDetails data) => json.encode(data.toJson());
+class RestaurantDetails {
+  RestaurantDetails({
+      String? id, 
+      String? name, 
+      String? email, 
+      bool? status, 
+      bool? isDeleted, 
+      String? phoneNumber, 
+      List<dynamic>? moreServiceProviderDetails,}){
+    _id = id;
+    _name = name;
+    _email = email;
+    _status = status;
+    _isDeleted = isDeleted;
+    _phoneNumber = phoneNumber;
+}
+
+  RestaurantDetails.fromJson(dynamic json) {
+    _id = json['_id'];
+    _name = json['name'];
+    _email = json['email'];
+    _status = json['status'];
+    _isDeleted = json['is_deleted'];
+    _phoneNumber = json['phone_number'];
+
+  }
+  String? _id;
+  String? _name;
+  String? _email;
+  bool? _status;
+  bool? _isDeleted;
+  String? _phoneNumber;
+RestaurantDetails copyWith({  String? id,
+  String? name,
+  String? email,
+  bool? status,
+  bool? isDeleted,
+  String? phoneNumber,
+  List<dynamic>? moreServiceProviderDetails,
+}) => RestaurantDetails(  id: id ?? _id,
+  name: name ?? _name,
+  email: email ?? _email,
+  status: status ?? _status,
+  isDeleted: isDeleted ?? _isDeleted,
+  phoneNumber: phoneNumber ?? _phoneNumber,
+);
+  String? get id => _id;
+  String? get name => _name;
+  String? get email => _email;
+  bool? get status => _status;
+  bool? get isDeleted => _isDeleted;
+  String? get phoneNumber => _phoneNumber;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['_id'] = _id;
+    map['name'] = _name;
+    map['email'] = _email;
+    map['status'] = _status;
+    map['is_deleted'] = _isDeleted;
+    map['phone_number'] = _phoneNumber;
+
     return map;
   }
 

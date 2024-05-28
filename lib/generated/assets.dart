@@ -55,6 +55,7 @@ class Assets {
   static const String imagesImageNotFound = 'lib/assets/images/image_not_found.png';
   static const String imagesMasalaDosa = 'lib/assets/images/Masala_Dosa.jpg';
   static const String imagesRestaurantLogo = 'lib/assets/images/restaurant-logo.png';
+  static const String imagesTopOffer1 = 'lib/assets/images/top-offer-1.png';
   static const String libAppColors = 'lib/app_colors.dart';
   static const String libDependecy = 'lib/dependecy.dart';
   static const String libMynewpackage = 'lib/mynewpackage.dart';

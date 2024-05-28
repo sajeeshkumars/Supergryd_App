@@ -44,9 +44,9 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         title: Obx(() {
-          return Text(
+          return restaurantsDetailsController.isLoading.value? const CircularProgressIndicator(color: Colors.transparent,):Text(
             restaurantsDetailsController
-                    .restaurantDetails.firstOrNull?.branchName ??
+                    .restaurantDetails.first.restaurantDetails?.first.name ??
                 '',
             style: const TextStyle(fontWeight: FontWeight.w500),
           );
