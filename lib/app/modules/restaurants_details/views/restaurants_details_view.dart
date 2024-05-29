@@ -44,7 +44,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         title: Obx(() {
-          return restaurantsDetailsController.isLoading.value? const CircularProgressIndicator(color: Colors.transparent,):Text(
+          return restaurantsDetailsController.isLoading.value? const Center(child: CircularProgressIndicator(color: Colors.transparent,)):Text(
             restaurantsDetailsController
                     .restaurantDetails.first.restaurantDetails?.first.name ??
                 '',
@@ -366,6 +366,7 @@ class _BannerCarousalState extends State<BannerCarousal> {
                 return ClipRRect(
                   borderRadius: BorderRadius.circular(25),
                   child: CommonImageView(
+                    width: MediaQuery.of(context).size.width*.9,
                     url:
                     widget.controller.restaurantDetails.first.bannerImages?.first.image,
                   ),
@@ -417,56 +418,72 @@ class BannerAndRatingWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(
                     left: 120, right: 10, top: 10, bottom: 15),
-                child: Column(
-                  children: [
-                     Text(
-                      controller.restaurantDetails.first.images?.first.description ?? "",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        color: Color.fromRGBO(69, 84, 97, 1),
-                      ),
-                    ),
-                    Row(
+                child: Obx(
+                 () {
+                    return Column(
                       children: [
-                        Chip(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(80.0),
-                            side: const BorderSide(color: Colors.grey),
-                          ),
-                          label: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SvgPicture.asset(
-                                  "packages/mynewpackage/lib/assets/icons/Star.svg"),
-                              const SizedBox(
-                                width: 5,
-                              ),
+                         InkWell(
+                           onTap: (){
+                             controller.showMore.value = !controller.showMore.value;
+                           },
+                           child: Wrap(
+                             children: [
                                Text(
-                                "${controller.restaurantDetails.first.rating}(${Utility.countConverter(controller.restaurantDetails.first.totalRating)})",
-                                style: TextStyle(
+                                controller.restaurantDetails.first.images?.first.description ?? "",
+                                maxLines:controller.showMore.value ? 10: 2,
+                                style:  TextStyle(
+                                  overflow:!controller.showMore.value ? TextOverflow.ellipsis:null,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: Color.fromRGBO(69, 84, 97, 1),
+                                ),
+                                                   ),
+                                Text(!controller.showMore.value?"Read More":"Read Less",style: TextStyle(color: AppColors.primaryColor),)
+                             ],
+                           ),
+                         ),
+                        Row(
+                          children: [
+                            Chip(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(80.0),
+                                side: const BorderSide(color: Colors.grey),
+                              ),
+                              label: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SvgPicture.asset(
+                                      "packages/mynewpackage/lib/assets/icons/Star.svg"),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                   Text(
+                                    "${controller.restaurantDetails.first.rating}(${Utility.countConverter(controller.restaurantDetails.first.totalRating)})",
+                                    style: TextStyle(
+                                        fontSize: 10, fontWeight: FontWeight.w600),
+                                  )
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Chip(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(80.0),
+                                side: const BorderSide(color: Colors.grey),
+                              ),
+                              label:  Text(
+                                "${distance.toStringAsFixed(1)} km",
+                                style: const TextStyle(
                                     fontSize: 10, fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Chip(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(80.0),
-                            side: const BorderSide(color: Colors.grey),
-                          ),
-                          label:  Text(
-                            "${distance.toStringAsFixed(1)} km",
-                            style: const TextStyle(
-                                fontSize: 10, fontWeight: FontWeight.w600),
-                          ),
-                        ),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
+                    );
+                  }
                 ),
               ),
             ],
@@ -474,10 +491,21 @@ class BannerAndRatingWidget extends StatelessWidget {
           Positioned(
             top: 180,
             left: 10,
-            child: SvgPicture.network(
-                width: 100,
-                height: 50,
-                "${controller.restaurantDetails.first.logo}"),
+            child: ClipOval(
+              child: Container(
+                color: AppColors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: ClipOval(
+                    child: Image.network(
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                        "${controller.restaurantDetails.first.logo}"),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),

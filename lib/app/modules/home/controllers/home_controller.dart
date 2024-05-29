@@ -30,12 +30,12 @@ class HomeController extends GetxController {
       "long": 77.720049,
     },
     "Office": {
-      "lat": 13.094478,
-      "long": 77.720049,
+      "lat": 12.922122741085568,
+      "long": 77.61472686044922,
     },
     "Seeroo": {
-      "lat": 10.064598219780601,
-      "long": 76.35120398465857,
+      "lat": 10.06407070929079,
+      "long": 76.35141824928344,
     }
   };
   RxMap selectedLocationCoordinates = {

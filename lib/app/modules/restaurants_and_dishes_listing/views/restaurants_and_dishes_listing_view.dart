@@ -74,6 +74,9 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
           ),
           centerTitle: true,
           bottom: TabBar(
+            padding: const EdgeInsets.only(left: 20),
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
             splashFactory: NoSplash.splashFactory,
             indicatorColor: AppColors.primaryColor,
             labelColor: AppColors.primaryColor,
@@ -290,11 +293,11 @@ class _DishCardState extends State<DishCard> {
                     bottomLeft: Radius.circular(10),
                   ),
                   child: CommonImageView(
-                    height:widget.isDishes? 165:185,
+                    height:widget.isDishes? 155:165,
                     width: 150,
                     fit: BoxFit.fitHeight,
                     url: widget.isDishes
-                        ? widget.dish?.storeProducts?.images?.imageMobile
+                        ? widget.dish?.storeProducts?.images?.productImageUrl
                         : widget
                             .restaurant?.storeProducts?.images?.imageMobile,
                   ),
@@ -331,7 +334,7 @@ class _DishCardState extends State<DishCard> {
                                     "packages/mynewpackage/${Assets.iconsStar}",
                               ),
                               Text(
-                                "${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.storeProducts?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating : widget.restaurant?.storeProducts?.productDetails?.countOfRating)})",
+                                "${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.storeProducts?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating ?? 0 : widget.restaurant?.storeProducts?.productDetails?.countOfRating ?? 0)})",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12,
@@ -354,7 +357,7 @@ class _DishCardState extends State<DishCard> {
                             const SizedBox(width: 5),
                             widget.isDishes ?  Expanded(
                               child: Text(
-                                "${(widget.isDishes ? widget.dish?.restaurantDetails?.first.name : widget.restaurant?.restaurantDetails?.first.name)}",
+                                "${( widget.dish?.restaurantDetails?.first.name )}",
                                 style: TextStyle(
                                     overflow: TextOverflow.ellipsis,
                                     color: AppColors.textLightColor),
@@ -516,7 +519,7 @@ class RestaurantList extends StatelessWidget {
                                         fontSize: 14,
                                         color: AppColors.white))),
                           ])
-                        : controller.restaurantList[index].isAvailable == 1
+                        : controller.restaurantList[index].isAvailable != 2
                             ? CommonImageView(
                             height: 175,
                             width: 400,

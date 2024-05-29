@@ -71,6 +71,7 @@ class CommonImageView extends StatelessWidget {
       if (isCircleImage!) {
         return ClipOval(
           child: CachedNetworkImage(
+            repeat: ImageRepeat.noRepeat,
             height: height,
             width: width,
             fit: fit,
@@ -107,41 +108,41 @@ class CommonImageView extends StatelessWidget {
           ),
         );
       }
-      return CachedNetworkImage(
+      return Image.network(
         height: height,
         width: width,
         fit: fit,
-        imageUrl: url!,
-        cacheKey: id,
-        imageBuilder: (context, imageProvioder) {
-          return Container(
-            decoration: BoxDecoration(
-              image:
-              DecorationImage(image: imageProvioder, fit: BoxFit.cover),
-            ),
-          );
-        },
-        placeholder: (context, url) => Container(
-          height: 30,
-          width: 30,
-          child: LinearProgressIndicator(
-            color: Colors.grey.shade200,
-            backgroundColor: Colors.grey.shade100,
-          ),
-        ),
-        errorWidget: (context, url, error) =>     placeHolder == "packages/mynewpackage/${Assets.imagesImageNotFound}"
-            ? Image.asset(
-          placeHolder,
-          height: height,
-          width: width,
-          fit: fit,
-        )
-            : SvgPicture.asset(
-          placeHolder,
-          height: 10,
-          width: 10,
-          fit: BoxFit.contain,
-        ),
+         url!,
+        // cacheKey: id,
+        // imageBuilder: (context, imageProvioder) {
+        //   return Container(
+        //     decoration: BoxDecoration(
+        //       image:
+        //       DecorationImage(image: imageProvioder, fit: BoxFit.cover),
+        //     ),
+        //   );
+        // },
+        // placeholder: (context, url) => Container(
+        //   height: 30,
+        //   width: 30,
+        //   child: LinearProgressIndicator(
+        //     color: Colors.grey.shade200,
+        //     backgroundColor: Colors.grey.shade100,
+        //   ),
+        // ),
+        // errorWidget: (context, url, error) =>     placeHolder == "packages/mynewpackage/${Assets.imagesImageNotFound}"
+        //     ? Image.asset(
+        //   placeHolder,
+        //   height: height,
+        //   width: width,
+        //   fit: fit,
+        // )
+        //     : SvgPicture.asset(
+        //   placeHolder,
+        //   height: 10,
+        //   width: 10,
+        //   fit: BoxFit.contain,
+        // ),
       );
     } else if (imagePath != null && imagePath!.isNotEmpty) {
       return Image.asset(

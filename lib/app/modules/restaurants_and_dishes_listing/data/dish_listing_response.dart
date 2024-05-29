@@ -442,7 +442,6 @@ class ProductCategories {
     _backgroundImage = backgroundImage;
     _heroImage = heroImage;
     _icons = icons;
-    _apiCatId = apiCatId;
     _spLocationId = spLocationId;
 }
 
@@ -453,7 +452,6 @@ class ProductCategories {
     _backgroundImage = json['background_image'];
     _heroImage = json['hero_image'];
     _icons = json['icons'];
-    _apiCatId = json['api_cat_id'];
     _spLocationId = json['sp_location_id'];
   }
   String? _id;
@@ -462,7 +460,6 @@ class ProductCategories {
   String? _backgroundImage;
   String? _heroImage;
   String? _icons;
-  num? _apiCatId;
   String? _spLocationId;
 ProductCategories copyWith({  String? id,
   String? name,
@@ -478,7 +475,6 @@ ProductCategories copyWith({  String? id,
   backgroundImage: backgroundImage ?? _backgroundImage,
   heroImage: heroImage ?? _heroImage,
   icons: icons ?? _icons,
-  apiCatId: apiCatId ?? _apiCatId,
   spLocationId: spLocationId ?? _spLocationId,
 );
   String? get id => _id;
@@ -487,7 +483,6 @@ ProductCategories copyWith({  String? id,
   String? get backgroundImage => _backgroundImage;
   String? get heroImage => _heroImage;
   String? get icons => _icons;
-  num? get apiCatId => _apiCatId;
   String? get spLocationId => _spLocationId;
 
   Map<String, dynamic> toJson() {
@@ -498,7 +493,6 @@ ProductCategories copyWith({  String? id,
     map['background_image'] = _backgroundImage;
     map['hero_image'] = _heroImage;
     map['icons'] = _icons;
-    map['api_cat_id'] = _apiCatId;
     map['sp_location_id'] = _spLocationId;
     return map;
   }
