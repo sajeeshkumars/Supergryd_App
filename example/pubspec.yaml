@@ -33,6 +33,8 @@ dependencies:
   mynewpackage:
     path: C:\Users\najib\StudioProjects\mynewpackage
   get: ^4.6.6
+  intl: ^0.18.0
+
 
 
 

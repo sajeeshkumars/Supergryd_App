@@ -167,11 +167,13 @@ class HomeView extends GetView<HomeController> {
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                         side: BorderSide(
-                                          color: controller.serviceList[index]
-                                                      .categoryName ==
-                                                  "Gifts"
-                                              ? AppColors.green
-                                              : AppColors.white,
+                                          color:
+                                          // controller.serviceList[index]
+                                          //             .categoryName ==
+                                          //         "Gifts"
+                                          //     ? AppColors.green
+                                          //     :
+                                          AppColors.white,
                                           width: 2.0,
                                         )),
                                     elevation: 0,

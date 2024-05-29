@@ -32,7 +32,8 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
           backgroundColor: AppColors.backgroundColor,
           title: InkWell(
             onTap: () {
-             homeController.showAddressSelectionBottomSheet(context: context);
+
+             homeController.showAddressSelectionBottomSheet(context: context,controller:controller);
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,11 +111,14 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                             style: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 20),
                           ),
+                          SizedBox(height: 10,),
                           const Text(
                             "Currently we are not serviceable in your location.\nWe are on a process of increasing our service area.",
                             style: TextStyle(
                                 fontWeight: FontWeight.w600, fontSize: 14),
                           ),
+                          SizedBox(height: 10,),
+
                           const Text(
                             "We will notify you once we start our service in your area",
                             style: TextStyle(
@@ -286,7 +290,7 @@ class _DishCardState extends State<DishCard> {
                     bottomLeft: Radius.circular(10),
                   ),
                   child: CommonImageView(
-                    height: 155,
+                    height:widget.isDishes? 165:185,
                     width: 150,
                     fit: BoxFit.fitHeight,
                     url: widget.isDishes
@@ -307,6 +311,7 @@ class _DishCardState extends State<DishCard> {
                                       ?.name
                                   : widget.restaurant?.storeProducts?.name) ??
                               "",
+                          maxLines:widget.isDishes? 2:3,
                           style: const TextStyle(
                             fontSize: 14,
                             // overflow: TextOverflow.ellipsis,

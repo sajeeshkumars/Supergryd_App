@@ -63,7 +63,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      showAddressSelectionBottomSheet(context: Get.context!);
+      showAddressSelectionBottomSheet(context: Get.context!,);
     });
   }
 
@@ -78,7 +78,7 @@ class HomeController extends GetxController {
   }
 
 
-  void showAddressSelectionBottomSheet({required BuildContext context,}) {
+  void showAddressSelectionBottomSheet({required BuildContext context,  RestaurantsAndDishesListingController? controller,}) {
     showModalBottomSheet(
       isDismissible: false,
       context: context,
@@ -120,6 +120,8 @@ class HomeController extends GetxController {
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
                         onTap: () {
+                          controller?.restaurantList.clear();
+                          controller?.dishList.clear();
                           address.value = addressDescription[index];
                           debugPrint("value ${address.value}");
                           selectedLocationCoordinates.value =
@@ -127,6 +129,7 @@ class HomeController extends GetxController {
                           debugPrint("value ${address.value}");
                           debugPrint(
                               "selectedLocationCordinates $selectedLocationCoordinates");
+                          controller?.getRestaurants(initial: true);
                           Get.back();
                         },
                         child: Container(
