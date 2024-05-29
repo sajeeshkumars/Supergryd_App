@@ -17,28 +17,6 @@ import '../data/models/service_category_response.dart';
 class HomeController extends GetxController {
   //TODO: Implement HomeController
 
-  List gridItemsName = [
-    "Food",
-    "Cabs",
-    "Salon Services",
-    "Home Services",
-    "Gifts",
-    "Furniture",
-    "Courier",
-    "Grocery",
-    "Others"
-  ];
-  List imagesItem = [
-    Assets.iconsFood,
-    Assets.iconsCab,
-    Assets.iconsSalonService,
-    Assets.iconsHomeService,
-    Assets.iconsGifts,
-    Assets.iconsFurniture,
-    Assets.iconsCourier,
-    Assets.iconsGrocery,
-    Assets.iconsOthers
-  ];
   List addressTypeImage = [Assets.iconsHomeIcon, Assets.iconsOffice,Assets.iconsOffice];
   List addressHeading = ["Home", "Office","Seeroo"];
   List addressDescription = [
@@ -70,6 +48,9 @@ class HomeController extends GetxController {
   AuthRepository authRepository = Get.put(AuthRepository());
   HomeRepository homeRepository = Get.put(HomeRepository());
    RxList<ServiceCategories> serviceList = List<ServiceCategories>.empty(growable: true).obs;
+
+   List specialOfferTitle = ["Special\nFood Menu","100% Cashback\non First Order","Get 20% OFF\non All Foods","Limited Offer\nHot Deals","Get 20% - 30%\nCashback"];
+   List specialOfferImages = [Assets.imagesTopOffer1,Assets.imagesTopOffer2,Assets.imagesTopOffer3,Assets.imagesTopOffer4,Assets.imagesTopOffer5];
 
 
 
@@ -113,7 +94,7 @@ class HomeController extends GetxController {
             children: [
               const Text(
                 'Select Your Delivery Location',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               Row(
@@ -122,14 +103,14 @@ class HomeController extends GetxController {
                     Icons.add_circle_outline, color: AppColors.primaryColor,),
                   const SizedBox(width: 10,),
                   Text("Add New Address",
-                    style: TextStyle(color: AppColors.primaryColor),),
+                    style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.w800),),
 
                 ],
               ),
               const SizedBox(height: 20),
               const Text(
                 'Saved Address',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
               ),
               Expanded(
                 child: ListView.builder(
@@ -154,7 +135,7 @@ class HomeController extends GetxController {
                             leading: CommonImageView(
                               svgPath: "packages/mynewpackage/${addressTypeImage[index]}",),
                             title: Text(addressHeading[index],
-                              style: const TextStyle(fontSize: 16),),
+                              style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w600),),
                             subtitle: Text(addressDescription[index],
                               style: (TextStyle(color: AppColors.textColor)),),
                           ),
@@ -254,7 +235,7 @@ class HomeController extends GetxController {
       if (value.data?.serviceCategories != [] && (value.status == 200)) {
 
         serviceList.addAll(value.data?.serviceCategories ?? []);
-        debugPrint("list service ${serviceList.first.categoryName}");
+        // debugPrint("list service ${serviceList.first.categoryName}");
         isLoading(false);
       } else {
         isLoading(false);

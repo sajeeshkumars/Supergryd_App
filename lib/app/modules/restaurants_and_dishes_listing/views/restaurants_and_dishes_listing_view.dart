@@ -282,19 +282,17 @@ class _DishCardState extends State<DishCard> {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    bottomLeft: Radius.circular(15),
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
                   ),
-                  child: SizedBox(
-                    height: 165,
-                    width: 120,
-                    child: CommonImageView(
-                      fit: BoxFit.fitHeight,
-                      url: widget.isDishes
-                          ? widget.dish?.storeProducts?.images?.imageMobile
-                          : widget
-                              .restaurant?.storeProducts?.images?.imageMobile,
-                    ),
+                  child: CommonImageView(
+                    height: 155,
+                    width: 150,
+                    fit: BoxFit.fitHeight,
+                    url: widget.isDishes
+                        ? widget.dish?.storeProducts?.images?.imageMobile
+                        : widget
+                            .restaurant?.storeProducts?.images?.imageMobile,
                   ),
                 ),
                 Expanded(
@@ -310,14 +308,15 @@ class _DishCardState extends State<DishCard> {
                                   : widget.restaurant?.storeProducts?.name) ??
                               "",
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             // overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis
                           ),
                         ),
                         const SizedBox(height: 5),
                         Text(
-                            "₹${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.storeProducts?.price)}"),
+                            "₹ ${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.storeProducts?.price)}",
+                        style: TextStyle(fontWeight: FontWeight.w500),),
                         Chip(
                           label: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -343,19 +342,19 @@ class _DishCardState extends State<DishCard> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CommonImageView(
+                            widget.isDishes ?   CommonImageView(
                               svgPath:
                                   "packages/mynewpackage/${Assets.iconsShopIcon}",
-                            ),
+                            ):SizedBox.shrink(),
                             const SizedBox(width: 5),
-                            Expanded(
+                            widget.isDishes ?  Expanded(
                               child: Text(
                                 "${(widget.isDishes ? widget.dish?.restaurantDetails?.first.name : widget.restaurant?.restaurantDetails?.first.name)}",
                                 style: TextStyle(
                                     overflow: TextOverflow.ellipsis,
                                     color: AppColors.textLightColor),
                               ),
-                            ),
+                            ):SizedBox.shrink(),
                             const SizedBox(
                               width: 3,
                             ),
@@ -456,11 +455,11 @@ class RestaurantList extends StatelessWidget {
                 child: Card(
                   color: AppColors.white,
                   surfaceTintColor: AppColors.white,
-                  child: Column(
+                  child:  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(15),topLeft:Radius.circular(15)),
                         child:
                         controller.restaurantList[index].offers?.first.offer != ""
                         ? Stack(children: [
@@ -495,7 +494,7 @@ class RestaurantList extends StatelessWidget {
                                     ),
                                   ),
                             Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding: EdgeInsets.all(5.0),
                               child: Text(
                                 controller.restaurantList[index].offers?.first.offer ?? "",
                                 style: TextStyle(
@@ -531,17 +530,17 @@ class RestaurantList extends StatelessWidget {
                                       ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
                         child: Text(
                           (controller.restaurantList[index].restaurantDetails?.first.name)! + (' , ${controller.restaurantList[index].branchName.toString()}'),
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w800),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 5),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10,),
                         child: Row(
                           children: [
                             Chip(
@@ -550,10 +549,10 @@ class RestaurantList extends StatelessWidget {
                                   CommonImageView(
                                       svgPath:
                                           "packages/mynewpackage/${Assets.iconsStar}"),
-                                  Text("${controller.ratings[index]}",
-                                      style: const TextStyle(
+                                  Text("${controller.restaurantList[index].rating}(${Utility.countConverter(controller.restaurantList[index].totalRating)})",
+                                      style: TextStyle(
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 12)),
+                                          fontSize: 10)),
                                 ],
                               ),
                               shape: RoundedRectangleBorder(
@@ -561,14 +560,14 @@ class RestaurantList extends StatelessWidget {
                               ),
                               side: BorderSide(color: AppColors.borderColor),
                             ),
-                            const SizedBox(
+                            SizedBox(
                               width: 10,
                             ),
                             Chip(
                               label: Text(
                                 "${controller.restaurantList[index].distanceInKilometer?.toStringAsFixed(1)} km",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 12),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 10,),
                               ),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25),
@@ -580,17 +579,18 @@ class RestaurantList extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 5),
+                            horizontal: 15,),
                         child: Text(
                           controller.restaurantList[index].images?.first.description ?? "",
                           style: TextStyle(
-                              fontSize: 14, color: AppColors.textColor),
+                              fontSize: 14, color: AppColors.textColor,overflow: TextOverflow.ellipsis),
                         ),
                       ),
+                      SizedBox(height: 20,),
                       controller.restaurantList[index].isAvailable == 2
                           ? const Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 5),
+                                  horizontal: 15, vertical: 20),
                               child: Text(
                                 "Currently Unavailable",
                                 style: TextStyle(

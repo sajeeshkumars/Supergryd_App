@@ -56,6 +56,10 @@ class Assets {
   static const String imagesMasalaDosa = 'lib/assets/images/Masala_Dosa.jpg';
   static const String imagesRestaurantLogo = 'lib/assets/images/restaurant-logo.png';
   static const String imagesTopOffer1 = 'lib/assets/images/top-offer-1.png';
+  static const String imagesTopOffer2 = 'lib/assets/images/top-offer-2.png';
+  static const String imagesTopOffer3 = 'lib/assets/images/top-offer-3.png';
+  static const String imagesTopOffer4 = 'lib/assets/images/top-offer-4.png';
+  static const String imagesTopOffer5 = 'lib/assets/images/top-offer-5.png';
   static const String libAppColors = 'lib/app_colors.dart';
   static const String libDependecy = 'lib/dependecy.dart';
   static const String libMynewpackage = 'lib/mynewpackage.dart';

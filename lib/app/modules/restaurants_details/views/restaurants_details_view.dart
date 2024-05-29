@@ -48,7 +48,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
             restaurantsDetailsController
                     .restaurantDetails.first.restaurantDetails?.first.name ??
                 '',
-            style: const TextStyle(fontWeight: FontWeight.w500),
+            style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
           );
         }),
         backgroundColor: AppColors.backgroundColor,
@@ -348,37 +348,31 @@ class _BannerCarousalState extends State<BannerCarousal> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
-          child: CarouselSlider(
-            options: CarouselOptions(
-              autoPlay: true,
-              // height: MediaQuery.of(context).size.height * 0.29,
-              viewportFraction: 1.2,
-              aspectRatio: 16 / 8.5,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  activeIndex = index;
-                });
-              },
-            ),
-            items: [1, 2, 3, 4, 5].map((i) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(25),
-                    child: CommonImageView(
-                      url:
-                      widget.controller.restaurantDetails.first.images?.first.image,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
-              );
-            }).toList(),
+        CarouselSlider(
+          options: CarouselOptions(
+            autoPlay: true,
+            // height: MediaQuery.of(context).size.height * 0.29,
+            viewportFraction: 1.2,
+            aspectRatio: 16 / 8.5,
+            onPageChanged: (index, reason) {
+              setState(() {
+                activeIndex = index;
+              });
+            },
           ),
+          items: [1, 2, 3, 4, 5].map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
+                  child: CommonImageView(
+                    url:
+                    widget.controller.restaurantDetails.first.bannerImages?.first.image,
+                  ),
+                );
+              },
+            );
+          }).toList(),
         ),
         Positioned(
           bottom: 10,
@@ -478,11 +472,12 @@ class BannerAndRatingWidget extends StatelessWidget {
             ],
           ),
           Positioned(
-            top: 160,
+            top: 180,
             left: 10,
-            child: Image.asset(
+            child: SvgPicture.network(
                 width: 100,
-                "packages/mynewpackage/lib/assets/images/restaurant-logo.png"),
+                height: 50,
+                "${controller.restaurantDetails.first.logo}"),
           ),
         ],
       ),

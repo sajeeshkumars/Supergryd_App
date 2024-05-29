@@ -84,16 +84,16 @@ class HomeView extends GetView<HomeController> {
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(15.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 150,
+                    height: 160,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 5,
+                      itemCount: controller.specialOfferTitle.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
@@ -109,11 +109,11 @@ class HomeView extends GetView<HomeController> {
                                   child: CommonImageView(
                                     height: 100,
                                     width: 100,
-                                    imagePath: "packages/mynewpackage/${Assets.imagesTopOffer1}",
+                                    imagePath: "packages/mynewpackage/${controller.specialOfferImages[index]}",
                                   ),
                                 ),
-                                SizedBox(height: 5,),
-                                Text("Special Offer")
+                                const SizedBox(height: 5,),
+                                Text(controller.specialOfferTitle[index],textAlign:TextAlign.center,style: const TextStyle(fontSize: 12),)
                               ],
                             ),
                           ),
@@ -134,15 +134,15 @@ class HomeView extends GetView<HomeController> {
                     height: 10,
                   ),
                   LayoutBuilder(builder: (context, constraints) {
-                    double itemWidth = (constraints.maxWidth) / 3;
+                    double itemWidth = (constraints.maxWidth) ;
                     double itemHeight = itemWidth +
                         MediaQuery.of(context).size.height *
-                            .08; // Make items square
+                            .15; // Make items square
                     return Obx(() {
                       return controller.isLoading.value
                           ?  CircularProgressIndicator(color: AppColors.primaryColor)
                           : GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -184,14 +184,17 @@ class HomeView extends GetView<HomeController> {
                                             MainAxisAlignment.center,
                                         children: [
                                           SvgPicture.network(controller.serviceList[index].images?.first.primary ?? ""),
-                                          Text(
-                                            controller.serviceList[index]
-                                                    .categoryName ??
-                                                "",
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400),
-                                            textAlign: TextAlign.center,
+                                          SizedBox(height: 8,),
+                                          Flexible(
+                                            child: Text(
+                                              controller.serviceList[index]
+                                                      .categoryName ??
+                                                  "",
+                                              style: const TextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w800),
+                                              textAlign: TextAlign.center,
+                                            ),
                                           ),
                                         ],
                                       ),

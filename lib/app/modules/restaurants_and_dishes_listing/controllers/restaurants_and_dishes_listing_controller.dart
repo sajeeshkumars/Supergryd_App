@@ -14,14 +14,9 @@ class RestaurantsAndDishesListingController extends GetxController {
   //TODO: Implement RestaurantsAndDishesListingController
 
 
-  List restaurantImages = [Assets.imagesImage1,Assets.imagesImage2,Assets.imagesImage3];
-  List ratings = ['4.1(10k+)','4.5(7k+)'];
   List filters = ["Veg","Egg","Non Veg"];
   List filterImages = [Assets.iconsVeg,Assets.iconsEgg,Assets.iconsNonVeg];
-  List descriptions = ["Biriyani, Kebabs, South Indian,Kammanahalli/Kalyan Na...","Biriyani, Kebabs, South Indian,Kammanahalli/Kalyan Na..."];
-  List<RxBool> hasOffer = [true.obs,false.obs];
-  List<RxBool> isUnavailable = [false.obs,true.obs,];
-  RxInt selectedCategory = 0.obs;
+  RxInt selectedCategory = 3.obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingDishes = false.obs;
   AppStorage appStorage = Get.find();
