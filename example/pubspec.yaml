@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   mynewpackage:
-    path: C:\Users\najib\StudioProjects\mynewpackage
+    path: C:\Users\najib\StudioProjects\Supergryd_App
   get: ^4.6.6
   intl: ^0.18.0
 

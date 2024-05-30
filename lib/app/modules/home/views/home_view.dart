@@ -66,7 +66,11 @@ class HomeView extends GetView<HomeController> {
                 ],
               ),
             ),
-            leading: const Icon(Icons.arrow_back_rounded),
+            leading: InkWell(
+              onTap: (){
+                Get.back();
+              },
+                child: const Icon(Icons.arrow_back_rounded)),
             actions: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
