@@ -148,6 +148,7 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                     splashFactory: NoSplash.splashFactory,
                                     onTap: () {
                                       controller.selectedCategory.value = index;
+                                      controller.getDishes(initial: true);
                                     },
                                     child: Obx(() {
                                       return Container(
@@ -210,7 +211,7 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                               child: Obx(() {
                                 return controller.isLoadingDishes.value
                                     ?  CircularProgressIndicator(color: AppColors.primaryColor)
-                                    : Expanded(
+                                    : controller.dishList.isNotEmpty? Expanded(
                                         child: ListView.builder(
                                           itemCount: controller.dishList.length,
                                           itemBuilder: (context, index) {
@@ -229,7 +230,7 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                             );
                                           },
                                         ),
-                                      );
+                                      ):const Align(alignment: Alignment.bottomCenter,child: Text("No dish found!"),);
                               }),
                             ),
                           ],
@@ -455,7 +456,8 @@ class RestaurantList extends StatelessWidget {
             onTap: () {
               Get.to(RestaurantsDetailsView(
                 restaurantId: controller.restaurantList[index].id.toString(),
-                distance:controller.restaurantList[index].distanceInKilometer ?? 0
+                distance:controller.restaurantList[index].distanceInKilometer ?? 0,
+                  restaurantData:controller.restaurantList[index]
               ));
             },
             child: Container(

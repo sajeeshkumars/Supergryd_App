@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/Dish_listing_request.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_repo.dart';
 import 'package:mynewpackage/storage/storage.dart';
 
@@ -13,15 +14,18 @@ import '../data/restaurant_listing_response.dart';
 class RestaurantsAndDishesListingController extends GetxController {
   //TODO: Implement RestaurantsAndDishesListingController
 
-
-  List filters = ["Veg","Egg","Non Veg"];
-  List filterImages = [Assets.iconsVeg,Assets.iconsEgg,Assets.iconsNonVeg];
+  List filters = ["Veg", "Non Veg"];
+  List filterImages = [Assets.iconsVeg,
+    // Assets.iconsEgg,
+    Assets.iconsNonVeg];
   RxInt selectedCategory = 3.obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingDishes = false.obs;
   AppStorage appStorage = Get.find();
-  RestaurantAndDishRepository restaurantAndDishRepository = RestaurantAndDishRepository();
+  RestaurantAndDishRepository restaurantAndDishRepository =
+      RestaurantAndDishRepository();
   RestaurantListingResult? restaurantListingResult;
+  DishListingRequest? dishListingRequest;
   RxList<RestaurantData> restaurantList = <RestaurantData>[].obs;
   RxList<Dishes> dishList = <Dishes>[].obs;
   RxBool isRestaurantsLoadingMore = false.obs;
@@ -30,18 +34,13 @@ class RestaurantsAndDishesListingController extends GetxController {
   bool isHaveDishes = false;
   final HomeController homeController = Get.find();
 
-
-
-
-
   int limit = 10;
   int page = 1;
-
 
   @override
   void onInit() {
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getRestaurants(initial: true);
+    getRestaurants(initial: true);
 
     // });
     super.onInit();
@@ -57,9 +56,7 @@ class RestaurantsAndDishesListingController extends GetxController {
     super.onClose();
   }
 
-
   void getRestaurants({required bool initial}) async {
-
     if (initial) {
       page = 1;
       limit = 10;
@@ -68,19 +65,20 @@ class RestaurantsAndDishesListingController extends GetxController {
     }
 
     restaurant_request.RestaurantListingRequest request =
-    restaurant_request.RestaurantListingRequest(
-        location: homeController.selectedLocationCoordinates.isEmpty
-            ? restaurant_request.Location(lat: 13.094478, long: 77.720049)
-            : restaurant_request.Location(
-          lat: homeController.selectedLocationCoordinates['lat'],
-          long: homeController.selectedLocationCoordinates['long'],
-        ),
-      page: page,
-      limit: limit,
-      userId: appStorage.getUserId(),
-      serviceCategoryId:"6646f17c6538869d3399af45"
-    );
-    await restaurantAndDishRepository.getRestaurants(request.toJson()).then((value) {
+        restaurant_request.RestaurantListingRequest(
+            location: homeController.selectedLocationCoordinates.isEmpty
+                ? restaurant_request.Location(lat: 13.094478, long: 77.720049)
+                : restaurant_request.Location(
+                    lat: homeController.selectedLocationCoordinates['lat'],
+                    long: homeController.selectedLocationCoordinates['long'],
+                  ),
+            page: page,
+            limit: limit,
+            userId: appStorage.getUserId(),
+            serviceCategoryId: "6646f17c6538869d3399af45");
+    await restaurantAndDishRepository
+        .getRestaurants(request.toJson())
+        .then((value) {
       if (value.status == 200) {
         getDishes(initial: true);
 
@@ -100,19 +98,20 @@ class RestaurantsAndDishesListingController extends GetxController {
         }
         // isLoading(false);
         // restaurantListingResult = value.data;
-
       } else {
         isLoading(false);
 
-
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-            SnackBar(content: Text(value.message.toString() ?? "",),backgroundColor: Colors.red,));
+        ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+          content: Text(
+            value.message.toString() ?? "",
+          ),
+          backgroundColor: Colors.red,
+        ));
       }
     });
   }
 
   void getDishes({required bool initial}) async {
-
     if (initial) {
       page = 1;
       limit = 10;
@@ -120,8 +119,19 @@ class RestaurantsAndDishesListingController extends GetxController {
       dishList.clear();
     }
 
-
-    await restaurantAndDishRepository.getDishes(page: page, limit: limit).then((value) {
+    await restaurantAndDishRepository.getDishes({
+      "location": homeController.selectedLocationCoordinates.isEmpty
+          ? {"lat": 13.094478, "long": 77.720049}
+          : {
+              "lat": homeController.selectedLocationCoordinates['lat'],
+              "long": homeController.selectedLocationCoordinates['long']
+            },
+      "user_id": appStorage.getUserId(),
+      "page": 1,
+      "limit": 10,
+      "service_category_id": "6646f17c6538869d3399af45",
+      "filter": {"isVeg": selectedCategory.value == 0 ? 1 :selectedCategory.value == 1 ?2:null}
+    }).then((value) {
       if (value.status == 200) {
         if (initial) {
           dishList.value = value.data?.dishes ?? [];
@@ -136,18 +146,18 @@ class RestaurantsAndDishesListingController extends GetxController {
           isHaveDishes = false;
           isDishesLoadingMore.value = false;
         }
-
-
       } else {
         isLoadingDishes(false);
 
-
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-            SnackBar(content: Text(value.message.toString() ?? "",),backgroundColor: Colors.red,));
+        ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+          content: Text(
+            value.message.toString() ?? "",
+          ),
+          backgroundColor: Colors.red,
+        ));
       }
     });
   }
-
 
   bool onScrollOngoing(ScrollNotification scrollInfo) {
     if (!isRestaurantsLoadingMore.value &&
@@ -173,16 +183,11 @@ class RestaurantsAndDishesListingController extends GetxController {
       page = page + 1;
       if (isHaveDishes) {
         isDishesLoadingMore.value = true;
-       getDishes(initial: false);
+        getDishes(initial: false);
       } else {
         isDishesLoadingMore.value = false;
       }
     }
     return false;
   }
-
-
-
-
-
 }

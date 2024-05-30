@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/data/restaurant_details_repository.dart';
 
 import '../data/get_restaurant_details_response.dart';
@@ -12,14 +11,28 @@ class RestaurantsDetailsController extends GetxController {
   RxBool isLoadingMore = false.obs;
   bool haveRestaurantDetails = false;
   RxBool showMore = false.obs;
+  List<String> chipTitles = [
+    "Veg",
+    // "Egg",
+    "Non Veg",
+    // "Rating",
+    // "Recommended"
+  ];
+  List<String> chipImages = [
+    "packages/mynewpackage/lib/assets/icons/veg.svg",
+    // "packages/mynewpackage/lib/assets/icons/egg.svg",
+    "packages/mynewpackage/lib/assets/icons/non-veg.svg",
+    // "packages/mynewpackage/lib/assets/icons/Star.svg",
+    // ""
+  ];
 
+  RxInt selectedFilter = 2.obs;
 
   RestaurantDetailsRepository restaurantDetailsRepository =
-  Get.put(RestaurantDetailsRepository());
-  RxList<Restaurant> restaurantDetails =
-      <Restaurant>[].obs;
+      Get.put(RestaurantDetailsRepository());
+  RxList<Restaurant> restaurantDetails = <Restaurant>[].obs;
 
-  Future<bool> getRestaurantdetails(
+  Future<bool> getRestaurantDetails(
       {required String restaurantId, required bool initial}) async {
     if (initial) {
       page = 1;
@@ -28,9 +41,18 @@ class RestaurantsDetailsController extends GetxController {
       restaurantDetails.clear();
     }
 
-    await restaurantDetailsRepository
-        .getRestaurantDetails(restaurantId, page, limit)
-        .then((value) {
+    await restaurantDetailsRepository.getRestaurantDetails({
+      "page": page,
+      "limit": limit,
+      "filter": {
+        "isVeg": selectedFilter.value == 0
+            ? 1
+            : selectedFilter.value == 1
+                ? 2
+                : null
+      },
+      "restaurant_id": restaurantId
+    }).then((value) {
       if ((value.data != null) && (value.status == 200)) {
         if (initial) {
           restaurantDetails.value = value.data?.restaurant ?? [];
@@ -70,7 +92,7 @@ class RestaurantsDetailsController extends GetxController {
       page = page + 1;
       if (haveRestaurantDetails) {
         isLoadingMore.value = true;
-        getRestaurantdetails(restaurantId: restaurantId, initial: false);
+        getRestaurantDetails(restaurantId: restaurantId, initial: false);
       } else {
         isLoadingMore.value = false;
       }

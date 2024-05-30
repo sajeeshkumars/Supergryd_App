@@ -7,7 +7,7 @@ import 'dish_listing_response.dart';
 
 abstract class RestaurantService {
   Future<RestaurantListingResponse> getRestaurants(Map<String, dynamic>? params);
-  Future<DishListingResponse> getDishes({required num page,required num limit});
+  Future<DishListingResponse> getDishes(Map<String, dynamic>? params);
 
 
 }

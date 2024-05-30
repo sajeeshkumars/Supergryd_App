@@ -233,6 +233,7 @@ class HomeController extends GetxController {
 
 
   void getServices() async {
+    serviceList.clear();
     isLoading(true);
     await homeRepository.getServiceList().then((value) {
       if (value.data?.serviceCategories != [] && (value.status == 200)) {

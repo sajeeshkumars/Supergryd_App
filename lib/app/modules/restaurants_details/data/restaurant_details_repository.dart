@@ -11,10 +11,10 @@ class RestaurantDetailsRepository implements RestaurantDetailsService {
   ApiService apiService = Get.find();
 
   @override
-  Future<GetRestaurantDetailsResponse> getRestaurantDetails(String restaurantId, int page, int limit) async {
+  Future<GetRestaurantDetailsResponse> getRestaurantDetails(Map<String, dynamic>? params) async {
     GetRestaurantDetailsResponse getRestaurantDetailsResponse;
     Response response = await apiService.reqst(
-        url: 'food/get-restaurant-by-id/$restaurantId/$page/$limit', method: Method.GET);
+        url: 'food/get-restaurant-by-id',params: params);
     log(response.statusCode.toString());
     try {
       getRestaurantDetailsResponse = GetRestaurantDetailsResponse.fromJson(response.body);

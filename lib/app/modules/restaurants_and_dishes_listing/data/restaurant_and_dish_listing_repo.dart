@@ -31,9 +31,9 @@ class RestaurantAndDishRepository implements RestaurantService {
 
 
   @override
-  Future<DishListingResponse> getDishes({required num page,required num limit}) async {
+  Future<DishListingResponse> getDishes(Map<String, dynamic>? params) async {
     DishListingResponse dishListingResponse;
-    Response response = await apiService.reqst(url: 'food/get-all-restaurant-dishes/$page/$limit',method: Method.GET);
+    Response response = await apiService.reqst(url: 'food/get-all-restaurant-dishes',params: params);
     debugPrint(response.statusCode.toString());
     try {
       dishListingResponse = DishListingResponse.fromJson(response.body);

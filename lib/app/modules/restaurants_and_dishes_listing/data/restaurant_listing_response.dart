@@ -124,8 +124,10 @@ class RestaurantData {
       num? isAvailable, 
       List<Images>? images, 
       num? rating, 
-      num? totalRating, 
-      String? serviceProviderId, 
+      num? totalRating,
+    String? logo,
+    List<BannerImage>? bannerImage,
+    String? serviceProviderId,
       num? distanceInKilometer, 
       List<RestaurantDetails>? restaurantDetails,}){
     _id = id;
@@ -141,6 +143,8 @@ class RestaurantData {
     _isAvailable = isAvailable;
     _images = images;
     _rating = rating;
+    _bannerImage = bannerImage;
+    _logo = logo;
     _totalRating = totalRating;
     _serviceProviderId = serviceProviderId;
     _distanceInKilometer = distanceInKilometer;
@@ -176,6 +180,13 @@ class RestaurantData {
       });
     }
     _rating = json['rating'];
+    _logo = json['logo'];
+    if (json['banner_images'] != null) {
+      _bannerImage = [];
+      json['banner_images'].forEach((v) {
+        _bannerImage?.add(BannerImage.fromJson(v));
+      });
+    }
     _totalRating = json['total_rating'];
     _serviceProviderId = json['service_provider_id'];
     _distanceInKilometer = json['distanceInKilometer'];
@@ -199,6 +210,8 @@ class RestaurantData {
   num? _isAvailable;
   List<Images>? _images;
   num? _rating;
+  List<BannerImage>? _bannerImage;
+  String? _logo;
   num? _totalRating;
   String? _serviceProviderId;
   num? _distanceInKilometer;
@@ -216,6 +229,8 @@ RestaurantData copyWith({  String? id,
   num? isAvailable,
   List<Images>? images,
   num? rating,
+  List<BannerImage>? bannerImage,
+  String? logo,
   num? totalRating,
   String? serviceProviderId,
   num? distanceInKilometer,
@@ -233,6 +248,8 @@ RestaurantData copyWith({  String? id,
   isAvailable: isAvailable ?? _isAvailable,
   images: images ?? _images,
   rating: rating ?? _rating,
+  bannerImage: bannerImage ?? _bannerImage,
+  logo: logo ?? _logo,
   totalRating: totalRating ?? _totalRating,
   serviceProviderId: serviceProviderId ?? _serviceProviderId,
   distanceInKilometer: distanceInKilometer ?? _distanceInKilometer,
@@ -251,6 +268,8 @@ RestaurantData copyWith({  String? id,
   num? get isAvailable => _isAvailable;
   List<Images>? get images => _images;
   num? get rating => _rating;
+  List<BannerImage>? get bannerImages => _bannerImage;
+  String? get logo => _logo;
   num? get totalRating => _totalRating;
   String? get serviceProviderId => _serviceProviderId;
   num? get distanceInKilometer => _distanceInKilometer;
@@ -279,6 +298,10 @@ RestaurantData copyWith({  String? id,
       map['images'] = _images?.map((v) => v.toJson()).toList();
     }
     map['rating'] = _rating;
+    if (_bannerImage != null) {
+      map['banner_images'] = _bannerImage?.map((v) => v.toJson()).toList();
+    }
+    map['logo'] = _logo;
     map['total_rating'] = _totalRating;
     map['service_provider_id'] = _serviceProviderId;
     map['distanceInKilometer'] = _distanceInKilometer;
@@ -288,6 +311,38 @@ RestaurantData copyWith({  String? id,
     return map;
   }
 
+}
+
+BannerImage bannerImagesFromJson(String str) =>
+    BannerImage.fromJson(json.decode(str));
+
+String bannerImagesToJson(BannerImage data) => json.encode(data.toJson());
+
+class BannerImage {
+  BannerImage({String? image}) {
+    _image = image;
+  }
+
+  BannerImage.fromJson(dynamic json) {
+    _image = json['image'];
+  }
+
+  String? _image;
+
+  BannerImage copyWith({
+    String? image,
+  }) =>
+      BannerImage(
+        image: image ?? _image,
+      );
+
+  String? get image => _image;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['image'] = _image;
+    return map;
+  }
 }
 
 /// _id : "663c9cdaef610e62ce6f4add"

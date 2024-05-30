@@ -1,10 +1,13 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/dish_listing_response.dart';
+import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/restaurant_listing_response.dart' as restaurant_list;
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
 import 'package:mynewpackage/app_colors.dart';
@@ -17,10 +20,11 @@ import 'package:speech_to_text/speech_to_text.dart';
 import '../../../core/utility.dart';
 
 class RestaurantsDetailsView extends StatefulWidget {
-  const RestaurantsDetailsView({super.key, required this.restaurantId, required this.distance});
+   RestaurantsDetailsView({super.key, required this.restaurantId, required this.distance,   this.restaurantData});
 
   final String restaurantId;
   final num distance;
+  final restaurant_list.RestaurantData? restaurantData;
 
   @override
   State<RestaurantsDetailsView> createState() => _RestaurantsDetailsViewState();
@@ -32,7 +36,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
 
   @override
   void initState() {
-    restaurantsDetailsController.getRestaurantdetails(
+    restaurantsDetailsController.getRestaurantDetails(
         restaurantId: widget.restaurantId, initial: true);
     Get.lazyPut(() => RestaurantsDetailsController());
     super.initState();
@@ -45,9 +49,11 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
       appBar: AppBar(
         title: Obx(() {
           return restaurantsDetailsController.isLoading.value? const Center(child: CircularProgressIndicator(color: Colors.transparent,)):Text(
-            restaurantsDetailsController
-                    .restaurantDetails.first.restaurantDetails?.first.name ??
-                '',
+
+             widget.restaurantData?.restaurantDetails?.first.name ?? "",
+            // restaurantsDetailsController
+            //         .restaurantDetails.first.restaurantDetails?.first.name ??
+            //     '',
             style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
           );
         }),
@@ -67,21 +73,22 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             BannerAndRatingWidget(controller: restaurantsDetailsController, distance: widget.distance,),
+                             BannerAndRatingWidget(restaurantData:widget.restaurantData, distance: widget.distance, controller: restaurantsDetailsController,),
                             const SizedBox(
                               height: 20,
                             ),
-                             SearchWidget(controller: restaurantsDetailsController,),
+                             SearchWidget(controller: restaurantsDetailsController,restaurantData:widget.restaurantData),
                             const SizedBox(
                               height: 20,
                             ),
-                            const ChipWidget(),
+                             ChipWidget(controller:restaurantsDetailsController,restaurantId:widget.restaurantId),
                             const SizedBox(
                               height: 20,
                             ),
                             Obx(() {
-                              return ListView.separated(
+                              return restaurantsDetailsController.restaurantDetails.isNotEmpty ? ListView.separated(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
@@ -99,7 +106,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
                                 },
                                 itemCount: restaurantsDetailsController
                                     .restaurantDetails.length,
-                              );
+                              ):const Center(child: Text("No dish found!"));
                             })
                           ],
                         ),
@@ -114,91 +121,84 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
 
 class ChipWidget extends StatefulWidget {
   const ChipWidget({
-    super.key,
+    super.key, required this.controller, required this.restaurantId,
   });
+
+  final RestaurantsDetailsController controller;
+  final String restaurantId;
 
   @override
   State<ChipWidget> createState() => _ChipWidgetState();
 }
 
 class _ChipWidgetState extends State<ChipWidget> {
-  int selectedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
-    List<String> chipTitles = [
-      "Veg",
-      "Egg",
-      "Non Veg",
-      "Rating",
-      "Recommended"
-    ];
-    List<String> chipImages = [
-      "packages/mynewpackage/lib/assets/icons/veg.svg",
-      "packages/mynewpackage/lib/assets/icons/egg.svg",
-      "packages/mynewpackage/lib/assets/icons/non-veg.svg",
-      "packages/mynewpackage/lib/assets/icons/Star.svg",
-      ""
-    ];
-    return SizedBox(
-      height: 50,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedIndex = index;
-              });
-            },
-            child: Chip(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50.0),
-                side: const BorderSide(color: Colors.grey),
-              ),
-              label: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CommonImageView(
-                    svgPath:chipImages[index],
-                    color: selectedIndex == index ? Colors.white : null,
+    return Obx(
+      () {
+        return widget.controller.isLoading.value ? const SizedBox.shrink() : SizedBox(
+          height: 50,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                    widget.controller.selectedFilter.value = index;
+                    widget.controller.getRestaurantDetails(restaurantId:widget.restaurantId , initial: true);
+                },
+                child: Chip(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50.0),
+                    side: const BorderSide(color: Colors.grey),
                   ),
+                  label: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CommonImageView(
+                        svgPath:widget.controller.chipImages[index],
+                        color: widget.controller.selectedFilter.value == index ? Colors.white : null,
+                      ),
 
-                  const SizedBox(
-                    width: 5,
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        widget.controller.chipTitles[index],
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color:
+                          widget.controller.selectedFilter.value == index ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    chipTitles[index],
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color:
-                          selectedIndex == index ? Colors.white : Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor:
-                  selectedIndex == index ? AppColors.primaryColor : null,
-            ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return const SizedBox(
-            width: 10,
-          );
-        },
-        itemCount: 5,
-      ),
+                  backgroundColor:
+                  widget.controller.selectedFilter.value == index ? AppColors.primaryColor : null,
+                ),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(
+                width: 10,
+              );
+            },
+            itemCount: widget.controller.chipTitles.length,
+          ),
+        );
+      }
     );
   }
 }
 
 class SearchWidget extends StatefulWidget {
-  const SearchWidget({super.key, required this.controller});
+  const SearchWidget({super.key, required this.controller,   this.restaurantData});
 
   final RestaurantsDetailsController controller;
+  final restaurant_list.RestaurantData? restaurantData;
 
   @override
   SearchWidgetState createState() => SearchWidgetState();
@@ -280,8 +280,7 @@ class SearchWidgetState extends State<SearchWidget> {
             child: TextFormField(
               controller: searchController,
               decoration: InputDecoration(
-                hintText: "Search in ${ widget.controller
-                    .restaurantDetails.firstOrNull?.branchName}",
+                hintText: "Search in ${ widget.restaurantData?.restaurantDetails?.first.name}",
                 hintStyle: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
@@ -333,9 +332,10 @@ class SearchWidgetState extends State<SearchWidget> {
 }
 
 class BannerCarousal extends StatefulWidget {
-  const BannerCarousal({super.key,required this.controller});
+  const BannerCarousal({super.key,required this.controller,   this.restaurantData});
 
   final RestaurantsDetailsController controller;
+  final restaurant_list.RestaurantData? restaurantData;
 
   @override
   State<BannerCarousal> createState() => _BannerCarousalState();
@@ -368,7 +368,8 @@ class _BannerCarousalState extends State<BannerCarousal> {
                   child: CommonImageView(
                     width: MediaQuery.of(context).size.width*.9,
                     url:
-                    widget.controller.restaurantDetails.first.bannerImages?.first.image,
+                    // widget.controller.restaurantDetails.first.bannerImages?.first.image,
+                    widget.restaurantData?.bannerImages?.first.image
                   ),
                 );
               },
@@ -399,11 +400,12 @@ class _BannerCarousalState extends State<BannerCarousal> {
 
 class BannerAndRatingWidget extends StatelessWidget {
   const BannerAndRatingWidget({
-    super.key,required this.controller, required this.distance
+    super.key,required this.controller, required this.distance,   this.restaurantData
   });
 
   final RestaurantsDetailsController controller;
   final num distance;
+  final restaurant_list.RestaurantData? restaurantData;
 
   @override
   Widget build(BuildContext context) {
@@ -414,7 +416,7 @@ class BannerAndRatingWidget extends StatelessWidget {
         children: [
           Column(
             children: [
-               BannerCarousal(controller: controller,),
+               BannerCarousal(controller: controller,restaurantData:restaurantData),
               Padding(
                 padding: const EdgeInsets.only(
                     left: 120, right: 10, top: 10, bottom: 15),
@@ -429,7 +431,7 @@ class BannerAndRatingWidget extends StatelessWidget {
                            child: Wrap(
                              children: [
                                Text(
-                                controller.restaurantDetails.first.images?.first.description ?? "",
+                                restaurantData?.images?.first.description ?? "",
                                 maxLines:controller.showMore.value ? 10: 2,
                                 style:  TextStyle(
                                   overflow:!controller.showMore.value ? TextOverflow.ellipsis:null,
@@ -458,7 +460,7 @@ class BannerAndRatingWidget extends StatelessWidget {
                                     width: 5,
                                   ),
                                    Text(
-                                    "${controller.restaurantDetails.first.rating}(${Utility.countConverter(controller.restaurantDetails.first.totalRating)})",
+                                    "${restaurantData?.rating}(${Utility.countConverter(restaurantData?.totalRating)})",
                                     style: TextStyle(
                                         fontSize: 10, fontWeight: FontWeight.w600),
                                   )
@@ -501,7 +503,7 @@ class BannerAndRatingWidget extends StatelessWidget {
                         width: 80,
                         height: 80,
                         fit: BoxFit.cover,
-                        "${controller.restaurantDetails.first.logo}"),
+                        "${restaurantData?.logo}"),
                   ),
                 ),
               ),
