@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:mynewpackage/constants.dart';
 
 import '../model/refresh_token_model.dart';
-import '../storage/storage.dart';
 
 
 enum Method { POST, GET, PUT, DELETE, PATCH }
@@ -15,7 +15,7 @@ class ApiService extends GetConnect implements GetxService {
   final String baseUrl;
   late Map<String, String> _headers;
 
-  AppStorage storage = Get.put(AppStorage());
+  // AppStorage storage = Get.put(AppStorage());
   int nullResCount = 0;
   bool showingExpiryDialog = false;
 
@@ -39,7 +39,8 @@ class ApiService extends GetConnect implements GetxService {
     try {
       bool result = await InternetConnectionChecker().hasConnection;
       if (result == true) {
-        if (storage.isAuthenticated()) {
+        // if (storage.isAuthenticated()) {
+        if (Constants.isAuthenticated) {
           updateHeaders();
         }
         if (method == Method.POST) {
@@ -97,14 +98,16 @@ class ApiService extends GetConnect implements GetxService {
   }
 
   updateHeaders() {
-    _headers['Authorization'] ="Bearer ${storage.getAccessToken()}";
+    // _headers['Authorization'] ="Bearer ${storage.getAccessToken()}";
+    _headers['Authorization'] ="Bearer ${Constants.accessToken}";
   }
 
   Future<Response> refreshTokenApi(
       String path, Map<String, dynamic>? reqBody, Method? method) async {
     late Response res;
     Map<String, dynamic> body = {
-      "refresh_token": storage.getRefreshToken(),
+      // "refresh_token": storage.getRefreshToken(),
+      "refresh_token": Constants.refreshToken,
     };
     try {
       debugPrint('---------  Refresh Token  ---------');
@@ -124,8 +127,10 @@ class ApiService extends GetConnect implements GetxService {
 
     if (res.statusCode == 200) {
       RefreshTokenModel model = RefreshTokenModel.fromJson(res.body);
-      storage.writeAccessToken(model.data?.accessToken ?? "");
-      storage.writeRefreshToken(model.data?.refreshToken ?? "");
+      // storage.writeAccessToken(model.data?.accessToken ?? "");
+      Constants.accessToken = model.data?.accessToken ?? "";
+      // storage.writeRefreshToken(model.data?.refreshToken ?? "");
+      Constants.refreshToken = model.data?.refreshToken ?? "";
       updateHeaders();
 
       if (method == Method.GET) {

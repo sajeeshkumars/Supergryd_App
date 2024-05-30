@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/Dish_listing_request.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_repo.dart';
-import 'package:mynewpackage/storage/storage.dart';
+import 'package:mynewpackage/constants.dart';
 
 import '../../../../generated/assets.dart';
 import '../../home/controllers/home_controller.dart';
@@ -21,7 +21,7 @@ class RestaurantsAndDishesListingController extends GetxController {
   RxInt selectedCategory = 3.obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingDishes = false.obs;
-  AppStorage appStorage = Get.find();
+  // AppStorage appStorage = Get.find();
   RestaurantAndDishRepository restaurantAndDishRepository =
       RestaurantAndDishRepository();
   RestaurantListingResult? restaurantListingResult;
@@ -74,7 +74,8 @@ class RestaurantsAndDishesListingController extends GetxController {
                   ),
             page: page,
             limit: limit,
-            userId: appStorage.getUserId(),
+            // userId: appStorage.getUserId(),
+            userId: Constants.userId,
             serviceCategoryId: "6646f17c6538869d3399af45");
     await restaurantAndDishRepository
         .getRestaurants(request.toJson())
@@ -126,7 +127,8 @@ class RestaurantsAndDishesListingController extends GetxController {
               "lat": homeController.selectedLocationCoordinates['lat'],
               "long": homeController.selectedLocationCoordinates['long']
             },
-      "user_id": appStorage.getUserId(),
+      // "user_id": appStorage.getUserId(),
+      "user_id": Constants.userId,
       "page": 1,
       "limit": 10,
       "service_category_id": "6646f17c6538869d3399af45",

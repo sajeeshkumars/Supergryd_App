@@ -62,6 +62,7 @@ class Assets {
   static const String imagesTopOffer4 = 'lib/assets/images/top-offer-4.png';
   static const String imagesTopOffer5 = 'lib/assets/images/top-offer-5.png';
   static const String libAppColors = 'lib/app_colors.dart';
+  static const String libConstants = 'lib/constants.dart';
   static const String libDependecy = 'lib/dependecy.dart';
   static const String libMynewpackage = 'lib/mynewpackage.dart';
   static const String libSizeUtils = 'lib/size_utils.dart';
@@ -77,7 +78,6 @@ class Assets {
   static const String routesAppRoutes = 'lib/app/routes/app_routes.dart';
   static const String servicesApiService = 'lib/services/api_service.dart';
   static const String servicesConfig = 'lib/services/config.dart';
-  static const String storageStorage = 'lib/storage/storage.dart';
   static const String viewsHomeView = 'lib/app/modules/home/views/home_view.dart';
   static const String viewsRestaurantsAndDishesListingView = 'lib/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
   static const String viewsRestaurantsDetailsView = 'lib/app/modules/restaurants_details/views/restaurants_details_view.dart';

@@ -294,9 +294,9 @@ class _DishCardState extends State<DishCard> {
                     bottomLeft: Radius.circular(10),
                   ),
                   child: CommonImageView(
-                    height:widget.isDishes? 155:165,
+                    height:widget.isDishes? 165:185,
                     width: 150,
-                    fit: BoxFit.fitHeight,
+                    fit: BoxFit.cover,
                     url: widget.isDishes
                         ? widget.dish?.storeProducts?.images?.productImageUrl
                         : widget
@@ -469,7 +469,7 @@ class RestaurantList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.only(topRight: Radius.circular(15),topLeft:Radius.circular(15)),
+                        borderRadius: const BorderRadius.only(topRight: Radius.circular(15),topLeft:Radius.circular(15)),
                         child:
                         controller.restaurantList[index].offers?.first.offer != ""
                         ? Stack(children: [
@@ -480,15 +480,15 @@ class RestaurantList extends StatelessWidget {
                                     child: CommonImageView(
                                       url: controller.restaurantList[index].images?.first.image,
                                       fit: BoxFit.cover,
-                                      height: 175,
-                                        width: 400,
+                                      // height: 175,
+                                      //   width: 400,
                                     ),
                                   )
                                 : CommonImageView(
                                     url:
                                     controller.restaurantList[index].images?.first.image,
-                              height: 175,
-                              width: 400,
+                              // height: 175,
+                              // width: 400,
                                   ),
                           controller.restaurantList[index].isAvailable == 1
                                 ? CommonImageView(
@@ -523,8 +523,8 @@ class RestaurantList extends StatelessWidget {
                           ])
                         : controller.restaurantList[index].isAvailable != 2
                             ? CommonImageView(
-                            height: 175,
-                            width: 400,
+                            // height: 175,
+                            // width: 400,
                                 url:
                                 controller.restaurantList[index].images?.first.image)
                             :

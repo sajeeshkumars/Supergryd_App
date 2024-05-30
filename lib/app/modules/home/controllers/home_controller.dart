@@ -7,7 +7,7 @@ import 'package:mynewpackage/app/authentication/model/authentication_request_mod
 import 'package:mynewpackage/app/authentication/model/create_user_request_model.dart';
 import 'package:mynewpackage/app/modules/home/data/home_repository.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
-import 'package:mynewpackage/storage/storage.dart';
+import 'package:mynewpackage/constants.dart';
 
 import '../../../../app_colors.dart';
 import '../../../../generated/assets.dart';
@@ -44,7 +44,7 @@ class HomeController extends GetxController {
   }.obs;
   RxString address = '"No. 63, 1st Floor, 14th Cross, 9th Main Road,Indiranagar, Bengaluru, Karnataka 560038, India"'.obs;
   RxBool isLoading = false.obs;
-  AppStorage storage = AppStorage();
+  // AppStorage storage = AppStorage();
   AuthRepository authRepository = Get.put(AuthRepository());
   HomeRepository homeRepository = Get.put(HomeRepository());
    RxList<ServiceCategories> serviceList = List<ServiceCategories>.empty(growable: true).obs;
@@ -178,10 +178,13 @@ class HomeController extends GetxController {
         debugPrint("authenticated");
           debugPrint("${value.message}");
           debugPrint("token${value.data?.refreshToken}");
-        storage.writeAccessToken(value.data?.accessToken ?? "");
-          debugPrint("access token ${storage.getAccessToken()}");
-        storage.writeRefreshToken(value.data?.refreshToken ?? "");
-          storage.writeIsAuthenticated(true);
+          Constants.accessToken = value.data?.accessToken ?? "";
+        // storage.writeAccessToken(value.data?.accessToken ?? "");
+        //   debugPrint("access token ${storage.getAccessToken()}");
+        // storage.writeRefreshToken(value.data?.refreshToken ?? "");
+          Constants.refreshToken = value.data?.refreshToken ?? "";
+          Constants.isAuthenticated = true;
+        //   storage.writeIsAuthenticated(true);
           createUser(mobile: mobile, name: name);
           getServices();
 
@@ -220,7 +223,7 @@ class HomeController extends GetxController {
 
         debugPrint("authenticated");
         debugPrint("${value.message}");
-        storage.writeUserId(value.data?.id ?? "");
+        // storage.writeUserId(value.data?.id ?? "");
       } else {
 
         debugPrint("after failure${value.message}");
