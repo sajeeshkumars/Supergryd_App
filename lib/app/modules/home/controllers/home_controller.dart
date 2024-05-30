@@ -156,7 +156,7 @@ class HomeController extends GetxController {
     );
   }
 
-  void authenticate({required String clientId,required String clientSecrete}) async {
+  void authenticate({required String clientId,required String clientSecrete, required String name,required String mobile}) async {
     isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
@@ -182,7 +182,7 @@ class HomeController extends GetxController {
           debugPrint("access token ${storage.getAccessToken()}");
         storage.writeRefreshToken(value.data?.refreshToken ?? "");
           storage.writeIsAuthenticated(true);
-          createUser();
+          createUser(mobile: mobile, name: name);
           getServices();
 
       }
@@ -201,12 +201,12 @@ class HomeController extends GetxController {
     }
   }
 
-  void createUser() async {
+  void createUser({required String mobile,required String name}) async {
     isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
     CreateUserRequestModel requestModel = CreateUserRequestModel(
-      phoneNumber: "21341232",phoneCode: "12234"
+      phoneNumber: mobile,phoneCode: "+91",name: name
     );
 
 

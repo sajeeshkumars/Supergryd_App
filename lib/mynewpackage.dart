@@ -40,7 +40,7 @@ class _MyPackageState extends State<MyPackage> {
 
     HomeController homeController = Get.put(HomeController());
     homeController.authenticate(
-        clientId: widget.clientId, clientSecrete: widget.clientSecrete);
+        clientId: widget.clientId, clientSecrete: widget.clientSecrete,name:widget.name,mobile:widget.mobile);
 
     debugPrint("clientid ${widget.clientId}");
 
