@@ -17,12 +17,17 @@ class MyPackage extends StatefulWidget {
   final String? route;
   final String clientId;
   final String clientSecrete;
+  final String name;
+  final String mobile;
 
   const MyPackage(
       {super.key,
       this.route,
       required this.clientId,
-      required this.clientSecrete});
+      required this.clientSecrete,
+        required this.name,
+        required this.mobile
+      });
 
   @override
   State<MyPackage> createState() => _MyPackageState();

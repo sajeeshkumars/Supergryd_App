@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
 
 
       ),
-      home: const MyPackage(clientId: 'SGD_test_55be429e-485b-45c2-b281-3f818d32769a', clientSecrete: 'SGD_test_8a680b2b-f8d0-491a-8346-63f3a2cace04',),
+      home: const MyPackage(clientId: 'SGD_test_55be429e-485b-45c2-b281-3f818d32769a', clientSecrete: 'SGD_test_8a680b2b-f8d0-491a-8346-63f3a2cace04', name: '', mobile: '',),
     );
   }
 }
