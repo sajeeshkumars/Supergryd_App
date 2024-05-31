@@ -28,11 +28,16 @@ class RestaurantsAndDishesListingController extends GetxController {
   DishListingRequest? dishListingRequest;
   RxList<RestaurantData> restaurantList = <RestaurantData>[].obs;
   RxList<Dishes> dishList = <Dishes>[].obs;
+  // RxList<Dishes> dishListForApi = <Dishes>[].obs;
   RxBool isRestaurantsLoadingMore = false.obs;
   RxBool isDishesLoadingMore = false.obs;
   bool isHaveRestaurantData = false;
   bool isHaveDishes = false;
   final HomeController homeController = Get.find();
+
+
+
+
 
   int limit = 10;
   int page = 1;
@@ -55,6 +60,7 @@ class RestaurantsAndDishesListingController extends GetxController {
   void onClose() {
     super.onClose();
   }
+
 
   void getRestaurants({required bool initial}) async {
     if (initial) {
@@ -137,9 +143,11 @@ class RestaurantsAndDishesListingController extends GetxController {
       if (value.status == 200) {
         if (initial) {
           dishList.value = value.data?.dishes ?? [];
+
           isLoadingDishes(false);
         } else {
           dishList.addAll(value.data?.dishes ?? []);
+
         }
         if ((value.data?.dishes ?? []).isNotEmpty) {
           isDishesLoadingMore.value = false;
@@ -160,6 +168,59 @@ class RestaurantsAndDishesListingController extends GetxController {
       }
     });
   }
+  // void getDishes({required bool initial}) async {
+  //   if (initial) {
+  //     page = 1;
+  //     isLoadingDishes(true);
+  //     dishListForApi.clear();
+  //     dishList.clear(); // Clear the display list when loading new data
+  //   }
+  //
+  //   await restaurantAndDishRepository.getDishes({
+  //     "location": homeController.selectedLocationCoordinates.isEmpty
+  //         ? {"lat": 13.094478, "long": 77.720049}
+  //         : {
+  //       "lat": homeController.selectedLocationCoordinates['lat'],
+  //       "long": homeController.selectedLocationCoordinates['long']
+  //     },
+  //     "user_id": Constants.userId,
+  //     "page": page,
+  //     "limit": limit,
+  //     "service_category_id": "6646f17c6538869d3399af45",
+  //     "filter": {"isVeg": selectedCategory.value == 0 ? 1 : selectedCategory.value == 1 ? 2 : null}
+  //   }).then((value) {
+  //     if (value.status == 200) {
+  //       if (initial) {
+  //         dishListForApi.value = value.data?.dishes ?? [];
+  //         isLoadingDishes(false);
+  //       } else {
+  //         dishListForApi.addAll(value.data?.dishes ?? []);
+  //         isLoadingDishes(false);
+  //
+  //       }
+  //
+  //       dishFilter();
+  //
+  //       if ((value.data?.dishes ?? []).isNotEmpty) {
+  //         isDishesLoadingMore.value = false;
+  //         isHaveDishes = true;
+  //       } else {
+  //         isHaveDishes = false;
+  //         isDishesLoadingMore.value = false;
+  //       }
+  //     } else {
+  //       isLoadingDishes(false);
+  //
+  //       ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+  //         content: Text(value.message.toString() ?? ""),
+  //         backgroundColor: Colors.red,
+  //       ));
+  //     }
+  //   });
+  // }
+
+
+
 
   bool onScrollOngoing(ScrollNotification scrollInfo) {
     if (!isRestaurantsLoadingMore.value &&
@@ -192,4 +253,48 @@ class RestaurantsAndDishesListingController extends GetxController {
     }
     return false;
   }
+
+
+  // bool onScrollDishes(ScrollNotification scrollInfo) {
+  //   if (!isDishesLoadingMore.value &&
+  //       scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+  //       isHaveDishes) {
+  //     page++;
+  //     if (isHaveDishes) {
+  //       isDishesLoadingMore.value = true;
+  //       getDishes(initial: false);
+  //     } else {
+  //       isDishesLoadingMore.value = false;
+  //     }
+  //   }
+  //   return false;
+  // }
+
+
+  // void dishFilter() {
+  //   debugPrint("inside filter");
+  //   List<Dishes> filteredList = [];
+  //
+  //   if (selectedCategory.value == 0) {
+  //     debugPrint("selected category 0");
+  //     // Filter for vegetarian dishes
+  //     filteredList = dishListForApi.where((dish) => dish.storeProducts?.isVeg == 1).toList();
+  //     debugPrint("selected category 0 count ${filteredList.length}");
+  //
+  //   } else if (selectedCategory.value == 1) {
+  //     debugPrint("selected category 1");
+  //
+  //     // Filter for non-vegetarian dishes
+  //     filteredList = dishListForApi.where((dish) => dish.storeProducts?.isVeg == 2).toList();
+  //     debugPrint("selected category 1 count ${filteredList.length}");
+  //   } else {
+  //     // No filter, keep all dishes
+  //     filteredList = List.from(dishListForApi);
+  //   }
+  //
+  //   dishList.clear();
+  //   dishList.addAll(filteredList);
+  //   debugPrint("inside all ${dishList.length}");
+  // }
+
 }

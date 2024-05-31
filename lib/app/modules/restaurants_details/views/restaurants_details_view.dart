@@ -20,7 +20,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 import '../../../core/utility.dart';
 
 class RestaurantsDetailsView extends StatefulWidget {
-   RestaurantsDetailsView({super.key, required this.restaurantId, required this.distance,   this.restaurantData});
+   const RestaurantsDetailsView({super.key, required this.restaurantId, required this.distance,   this.restaurantData});
 
   final String restaurantId;
   final num distance;
@@ -47,74 +47,66 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: Obx(() {
-          return restaurantsDetailsController.isLoading.value? const Center(child: CircularProgressIndicator(color: Colors.transparent,)):Text(
+        title:
+        // Obx(() {
+        //   return
+        // restaurantsDetailsController.isLoading.value? const Center(child: CircularProgressIndicator(color: Colors.transparent,)):
+    Text(
 
              widget.restaurantData?.restaurantDetails?.first.name ?? "",
             // restaurantsDetailsController
             //         .restaurantDetails.first.restaurantDetails?.first.name ??
             //     '',
             style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
-          );
-        }),
+          ),
+        // }),
         backgroundColor: AppColors.backgroundColor,
       ),
-      body: LoadingView(
-        isAsyncCall: restaurantsDetailsController.isLoading,
-        showBackGroundData: false,
-        authenticated: true.obs,
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (scrollInfo) {
-            return restaurantsDetailsController.onScrollOngoing(scrollInfo,
-                restaurantId: widget.restaurantId);
-          },
-          child:  SingleChildScrollView(
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                             BannerAndRatingWidget(restaurantData:widget.restaurantData, distance: widget.distance, controller: restaurantsDetailsController,),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                             SearchWidget(controller: restaurantsDetailsController,restaurantData:widget.restaurantData),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                             ChipWidget(controller:restaurantsDetailsController,restaurantId:widget.restaurantId),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Obx(() {
-                              return restaurantsDetailsController.restaurantDetails.isNotEmpty ? ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return DishCard(
-                                    restaurant: restaurantsDetailsController
-                                        .restaurantDetails[index],
-                                    index: index,
-                                    isDishes: false,
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return const SizedBox(
-                                    height: 10,
-                                  );
-                                },
-                                itemCount: restaurantsDetailsController
-                                    .restaurantDetails.length,
-                              ):const Center(child: Text("No dish found!"));
-                            })
-                          ],
+      body: SingleChildScrollView(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                         BannerAndRatingWidget(restaurantData:widget.restaurantData, distance: widget.distance, controller: restaurantsDetailsController,),
+                        const SizedBox(
+                          height: 20,
                         ),
-                      ),
+                         SearchWidget(controller: restaurantsDetailsController,restaurantData:widget.restaurantData),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                         ChipWidget(controller:restaurantsDetailsController,restaurantId:widget.restaurantId),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Obx(() {
+                          return restaurantsDetailsController.restaurantDishList.isNotEmpty ? ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return DishCard(
+                                restaurant: restaurantsDetailsController
+                                    .restaurantDishList[index],
+                                index: index,
+                                isDishes: false,
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                height: 10,
+                              );
+                            },
+                            itemCount: restaurantsDetailsController
+                                .restaurantDishList.length,
+                          ):const Center(child: Text("No dish found!"));
+                        })
+                      ],
                     ),
-                  )
-        ),
-      ),
+                  ),
+                ),
+              ),
     );
   }
 }
@@ -137,58 +129,159 @@ class _ChipWidgetState extends State<ChipWidget> {
   Widget build(BuildContext context) {
     return Obx(
       () {
-        return widget.controller.isLoading.value ? const SizedBox.shrink() : SizedBox(
-          height: 50,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return GestureDetector(
+      return widget.controller.isLoading.value? CircularProgressIndicator(): Row(
+          children: List.generate(
+            widget.controller.chipTitles.length,
+                (index) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                splashFactory: NoSplash.splashFactory,
                 onTap: () {
-                    widget.controller.selectedFilter.value = index;
-                    widget.controller.getRestaurantDetails(restaurantId:widget.restaurantId , initial: true);
+                  widget.controller.selectedFilter.value = index;
+                  widget.controller.restaurantDishFilter();
+                  // controller. dishFilter();
                 },
-                child: Chip(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                    side: const BorderSide(color: Colors.grey),
-                  ),
-                  label: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CommonImageView(
-                        svgPath:widget.controller.chipImages[index],
-                        color: widget.controller.selectedFilter.value == index ? Colors.white : null,
+                child: Obx(() {
+                  return Container(
+                    height: 35,
+                    width: 110,
+                    decoration: BoxDecoration(
+                      color: widget.controller
+                          .selectedFilter.value ==
+                          index
+                          ? AppColors.primaryColor
+                          : AppColors.white,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(40),
                       ),
+                      border: Border.all(
+                        color: AppColors.borderColor,
+                        style: BorderStyle.solid,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.center,
+                        children: [
+                          widget.controller.selectedFilter
+                              .value ==
+                              index
+                              ? CommonImageView(
+                            svgPath:
+                            widget.controller.chipImages[index],
+                            color: AppColors.white,
+                          )
+                              : CommonImageView(
+                              svgPath:
+                              widget.controller.chipImages[index]),
+                          Text(
+                            widget.controller.chipTitles[index],
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: widget.controller
+                                    .selectedFilter
+                                    .value ==
+                                    index
+                                    ? AppColors.white
+                                    : Colors.black),
+                          ),
+                          // SizedBox(width: 10,),
+                          widget.controller
+                              .selectedFilter
+                              .value ==
+                              index ?   Spacer() : SizedBox.shrink(),
+                          widget.controller
+                              .selectedFilter
+                              .value ==
+                              index ? InkWell(
+                              onTap: (){
+                                widget.controller
+                                    .selectedFilter
+                                    .value = 2;
+                                widget.controller.restaurantDishFilter();
 
-                      const SizedBox(
-                        width: 5,
+                                // controller.dishFilter();
+
+                              },
+                              child: Icon(Icons.close_rounded,size: 20,)):SizedBox.shrink(),
+                        ],
                       ),
-                      Text(
-                        widget.controller.chipTitles[index],
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color:
-                          widget.controller.selectedFilter.value == index ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                  backgroundColor:
-                  widget.controller.selectedFilter.value == index ? AppColors.primaryColor : null,
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(
-                width: 10,
-              );
-            },
-            itemCount: widget.controller.chipTitles.length,
+                    ),
+                  );
+                }),
+              ),
+            ),
           ),
         );
+
+        // return widget.controller.isLoading.value ? const CircularProgressIndicator() : SizedBox(
+        //   height: 50,
+        //   child: ListView.separated(
+        //     scrollDirection: Axis.horizontal,
+        //     shrinkWrap: true,
+        //     itemBuilder: (context, index) {
+        //       return Obx(
+        //          () {
+        //           return GestureDetector(
+        //             onTap: () {
+        //                 widget.controller.selectedFilter.value = index;
+        //                 // widget.controller.getRestaurantDetails(restaurantId:widget.restaurantId , initial: true);
+        //               widget.controller.restaurantDishFilter();
+        //             },
+        //             child: Chip(
+        //               shape: RoundedRectangleBorder(
+        //                 borderRadius: BorderRadius.circular(50.0),
+        //                 side: const BorderSide(color: Colors.grey),
+        //               ),
+        //               label: Row(
+        //                 mainAxisAlignment: MainAxisAlignment.start,
+        //                 mainAxisSize: MainAxisSize.min,
+        //                 children: [
+        //                   CommonImageView(
+        //                     svgPath:widget.controller.chipImages[index],
+        //                     color: widget.controller.selectedFilter.value == index ? Colors.white : null,
+        //                   ),
+        //
+        //                   const SizedBox(
+        //                     width: 5,
+        //                   ),
+        //                   Text(
+        //                     widget.controller.chipTitles[index],
+        //                     style: TextStyle(
+        //                       fontSize: 12,
+        //                       fontWeight: FontWeight.w600,
+        //                       color:
+        //                       widget.controller.selectedFilter.value == index ? Colors.white : Colors.black,
+        //                     ),
+        //                   ),
+        //                   SizedBox(width: 10,),
+        //                   widget.controller.selectedFilter.value == index? InkWell(
+        //                     onTap: (){
+        //                       debugPrint("hello");
+        //                       widget.controller.selectedFilter.value = 3;
+        //                       widget.controller.restaurantDishFilter();
+        //                     },
+        //                       child: Icon(Icons.close_rounded,size: 20,)):SizedBox.shrink()
+        //                 ],
+        //               ),
+        //               backgroundColor:
+        //               widget.controller.selectedFilter.value == index ? AppColors.primaryColor : null,
+        //             ),
+        //           );
+        //         }
+        //       );
+        //     },
+        //     separatorBuilder: (context, index) {
+        //       return const SizedBox(
+        //         width: 10,
+        //       );
+        //     },
+        //     itemCount: widget.controller.chipTitles.length,
+        //   ),
+        // );
       }
     );
   }
@@ -250,6 +343,8 @@ class SearchWidgetState extends State<SearchWidget> {
       log("Speech result = ${result.recognizedWords}", name: "Voice");
       _lastWords = result.recognizedWords;
       searchController.text = result.recognizedWords;
+      widget.controller.searchQuery.value = result.recognizedWords;
+      widget.controller.restaurantDishFilter();
       micSize = 60.0;
     });
   }
@@ -278,6 +373,10 @@ class SearchWidgetState extends State<SearchWidget> {
         children: [
           Expanded(
             child: TextFormField(
+              onChanged: (value){
+                widget.controller.searchQuery.value = value;
+                widget.controller.restaurantDishFilter();
+              },
               controller: searchController,
               decoration: InputDecoration(
                 hintText: "Search in ${ widget.restaurantData?.restaurantDetails?.first.name}",
@@ -300,6 +399,7 @@ class SearchWidgetState extends State<SearchWidget> {
           InkWell(
             splashColor: Colors.transparent,
             onTap: () {
+
               searchController.text = '';
               _speechToText.isNotListening
                   ? _startListening()

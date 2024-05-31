@@ -13,7 +13,7 @@ class Assets {
   static const String coreUtility = 'lib/app/core/utility.dart';
   static const String dataDishListingRequest = 'lib/app/modules/restaurants_and_dishes_listing/data/dish_listing_request.dart';
   static const String dataDishListingResponse = 'lib/app/modules/restaurants_and_dishes_listing/data/dish_listing_response.dart';
-  static const String dataGetRestaurantDetailsResponse = 'lib/app/modules/restaurants_details/data/get_restaurant_details_response.dart';
+  static const String dataGetRestaurantDetailResponse = 'lib/app/modules/restaurants_details/data/get_restaurant_details_response.dart';
   static const String dataHomeRepository = 'lib/app/modules/home/data/home_repository.dart';
   static const String dataHomeService = 'lib/app/modules/home/data/home_service.dart';
   static const String dataRestaurantAndDishListingRepo = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_repo.dart';

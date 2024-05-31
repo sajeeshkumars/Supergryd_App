@@ -26,48 +26,55 @@ class RestaurantsDetailsController extends GetxController {
     // ""
   ];
 
-  RxInt selectedFilter = 2.obs;
+  RxInt selectedFilter = 3.obs;
+  RxString searchQuery = ''.obs;
+
 
   RestaurantDetailsRepository restaurantDetailsRepository =
-      Get.put(RestaurantDetailsRepository());
-  RxList<Restaurant> restaurantDetails = <Restaurant>[].obs;
+  Get.put(RestaurantDetailsRepository());
+  RxList<Restaurant> restaurantDishList = <Restaurant>[].obs;
+  RxList<Restaurant> restaurantDishListForApi = <Restaurant>[].obs;
 
   Future<bool> getRestaurantDetails(
       {required String restaurantId, required bool initial}) async {
-    if (initial) {
-      page = 1;
-      limit = 10;
-      isLoading(true);
-      restaurantDetails.clear();
-    }
+    // if (initial) {
+    //   page = 0;
+    //   limit = 0;
+    //   isLoading(true);
+    //   restaurantDetails.clear();
+    // }
 
     await restaurantDetailsRepository.getRestaurantDetails({
       "page": page,
       "limit": limit,
       "filter": {
-        "isVeg": selectedFilter.value == 0
-            ? 1
-            : selectedFilter.value == 1
-                ? 2
-                : null
+        "isVeg": null
+        // selectedFilter.value == 0
+        //     ? 1
+        //     : selectedFilter.value == 1
+        //         ? 2
+        //         : null
       },
       "restaurant_id": restaurantId
     }).then((value) {
       if ((value.data != null) && (value.status == 200)) {
-        if (initial) {
-          restaurantDetails.value = value.data?.restaurant ?? [];
-          isLoading(false);
-        } else {
-          restaurantDetails.addAll(value.data?.restaurant ?? []);
-        }
-        if ((value.data?.restaurant ?? []).isNotEmpty) {
-          isLoadingMore.value = false;
-          haveRestaurantDetails = true;
-        } else {
-          haveRestaurantDetails = false;
-          isLoadingMore.value = false;
-        }
-        restaurantDetails.addAll(value.data?.restaurant ?? []);
+        // if (initial) {
+        //
+        //   restaurantDetails.value = value.data?.restaurant ?? [];
+        //   isLoading(false);
+        // }
+        // else {
+        restaurantDishListForApi.addAll(value.data?.restaurant ?? []);
+        restaurantDishFilter();
+        // }
+        // if ((value.data?.restaurant ?? []).isNotEmpty) {
+        //   isLoadingMore.value = false;
+        //   haveRestaurantDetails = true;
+        // } else {
+        //   haveRestaurantDetails = false;
+        //   isLoadingMore.value = false;
+        // }
+        // restaurantDetails.addAll(value.data?.restaurant ?? []);
         isLoading(false);
         return true;
       } else {
@@ -84,19 +91,76 @@ class RestaurantsDetailsController extends GetxController {
     return false;
   }
 
-  bool onScrollOngoing(ScrollNotification scrollInfo,
-      {required String restaurantId}) {
-    if (!isLoadingMore.value &&
-        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
-        haveRestaurantDetails) {
-      page = page + 1;
-      if (haveRestaurantDetails) {
-        isLoadingMore.value = true;
-        getRestaurantDetails(restaurantId: restaurantId, initial: false);
-      } else {
-        isLoadingMore.value = false;
-      }
+  // void restaurantDishFilter(){
+  //     List<Restaurant> filteredList = [];
+  //
+  //     if (selectedFilter.value == 0) {
+  //       debugPrint("selected category 0");
+  //       // Filter for vegetarian dishes
+  //       filteredList = restaurantDishListForApi.where((dish) => dish.isVeg == 1).toList();
+  //       debugPrint("selected category 0 count ${filteredList.length}");
+  //
+  //     } else if (selectedFilter.value == 1) {
+  //       debugPrint("selected category 1");
+  //
+  //       // Filter for non-vegetarian dishes
+  //       filteredList = restaurantDishListForApi.where((dish) => dish.isVeg == 2).toList();
+  //       debugPrint("selected category 1 count ${filteredList.length}");
+  //     } else {
+  //       // No filter, keep all dishes
+  //       filteredList = List.from(restaurantDishListForApi);
+  //     }
+  //
+  //     restaurantDishList.clear();
+  //     restaurantDishList.addAll(filteredList);
+  //     debugPrint("inside all ${restaurantDishList.length}");
+  //   }
+
+
+  void restaurantDishFilter() {
+    List<Restaurant> filteredList = [];
+
+    // Apply the selected filter
+    if (selectedFilter.value == 0) {
+      filteredList =
+          restaurantDishListForApi.where((dish) => dish.isVeg == 1).toList();
+    } else if (selectedFilter.value == 1) {
+      filteredList =
+          restaurantDishListForApi.where((dish) => dish.isVeg == 2).toList();
+    } else {
+      filteredList = List.from(restaurantDishListForApi);
     }
-    return false;
+
+    // Apply the search filter
+    if (searchQuery.value.isNotEmpty) {
+      String normalizedSearchQuery = searchQuery.value.toLowerCase().trim();
+      filteredList = filteredList.where((dish) {
+        String dishName = dish.name?.toLowerCase().trim() ?? '';
+        return dishName.contains(normalizedSearchQuery);
+      }).toList();
+    }
+
+    restaurantDishList.clear();
+    restaurantDishList.addAll(filteredList);
+    debugPrint("Filtered list length: ${restaurantDishList.length}");
   }
+
 }
+
+
+// bool onScrollOngoing(ScrollNotification scrollInfo,
+  //     {required String restaurantId}) {
+  //   if (!isLoadingMore.value &&
+  //       scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+  //       haveRestaurantDetails) {
+  //     page = page + 1;
+  //     if (haveRestaurantDetails) {
+  //       isLoadingMore.value = true;
+  //       getRestaurantDetails(restaurantId: restaurantId, initial: false);
+  //     } else {
+  //       isLoadingMore.value = false;
+  //     }
+  //   }
+  //   return false;
+  // }
+

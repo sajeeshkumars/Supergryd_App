@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -149,11 +150,12 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                     onTap: () {
                                       controller.selectedCategory.value = index;
                                       controller.getDishes(initial: true);
+                                     // controller. dishFilter();
                                     },
                                     child: Obx(() {
                                       return Container(
                                         height: 35,
-                                        width: 85,
+                                        width: 110,
                                         decoration: BoxDecoration(
                                           color: controller
                                                       .selectedCategory.value ==
@@ -197,6 +199,25 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                                         ? AppColors.white
                                                         : Colors.black),
                                               ),
+                                              // SizedBox(width: 10,),
+                                              controller
+                                                  .selectedCategory
+                                                  .value ==
+                                                  index ?   Spacer() : SizedBox.shrink(),
+                                              controller
+                                                  .selectedCategory
+                                                  .value ==
+                                                  index ? InkWell(
+                                                onTap: (){
+                                                  controller
+                                                      .selectedCategory
+                                                      .value = 2;
+                                                  controller.getDishes(initial: true);
+
+                                                  // controller.dishFilter();
+
+                                                },
+                                                  child: Icon(Icons.close_rounded,size: 20,)):SizedBox.shrink(),
                                             ],
                                           ),
                                         ),
@@ -230,7 +251,16 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                             );
                                           },
                                         ),
-                                      ):const Align(alignment: Alignment.bottomCenter,child: Text("No dish found!"),);
+                                      ): SizedBox(
+                                  height: MediaQuery.of(context).size.height/2,
+                                        child:  Column(
+                                          children: [
+                                            SizedBox(height: MediaQuery.of(context).size.height/4,),
+
+                                            Text("No dish found!",style:TextStyle(fontSize: 16,fontWeight: FontWeight.w500),),
+                                          ],
+                                        ),
+                                      );
                               }),
                             ),
                           ],
@@ -300,7 +330,7 @@ class _DishCardState extends State<DishCard> {
                     url: widget.isDishes
                         ? widget.dish?.storeProducts?.images?.productImageUrl
                         : widget
-                            .restaurant?.storeProducts?.images?.imageMobile,
+                            .restaurant?.images?.imageMobile,
                   ),
                 ),
                 Expanded(
@@ -313,7 +343,7 @@ class _DishCardState extends State<DishCard> {
                           (widget.isDishes
                                   ? widget.dish?.storeProducts
                                       ?.name
-                                  : widget.restaurant?.storeProducts?.name) ??
+                                  : widget.restaurant?.name) ??
                               "",
                           maxLines:widget.isDishes? 2:3,
                           style: const TextStyle(
@@ -324,7 +354,7 @@ class _DishCardState extends State<DishCard> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                            "₹ ${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.storeProducts?.price)}",
+                            "₹ ${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.price)}",
                         style: TextStyle(fontWeight: FontWeight.w500),),
                         Chip(
                           label: Row(
@@ -335,7 +365,7 @@ class _DishCardState extends State<DishCard> {
                                     "packages/mynewpackage/${Assets.iconsStar}",
                               ),
                               Text(
-                                "${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.storeProducts?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating ?? 0 : widget.restaurant?.storeProducts?.productDetails?.countOfRating ?? 0)})",
+                                "${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating ?? 0 : widget.restaurant?.productDetails?.countOfRating ?? 0)})",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12,
