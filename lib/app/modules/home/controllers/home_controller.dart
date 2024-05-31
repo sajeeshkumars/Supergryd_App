@@ -224,6 +224,7 @@ class HomeController extends GetxController {
         debugPrint("authenticated");
         debugPrint("${value.message}");
         // storage.writeUserId(value.data?.id ?? "");
+        Constants.userId = value.data?.id ?? "";
       } else {
 
         debugPrint("after failure${value.message}");
