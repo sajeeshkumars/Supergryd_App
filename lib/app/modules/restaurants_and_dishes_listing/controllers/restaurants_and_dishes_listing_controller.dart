@@ -19,6 +19,7 @@ class RestaurantsAndDishesListingController extends GetxController {
     // Assets.iconsEgg,
     Assets.iconsNonVeg];
   RxInt selectedCategory = 3.obs;
+  RxBool isSelected = false.obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingDishes = false.obs;
   // AppStorage appStorage = Get.find();

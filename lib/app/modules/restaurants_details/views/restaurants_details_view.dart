@@ -82,7 +82,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
                           height: 20,
                         ),
                         Obx(() {
-                          return restaurantsDetailsController.restaurantDishList.isNotEmpty ? ListView.separated(
+                          return restaurantsDetailsController.isLoading.value? const Center(child:SizedBox.shrink()): restaurantsDetailsController.restaurantDishList.isNotEmpty ? ListView.separated(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
@@ -129,7 +129,7 @@ class _ChipWidgetState extends State<ChipWidget> {
   Widget build(BuildContext context) {
     return Obx(
       () {
-      return widget.controller.isLoading.value? CircularProgressIndicator(): Row(
+      return widget.controller.isLoading.value? const Center(child: CircularProgressIndicator()): Row(
           children: List.generate(
             widget.controller.chipTitles.length,
                 (index) => Padding(
@@ -137,9 +137,17 @@ class _ChipWidgetState extends State<ChipWidget> {
               child: InkWell(
                 splashFactory: NoSplash.splashFactory,
                 onTap: () {
-                  widget.controller.selectedFilter.value = index;
-                  widget.controller.restaurantDishFilter();
-                  // controller. dishFilter();
+                  widget.controller.isSelected.value = !widget.controller.isSelected.value;
+                  if(widget.controller.isSelected.value){
+                        widget.controller.selectedFilter.value = index;
+                        widget.controller.restaurantDishFilter();
+                      }else{
+                    widget.controller
+                        .selectedFilter
+                        .value = 2;
+                    widget.controller.restaurantDishFilter();
+                  }
+                      // controller. dishFilter();
                 },
                 child: Obx(() {
                   return Container(
@@ -169,13 +177,11 @@ class _ChipWidgetState extends State<ChipWidget> {
                           widget.controller.selectedFilter
                               .value ==
                               index
-                              ? CommonImageView(
-                            svgPath:
+                              ? SvgPicture.asset(
                             widget.controller.chipImages[index],
                             color: AppColors.white,
                           )
-                              : CommonImageView(
-                              svgPath:
+                              : SvgPicture.asset(
                               widget.controller.chipImages[index]),
                           Text(
                             widget.controller.chipTitles[index],
@@ -198,10 +204,10 @@ class _ChipWidgetState extends State<ChipWidget> {
                               .value ==
                               index ? InkWell(
                               onTap: (){
-                                widget.controller
-                                    .selectedFilter
-                                    .value = 2;
-                                widget.controller.restaurantDishFilter();
+                                // widget.controller
+                                //     .selectedFilter
+                                //     .value = 2;
+                                // widget.controller.restaurantDishFilter();
 
                                 // controller.dishFilter();
 

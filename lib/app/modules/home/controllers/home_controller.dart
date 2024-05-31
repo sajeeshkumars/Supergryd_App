@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mynewpackage/app/authentication/authentication_repo.dart';
@@ -135,8 +136,10 @@ class HomeController extends GetxController {
                         child: Container(
                           color: AppColors.backgroundColor,
                           child: ListTile(
-                            leading: CommonImageView(
-                              svgPath: "packages/mynewpackage/${addressTypeImage[index]}",),
+                            leading:SvgPicture.asset("packages/mynewpackage/${addressTypeImage[index]}"),
+                            // CommonImageView(
+                            //   svgPath: "packages/mynewpackage/${addressTypeImage[index]}",),
+
                             title: Text(addressHeading[index],
                               style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w600),),
                             subtitle: Text(addressDescription[index],

@@ -10,6 +10,7 @@ import 'package:mynewpackage/widgets/common_Image_view.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
 
 import '../controllers/home_controller.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({
@@ -49,9 +50,11 @@ class HomeView extends GetView<HomeController> {
                   Obx(() {
                     return Row(
                       children: [
-                        CommonImageView(
-                            svgPath:
-                                "packages/mynewpackage/${Assets.iconsLocation}"),
+                        SvgPicture.asset("packages/mynewpackage/${Assets.iconsLocation}"),
+
+                        // CommonImageView(
+                        //     svgPath:
+                        //         "packages/mynewpackage/${Assets.iconsLocation}"),
                         const SizedBox(
                           width: 5,
                         ),
@@ -191,7 +194,9 @@ class HomeView extends GetView<HomeController> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          SvgPicture.network(controller.serviceList[index].images?.first.primary ?? ""),
+                                          CommonImageView(svgPath:controller.serviceList[index].images?.first.primary ?? "" ,),
+
+                                          // SvgPicture.network(controller.serviceList[index].images?.first.primary ?? ""),
                                           SizedBox(height: 8,),
                                           Flexible(
                                             child: Text(
