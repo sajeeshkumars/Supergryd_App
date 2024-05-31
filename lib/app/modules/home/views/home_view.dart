@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app_colors.dart';
+import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/generated/assets.dart';
 import 'package:mynewpackage/widgets/common_Image_view.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
@@ -126,8 +127,8 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ),
             
-                  const Text(
-                    "Hi Sajeesh,",
+                   Text(
+                    "Hi ${Constants.name},",
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
                   ),
                   const Text("Explore The Popular Categories",

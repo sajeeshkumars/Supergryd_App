@@ -4,4 +4,5 @@ class Constants{
  static  String refreshToken = '';
  static String userId ='';
  static bool isAuthenticated = false;
+ static String name = "Sajeesh";
 }

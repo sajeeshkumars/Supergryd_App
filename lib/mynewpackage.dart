@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/home/views/home_view.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app/routes/app_pages.dart';
+import 'package:mynewpackage/constants.dart';
 
 import 'app/modules/home/controllers/home_controller.dart';
 import 'app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
@@ -39,6 +40,7 @@ class _MyPackageState extends State<MyPackage> {
     DependencyCreator.init();
 
     HomeController homeController = Get.put(HomeController());
+    Constants.name = widget.name;
     homeController.authenticate(
         clientId: widget.clientId, clientSecrete: widget.clientSecrete,name:widget.name,mobile:widget.mobile);
 
