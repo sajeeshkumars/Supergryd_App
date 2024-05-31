@@ -5,4 +5,5 @@ class Constants{
  static String userId ='';
  static bool isAuthenticated = false;
  static String name = "Sajeesh";
+ static String nameFirstLetter = "S";
 }

@@ -80,7 +80,8 @@ class HomeView extends GetView<HomeController> {
                   width: 42,
                   child: CircleAvatar(
                     backgroundColor: AppColors.primaryColor,
-                    radius: 50, // Radius of the circle
+                    radius: 50,
+                    child: Text(Constants.nameFirstLetter,style: TextStyle(color: Colors.white),), // Radius of the circle
                   ),
                 ),
               ),

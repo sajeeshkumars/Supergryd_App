@@ -41,6 +41,9 @@ class _MyPackageState extends State<MyPackage> {
 
     HomeController homeController = Get.put(HomeController());
     Constants.name = widget.name;
+    Constants.nameFirstLetter = getFirstLetter(widget.name).toUpperCase();
+    debugPrint("name letter ${Constants.nameFirstLetter}");
+
     homeController.authenticate(
         clientId: widget.clientId, clientSecrete: widget.clientSecrete,name:widget.name,mobile:widget.mobile);
 
@@ -59,4 +62,12 @@ class _MyPackageState extends State<MyPackage> {
       _ => const HomeView(),
     };
   }
+  String getFirstLetter(String input) {
+    if (input.isNotEmpty) {
+      return input.substring(0, 1);
+    } else {
+      return ''; // Return an empty string if the input is empty
+    }
+  }
+
 }
