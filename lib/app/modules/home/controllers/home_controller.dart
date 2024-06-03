@@ -188,6 +188,7 @@ class HomeController extends GetxController {
           Constants.refreshToken = value.data?.refreshToken ?? "";
           Constants.isAuthenticated = true;
           AppColors.primaryColor = fromHex(value.data!.themes!.first.primaryColor.toString());
+          AppColors.accentColor = fromHex(value.data!.themes!.first.accentColor.toString());
           debugPrint("color ${AppColors.primaryColor}");
 
         //   storage.writeIsAuthenticated(true);

@@ -421,7 +421,7 @@ class SearchWidgetState extends State<SearchWidget> {
                   topRight: Radius.circular(28),
                   bottomRight: Radius.circular(28),
                 ),
-                color: micBackground,
+                color: AppColors.accentColor,
               ),
               child: SvgPicture.asset(
                 "packages/mynewpackage/lib/assets/icons/mic-icon.svg",
