@@ -1,12 +1,12 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/core/utility.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
+import 'package:mynewpackage/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/views/restaurants_details_view.dart';
 
 import '../../../../app_colors.dart';
@@ -53,14 +53,16 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                     )
                   ],
                 ),
+                SizedBox(
+                  height: 10,
+                ),
                 Obx(() {
                   return Row(
                     children: [
                       SvgPicture.asset(
-                          "packages/mynewpackage/${Assets.iconsLocation}"),
-                      // CommonImageView(
-                      //     svgPath:
-                      //         "packages/mynewpackage/${Assets.iconsLocation}"),
+                        "packages/mynewpackage/${Assets.iconsLocation}",
+                        color: AppColors.primaryColor,
+                      ),
                       const SizedBox(
                         width: 5,
                       ),
@@ -111,10 +113,6 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                               'packages/mynewpackage/lib/assets/icons/not_available_at_location.svg'),
-                          // CommonImageView(
-                          //   svgPath:
-                          //       'packages/mynewpackage/lib/assets/icons/not_available_at_location.svg',
-                          // ),
                           const SizedBox(
                             height: 20,
                           ),
@@ -134,7 +132,6 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                           SizedBox(
                             height: 10,
                           ),
-
                           const Text(
                             "We will notify you once we start our service in your area",
                             style: TextStyle(
@@ -268,6 +265,8 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                                   child: InkWell(
                                                     onTap: () {},
                                                     child: DishCard(
+                                                      restaurantsAndDishesListingController:
+                                                          controller,
                                                       dish: controller
                                                           .dishList[index],
                                                       index: index,
@@ -321,11 +320,16 @@ class DishCard extends StatefulWidget {
       required this.index,
       this.dish,
       this.restaurant,
-      required this.isDishes});
+      required this.isDishes,
+      this.restaurantsAndDishesListingController,
+      this.restaurantsDetailsController});
 
   final Dishes? dish;
   final Restaurant? restaurant;
   final bool isDishes;
+  final RestaurantsAndDishesListingController?
+      restaurantsAndDishesListingController;
+  final RestaurantsDetailsController? restaurantsDetailsController;
 
   @override
   State<DishCard> createState() => _DishCardState();
@@ -381,10 +385,11 @@ class _DishCardState extends State<DishCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Name at the top
+
                       Text(
                         (widget.isDishes
-                            ? widget.dish?.storeProducts?.name
-                            : widget.restaurant?.name) ??
+                                ? widget.dish?.storeProducts?.name
+                                : widget.restaurant?.name) ??
                             "",
                         maxLines: widget.isDishes ? 2 : 3,
                         style: const TextStyle(
@@ -393,6 +398,15 @@ class _DishCardState extends State<DishCard> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
+                      //         Shimmer.fromColors(
+                      // baseColor: Colors.grey[300]!,
+                      //   highlightColor: Colors.grey[100]!,
+                      //   child: Container(
+                      //     width: 200.0,
+                      //     height: 200.0,
+                      //     color: Colors.white,
+                      //   ),
+                      // ),
                       const SizedBox(height: 8),
                       // Price
                       Text(
@@ -429,8 +443,12 @@ class _DishCardState extends State<DishCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           if (widget.isDishes)
-                            SvgPicture.asset(
-                              "packages/mynewpackage/${Assets.iconsShopIcon}",
+                            ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                  AppColors.accentColor, BlendMode.modulate),
+                              child: SvgPicture.asset(
+                                "packages/mynewpackage/${Assets.iconsShopIcon}",
+                              ),
                             ),
                           const SizedBox(width: 5),
                           if (widget.isDishes)
@@ -451,6 +469,7 @@ class _DishCardState extends State<DishCard> {
                                   onTap: _incrementCount,
                                   child: SvgPicture.asset(
                                     "packages/mynewpackage/${Assets.iconsAddIcon}",
+                                    color: AppColors.primaryColor,
                                   ),
                                 ),
                               if (_count > 0) ...[
@@ -468,18 +487,23 @@ class _DishCardState extends State<DishCard> {
                                         InkWell(
                                           onTap: _incrementCount,
                                           child: const Icon(
-                                              size: 20, Icons.add, color: Colors.white),
+                                              size: 20,
+                                              Icons.add,
+                                              color: Colors.white),
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
                                           '$_count',
-                                          style: const TextStyle(color: Colors.white),
+                                          style: const TextStyle(
+                                              color: Colors.white),
                                         ),
                                         const SizedBox(width: 8),
                                         InkWell(
                                           onTap: _decrementCount,
                                           child: const Icon(
-                                              size: 20, Icons.remove, color: Colors.white),
+                                              size: 20,
+                                              Icons.remove,
+                                              color: Colors.white),
                                         ),
                                       ],
                                     ),
@@ -499,8 +523,6 @@ class _DishCardState extends State<DishCard> {
         ),
       ),
     );
-
-
   }
 }
 
@@ -568,17 +590,26 @@ class RestaurantList extends StatelessWidget {
                                       ),
                                 controller.restaurantList[index].isAvailable ==
                                         1
-                                    ? SvgPicture.asset(
-                                        "packages/mynewpackage/${Assets.iconsOffer}",
+                                    ? ColorFiltered(
+                                        colorFilter: ColorFilter.mode(
+                                            AppColors.accentColor,
+                                            BlendMode.modulate),
+                                        child: SvgPicture.asset(
+                                          "packages/mynewpackage/${Assets.iconsOffer}",
+                                        ),
                                       )
                                     : ImageFiltered(
                                         imageFilter: ImageFilter.blur(
                                             sigmaX: 4.0, sigmaY: 4.0),
-                                        child: SvgPicture.asset(
-                                          "packages/mynewpackage/${Assets.iconsOffer}",
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
+                                        child: ColorFiltered(
+                                          colorFilter: ColorFilter.mode(
+                                              AppColors.accentColor,
+                                              BlendMode.modulate),
+                                          child: SvgPicture.asset(
+                                            "packages/mynewpackage/${Assets.iconsOffer}",
+                                            fit: BoxFit.cover,
+                                          ),
+                                        )),
                                 Padding(
                                   padding: EdgeInsets.all(5.0),
                                   child: Text(

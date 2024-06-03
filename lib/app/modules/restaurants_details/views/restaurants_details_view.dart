@@ -87,6 +87,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return DishCard(
+                                restaurantsDetailsController:restaurantsDetailsController,
                                 restaurant: restaurantsDetailsController
                                     .restaurantDishList[index],
                                 index: index,

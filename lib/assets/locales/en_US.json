@@ -13,5 +13,10 @@
   "restaurants": "Restaurants",
   "dishes": "Dishes",
   "read_more": "Read More",
-  "read_less": "Read Less"
+  "read_less": "Read Less",
+  "total_balance": "Total Balance",
+  "add_credit_card": "Add Credit Card/ Debit Card",
+  "net_banking": "Net Banking",
+  "add_later": "Add Later",
+  "add_cash_to_wallet": "Add Cash to Wallet"
 }

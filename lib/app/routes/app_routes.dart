@@ -8,6 +8,7 @@ abstract class Routes {
   static const RESTAURANTS_AND_DISHES_LISTING =
       _Paths.RESTAURANTS_AND_DISHES_LISTING;
   static const RESTAURANTS_DETAILS = _Paths.RESTAURANTS_DETAILS;
+  static const ADD_CASH_TO_WALLET = _Paths.ADD_CASH_TO_WALLET;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const RESTAURANTS_AND_DISHES_LISTING =
       '/restaurants-and-dishes-listing';
   static const RESTAURANTS_DETAILS = '/restaurants-details';
+  static const ADD_CASH_TO_WALLET = '/add-cash-to-wallet';
 }

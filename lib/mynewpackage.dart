@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/home/views/home_view.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app/routes/app_pages.dart';
+import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/constants.dart';
 
 import 'app/modules/home/controllers/home_controller.dart';
@@ -46,6 +47,8 @@ class _MyPackageState extends State<MyPackage> {
 
     homeController.authenticate(
         clientId: widget.clientId, clientSecrete: widget.clientSecrete,name:widget.name,mobile:widget.mobile);
+    debugPrint("primary color ${AppColors.primaryColor}");
+
 
     debugPrint("clientid ${widget.clientId}");
 

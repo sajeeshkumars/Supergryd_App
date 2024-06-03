@@ -9,8 +9,8 @@ import 'package:mynewpackage/generated/assets.dart';
 import 'package:mynewpackage/widgets/common_Image_view.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
 
+import '../../add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
 import '../controllers/home_controller.dart';
-import 'package:shimmer/shimmer.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({
@@ -47,14 +47,15 @@ class HomeView extends GetView<HomeController> {
                       )
                     ],
                   ),
+                  SizedBox(height: 10,),
+
                   Obx(() {
                     return Row(
                       children: [
-                        SvgPicture.asset("packages/mynewpackage/${Assets.iconsLocation}"),
-
-                        // CommonImageView(
-                        //     svgPath:
-                        //         "packages/mynewpackage/${Assets.iconsLocation}"),
+                        SvgPicture.asset(
+                          "packages/mynewpackage/${Assets.iconsLocation}",
+                          color: AppColors.primaryColor,
+                        ),
                         const SizedBox(
                           width: 5,
                         ),
@@ -71,9 +72,9 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             leading: InkWell(
-              onTap: (){
-                Get.back();
-              },
+                onTap: () {
+                  Get.back();
+                },
                 child: const Icon(Icons.arrow_back_rounded)),
             actions: [
               Padding(
@@ -84,7 +85,10 @@ class HomeView extends GetView<HomeController> {
                   child: CircleAvatar(
                     backgroundColor: AppColors.primaryColor,
                     radius: 50,
-                    child: Text(Constants.nameFirstLetter,style: TextStyle(color: Colors.white),), // Radius of the circle
+                    child: Text(
+                      Constants.nameFirstLetter,
+                      style: TextStyle(color: Colors.white),
+                    ), // Radius of the circle
                   ),
                 ),
               ),
@@ -109,7 +113,7 @@ class HomeView extends GetView<HomeController> {
                           child: InkWell(
                             splashColor: Colors.transparent,
                             onTap: () {
-            
+                              // Get.to(()=> AddCashToWalletView());
                             },
                             child: Column(
                               children: [
@@ -118,11 +122,18 @@ class HomeView extends GetView<HomeController> {
                                   child: CommonImageView(
                                     height: 100,
                                     width: 100,
-                                    imagePath: "packages/mynewpackage/${controller.specialOfferImages[index]}",
+                                    imagePath:
+                                        "packages/mynewpackage/${controller.specialOfferImages[index]}",
                                   ),
                                 ),
-                                const SizedBox(height: 5,),
-                                Text(controller.specialOfferTitle[index],textAlign:TextAlign.center,style: const TextStyle(fontSize: 12),)
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  controller.specialOfferTitle[index],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontSize: 12),
+                                )
                               ],
                             ),
                           ),
@@ -130,8 +141,7 @@ class HomeView extends GetView<HomeController> {
                       },
                     ),
                   ),
-            
-                   Text(
+                  Text(
                     "Hi ${Constants.name},",
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
                   ),
@@ -143,15 +153,16 @@ class HomeView extends GetView<HomeController> {
                     height: 10,
                   ),
                   LayoutBuilder(builder: (context, constraints) {
-                    double itemWidth = (constraints.maxWidth) ;
+                    double itemWidth = (constraints.maxWidth);
                     double itemHeight = itemWidth +
                         MediaQuery.of(context).size.height *
                             .15; // Make items square
                     return Obx(() {
                       return controller.isLoading.value
-                          ?  CircularProgressIndicator(color: AppColors.primaryColor)
+                          ? CircularProgressIndicator(
+                              color: AppColors.primaryColor)
                           : GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -177,12 +188,12 @@ class HomeView extends GetView<HomeController> {
                                             BorderRadius.circular(10.0),
                                         side: BorderSide(
                                           color:
-                                          // controller.serviceList[index]
-                                          //             .categoryName ==
-                                          //         "Gifts"
-                                          //     ? AppColors.green
-                                          //     :
-                                          AppColors.white,
+                                              // controller.serviceList[index]
+                                              //             .categoryName ==
+                                              //         "Gifts"
+                                              //     ? AppColors.green
+                                              //     :
+                                              AppColors.white,
                                           width: 2.0,
                                         )),
                                     elevation: 0,
@@ -194,10 +205,20 @@ class HomeView extends GetView<HomeController> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          CommonImageView(svgPath:controller.serviceList[index].images?.first.primary ?? "" ,),
-
-                                          // SvgPicture.network(controller.serviceList[index].images?.first.primary ?? ""),
-                                          SizedBox(height: 8,),
+                                          ColorFiltered(
+                                              colorFilter: ColorFilter.mode(
+                                                  AppColors.accentColor, BlendMode.modulate),
+                                              child: CommonImageView(
+                                                svgPath: controller
+                                                        .serviceList[index]
+                                                        .images
+                                                        ?.first
+                                                        .primary ??
+                                                    "",
+                                              )),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
                                           Flexible(
                                             child: Text(
                                               controller.serviceList[index]

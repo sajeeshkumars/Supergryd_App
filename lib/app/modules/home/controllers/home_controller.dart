@@ -134,11 +134,10 @@ class HomeController extends GetxController {
                           Get.back();
                         },
                         child: Container(
-                          color: AppColors.backgroundColor,
+                          color: AppColors.primaryColor.withOpacity(.05),
                           child: ListTile(
-                            leading:SvgPicture.asset("packages/mynewpackage/${addressTypeImage[index]}"),
-                            // CommonImageView(
-                            //   svgPath: "packages/mynewpackage/${addressTypeImage[index]}",),
+                            leading:ColorFiltered(colorFilter: ColorFilter.mode(AppColors.accentColor, BlendMode.modulate),
+                            child: SvgPicture.asset("packages/mynewpackage/${addressTypeImage[index]}")),
 
                             title: Text(addressHeading[index],
                               style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w600),),
@@ -173,7 +172,6 @@ class HomeController extends GetxController {
     if(result == true){
       await authRepository.authenticate(requestModel.toJson()).then((value) {
       if (value.status == 200) {
-          isLoading(false);
 
           debugPrint("after success${isLoading.value}");
 
@@ -194,6 +192,8 @@ class HomeController extends GetxController {
         //   storage.writeIsAuthenticated(true);
           createUser(mobile: mobile, name: name);
           getServices();
+          isLoading(false);
+
 
       }
       else {
@@ -207,7 +207,7 @@ class HomeController extends GetxController {
     }else{
       isLoading(false);
       ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(content: Text("No Internet",), backgroundColor: Colors.red,));
+          const SnackBar(content: Text("No Internet",), backgroundColor: Colors.red,));
     }
   }
 
