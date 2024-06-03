@@ -137,8 +137,8 @@ class RestaurantsAndDishesListingController extends GetxController {
             },
       // "user_id": appStorage.getUserId(),
       "user_id": Constants.userId,
-      "page": 1,
-      "limit": 10,
+      "page": page,
+      "limit": limit,
       "service_category_id": "6646f17c6538869d3399af45",
       "filter": {"isVeg": selectedCategory.value == 0 ? 1 :selectedCategory.value == 1 ?2:null}
     }).then((value) {
