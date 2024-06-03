@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:mynewpackage/app/modules/home/controllers/color_controller.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/constants.dart';
@@ -13,9 +14,10 @@ import '../../add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({
+   HomeView({
     super.key,
   });
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class HomeView extends GetView<HomeController> {
                       children: [
                         SvgPicture.asset(
                           "packages/mynewpackage/${Assets.iconsLocation}",
-                          color: AppColors.primaryColor,
+                          color: controller.colorController.primaryColor.value,
                         ),
                         const SizedBox(
                           width: 5,
@@ -77,20 +79,24 @@ class HomeView extends GetView<HomeController> {
                 },
                 child: const Icon(Icons.arrow_back_rounded)),
             actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 42,
-                  width: 42,
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.primaryColor,
-                    radius: 50,
-                    child: Text(
-                      Constants.nameFirstLetter,
-                      style: TextStyle(color: Colors.white),
-                    ), // Radius of the circle
-                  ),
-                ),
+              Obx(
+                () {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 42,
+                      width: 42,
+                      child: CircleAvatar(
+                        backgroundColor:controller.colorController.primaryColor.value ,
+                        radius: 50,
+                        child: Text(
+                          Constants.nameFirstLetter,
+                          style: TextStyle(color: Colors.white),
+                        ), // Radius of the circle
+                      ),
+                    ),
+                  );
+                }
               ),
             ],
             centerTitle: true,

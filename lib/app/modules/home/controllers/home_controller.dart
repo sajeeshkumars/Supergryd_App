@@ -14,6 +14,7 @@ import '../../../../app_colors.dart';
 import '../../../../generated/assets.dart';
 import '../../../../widgets/common_Image_view.dart';
 import '../data/models/service_category_response.dart';
+import 'color_controller.dart';
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
@@ -52,6 +53,7 @@ class HomeController extends GetxController {
 
    List specialOfferTitle = ["Special\nFood Menu","100% Cashback\non First Order","Get 20% OFF\non All Foods","Limited Offer\nHot Deals","Get 20% - 30%\nCashback"];
    List specialOfferImages = [Assets.imagesTopOffer1,Assets.imagesTopOffer2,Assets.imagesTopOffer3,Assets.imagesTopOffer4,Assets.imagesTopOffer5];
+  final ColorController colorController = Get.find<ColorController>();
 
 
 
@@ -84,75 +86,79 @@ class HomeController extends GetxController {
       isDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(25))),
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Select Your Delivery Location',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              Row(
+        return Obx(
+           () {
+            return isLoading.value ?  SizedBox.shrink(): Container(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(25))),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    Icons.add_circle_outline, color: AppColors.primaryColor,),
-                  const SizedBox(width: 10,),
-                  Text("Add New Address",
-                    style: TextStyle(color: AppColors.primaryColor,fontWeight: FontWeight.w800),),
+                  const Text(
+                    'Select Your Delivery Location',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.add_circle_outline, color: colorController.primaryColor.value,),
+                      const SizedBox(width: 10,),
+                      Text("Add New Address",
+                        style: TextStyle(color: colorController.primaryColor.value,fontWeight: FontWeight.w800),),
+
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Saved Address',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: addressDescription.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              controller?.restaurantList.clear();
+                              controller?.dishList.clear();
+                              address.value = addressDescription[index];
+                              debugPrint("value ${address.value}");
+                              selectedLocationCoordinates.value =
+                              locationCoordinates[addressHeading[index]];
+                              debugPrint("value ${address.value}");
+                              debugPrint(
+                                  "selectedLocationCordinates $selectedLocationCoordinates");
+                              controller?.getRestaurants(initial: true);
+                              Get.back();
+                            },
+                            child: Container(
+                              color: colorController.primaryColor.value.withOpacity(.05),
+                              child: ListTile(
+                                leading:ColorFiltered(colorFilter: ColorFilter.mode(AppColors.accentColor, BlendMode.modulate),
+                                child: SvgPicture.asset("packages/mynewpackage/${addressTypeImage[index]}")),
+
+                                title: Text(addressHeading[index],
+                                  style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w600),),
+                                subtitle: Text(addressDescription[index],
+                                  style: (TextStyle(color: AppColors.textColor)),),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
 
                 ],
               ),
-              const SizedBox(height: 20),
-              const Text(
-                'Saved Address',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: addressDescription.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: () {
-                          controller?.restaurantList.clear();
-                          controller?.dishList.clear();
-                          address.value = addressDescription[index];
-                          debugPrint("value ${address.value}");
-                          selectedLocationCoordinates.value =
-                          locationCoordinates[addressHeading[index]];
-                          debugPrint("value ${address.value}");
-                          debugPrint(
-                              "selectedLocationCordinates $selectedLocationCoordinates");
-                          controller?.getRestaurants(initial: true);
-                          Get.back();
-                        },
-                        child: Container(
-                          color: AppColors.primaryColor.withOpacity(.05),
-                          child: ListTile(
-                            leading:ColorFiltered(colorFilter: ColorFilter.mode(AppColors.accentColor, BlendMode.modulate),
-                            child: SvgPicture.asset("packages/mynewpackage/${addressTypeImage[index]}")),
-
-                            title: Text(addressHeading[index],
-                              style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w600),),
-                            subtitle: Text(addressDescription[index],
-                              style: (TextStyle(color: AppColors.textColor)),),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-
-            ],
-          ),
+            );
+          }
         );
       },
     );
@@ -188,6 +194,10 @@ class HomeController extends GetxController {
           AppColors.primaryColor = fromHex(value.data!.themes!.first.primaryColor.toString());
           AppColors.accentColor = fromHex(value.data!.themes!.first.accentColor.toString());
           debugPrint("color ${AppColors.primaryColor}");
+          colorController.updateColors(
+            value.data!.themes!.first.primaryColor.toString(),
+            value.data!.themes!.first.accentColor.toString(),
+          );
 
         //   storage.writeIsAuthenticated(true);
           createUser(mobile: mobile, name: name);

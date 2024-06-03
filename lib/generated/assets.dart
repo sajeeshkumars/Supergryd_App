@@ -4,9 +4,12 @@ class Assets {
 
   static const String authenticationAuthenticationRepo = 'lib/app/authentication/authentication_repo.dart';
   static const String authenticationAuthenticationService = 'lib/app/authentication/authentication_service.dart';
+  static const String bindingsAddCashToWalletBinding = 'lib/app/modules/add_cash_to_wallet/bindings/add_cash_to_wallet_binding.dart';
   static const String bindingsHomeBinding = 'lib/app/modules/home/bindings/home_binding.dart';
   static const String bindingsRestaurantsAndDishesListingBinding = 'lib/app/modules/restaurants_and_dishes_listing/bindings/restaurants_and_dishes_listing_binding.dart';
   static const String bindingsRestaurantsDetailsBinding = 'lib/app/modules/restaurants_details/bindings/restaurants_details_binding.dart';
+  static const String controllersAddCashToWalletController = 'lib/app/modules/add_cash_to_wallet/controllers/add_cash_to_wallet_controller.dart';
+  static const String controllersColorController = 'lib/app/modules/home/controllers/color_controller.dart';
   static const String controllersHomeController = 'lib/app/modules/home/controllers/home_controller.dart';
   static const String controllersRestaurantsAndDishesListingController = 'lib/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
   static const String controllersRestaurantsDetailsController = 'lib/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
@@ -78,6 +81,7 @@ class Assets {
   static const String routesAppRoutes = 'lib/app/routes/app_routes.dart';
   static const String servicesApiService = 'lib/services/api_service.dart';
   static const String servicesConfig = 'lib/services/config.dart';
+  static const String viewsAddCashToWalletView = 'lib/app/modules/add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
   static const String viewsHomeView = 'lib/app/modules/home/views/home_view.dart';
   static const String viewsRestaurantsAndDishesListingView = 'lib/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
   static const String viewsRestaurantsDetailsView = 'lib/app/modules/restaurants_details/views/restaurants_details_view.dart';
