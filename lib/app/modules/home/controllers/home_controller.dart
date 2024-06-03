@@ -187,6 +187,9 @@ class HomeController extends GetxController {
         // storage.writeRefreshToken(value.data?.refreshToken ?? "");
           Constants.refreshToken = value.data?.refreshToken ?? "";
           Constants.isAuthenticated = true;
+          AppColors.primaryColor = fromHex(value.data!.themes!.first.primaryColor.toString());
+          debugPrint("color ${AppColors.primaryColor}");
+
         //   storage.writeIsAuthenticated(true);
           createUser(mobile: mobile, name: name);
           getServices();
@@ -253,6 +256,13 @@ class HomeController extends GetxController {
         getServices();
       }
     });
+  }
+
+  static Color fromHex(String hexString) {
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
   }
 
 
