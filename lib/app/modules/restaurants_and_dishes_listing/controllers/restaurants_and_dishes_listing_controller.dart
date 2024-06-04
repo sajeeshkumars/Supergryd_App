@@ -63,7 +63,7 @@ class RestaurantsAndDishesListingController extends GetxController {
   }
 
 
-  void getRestaurants({required bool initial}) async {
+  Future<void> getRestaurants({required bool initial}) async {
     debugPrint("userId ${Constants.userId}");
     if (initial) {
       page = 1;
@@ -120,7 +120,7 @@ class RestaurantsAndDishesListingController extends GetxController {
     });
   }
 
-  void getDishes({required bool initial}) async {
+  Future<void> getDishes({required bool initial}) async {
     if (initial) {
       page = 1;
       limit = 10;

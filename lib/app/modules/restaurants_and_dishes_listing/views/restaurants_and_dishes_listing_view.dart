@@ -8,6 +8,7 @@ import 'package:mynewpackage/app/core/utility.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/views/restaurants_details_view.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../app_colors.dart';
 import '../../../../generated/assets.dart';
@@ -100,10 +101,12 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
         ),
         body: Obx(() {
           return controller.isLoading.value
-              ? Center(
-                  child: CircularProgressIndicator(
-                  color: AppColors.primaryColor,
-                ))
+              ? buildShimmerRestaurant()
+              // Center(
+              //         child: CircularProgressIndicator(
+              //         color: AppColors.primaryColor,
+              //       )
+              // )
               : controller.restaurantList.isEmpty
                   ? Center(
                       child: Column(
@@ -175,17 +178,18 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                         height: 35,
                                         width: 110,
                                         decoration: BoxDecoration(
-                                          color: controller
-                                                      .selectedCategory.value ==
-                                                  index
-                                              ? AppColors.primaryColor
-                                              : AppColors.white,
                                           borderRadius: const BorderRadius.all(
                                             Radius.circular(40),
                                           ),
                                           border: Border.all(
-                                            color: AppColors.borderColor,
+                                            color: controller.selectedCategory
+                                                        .value ==
+                                                    index
+                                                ? AppColors.primaryColor
+                                                : AppColors.borderColor,
                                             style: BorderStyle.solid,
+                                            width:controller.selectedCategory.value == index ? 3 :  1,
+
                                           ),
                                         ),
                                         child: Padding(
@@ -195,25 +199,13 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              controller.selectedCategory
-                                                          .value ==
-                                                      index
-                                                  ? SvgPicture.asset(
-                                                      "packages/mynewpackage/${controller.filterImages[index]}",
-                                                      color: AppColors.white,
-                                                    )
-                                                  : SvgPicture.asset(
-                                                      "packages/mynewpackage/${controller.filterImages[index]}"),
+                                              SvgPicture.asset(
+                                                  "packages/mynewpackage/${controller.filterImages[index]}"),
                                               Text(
                                                 controller.filters[index],
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 12,
-                                                    color: controller
-                                                                .selectedCategory
-                                                                .value ==
-                                                            index
-                                                        ? AppColors.white
-                                                        : Colors.black),
+                                                    color: Colors.black),
                                               ),
                                               // SizedBox(width: 10,),
                                               controller.selectedCategory
@@ -226,18 +218,33 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                                       index
                                                   ? InkWell(
                                                       onTap: () {
-                                                        // controller
-                                                        //     .selectedCategory
-                                                        //     .value = 2;
-                                                        // controller.getDishes(initial: true);
+                                                        controller.isSelected
+                                                                .value =
+                                                            !controller
+                                                                .isSelected
+                                                                .value;
+                                                        if (controller
+                                                            .isSelected.value) {
+                                                          controller
+                                                              .selectedCategory
+                                                              .value = index;
+                                                          controller.getDishes(
+                                                              initial: true);
+                                                        } else {
+                                                          controller
+                                                              .selectedCategory
+                                                              .value = 2;
+                                                          controller.getDishes(
+                                                              initial: true);
+                                                        }
 
                                                         // controller.dishFilter();
                                                       },
-                                                      child: Icon(
+                                                      child: const Icon(
                                                         Icons.close_rounded,
                                                         size: 20,
                                                       ))
-                                                  : SizedBox.shrink(),
+                                                  : const SizedBox.shrink(),
                                             ],
                                           ),
                                         ),
@@ -251,30 +258,36 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                               onNotification: controller.onScrollDishes,
                               child: Obx(() {
                                 return controller.isLoadingDishes.value
-                                    ? CircularProgressIndicator(
-                                        color: AppColors.primaryColor)
+                                    ? shimmerDishes()
                                     : controller.dishList.isNotEmpty
                                         ? Expanded(
-                                            child: ListView.builder(
-                                              itemCount:
-                                                  controller.dishList.length,
-                                              itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: InkWell(
-                                                    onTap: () {},
-                                                    child: DishCard(
-                                                      restaurantsAndDishesListingController:
-                                                          controller,
-                                                      dish: controller
-                                                          .dishList[index],
-                                                      index: index,
-                                                      isDishes: true,
-                                                    ),
-                                                  ),
-                                                );
+                                            child: RefreshIndicator(
+                                              onRefresh: () async {
+                                                await controller.getDishes(
+                                                    initial: true);
                                               },
+                                              child: ListView.builder(
+                                                itemCount:
+                                                    controller.dishList.length,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: InkWell(
+                                                      onTap: () {},
+                                                      child: DishCard(
+                                                        restaurantsAndDishesListingController:
+                                                            controller,
+                                                        dish: controller
+                                                            .dishList[index],
+                                                        index: index,
+                                                        isDishes: true,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
                                             ),
                                           )
                                         : SizedBox(
@@ -282,22 +295,40 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                                     .size
                                                     .height /
                                                 2,
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      4,
-                                                ),
-                                                Text(
-                                                  "No dish found!",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ],
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: MediaQuery.of(context)
+                                                            .size
+                                                            .height /
+                                                        5,
+                                                  ),
+
+                                                  ColorFiltered(
+                                                    colorFilter: ColorFilter.mode(AppColors.primaryColor, BlendMode.modulate),
+                                                    child: Image.asset(
+                                                      height: 120,
+                                                     width: 120,
+                                                     'packages/mynewpackage/${Assets.iconsNoFood6}',
+                                                       //  height: 100,
+                                                       //  width: 100,
+                                                       //  color: Colors.red,
+                                                       // imagePath: :
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 10,),
+                                                  Text(
+                                                    "We're currently out of ${controller.selectedCategory.value == 0 ? "Veg":"Non Veg"} items, but our ${controller.selectedCategory.value == 1 ? "Veg":"Non Veg"} selection is sizzling! Take a look!",
+                                                    style: const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                        FontWeight.w600),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           );
                               }),
@@ -434,7 +465,7 @@ class _DishCardState extends State<DishCard> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
-                        side: BorderSide(color: AppColors.borderColor),
+                        side: BorderSide(color: AppColors.borderColor,),
                       ),
                       Spacer(),
                       // Add icon at the bottom
@@ -536,211 +567,402 @@ class RestaurantList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: controller.restaurantList.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: InkWell(
-            onTap: () {
-              Get.to(RestaurantsDetailsView(
-                  restaurantId: controller.restaurantList[index].id.toString(),
-                  distance:
-                      controller.restaurantList[index].distanceInKilometer ?? 0,
-                  restaurantData: controller.restaurantList[index]));
-            },
-            child: Container(
-                color: AppColors.backgroundColor,
-                child: Card(
-                  color: AppColors.white,
-                  surfaceTintColor: AppColors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(15),
-                            topLeft: Radius.circular(15)),
-                        child: controller.restaurantList[index].offers?.first
-                                    .offer !=
-                                ""
-                            ? Stack(children: [
-                                controller.restaurantList[index].isAvailable ==
-                                        2
-                                    ? ImageFiltered(
-                                        imageFilter: ImageFilter.blur(
-                                            sigmaX: 4.0, sigmaY: 4.0),
-                                        child: CommonImageView(
+    return RefreshIndicator(
+      onRefresh: () async {
+        await controller.getRestaurants(initial: true);
+      },
+      child: ListView.builder(
+        itemCount: controller.restaurantList.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () {
+                Get.to(RestaurantsDetailsView(
+                    restaurantId:
+                        controller.restaurantList[index].id.toString(),
+                    distance:
+                        controller.restaurantList[index].distanceInKilometer ??
+                            0,
+                    restaurantData: controller.restaurantList[index]));
+              },
+              child: Container(
+                  color: AppColors.backgroundColor,
+                  child: Card(
+                    color: AppColors.white,
+                    surfaceTintColor: AppColors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(15),
+                              topLeft: Radius.circular(15)),
+                          child: controller.restaurantList[index].offers?.first
+                                      .offer !=
+                                  ""
+                              ? Stack(children: [
+                                  controller.restaurantList[index]
+                                              .isAvailable ==
+                                          2
+                                      ? ImageFiltered(
+                                          imageFilter: ImageFilter.blur(
+                                              sigmaX: 4.0, sigmaY: 4.0),
+                                          child: CommonImageView(
+                                            cacheKey: controller
+                                                .restaurantList[index].id,
+                                            url: controller
+                                                .restaurantList[index]
+                                                .images
+                                                ?.first
+                                                .image,
+                                            fit: BoxFit.cover,
+                                            height: 175,
+                                            width: 400,
+                                          ),
+                                        )
+                                      : CommonImageView(
                                           cacheKey: controller
                                               .restaurantList[index].id,
                                           url: controller.restaurantList[index]
                                               .images?.first.image,
-                                          fit: BoxFit.cover,
                                           height: 175,
                                           width: 400,
                                         ),
-                                      )
-                                    : CommonImageView(
-                                        cacheKey:
-                                            controller.restaurantList[index].id,
-                                        url: controller.restaurantList[index]
-                                            .images?.first.image,
-                                        height: 175,
-                                        width: 400,
-                                      ),
-                                controller.restaurantList[index].isAvailable ==
-                                        1
-                                    ? ColorFiltered(
-                                        colorFilter: ColorFilter.mode(
-                                            AppColors.accentColor,
-                                            BlendMode.modulate),
-                                        child: SvgPicture.asset(
-                                          "packages/mynewpackage/${Assets.iconsOffer}",
-                                        ),
-                                      )
-                                    : ImageFiltered(
-                                        imageFilter: ImageFilter.blur(
-                                            sigmaX: 4.0, sigmaY: 4.0),
-                                        child: ColorFiltered(
+                                  controller.restaurantList[index]
+                                              .isAvailable ==
+                                          1
+                                      ? ColorFiltered(
                                           colorFilter: ColorFilter.mode(
                                               AppColors.accentColor,
                                               BlendMode.modulate),
                                           child: SvgPicture.asset(
                                             "packages/mynewpackage/${Assets.iconsOffer}",
-                                            fit: BoxFit.cover,
                                           ),
-                                        )),
-                                Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text(
-                                    controller.restaurantList[index].offers
-                                            ?.first.offer ??
-                                        "",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.white),
+                                        )
+                                      : ImageFiltered(
+                                          imageFilter: ImageFilter.blur(
+                                              sigmaX: 4.0, sigmaY: 4.0),
+                                          child: ColorFiltered(
+                                            colorFilter: ColorFilter.mode(
+                                                AppColors.accentColor,
+                                                BlendMode.modulate),
+                                            child: SvgPicture.asset(
+                                              "packages/mynewpackage/${Assets.iconsOffer}",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )),
+                                  Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: Text(
+                                      controller.restaurantList[index].offers
+                                              ?.first.offer ??
+                                          "",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.white),
+                                    ),
                                   ),
-                                ),
-                                Positioned(
-                                    top: 30,
-                                    left: 5,
-                                    child: Text("Upto ₹75",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: AppColors.white))),
-                              ])
-                            : controller.restaurantList[index].isAvailable != 2
-                                ? CommonImageView(
-                                    cacheKey:
-                                        controller.restaurantList[index].id,
-                                    height: 175,
-                                    width: 400,
-                                    url: controller.restaurantList[index].images
-                                        ?.first.image)
-                                : ImageFiltered(
-                                    imageFilter: ImageFilter.blur(
-                                        sigmaX: 4.0, sigmaY: 4.0),
-                                    child: CommonImageView(
+                                  Positioned(
+                                      top: 30,
+                                      left: 5,
+                                      child: Text("Upto ₹75",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: AppColors.white))),
+                                ])
+                              : controller.restaurantList[index].isAvailable !=
+                                      2
+                                  ? CommonImageView(
                                       cacheKey:
                                           controller.restaurantList[index].id,
                                       height: 175,
                                       width: 400,
                                       url: controller.restaurantList[index]
-                                          .images?.first.image,
-                                      fit: BoxFit.cover,
+                                          .images?.first.image)
+                                  : ImageFiltered(
+                                      imageFilter: ImageFilter.blur(
+                                          sigmaX: 4.0, sigmaY: 4.0),
+                                      child: CommonImageView(
+                                        cacheKey:
+                                            controller.restaurantList[index].id,
+                                        height: 175,
+                                        width: 400,
+                                        url: controller.restaurantList[index]
+                                            .images?.first.image,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        child: Text(
-                          (controller.restaurantList[index].restaurantDetails
-                                  ?.first.name)! +
-                              (' , ${controller.restaurantList[index].branchName.toString()}'),
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w800),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: Text(
+                            (controller.restaurantList[index].restaurantDetails
+                                    ?.first.name)! +
+                                (' , ${controller.restaurantList[index].branchName.toString()}'),
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        child: Row(
-                          children: [
-                            Chip(
-                              label: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                      "packages/mynewpackage/${Assets.iconsStar}"),
-                                  Text(
-                                      "${controller.restaurantList[index].rating}(${Utility.countConverter(controller.restaurantList[index].totalRating)})",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10)),
-                                ],
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              side: BorderSide(color: AppColors.borderColor),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Chip(
-                              label: Text(
-                                "${controller.restaurantList[index].distanceInKilometer?.toStringAsFixed(1)} km",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 10,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
+                          child: Row(
+                            children: [
+                              Chip(
+                                label: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                        "packages/mynewpackage/${Assets.iconsStar}"),
+                                    Text(
+                                        "${controller.restaurantList[index].rating}(${Utility.countConverter(controller.restaurantList[index].totalRating)})",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 10)),
+                                  ],
                                 ),
-                              ),
-                              shape: RoundedRectangleBorder(
+                                shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25),
-                                  side:
-                                      BorderSide(color: AppColors.borderColor)),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                        ),
-                        child: Text(
-                          controller.restaurantList[index].images?.first
-                                  .description ??
-                              "",
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: AppColors.textColor,
-                              overflow: TextOverflow.ellipsis),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      controller.restaurantList[index].isAvailable == 2
-                          ? const Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 20),
-                              child: Text(
-                                "Currently Unavailable",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w500),
+                                ),
+                                side: BorderSide(color: AppColors.borderColor),
                               ),
-                            )
-                          : const SizedBox.shrink()
-                    ],
-                  ),
-                )),
-          ),
-        );
-      },
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Chip(
+                                label: Text(
+                                  "${controller.restaurantList[index].distanceInKilometer?.toStringAsFixed(1)} km",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                    side: BorderSide(
+                                        color: AppColors.borderColor)),
+                              )
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                          ),
+                          child: Text(
+                            controller.restaurantList[index].images?.first
+                                    .description ??
+                                "",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: AppColors.textColor,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        controller.restaurantList[index].isAvailable == 2
+                            ? const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 20),
+                                child: Text(
+                                  "Currently Unavailable",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              )
+                            : const SizedBox.shrink()
+                      ],
+                    ),
+                  )),
+            ),
+          );
+        },
+      ),
     );
   }
+}
+
+Widget buildShimmerRestaurant() {
+  return ListView.builder(
+    itemCount: 10,
+    itemBuilder: (context, index) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          color: AppColors.white,
+          surfaceTintColor: AppColors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Shimmer for image
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(15),
+                    topLeft: Radius.circular(15),
+                  ),
+                  child: Container(
+                    height: 175,
+                    width: 400,
+                    color: Colors.grey[200],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5), // Spacing between elements
+
+              // Shimmer for restaurant name and details
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  child: Container(
+                    height: 15,
+                    color: Colors.grey[200],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5), // Spacing between elements
+
+              // Shimmer for rating & distance chips
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 20,
+                        width: 50,
+                        color: Colors.grey[200],
+                      ),
+                      const SizedBox(width: 10),
+                      Container(
+                        height: 20,
+                        width: 70,
+                        color: Colors.grey[200],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5), // Spacing between elements
+
+              // Shimmer for description
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                    ),
+                    child: Container(
+                      height: 10,
+                      color: Colors.grey[200],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget shimmerDishes() {
+  return Expanded(
+    child: ListView.builder(
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Container(
+            color: AppColors.backgroundColor,
+            child: Card(
+              color: AppColors.white,
+              surfaceTintColor: AppColors.white,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                        ),
+                        child: Container(
+                          height: 200,
+                          width: 150,
+                          color: Colors.grey[200],
+                        )),
+                  ),
+                  SizedBox(width: 10,),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Shimmer.fromColors(
+                          child: Container(
+                            height: 10,
+                            width: 150,
+                            color: Colors.grey[200],
+
+                          ),
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                        ),
+                        SizedBox(height: 10,),
+                        Shimmer.fromColors(
+                          child: Container(
+                            height: 10,
+                            width: 100,
+                            color: Colors.grey[200],
+
+                          ),
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                        ),
+
+                        SizedBox(height: 50,),
+                        Shimmer.fromColors(
+                          child: Container(
+                            height: 30,
+                            width: 100,
+                            color: Colors.grey[200],
+
+                          ),
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+                  // Rating
+                ],
+              ),
+            ),
+          );
+        },
+        itemCount: 10),
+  );
 }

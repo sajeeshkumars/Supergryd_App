@@ -7,8 +7,8 @@ import '../data/get_restaurant_details_response.dart';
 
 class RestaurantsDetailsController extends GetxController {
   RxBool isLoading = false.obs;
-  int page = 1;
-  int limit = 1;
+  int page = 0;
+  int limit = 0;
   RxBool isLoadingMore = false.obs;
   bool haveRestaurantDetails = false;
   RxBool showMore = false.obs;
@@ -45,8 +45,10 @@ class RestaurantsDetailsController extends GetxController {
       isLoading(true);
     //   restaurantDetails.clear();
     // }
+      restaurantDishListForApi.clear();
 
-    await restaurantDetailsRepository.getRestaurantDetails({
+
+      await restaurantDetailsRepository.getRestaurantDetails({
       "page": page,
       "limit": limit,
       "filter": {
@@ -60,6 +62,7 @@ class RestaurantsDetailsController extends GetxController {
       "restaurant_id": restaurantId
     }).then((value) {
       if ((value.data != null) && (value.status == 200)) {
+
         // if (initial) {
         //
         //   restaurantDetails.value = value.data?.restaurant ?? [];

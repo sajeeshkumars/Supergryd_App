@@ -256,7 +256,7 @@ class HomeController extends GetxController {
   }
 
 
-  void getServices() async {
+  Future<void> getServices() async {
     serviceList.clear();
     isLoading(true);
     await homeRepository.getServiceList().then((value) {

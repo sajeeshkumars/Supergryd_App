@@ -39,6 +39,11 @@ class Assets {
   static const String iconsLocation = 'lib/assets/icons/location.svg';
   static const String iconsMenuIcon = 'lib/assets/icons/menu-icon.svg';
   static const String iconsMicIcon = 'lib/assets/icons/mic-icon.svg';
+  static const String iconsNoFood = 'lib/assets/icons/noFood.svg';
+  static const String iconsNoFood6 = 'lib/assets/icons/noFood6.png';
+  static const String iconsNofood1 = 'lib/assets/icons/nofood1.svg';
+  static const String iconsNofood2 = 'lib/assets/icons/nofood2.svg';
+  static const String iconsNofood5 = 'lib/assets/icons/nofood5.svg';
   static const String iconsNonVeg = 'lib/assets/icons/non-veg.svg';
   static const String iconsNotAvailableAtLocation = 'lib/assets/icons/not_available_at_location.svg';
   static const String iconsOffer = 'lib/assets/icons/offer.svg';
@@ -48,6 +53,7 @@ class Assets {
   static const String iconsSearchIcon = 'lib/assets/icons/search-icon.svg';
   static const String iconsShopIcon = 'lib/assets/icons/shop_icon.svg';
   static const String iconsStar = 'lib/assets/icons/Star.svg';
+  static const String iconsStaytuned2 = 'lib/assets/icons/staytuned2.svg';
   static const String iconsVeg = 'lib/assets/icons/veg.svg';
   static const String imagesBanner = 'lib/assets/images/banner.jpg';
   static const String imagesChickenBiriyani = 'lib/assets/images/Chicken_Biriyani.jpg';
