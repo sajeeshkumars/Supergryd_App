@@ -148,7 +148,7 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ),
                   Text(
-                    "Hi ${Constants.name},",
+                    "Hi ${Constants.name.toUpperCase()},",
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
                   ),
                   const Text("Explore The Popular Categories",

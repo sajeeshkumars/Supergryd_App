@@ -209,6 +209,7 @@ class HomeController extends GetxController {
       else {
         isLoading(false);
           debugPrint("after failure${value.message}");
+          Navigator.pop(Get.context!);
 
           ScaffoldMessenger.of(Get.context!).showSnackBar(
               const SnackBar(content: Text("Unauthorized please check Your Key",), backgroundColor: Colors.red,duration: Duration(minutes: 5)));
