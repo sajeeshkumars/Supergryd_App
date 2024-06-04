@@ -11,6 +11,7 @@ import 'package:mynewpackage/app/modules/restaurants_details/views/restaurants_d
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../app_colors.dart';
+import '../../../../constants.dart';
 import '../../../../generated/assets.dart';
 import '../../../../widgets/common_Image_view.dart';
 import '../../restaurants_details/data/get_restaurant_details_response.dart';
@@ -119,8 +120,8 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          const Text(
-                            "Hi Sajeesh,",
+                           Text(
+                            "Hi ${Constants.name},",
                             style: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 20),
                           ),
@@ -188,7 +189,7 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                                 ? AppColors.primaryColor
                                                 : AppColors.borderColor,
                                             style: BorderStyle.solid,
-                                            width:controller.selectedCategory.value == index ? 3 :  1,
+                                            width:controller.selectedCategory.value == index ? 1.5 :  1,
 
                                           ),
                                         ),

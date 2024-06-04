@@ -44,7 +44,7 @@ class HomeController extends GetxController {
     "lat": 13.094478,
     "long": 77.720049,
   }.obs;
-  RxString address = '"No. 63, 1st Floor, 14th Cross, 9th Main Road,Indiranagar, Bengaluru, Karnataka 560038, India"'.obs;
+  RxString address = "Select Address".obs;
   RxBool isLoading = false.obs;
   // AppStorage storage = AppStorage();
   AuthRepository authRepository = Get.put(AuthRepository());

@@ -205,7 +205,7 @@ class _ChipWidgetState extends State<ChipWidget> {
                                 widget.controller.selectedFilter.value == index
                                     ? AppColors.primaryColor
                                     : AppColors.borderColor,
-                            width:widget.controller.selectedFilter.value == index ? 3 :  1,
+                            width:widget.controller.selectedFilter.value == index ? 1.5 :  1,
                             style: BorderStyle.solid,
                           ),
                         ),
