@@ -167,9 +167,10 @@ class HomeView extends GetView<HomeController> {
                             MediaQuery.of(context).size.height *
                                 .15; // Make items square
                         return Obx(() {
-                          return controller.isLoading.value
-                              ? CircularProgressIndicator(
-                              color: AppColors.primaryColor)
+                          return controller.isLoadingServices.value
+                              ? SizedBox.shrink()
+                          // CircularProgressIndicator(
+                          //     color: AppColors.primaryColor)
                               : controller.serviceList.isEmpty
                               ? Column(
                             children: [

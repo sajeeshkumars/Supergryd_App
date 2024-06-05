@@ -46,6 +46,7 @@ class HomeController extends GetxController {
   }.obs;
   RxString address = "Select Address".obs;
   RxBool isLoading = false.obs;
+  RxBool isLoadingServices = false.obs;
   // AppStorage storage = AppStorage();
   AuthRepository authRepository = Get.put(AuthRepository());
   HomeRepository homeRepository = Get.put(HomeRepository());
@@ -218,7 +219,7 @@ class HomeController extends GetxController {
       }
       });
     }else{
-      // isLoading(false);
+      isLoading(false);
       ScaffoldMessenger.of(Get.context!).showSnackBar(
           const SnackBar(content: Text("No Internet",), backgroundColor: Colors.red,));
     }
@@ -258,15 +259,15 @@ class HomeController extends GetxController {
 
   Future<void> getServices() async {
     serviceList.clear();
-    // isLoading(true);
+    isLoadingServices(true);
     await homeRepository.getServiceList().then((value) {
       if (value.data?.serviceCategories != [] && (value.status == 200)) {
 
         serviceList.addAll(value.data?.serviceCategories ?? []);
         // debugPrint("list service ${serviceList.first.categoryName}");
-        // isLoading(false);
+        isLoadingServices(false);
       } else {
-        // isLoading(false);
+        isLoadingServices(false);
         getServices();
       }
     });
