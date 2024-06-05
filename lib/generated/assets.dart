@@ -54,7 +54,9 @@ class Assets {
   static const String iconsShopIcon = 'lib/assets/icons/shop_icon.svg';
   static const String iconsStar = 'lib/assets/icons/Star.svg';
   static const String iconsStaytuned2 = 'lib/assets/icons/staytuned2.svg';
+  static const String iconsSuccess = 'lib/assets/icons/success.svg';
   static const String iconsVeg = 'lib/assets/icons/veg.svg';
+  static const String iconsWallet = 'lib/assets/icons/wallet.svg';
   static const String imagesBanner = 'lib/assets/images/banner.jpg';
   static const String imagesChickenBiriyani = 'lib/assets/images/Chicken_Biriyani.jpg';
   static const String imagesEggChilly = 'lib/assets/images/Egg_Chilly.jpg';

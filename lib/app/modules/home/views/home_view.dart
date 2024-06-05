@@ -9,6 +9,7 @@ import 'package:mynewpackage/generated/assets.dart';
 import 'package:mynewpackage/widgets/common_Image_view.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
 
+import '../../add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -121,7 +122,7 @@ class HomeView extends GetView<HomeController> {
                               child: InkWell(
                                 splashColor: Colors.transparent,
                                 onTap: () {
-                                  // Get.to(()=> AddCashToWalletView());
+                                  Get.to(()=> AddCashToWalletView());
                                 },
                                 child: Column(
                                   children: [
