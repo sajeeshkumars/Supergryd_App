@@ -218,14 +218,14 @@ class HomeController extends GetxController {
       }
       });
     }else{
-      isLoading(false);
+      // isLoading(false);
       ScaffoldMessenger.of(Get.context!).showSnackBar(
           const SnackBar(content: Text("No Internet",), backgroundColor: Colors.red,));
     }
   }
 
   void createUser({required String mobile,required String name}) async {
-    isLoading(true);
+    // isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
     CreateUserRequestModel requestModel = CreateUserRequestModel(
@@ -236,7 +236,7 @@ class HomeController extends GetxController {
 
    await authRepository.createUser(requestModel.toJson()).then((value) {
       if (value.status == 200) {
-        isLoading(false);
+        // isLoading(false);
 
         debugPrint("after success${isLoading.value}");
 
@@ -258,15 +258,15 @@ class HomeController extends GetxController {
 
   Future<void> getServices() async {
     serviceList.clear();
-    isLoading(true);
+    // isLoading(true);
     await homeRepository.getServiceList().then((value) {
       if (value.data?.serviceCategories != [] && (value.status == 200)) {
 
         serviceList.addAll(value.data?.serviceCategories ?? []);
         // debugPrint("list service ${serviceList.first.categoryName}");
-        isLoading(false);
+        // isLoading(false);
       } else {
-        isLoading(false);
+        // isLoading(false);
         getServices();
       }
     });
