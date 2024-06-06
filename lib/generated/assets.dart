@@ -29,6 +29,7 @@ class Assets {
   static const String iconsAddIcon = 'lib/assets/icons/add_icon.svg';
   static const String iconsCab = 'lib/assets/icons/cab.svg';
   static const String iconsCourier = 'lib/assets/icons/courier.svg';
+  static const String iconsDestinationIcon = 'lib/assets/icons/destinationIcon.svg';
   static const String iconsEgg = 'lib/assets/icons/egg.svg';
   static const String iconsFood = 'lib/assets/icons/food.svg';
   static const String iconsFurniture = 'lib/assets/icons/furniture.svg';
@@ -37,6 +38,7 @@ class Assets {
   static const String iconsHomeIcon = 'lib/assets/icons/homeIcon.svg';
   static const String iconsHomeService = 'lib/assets/icons/home-service.svg';
   static const String iconsLocation = 'lib/assets/icons/location.svg';
+  static const String iconsLocationLine = 'lib/assets/icons/locationLine.svg';
   static const String iconsMenuIcon = 'lib/assets/icons/menu-icon.svg';
   static const String iconsMicIcon = 'lib/assets/icons/mic-icon.svg';
   static const String iconsNoFood = 'lib/assets/icons/noFood.svg';
@@ -53,7 +55,9 @@ class Assets {
   static const String iconsSearchIcon = 'lib/assets/icons/search-icon.svg';
   static const String iconsShopIcon = 'lib/assets/icons/shop_icon.svg';
   static const String iconsStar = 'lib/assets/icons/Star.svg';
+  static const String iconsStartLocation = 'lib/assets/icons/startLocation.svg';
   static const String iconsStaytuned2 = 'lib/assets/icons/staytuned2.svg';
+  static const String iconsStepper = 'lib/assets/icons/stepper.svg';
   static const String iconsSuccess = 'lib/assets/icons/success.svg';
   static const String iconsVeg = 'lib/assets/icons/veg.svg';
   static const String iconsWallet = 'lib/assets/icons/wallet.svg';
@@ -93,7 +97,11 @@ class Assets {
   static const String viewsHomeView = 'lib/app/modules/home/views/home_view.dart';
   static const String viewsRestaurantsAndDishesListingView = 'lib/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
   static const String viewsRestaurantsDetailsView = 'lib/app/modules/restaurants_details/views/restaurants_details_view.dart';
+  static const String widgetsAddressSelectionDialogue = 'lib/widgets/address_selection_dialogue.dart';
+  static const String widgetsAddressSelectionWidget = 'lib/widgets/address_selection_widget.dart';
   static const String widgetsCommonImageView = 'lib/widgets/common_Image_view.dart';
+  static const String widgetsCommonText = 'lib/widgets/common_text.dart';
+  static const String widgetsCustomButton = 'lib/widgets/custom_button.dart';
   static const String widgetsLoadingView = 'lib/widgets/loading_view.dart';
   static const String widgetsPleaseWaitDialogue = 'lib/widgets/please_wait_dialogue.dart';
 

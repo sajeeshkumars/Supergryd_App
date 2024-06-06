@@ -1,26 +1,38 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:location/location.dart' as location;
 import 'package:mynewpackage/app/authentication/authentication_repo.dart';
 import 'package:mynewpackage/app/authentication/model/authentication_request_model.dart';
 import 'package:mynewpackage/app/authentication/model/create_user_request_model.dart';
 import 'package:mynewpackage/app/modules/home/data/home_repository.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
 import 'package:mynewpackage/constants.dart';
+import 'package:mynewpackage/widgets/address_selection_dialogue.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../app_colors.dart';
 import '../../../../generated/assets.dart';
+import '../../../../widgets/address_selection_widget.dart';
 import '../../../../widgets/common_Image_view.dart';
+import '../../../core/utility.dart';
 import '../data/models/service_category_response.dart';
 import 'color_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
 
-  List addressTypeImage = [Assets.iconsHomeIcon, Assets.iconsOffice,Assets.iconsOffice];
-  List addressHeading = ["Home", "Office","Seeroo"];
+  List addressTypeImage = [
+    Assets.iconsHomeIcon,
+    Assets.iconsOffice,
+    Assets.iconsOffice
+  ];
+  List addressHeading = ["Home", "Office", "Seeroo"];
   List addressDescription = [
     "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India",
     "No. 63, 1st Floor, 14th Cross, 9th Main Road,Indiranagar, Bengaluru, Karnataka 560038, India",
@@ -47,27 +59,37 @@ class HomeController extends GetxController {
   RxString address = "Select Address".obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingServices = false.obs;
+
   // AppStorage storage = AppStorage();
   AuthRepository authRepository = Get.put(AuthRepository());
   HomeRepository homeRepository = Get.put(HomeRepository());
-   RxList<ServiceCategories> serviceList = List<ServiceCategories>.empty(growable: true).obs;
+  RxList<ServiceCategories> serviceList =
+      List<ServiceCategories>.empty(growable: true).obs;
 
-   List specialOfferTitle = ["Special\nFood Menu","100% Cashback\non First Order","Get 20% OFF\non All Foods","Limited Offer\nHot Deals","Get 20% - 30%\nCashback"];
-   List specialOfferImages = [Assets.imagesTopOffer1,Assets.imagesTopOffer2,Assets.imagesTopOffer3,Assets.imagesTopOffer4,Assets.imagesTopOffer5];
+  List specialOfferTitle = [
+    "Special\nFood Menu",
+    "100% Cashback\non First Order",
+    "Get 20% OFF\non All Foods",
+    "Limited Offer\nHot Deals",
+    "Get 20% - 30%\nCashback"
+  ];
+  List specialOfferImages = [
+    Assets.imagesTopOffer1,
+    Assets.imagesTopOffer2,
+    Assets.imagesTopOffer3,
+    Assets.imagesTopOffer4,
+    Assets.imagesTopOffer5
+  ];
   final ColorController colorController = Get.find<ColorController>();
-
-
-
-
-
-
-
+  final location.Location locationStatus = location.Location();
 
   @override
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      showAddressSelectionBottomSheet(context: Get.context!,);
+      showAddressSelectionBottomSheet(
+        context: Get.context!,
+      );
     });
   }
 
@@ -81,188 +103,216 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-
-  void showAddressSelectionBottomSheet({required BuildContext context,  RestaurantsAndDishesListingController? controller,}) {
+  void showAddressSelectionBottomSheet({
+    required BuildContext context,
+    RestaurantsAndDishesListingController? controller,
+  }) {
     showModalBottomSheet(
       isDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return Obx(
-           () {
-            return isLoading.value ?  SizedBox.shrink(): Container(
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(25))),
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Select Your Delivery Location',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
+        return Obx(() {
+          return isLoading.value
+              ? SizedBox.shrink()
+              : Container(
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.add_circle_outline, color: colorController.primaryColor.value,),
-                      const SizedBox(width: 10,),
-                      Text("Add New Address",
-                        style: TextStyle(color: colorController.primaryColor.value,fontWeight: FontWeight.w800),),
-
+                      const Text(
+                        'Select Your Delivery Location',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20),
+                      InkWell(
+                        onTap: () {},
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.add_circle_outline,
+                              color: colorController.primaryColor.value,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "Add New Address",
+                              style: TextStyle(
+                                  color: colorController.primaryColor.value,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Saved Address',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w800),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: addressDescription.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                onTap: () {
+                                  controller?.restaurantList.clear();
+                                  controller?.dishList.clear();
+                                  address.value = addressDescription[index];
+                                  debugPrint("value ${address.value}");
+                                  selectedLocationCoordinates.value =
+                                      locationCoordinates[
+                                          addressHeading[index]];
+                                  debugPrint("value ${address.value}");
+                                  debugPrint(
+                                      "selectedLocationCordinates $selectedLocationCoordinates");
+                                  controller?.getRestaurants(initial: true);
+                                  Get.back();
+                                },
+                                child: Container(
+                                  color: colorController.primaryColor.value
+                                      .withOpacity(.05),
+                                  child: ListTile(
+                                    leading: ColorFiltered(
+                                        colorFilter: ColorFilter.mode(
+                                            AppColors.accentColor,
+                                            BlendMode.modulate),
+                                        child: SvgPicture.asset(
+                                            "packages/mynewpackage/${addressTypeImage[index]}")),
+                                    title: Text(
+                                      addressHeading[index],
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    subtitle: Text(
+                                      addressDescription[index],
+                                      style: (TextStyle(
+                                          color: AppColors.textColor)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Saved Address',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: addressDescription.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              controller?.restaurantList.clear();
-                              controller?.dishList.clear();
-                              address.value = addressDescription[index];
-                              debugPrint("value ${address.value}");
-                              selectedLocationCoordinates.value =
-                              locationCoordinates[addressHeading[index]];
-                              debugPrint("value ${address.value}");
-                              debugPrint(
-                                  "selectedLocationCordinates $selectedLocationCoordinates");
-                              controller?.getRestaurants(initial: true);
-                              Get.back();
-                            },
-                            child: Container(
-                              color: colorController.primaryColor.value.withOpacity(.05),
-                              child: ListTile(
-                                leading:ColorFiltered(colorFilter: ColorFilter.mode(AppColors.accentColor, BlendMode.modulate),
-                                child: SvgPicture.asset("packages/mynewpackage/${addressTypeImage[index]}")),
-
-                                title: Text(addressHeading[index],
-                                  style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w600),),
-                                subtitle: Text(addressDescription[index],
-                                  style: (TextStyle(color: AppColors.textColor)),),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-
-                ],
-              ),
-            );
-          }
-        );
+                );
+        });
       },
     );
   }
 
-  void authenticate({required String clientId,required String clientSecrete, required String name,required String mobile}) async {
+  void authenticate(
+      {required String clientId,
+      required String clientSecrete,
+      required String name,
+      required String mobile}) async {
     isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
-
     AuthenticationRequestModel requestModel = AuthenticationRequestModel(
-        clientId:clientId, clientSecrete:clientSecrete
-    );
+        clientId: clientId, clientSecrete: clientSecrete);
 
     var result = await InternetConnectionChecker().hasConnection;
 
-    if(result == true){
+    if (result == true) {
       await authRepository.authenticate(requestModel.toJson()).then((value) {
-      if (value.status == 200) {
-
+        if (value.status == 200) {
           debugPrint("after success${isLoading.value}");
 
-
-        debugPrint("authenticated");
+          debugPrint("authenticated");
           debugPrint("${value.message}");
           debugPrint("token${value.data?.refreshToken}");
           Constants.accessToken = value.data?.accessToken ?? "";
-        // storage.writeAccessToken(value.data?.accessToken ?? "");
-        //   debugPrint("access token ${storage.getAccessToken()}");
-        // storage.writeRefreshToken(value.data?.refreshToken ?? "");
+          // storage.writeAccessToken(value.data?.accessToken ?? "");
+          //   debugPrint("access token ${storage.getAccessToken()}");
+          // storage.writeRefreshToken(value.data?.refreshToken ?? "");
           Constants.refreshToken = value.data?.refreshToken ?? "";
           Constants.isAuthenticated = true;
-          AppColors.primaryColor = fromHex(value.data!.themes!.first.primaryColor.toString());
-          AppColors.accentColor = fromHex(value.data!.themes!.first.accentColor.toString());
+          AppColors.primaryColor =
+              fromHex(value.data!.themes!.first.primaryColor.toString());
+          AppColors.accentColor =
+              fromHex(value.data!.themes!.first.accentColor.toString());
           debugPrint("color ${AppColors.primaryColor}");
           colorController.updateColors(
             value.data!.themes!.first.primaryColor.toString(),
             value.data!.themes!.first.accentColor.toString(),
           );
 
-        //   storage.writeIsAuthenticated(true);
+          //   storage.writeIsAuthenticated(true);
           createUser(mobile: mobile, name: name);
           getServices();
           isLoading(false);
-
-
-      }
-      else {
-        isLoading(false);
+        } else {
+          isLoading(false);
           debugPrint("after failure${value.message}");
           Navigator.pop(Get.context!);
 
-          ScaffoldMessenger.of(Get.context!).showSnackBar(
-              const SnackBar(content: Text("Unauthorized please check Your Key",), backgroundColor: Colors.red,duration: Duration(minutes: 5)));
-        Navigator.pop(Get.context!);
-
-      }
+          ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
+              content: Text(
+                "Unauthorized please check Your Key",
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(minutes: 5)));
+          Navigator.pop(Get.context!);
+        }
       });
-    }else{
+    } else {
       isLoading(false);
-      ScaffoldMessenger.of(Get.context!).showSnackBar(
-          const SnackBar(content: Text("No Internet",), backgroundColor: Colors.red,));
+      ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
+        content: Text(
+          "No Internet",
+        ),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
-  void createUser({required String mobile,required String name}) async {
+  void createUser({required String mobile, required String name}) async {
     // isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
     CreateUserRequestModel requestModel = CreateUserRequestModel(
-      phoneNumber: mobile,phoneCode: "+91",name: name
-    );
+        phoneNumber: mobile, phoneCode: "+91", name: name);
 
-
-
-   await authRepository.createUser(requestModel.toJson()).then((value) {
+    await authRepository.createUser(requestModel.toJson()).then((value) {
       if (value.status == 200) {
         // isLoading(false);
 
         debugPrint("after success${isLoading.value}");
-
 
         debugPrint("authenticated");
         debugPrint("${value.message}");
         // storage.writeUserId(value.data?.id ?? "");
         Constants.userId = value.data?.id ?? "";
       } else {
-
         debugPrint("after failure${value.message}");
 
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-            SnackBar(content: Text(value.message.toString() ?? "",),backgroundColor: Colors.red,));
+        ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+          content: Text(
+            value.message.toString() ?? "",
+          ),
+          backgroundColor: Colors.red,
+        ));
       }
     });
   }
-
 
   Future<void> getServices() async {
     serviceList.clear();
     isLoadingServices(true);
     await homeRepository.getServiceList().then((value) {
       if (value.data?.serviceCategories != [] && (value.status == 200)) {
-
         serviceList.addAll(value.data?.serviceCategories ?? []);
         // debugPrint("list service ${serviceList.first.categoryName}");
         isLoadingServices(false);
@@ -280,6 +330,118 @@ class HomeController extends GetxController {
     return Color(int.parse(buffer.toString(), radix: 16));
   }
 
+  Future<void> requestLocationPermission() async {
+    try {
+      location.PermissionStatus permission =
+          await locationStatus.requestPermission();
+      if (permission == location.PermissionStatus.granted) {
+        await Get.dialog(AddressSelectionDialog(
+          onSelected: (address, lat, lng, zip, city, state, streetNumber, route,
+              homeAddress) {},
+          onDataReceived: (
+            String address,
+            double lat,
+            double lng,
+            String zip,
+            String city,
+            String state,
+            String streetNumber,
+            String route,
+            String stateIsoCode,
+          ) {
+            // onAddressSelect(
+            //   address,
+            //   lat,
+            //   lng,
+            //   zip,
+            //   city,
+            //   state,
+            //   streetNumber,
+            //   route,
+            //   stateIsoCode,
+            // );
+          },
+        ));
+      } else {
+        await Utility.showAlert(
+            title: "",
+            content:
+                'Location permission is not allowed. Please allow it in Location Services -> Amagi Caregiver App',
+            hasCancel: false,
+            confirmText: "OK",
+            onConfirm: () {
+              openLocationServicesSettings();
+              Get.close(1);
+            },
+            isLoading: false.obs,
+            onCancel: () {});
+      }
+    } catch (e, stack) {
+      debugPrint(e.toString());
+    }
+  }
 
+  void openLocationServicesSettings() async {
+    const String settingsUrl = 'App-Prefs:LOCATION_SERVICES';
+    if (await canLaunch(settingsUrl)) {
+      await launch(settingsUrl);
+    } else {
+      if (kDebugMode) {
+        print('Could not open Location Services settings.');
+      }
+    }
+  }
 
+  Future<void> requestLocationForAndroid({int count = 1}) async {
+    try {
+      final locationStatus = await Permission.location.request();
+
+      final locationServiceStatus = await Permission.location.serviceStatus;
+
+      if (locationServiceStatus != ServiceStatus.enabled) {
+        await location.Location().requestService();
+      }
+
+      if (locationStatus == PermissionStatus.granted &&
+          locationServiceStatus == ServiceStatus.enabled) {
+        showAddressSelectionDialog();
+      } else {
+        if (locationStatus == PermissionStatus.permanentlyDenied) {
+          await openAppSettings();
+        }
+        if (locationStatus == PermissionStatus.denied) {
+          if (count < 2) {
+            await requestLocationForAndroid(count: 2);
+          }
+        }
+      }
+    } catch (e, stack) {
+      debugPrint(e.toString());
+    }
+  }
+
+  void showAddressSelectionDialog() {
+    Get.dialog(
+      AddressSelectionDialog(
+        onSelected: (address, lat, lng, zip, city, state, streetNumber, route,
+            stateIsoCode, homeAddress) {},
+        onDataReceived: (
+          String address,
+          double lat,
+          double lng,
+          String zip,
+          String city,
+          String state,
+          String streetNumber,
+          String route,
+          String stateIsoCode,
+        ) {
+          // onAddressSelect(address, lat, lng, zip, city, state, streetNumber,
+          //     route, stateIsoCode
+          //     // districtName, districtIsoCode
+          //     );
+        },
+      ),
+    );
+  }
 }

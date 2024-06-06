@@ -6,9 +6,11 @@ import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/re
 import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/generated/assets.dart';
+import 'package:mynewpackage/widgets/address_selection_dialogue.dart';
 import 'package:mynewpackage/widgets/common_Image_view.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
 
+import '../../../../widgets/address_selection_widget.dart';
 import '../../add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
 import '../controllers/home_controller.dart';
 
@@ -220,7 +222,7 @@ class HomeView extends GetView<HomeController> {
                                         "Food"
                                         ? Get.to(() =>
                                         RestaurantsAndDishesListingView())
-                                        : null;
+                                        : controller.serviceList[index].categoryName == "Cabs" ? controller.requestLocationPermission():null;
                                   },
                                   child: Card(
                                     shape: RoundedRectangleBorder(
