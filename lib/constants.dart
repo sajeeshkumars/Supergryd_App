@@ -4,7 +4,7 @@ class Constants{
  static  String refreshToken = '';
  static String userId ='';
  static bool isAuthenticated = false;
- static String name = "Sajeesh";
- static String nameFirstLetter = "S";
+ static String name = "Michael";
+ static String nameFirstLetter = "M";
  // static String nameFirstLetter = "S";
 }

@@ -2,6 +2,7 @@
 class Assets {
   Assets._();
 
+  static const String assetsLocalizations = 'lib/assets/localizations.dart';
   static const String authenticationAuthenticationRepo = 'lib/app/authentication/authentication_repo.dart';
   static const String authenticationAuthenticationService = 'lib/app/authentication/authentication_service.dart';
   static const String bindingsAddCashToWalletBinding = 'lib/app/modules/add_cash_to_wallet/bindings/add_cash_to_wallet_binding.dart';
@@ -26,6 +27,7 @@ class Assets {
   static const String dataRestaurantListingRequest = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_listing_request.dart';
   static const String dataRestaurantListingResponse = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_listing_response.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
+  static const String helperAlertHelper = 'lib/app/helper/alert_helper.dart';
   static const String iconsAddIcon = 'lib/assets/icons/add_icon.svg';
   static const String iconsCab = 'lib/assets/icons/cab.svg';
   static const String iconsCourier = 'lib/assets/icons/courier.svg';

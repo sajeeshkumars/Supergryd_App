@@ -5,6 +5,7 @@ import 'package:mynewpackage/app_colors.dart';
 
 import '../../../../constants.dart';
 import '../../../../generated/assets.dart';
+import '../../../../widgets/common_text.dart';
 import '../controllers/add_cash_to_wallet_controller.dart';
 
 class AddCashToWalletView extends GetView<AddCashToWalletController> {
@@ -27,9 +28,9 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
               child: CircleAvatar(
                 backgroundColor: AppColors.primaryColor,
                 radius: 50,
-                child: Text(
-                  Constants.nameFirstLetter,
-                  style: const TextStyle(color: Colors.white),
+                child: CommonText(
+                  textColor: Colors.white,
+                  text:Constants.nameFirstLetter,
                 ), // Radius of the circle
               ),
             ),
@@ -50,23 +51,25 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Hi,${Constants.name}",
-                      style: TextStyle(color: AppColors.white),
+                    CommonText(
+                      textColor:AppColors.white ,
+
+                       text:  "Hi,${Constants.name}",
                     ),
                     const SizedBox(
                       height: 5,
                     ),
-                    Text("Total Balance",
-                        style: TextStyle(color: AppColors.white, fontSize: 18)),
+                    CommonText(
+                      fontSize: 18,textColor: AppColors.white,
+                         text: "Total Balance",),
                     const SizedBox(
                       height: 5,
                     ),
-                    Text("\$0.00",
-                        style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold)),
+                    CommonText(
+                      textColor: AppColors.white,
+                        fontSize:28 ,
+                        fontWeight:FontWeight.bold ,
+                        text: "\$0.00",),
                   ],
                 ),
               ),

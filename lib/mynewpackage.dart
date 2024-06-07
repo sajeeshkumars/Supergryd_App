@@ -46,7 +46,7 @@ class _MyPackageState extends State<MyPackage> {
     debugPrint("name letter ${Constants.nameFirstLetter}");
 
     homeController.authenticate(
-        clientId: widget.clientId, clientSecrete: widget.clientSecrete,name:widget.name,mobile:widget.mobile);
+        clientId: widget.clientId, clientSecrete: widget.clientSecrete,name:widget.name,mobile:widget.mobile, context: context);
     debugPrint("primary color ${AppColors.primaryColor}");
 
 

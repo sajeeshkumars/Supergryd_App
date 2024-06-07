@@ -108,7 +108,7 @@ class _AddressSelectionDialogState extends State<AddressSelectionDialog> {
                       ? Container(
                           height: 100,
                           color: Colors.white,
-                          width: Get.width,
+                          width: MediaQuery.of(context).size.width,
                           child: const Center(
                             child: CircularProgressIndicator(),
                           ),

@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,16 +14,12 @@ import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/controll
 import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/widgets/address_selection_dialogue.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app_colors.dart';
 import '../../../../generated/assets.dart';
-import '../../../../widgets/address_selection_widget.dart';
-import '../../../../widgets/common_Image_view.dart';
-import '../../../core/utility.dart';
 import '../data/models/service_category_response.dart';
 import 'color_controller.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
@@ -86,11 +83,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showAddressSelectionBottomSheet(
-        context: Get.context!,
-      );
-    });
+
   }
 
   @override
@@ -174,7 +167,8 @@ class HomeController extends GetxController {
                                   debugPrint(
                                       "selectedLocationCordinates $selectedLocationCoordinates");
                                   controller?.getRestaurants(initial: true);
-                                  Get.back();
+                                  Navigator.pop(context);
+                                  // Get.back();
                                 },
                                 child: Container(
                                   color: colorController.primaryColor.value
@@ -216,7 +210,8 @@ class HomeController extends GetxController {
       {required String clientId,
       required String clientSecrete,
       required String name,
-      required String mobile}) async {
+      required String mobile,
+      required BuildContext context}) async {
     isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
@@ -250,26 +245,28 @@ class HomeController extends GetxController {
           );
 
           //   storage.writeIsAuthenticated(true);
-          createUser(mobile: mobile, name: name);
+          createUser(mobile: mobile, name: name, context: context);
           getServices();
           isLoading(false);
         } else {
           isLoading(false);
           debugPrint("after failure${value.message}");
-          Navigator.pop(Get.context!);
+          Navigator.pop(context);
 
-          ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text(
                 "Unauthorized please check Your Key",
               ),
               backgroundColor: Colors.red,
               duration: Duration(minutes: 5)));
-          Navigator.pop(Get.context!);
+          // Navigator.of(context, rootNavigator: true).pop();
+
+          // Navigator.pop(context);
         }
       });
     } else {
       isLoading(false);
-      ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(
           "No Internet",
         ),
@@ -278,7 +275,7 @@ class HomeController extends GetxController {
     }
   }
 
-  void createUser({required String mobile, required String name}) async {
+  void createUser({required String mobile, required String name, required BuildContext context}) async {
     // isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
@@ -298,7 +295,7 @@ class HomeController extends GetxController {
       } else {
         debugPrint("after failure${value.message}");
 
-        ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
             value.message.toString() ?? "",
           ),
@@ -330,51 +327,63 @@ class HomeController extends GetxController {
     return Color(int.parse(buffer.toString(), radix: 16));
   }
 
-  Future<void> requestLocationPermission() async {
+  Future<void> requestLocationPermission(BuildContext context) async {
     try {
       location.PermissionStatus permission =
           await locationStatus.requestPermission();
       if (permission == location.PermissionStatus.granted) {
-        await Get.dialog(AddressSelectionDialog(
-          onSelected: (address, lat, lng, zip, city, state, streetNumber, route,
-              homeAddress) {},
-          onDataReceived: (
-            String address,
-            double lat,
-            double lng,
-            String zip,
-            String city,
-            String state,
-            String streetNumber,
-            String route,
-            String stateIsoCode,
-          ) {
-            // onAddressSelect(
-            //   address,
-            //   lat,
-            //   lng,
-            //   zip,
-            //   city,
-            //   state,
-            //   streetNumber,
-            //   route,
-            //   stateIsoCode,
-            // );
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AddressSelectionDialog(
+              onSelected: (address, lat, lng, zip, city, state, streetNumber,
+                  route, homeAddress) {},
+              onDataReceived: (
+                String address,
+                double lat,
+                double lng,
+                String zip,
+                String city,
+                String state,
+                String streetNumber,
+                String route,
+                String stateIsoCode,
+              ) {
+                // onAddressSelect(
+                //   address,
+                //   lat,
+                //   lng,
+                //   zip,
+                //   city,
+                //   state,
+                //   streetNumber,
+                //   route,
+                //   stateIsoCode,
+                // );
+              },
+            );
           },
-        ));
+        );
       } else {
-        await Utility.showAlert(
-            title: "",
-            content:
-                'Location permission is not allowed. Please allow it in Location Services -> Amagi Caregiver App',
-            hasCancel: false,
-            confirmText: "OK",
-            onConfirm: () {
-              openLocationServicesSettings();
-              Get.close(1);
-            },
-            isLoading: false.obs,
-            onCancel: () {});
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(""),
+              content: Text(
+                  'Location permission is not allowed. Please allow it in Location Services'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    openLocationServicesSettings();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       }
     } catch (e, stack) {
       debugPrint(e.toString());
@@ -392,7 +401,7 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> requestLocationForAndroid({int count = 1}) async {
+  Future<void> requestLocationForAndroid({int count = 1, required BuildContext context}) async {
     try {
       final locationStatus = await Permission.location.request();
 
@@ -404,14 +413,14 @@ class HomeController extends GetxController {
 
       if (locationStatus == PermissionStatus.granted &&
           locationServiceStatus == ServiceStatus.enabled) {
-        showAddressSelectionDialog();
+        showAddressSelectionDialog(context);
       } else {
         if (locationStatus == PermissionStatus.permanentlyDenied) {
           await openAppSettings();
         }
         if (locationStatus == PermissionStatus.denied) {
           if (count < 2) {
-            await requestLocationForAndroid(count: 2);
+            await requestLocationForAndroid(count: 2, context: context);
           }
         }
       }
@@ -420,28 +429,31 @@ class HomeController extends GetxController {
     }
   }
 
-  void showAddressSelectionDialog() {
-    Get.dialog(
-      AddressSelectionDialog(
-        onSelected: (address, lat, lng, zip, city, state, streetNumber, route,
-            stateIsoCode, homeAddress) {},
-        onDataReceived: (
-          String address,
-          double lat,
-          double lng,
-          String zip,
-          String city,
-          String state,
-          String streetNumber,
-          String route,
-          String stateIsoCode,
-        ) {
-          // onAddressSelect(address, lat, lng, zip, city, state, streetNumber,
-          //     route, stateIsoCode
-          //     // districtName, districtIsoCode
-          //     );
-        },
-      ),
+  void showAddressSelectionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AddressSelectionDialog(
+          onSelected: (address, lat, lng, zip, city, state, streetNumber, route,
+              stateIsoCode, homeAddress) {},
+          onDataReceived: (
+            String address,
+            double lat,
+            double lng,
+            String zip,
+            String city,
+            String state,
+            String streetNumber,
+            String route,
+            String stateIsoCode,
+          ) {
+            // onAddressSelect(address, lat, lng, zip, city, state, streetNumber,
+            //     route, stateIsoCode
+            //     // districtName, districtIsoCode
+            //     );
+          },
+        );
+      },
     );
   }
 }

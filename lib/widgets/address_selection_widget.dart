@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as location;
+import 'package:mynewpackage/app/helper/alert_helper.dart';
 import 'package:mynewpackage/app/modules/home/controllers/color_controller.dart';
+import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,6 +28,7 @@ class AddressSelectionWidget extends StatelessWidget {
   final location.Location locationStatus = location.Location();
 
   ColorController colorController = Get.find();
+  HomeController homeController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +38,9 @@ class AddressSelectionWidget extends StatelessWidget {
         InkWell(
           onTap: () async {
             if (Platform.isIOS) {
-              await requestLocationPermission();
+              await requestLocationPermission(context);
             } else {
-              await requestLocationForAndroid();
+              await homeController.requestLocationForAndroid( context: context);
             }
           },
           onLongPress: () {
@@ -96,57 +99,59 @@ class AddressSelectionWidget extends StatelessWidget {
     );
   }
 
-  Future<void> requestLocationPermission() async {
+  Future<void> requestLocationPermission(BuildContext context) async {
     try {
-      location.PermissionStatus permission =
-          await locationStatus.requestPermission();
+      location.PermissionStatus permission = await locationStatus.requestPermission();
       if (permission == location.PermissionStatus.granted) {
-        await Get.dialog(AddressSelectionDialog(
-          onSelected: (address, lat, lng, zip, city, state, streetNumber, route,
-              homeAddress) {},
-          onDataReceived: (
-            String address,
-            double lat,
-            double lng,
-            String zip,
-            String city,
-            String state,
-            String streetNumber,
-            String route,
-            String stateIsoCode,
-          ) {
-            onAddressSelect(
-              address,
-              lat,
-              lng,
-              zip,
-              city,
-              state,
-              streetNumber,
-              route,
-              stateIsoCode,
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AddressSelectionDialog(
+              onSelected: (address, lat, lng, zip, city, state, streetNumber, route, homeAddress) {},
+              onDataReceived: (
+                  String address,
+                  double lat,
+                  double lng,
+                  String zip,
+                  String city,
+                  String state,
+                  String streetNumber,
+                  String route,
+                  String stateIsoCode,
+                  ) {
+                onAddressSelect(
+                  address,
+                  lat,
+                  lng,
+                  zip,
+                  city,
+                  state,
+                  streetNumber,
+                  route,
+                  stateIsoCode,
+                );
+              },
             );
           },
-        ));
+        );
       } else {
-        await Utility.showAlert(
+             await AlertHelper.showAlert(
             title: "",
             content:
-                'Location permission is not allowed. Please allow it in Location Services -> Amagi Caregiver App',
+            'Location permission is not allowed. Please allow it in Location Services -> Amagi Caregiver App',
             hasCancel: false,
             confirmText: "OK",
             onConfirm: () {
               openLocationServicesSettings();
               Get.close(1);
             },
-            isLoading: false.obs,
-            onCancel: () {});
+            isLoading: ValueNotifier(false),
+            onCancel: () {}, context: context);
       }
     } catch (e, stack) {
       debugPrint(e.toString());
     }
   }
-
   void openLocationServicesSettings() async {
     const String settingsUrl = 'App-Prefs:LOCATION_SERVICES';
     if (await canLaunch(settingsUrl)) {
@@ -158,56 +163,5 @@ class AddressSelectionWidget extends StatelessWidget {
     }
   }
 
-  Future<void> requestLocationForAndroid({int count = 1}) async {
-    try {
-      final locationStatus = await Permission.location.request();
 
-      final locationServiceStatus = await Permission.location.serviceStatus;
-
-      if (locationServiceStatus != ServiceStatus.enabled) {
-        await location.Location().requestService();
-      }
-
-      if (locationStatus == PermissionStatus.granted &&
-          locationServiceStatus == ServiceStatus.enabled) {
-        showAddressSelectionDialog();
-      } else {
-        if (locationStatus == PermissionStatus.permanentlyDenied) {
-          await openAppSettings();
-        }
-        if (locationStatus == PermissionStatus.denied) {
-          if (count < 2) {
-            await requestLocationForAndroid(count: 2);
-          }
-        }
-      }
-    } catch (e, stack) {
-      debugPrint(e.toString());
-    }
-  }
-
-  void showAddressSelectionDialog() {
-    Get.dialog(
-      AddressSelectionDialog(
-        onSelected: (address, lat, lng, zip, city, state, streetNumber, route,
-            stateIsoCode, homeAddress) {},
-        onDataReceived: (
-          String address,
-          double lat,
-          double lng,
-          String zip,
-          String city,
-          String state,
-          String streetNumber,
-          String route,
-          String stateIsoCode,
-        ) {
-          onAddressSelect(address, lat, lng, zip, city, state, streetNumber,
-              route, stateIsoCode
-              // districtName, districtIsoCode
-              );
-        },
-      ),
-    );
-  }
 }

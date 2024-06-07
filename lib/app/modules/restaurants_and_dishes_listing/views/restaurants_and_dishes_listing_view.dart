@@ -14,13 +14,21 @@ import '../../../../app_colors.dart';
 import '../../../../constants.dart';
 import '../../../../generated/assets.dart';
 import '../../../../widgets/common_Image_view.dart';
+import '../../../../widgets/common_text.dart';
 import '../../restaurants_details/data/get_restaurant_details_response.dart';
 import '../controllers/restaurants_and_dishes_listing_controller.dart';
 import '../data/dish_listing_response.dart';
 
-class RestaurantsAndDishesListingView extends StatelessWidget {
-  RestaurantsAndDishesListingView({super.key});
+class RestaurantsAndDishesListingView extends StatefulWidget {
+  const RestaurantsAndDishesListingView({super.key});
 
+  @override
+  State<RestaurantsAndDishesListingView> createState() =>
+      _RestaurantsAndDishesListingViewState();
+}
+
+class _RestaurantsAndDishesListingViewState
+    extends State<RestaurantsAndDishesListingView> {
   final HomeController homeController = Get.put(HomeController());
 
   final RestaurantsAndDishesListingController controller =
@@ -44,11 +52,10 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(
-                      'Your Location',
-                      style: TextStyle(
-                          fontSize: 14, color: AppColors.textLightColor),
-                    ),
+                    CommonText(
+                        text: 'Your Location',
+                        fontSize: 14,
+                        textColor: AppColors.textLightColor),
                     const Icon(
                       Icons.keyboard_arrow_down_sharp,
                       size: 14,
@@ -56,7 +63,7 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Obx(() {
                   return Row(
@@ -69,11 +76,11 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                         width: 5,
                       ),
                       Expanded(
-                          child: Text(homeController.address.value,
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  overflow: TextOverflow.ellipsis))),
+                          child: CommonText(
+                              text: homeController.address.value,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              textOverflow: TextOverflow.ellipsis))
                     ],
                   );
                 }),
@@ -120,29 +127,27 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                           Text(
-                            "Hi ${Constants.name},",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 20),
-                          ),
+                          CommonText(
+                              text: "Hi ${Constants.name},",
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20),
                           SizedBox(
                             height: 10,
                           ),
-                          const Text(
-                            "Currently we are not serviceable in your location.\nWe are on a process of increasing our service area.",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 14),
-                          ),
+                          const CommonText(
+                              text:
+                                  "Currently we are not serviceable in your location.\nWe are on a process of increasing our service area.",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14),
                           SizedBox(
                             height: 10,
                           ),
-                          const Text(
-                            "We will notify you once we start our service in your area",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                                color: Color(0xff2C9649)),
-                          ),
+                          const CommonText(
+                              text:
+                                  "We will notify you once we start our service in your area",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              textColor: Color(0xff2C9649)),
                         ],
                       ),
                     )
@@ -189,8 +194,11 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                                 ? AppColors.primaryColor
                                                 : AppColors.borderColor,
                                             style: BorderStyle.solid,
-                                            width:controller.selectedCategory.value == index ? 1.5 :  1,
-
+                                            width: controller.selectedCategory
+                                                        .value ==
+                                                    index
+                                                ? 1.5
+                                                : 1,
                                           ),
                                         ),
                                         child: Padding(
@@ -202,12 +210,11 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                             children: [
                                               SvgPicture.asset(
                                                   "packages/mynewpackage/${controller.filterImages[index]}"),
-                                              Text(
-                                                controller.filters[index],
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black),
-                                              ),
+                                              CommonText(
+                                                  text:
+                                                      controller.filters[index],
+                                                  fontSize: 12,
+                                                  textColor: Colors.black),
                                               // SizedBox(width: 10,),
                                               controller.selectedCategory
                                                           .value ==
@@ -297,35 +304,41 @@ class RestaurantsAndDishesListingView extends StatelessWidget {
                                                     .height /
                                                 2,
                                             child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Column(
                                                 children: [
                                                   SizedBox(
-                                                    height: MediaQuery.of(context)
-                                                            .size
-                                                            .height /
-                                                        5,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            5,
                                                   ),
-
                                                   ColorFiltered(
-                                                    colorFilter: ColorFilter.mode(AppColors.primaryColor, BlendMode.modulate),
+                                                    colorFilter:
+                                                        ColorFilter.mode(
+                                                            AppColors
+                                                                .primaryColor,
+                                                            BlendMode.modulate),
                                                     child: Image.asset(
                                                       height: 120,
-                                                     width: 120,
-                                                     'packages/mynewpackage/${Assets.iconsNoFood6}',
-                                                       //  height: 100,
-                                                       //  width: 100,
-                                                       //  color: Colors.red,
-                                                       // imagePath: :
+                                                      width: 120,
+                                                      'packages/mynewpackage/${Assets.iconsNoFood6}',
+                                                      //  height: 100,
+                                                      //  width: 100,
+                                                      //  color: Colors.red,
+                                                      // imagePath: :
                                                     ),
                                                   ),
-                                                  SizedBox(height: 10,),
-                                                  Text(
-                                                    "We're currently out of ${controller.selectedCategory.value == 0 ? "Veg":"Non Veg"} items, but our ${controller.selectedCategory.value == 1 ? "Veg":"Non Veg"} selection is sizzling! Take a look!",
-                                                    style: const TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w600),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  CommonText(
+                                                    text:
+                                                        "We're currently out of ${controller.selectedCategory.value == 0 ? "Veg" : "Non Veg"} items, but our ${controller.selectedCategory.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
                                                     textAlign: TextAlign.center,
                                                   ),
                                                 ],
@@ -418,17 +431,15 @@ class _DishCardState extends State<DishCard> {
                     children: [
                       // Name at the top
 
-                      Text(
-                        (widget.isDishes
+                      CommonText(
+                        text: (widget.isDishes
                                 ? widget.dish?.storeProducts?.name
                                 : widget.restaurant?.name) ??
                             "",
                         maxLines: widget.isDishes ? 2 : 3,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        textOverflow: TextOverflow.ellipsis,
                       ),
                       //         Shimmer.fromColors(
                       // baseColor: Colors.grey[300]!,
@@ -441,9 +452,10 @@ class _DishCardState extends State<DishCard> {
                       // ),
                       const SizedBox(height: 8),
                       // Price
-                      Text(
-                        "₹ ${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.price)}",
-                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      CommonText(
+                        text:
+                            "₹ ${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.price)}",
+                        fontWeight: FontWeight.w500,
                       ),
                       const SizedBox(height: 8),
                       // Rating
@@ -454,19 +466,20 @@ class _DishCardState extends State<DishCard> {
                             SvgPicture.asset(
                               "packages/mynewpackage/${Assets.iconsStar}",
                             ),
-                            Text(
-                              "${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating ?? 0 : widget.restaurant?.productDetails?.countOfRating ?? 0)})",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
+                            CommonText(
+                              text:
+                                  "${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating ?? 0 : widget.restaurant?.productDetails?.countOfRating ?? 0)})",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
                             ),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
-                        side: BorderSide(color: AppColors.borderColor,),
+                        side: BorderSide(
+                          color: AppColors.borderColor,
+                        ),
                       ),
                       Spacer(),
                       // Add icon at the bottom
@@ -485,12 +498,11 @@ class _DishCardState extends State<DishCard> {
                           const SizedBox(width: 5),
                           if (widget.isDishes)
                             Expanded(
-                              child: Text(
-                                "${widget.dish?.restaurantDetails?.first.name}",
-                                style: TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    color: AppColors.textLightColor),
-                              ),
+                              child: CommonText(
+                                  text:
+                                      "${widget.dish?.restaurantDetails?.first.name}",
+                                  textOverflow: TextOverflow.ellipsis,
+                                  textColor: AppColors.textLightColor),
                             ),
                           const SizedBox(width: 3),
                           Row(
@@ -517,24 +529,22 @@ class _DishCardState extends State<DishCard> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         InkWell(
-                                          onTap: _incrementCount,
-                                          child: const Icon(
-                                              size: 20,
-                                              Icons.add,
-                                              color: Colors.white),
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          '$_count',
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                        const SizedBox(width: 8),
-                                        InkWell(
                                           onTap: _decrementCount,
                                           child: const Icon(
                                               size: 20,
                                               Icons.remove,
+                                              color: Colors.white),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        CommonText(
+                                            text: '$_count',
+                                            textColor: Colors.white),
+                                        const SizedBox(width: 8),
+                                        InkWell(
+                                          onTap: _incrementCount,
+                                          child: const Icon(
+                                              size: 20,
+                                              Icons.add,
                                               color: Colors.white),
                                         ),
                                       ],
@@ -579,13 +589,22 @@ class RestaurantList extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
               onTap: () {
-                Get.to(RestaurantsDetailsView(
-                    restaurantId:
-                        controller.restaurantList[index].id.toString(),
-                    distance:
-                        controller.restaurantList[index].distanceInKilometer ??
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => RestaurantsDetailsView(
+                        restaurantId:
+                            controller.restaurantList[index].id.toString(),
+                        distance: controller
+                                .restaurantList[index].distanceInKilometer ??
                             0,
-                    restaurantData: controller.restaurantList[index]));
+                        restaurantData: controller.restaurantList[index])));
+
+                // Get.to(RestaurantsDetailsView(
+                //     restaurantId:
+                //         controller.restaurantList[index].id.toString(),
+                //     distance:
+                //         controller.restaurantList[index].distanceInKilometer ??
+                //             0,
+                //     restaurantData: controller.restaurantList[index]));
               },
               child: Container(
                   color: AppColors.backgroundColor,
@@ -655,23 +674,21 @@ class RestaurantList extends StatelessWidget {
                                           )),
                                   Padding(
                                     padding: EdgeInsets.all(5.0),
-                                    child: Text(
-                                      controller.restaurantList[index].offers
-                                              ?.first.offer ??
-                                          "",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.white),
-                                    ),
+                                    child: CommonText(
+                                        text: controller.restaurantList[index]
+                                                .offers?.first.offer ??
+                                            "",
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        textColor: AppColors.white),
                                   ),
                                   Positioned(
                                       top: 30,
                                       left: 5,
-                                      child: Text("Upto ₹75",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColors.white))),
+                                      child: CommonText(
+                                          text: "Upto ₹75",
+                                          fontSize: 14,
+                                          textColor: AppColors.white)),
                                 ])
                               : controller.restaurantList[index].isAvailable !=
                                       2
@@ -699,12 +716,12 @@ class RestaurantList extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 5),
-                          child: Text(
-                            (controller.restaurantList[index].restaurantDetails
-                                    ?.first.name)! +
+                          child: CommonText(
+                            text: (controller.restaurantList[index]
+                                    .restaurantDetails?.first.name)! +
                                 (' , ${controller.restaurantList[index].branchName.toString()}'),
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w800),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800,
                           ),
                         ),
                         Padding(
@@ -718,11 +735,11 @@ class RestaurantList extends StatelessWidget {
                                   children: [
                                     SvgPicture.asset(
                                         "packages/mynewpackage/${Assets.iconsStar}"),
-                                    Text(
-                                        "${controller.restaurantList[index].rating}(${Utility.countConverter(controller.restaurantList[index].totalRating)})",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 10)),
+                                    CommonText(
+                                        text:
+                                            "${controller.restaurantList[index].rating}(${Utility.countConverter(controller.restaurantList[index].totalRating)})",
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 10),
                                   ],
                                 ),
                                 shape: RoundedRectangleBorder(
@@ -734,12 +751,11 @@ class RestaurantList extends StatelessWidget {
                                 width: 10,
                               ),
                               Chip(
-                                label: Text(
-                                  "${controller.restaurantList[index].distanceInKilometer?.toStringAsFixed(1)} km",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 10,
-                                  ),
+                                label: CommonText(
+                                  text:
+                                      "${controller.restaurantList[index].distanceInKilometer?.toStringAsFixed(1)} km",
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10,
                                 ),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(25),
@@ -753,14 +769,13 @@ class RestaurantList extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                             horizontal: 15,
                           ),
-                          child: Text(
-                            controller.restaurantList[index].images?.first
+                          child: CommonText(
+                            text: controller.restaurantList[index].images?.first
                                     .description ??
                                 "",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: AppColors.textColor,
-                                overflow: TextOverflow.ellipsis),
+                            fontSize: 14,
+                            textColor: AppColors.textColor,
+                            textOverflow: TextOverflow.ellipsis,
                           ),
                         ),
                         SizedBox(
@@ -770,12 +785,11 @@ class RestaurantList extends StatelessWidget {
                             ? const Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 20),
-                                child: Text(
-                                  "Currently Unavailable",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.w500),
+                                child: CommonText(
+                                  text: "Currently Unavailable",
+                                  fontSize: 14,
+                                  textColor: Colors.red,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               )
                             : const SizedBox.shrink()
@@ -914,7 +928,9 @@ Widget shimmerDishes() {
                           color: Colors.grey[200],
                         )),
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -925,30 +941,30 @@ Widget shimmerDishes() {
                             height: 10,
                             width: 150,
                             color: Colors.grey[200],
-
                           ),
                           baseColor: Colors.grey[300]!,
                           highlightColor: Colors.grey[100]!,
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Shimmer.fromColors(
                           child: Container(
                             height: 10,
                             width: 100,
                             color: Colors.grey[200],
-
                           ),
                           baseColor: Colors.grey[300]!,
                           highlightColor: Colors.grey[100]!,
                         ),
-
-                        SizedBox(height: 50,),
+                        SizedBox(
+                          height: 50,
+                        ),
                         Shimmer.fromColors(
                           child: Container(
                             height: 30,
                             width: 100,
                             color: Colors.grey[200],
-
                           ),
                           baseColor: Colors.grey[300]!,
                           highlightColor: Colors.grey[100]!,
@@ -956,7 +972,6 @@ Widget shimmerDishes() {
                       ],
                     ),
                   ),
-
 
                   // Rating
                 ],

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:mynewpackage/generated/locales.g.dart';
 import 'package:mynewpackage/mynewpackage.dart';
+import 'package:flutter/services.dart';
+
+
 
 
 void main() {
@@ -14,6 +18,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+
+      supportedLocales: [
+        Locale('en', ''),
+      ],
+      // localizationsDelegates: [
+      //   AppLocalizations.delegate,
+      //   GlobalMaterialLocalizations.delegate,
+      //   GlobalWidgetsLocalizations.delegate,
+      //   GlobalCupertinoLocalizations.delegate,
+      // ],
+      translationsKeys: AppTranslation.translations,
+      // localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      locale: Locale('en', 'US'),
+      fallbackLocale: Locale('en', 'US'),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -35,6 +53,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
         fontFamily: "Mullish",
+
 
 
       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class CommonText extends StatelessWidget {
   const CommonText(
@@ -31,7 +33,7 @@ class CommonText extends StatelessWidget {
       overflow: textOverflow,
       style: textStyle ??
           TextStyle(
-              fontSize: fontSize,
+              fontSize: (fontSize ?? 14 )/  MediaQuery.textScalerOf(context).scale(1),
               overflow: TextOverflow.ellipsis,
               color: textColor,
               fontWeight: fontWeight,
