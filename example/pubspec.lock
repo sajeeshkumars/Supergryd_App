@@ -312,9 +312,11 @@ packages:
   google_maps_place_picker:
     dependency: transitive
     description:
-      path: "../google_maps_place_picker"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: "5044d8a3a509b545b0b1f0610d4a457887cb4da9"
+      url: "https://github.com/Najib-seeroo/place_picker"
+    source: git
     version: "3.0.1"
   google_maps_webservice:
     dependency: transitive

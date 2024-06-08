@@ -26,7 +26,9 @@ dependencies:
   flutter_spinkit: ^5.2.1
   shimmer: ^3.0.0
   google_maps_place_picker:
-    path: ./google_maps_place_picker
+     git:
+      url: https://github.com/Najib-seeroo/place_picker
+      ref: main
   location: 6.0.1
   maps_launcher: ^2.2.1
   permission_handler: ^11.3.0
