@@ -29,14 +29,16 @@ HomeController controller = Get.find();
 class _HomeViewState extends State<HomeView> {
 
   @override
-  void initState() {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.showAddressSelectionBottomSheet(
-        context: context,
-      );
+      if (ModalRoute.of(context)?.isCurrent == true && controller.count.value == 0) {
+        controller.showAddressSelectionBottomSheet(
+          context: context,
+        );
+      }
     });
-    // TODO: implement initState
-    super.initState();
   }
 
   @override

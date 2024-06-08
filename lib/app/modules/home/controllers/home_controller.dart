@@ -80,6 +80,8 @@ class HomeController extends GetxController {
   final ColorController colorController = Get.find<ColorController>();
   final location.Location locationStatus = location.Location();
 
+ RxInt count = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -168,6 +170,8 @@ class HomeController extends GetxController {
                                       "selectedLocationCordinates $selectedLocationCoordinates");
                                   controller?.getRestaurants(initial: true);
                                   Navigator.pop(context);
+                                  count.value = 1;
+
                                   // Get.back();
                                 },
                                 child: Container(
