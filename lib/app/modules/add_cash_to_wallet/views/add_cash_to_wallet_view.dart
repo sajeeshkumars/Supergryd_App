@@ -370,7 +370,8 @@ class PaymentMethodTile extends StatelessWidget {
                   onChanged: (value) {
                     controller.selectedRadio.value = value ?? 0;
                   }),
-            )),
+            )
+        ),
       );
     });
   }

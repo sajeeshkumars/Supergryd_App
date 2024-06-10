@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
 
-      supportedLocales: [
+      supportedLocales: const [
         Locale('en', ''),
       ],
       // localizationsDelegates: [
@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
       // ],
       translationsKeys: AppTranslation.translations,
       // localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      locale: Locale('en', 'US'),
-      fallbackLocale: Locale('en', 'US'),
+      locale: const Locale('en', 'US'),
+      fallbackLocale: const Locale('en', 'US'),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(

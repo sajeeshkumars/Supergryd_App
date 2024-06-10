@@ -106,7 +106,7 @@ class AddressSelectionWidget extends StatelessWidget {
         await showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AddressSelectionDialog(
+            return RideDialog(
               onSelected: (address, lat, lng, zip, city, state, streetNumber, route, homeAddress) {},
               onDataReceived: (
                   String address,

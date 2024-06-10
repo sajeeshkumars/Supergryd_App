@@ -81,6 +81,7 @@ class HomeController extends GetxController {
   final location.Location locationStatus = location.Location();
 
  RxInt count = 0.obs;
+ RxBool isDestinationSelected = false.obs;
 
   @override
   void onInit() {
@@ -339,7 +340,7 @@ class HomeController extends GetxController {
         await showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AddressSelectionDialog(
+            return RideDialog(
               onSelected: (address, lat, lng, zip, city, state, streetNumber,
                   route, homeAddress) {},
               onDataReceived: (
@@ -437,7 +438,7 @@ class HomeController extends GetxController {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AddressSelectionDialog(
+        return RideDialog(
           onSelected: (address, lat, lng, zip, city, state, streetNumber, route,
               stateIsoCode, homeAddress) {},
           onDataReceived: (

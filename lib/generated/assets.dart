@@ -30,8 +30,11 @@ class Assets {
   static const String helperAlertHelper = 'lib/app/helper/alert_helper.dart';
   static const String iconsAddIcon = 'lib/assets/icons/add_icon.svg';
   static const String iconsCab = 'lib/assets/icons/cab.svg';
+  static const String iconsClock = 'lib/assets/icons/clock.svg';
   static const String iconsCourier = 'lib/assets/icons/courier.svg';
   static const String iconsDestinationIcon = 'lib/assets/icons/destinationIcon.svg';
+  static const String iconsDollarCircle = 'lib/assets/icons/dollarCircle.svg';
+  static const String iconsEconomyCar = 'lib/assets/icons/economyCar.svg';
   static const String iconsEgg = 'lib/assets/icons/egg.svg';
   static const String iconsFood = 'lib/assets/icons/food.svg';
   static const String iconsFurniture = 'lib/assets/icons/furniture.svg';
@@ -39,6 +42,8 @@ class Assets {
   static const String iconsGrocery = 'lib/assets/icons/grocery.svg';
   static const String iconsHomeIcon = 'lib/assets/icons/homeIcon.svg';
   static const String iconsHomeService = 'lib/assets/icons/home-service.svg';
+  static const String iconsKilometer = 'lib/assets/icons/kilometer.svg';
+  static const String iconsLoadingDriver = 'lib/assets/icons/loadingDriver.svg';
   static const String iconsLocation = 'lib/assets/icons/location.svg';
   static const String iconsLocationLine = 'lib/assets/icons/locationLine.svg';
   static const String iconsMenuIcon = 'lib/assets/icons/menu-icon.svg';
@@ -49,12 +54,15 @@ class Assets {
   static const String iconsNofood2 = 'lib/assets/icons/nofood2.svg';
   static const String iconsNofood5 = 'lib/assets/icons/nofood5.svg';
   static const String iconsNonVeg = 'lib/assets/icons/non-veg.svg';
+  static const String iconsNormal = 'lib/assets/icons/normal.svg';
   static const String iconsNotAvailableAtLocation = 'lib/assets/icons/not_available_at_location.svg';
   static const String iconsOffer = 'lib/assets/icons/offer.svg';
+  static const String iconsOfferIcon = 'lib/assets/icons/offerIcon.svg';
   static const String iconsOffice = 'lib/assets/icons/office.svg';
   static const String iconsOthers = 'lib/assets/icons/others.svg';
   static const String iconsSalonService = 'lib/assets/icons/salon-service.svg';
   static const String iconsSearchIcon = 'lib/assets/icons/search-icon.svg';
+  static const String iconsSeats = 'lib/assets/icons/seats.svg';
   static const String iconsShopIcon = 'lib/assets/icons/shop_icon.svg';
   static const String iconsStar = 'lib/assets/icons/Star.svg';
   static const String iconsStartLocation = 'lib/assets/icons/startLocation.svg';
