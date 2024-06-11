@@ -8,6 +8,7 @@ import 'package:mynewpackage/services/config.dart';
 import 'app/authentication/authentication_repo.dart';
 import 'app/authentication/authentication_service.dart';
 import 'app/modules/home/controllers/home_controller.dart';
+import 'app/modules/promo_code_listing/controllers/promo_code_listing_controller.dart';
 
 class DependencyCreator {
   static init() {
@@ -23,6 +24,7 @@ class DependencyCreator {
     Get.lazyPut<RestaurantsAndDishesListingController>(()=>RestaurantsAndDishesListingController(),fenix: true);
     Get.lazyPut<AddCashToWalletController>(()=>AddCashToWalletController(),fenix: true);
     Get.lazyPut<ColorController>(()=>ColorController(),fenix: true);
+    Get.lazyPut<PromoCodeListingController>(()=>PromoCodeListingController(),fenix: true);
 
 
     Get.lazyPut<AuthService>(() => AuthRepository(), fenix: true);

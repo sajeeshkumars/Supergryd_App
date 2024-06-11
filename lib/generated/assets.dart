@@ -7,11 +7,13 @@ class Assets {
   static const String authenticationAuthenticationService = 'lib/app/authentication/authentication_service.dart';
   static const String bindingsAddCashToWalletBinding = 'lib/app/modules/add_cash_to_wallet/bindings/add_cash_to_wallet_binding.dart';
   static const String bindingsHomeBinding = 'lib/app/modules/home/bindings/home_binding.dart';
+  static const String bindingsPromoCodeListingBinding = 'lib/app/modules/promo_code_listing/bindings/promo_code_listing_binding.dart';
   static const String bindingsRestaurantsAndDishesListingBinding = 'lib/app/modules/restaurants_and_dishes_listing/bindings/restaurants_and_dishes_listing_binding.dart';
   static const String bindingsRestaurantsDetailsBinding = 'lib/app/modules/restaurants_details/bindings/restaurants_details_binding.dart';
   static const String controllersAddCashToWalletController = 'lib/app/modules/add_cash_to_wallet/controllers/add_cash_to_wallet_controller.dart';
   static const String controllersColorController = 'lib/app/modules/home/controllers/color_controller.dart';
   static const String controllersHomeController = 'lib/app/modules/home/controllers/home_controller.dart';
+  static const String controllersPromoCodeListingController = 'lib/app/modules/promo_code_listing/controllers/promo_code_listing_controller.dart';
   static const String controllersRestaurantsAndDishesListingController = 'lib/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
   static const String controllersRestaurantsDetailsController = 'lib/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
   static const String coreUtility = 'lib/app/core/utility.dart';
@@ -30,6 +32,7 @@ class Assets {
   static const String helperAlertHelper = 'lib/app/helper/alert_helper.dart';
   static const String iconsAddIcon = 'lib/assets/icons/add_icon.svg';
   static const String iconsCab = 'lib/assets/icons/cab.svg';
+  static const String iconsCall = 'lib/assets/icons/Call.svg';
   static const String iconsClock = 'lib/assets/icons/clock.svg';
   static const String iconsCourier = 'lib/assets/icons/courier.svg';
   static const String iconsDestinationIcon = 'lib/assets/icons/destinationIcon.svg';
@@ -47,6 +50,7 @@ class Assets {
   static const String iconsLocation = 'lib/assets/icons/location.svg';
   static const String iconsLocationLine = 'lib/assets/icons/locationLine.svg';
   static const String iconsMenuIcon = 'lib/assets/icons/menu-icon.svg';
+  static const String iconsMessage = 'lib/assets/icons/Message.svg';
   static const String iconsMicIcon = 'lib/assets/icons/mic-icon.svg';
   static const String iconsNoFood = 'lib/assets/icons/noFood.svg';
   static const String iconsNoFood6 = 'lib/assets/icons/noFood6.png';
@@ -105,6 +109,7 @@ class Assets {
   static const String servicesConfig = 'lib/services/config.dart';
   static const String viewsAddCashToWalletView = 'lib/app/modules/add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
   static const String viewsHomeView = 'lib/app/modules/home/views/home_view.dart';
+  static const String viewsPromoCodeListingView = 'lib/app/modules/promo_code_listing/views/promo_code_listing_view.dart';
   static const String viewsRestaurantsAndDishesListingView = 'lib/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
   static const String viewsRestaurantsDetailsView = 'lib/app/modules/restaurants_details/views/restaurants_details_view.dart';
   static const String widgetsAddressSelectionDialogue = 'lib/widgets/address_selection_dialogue.dart';

@@ -31,6 +31,6 @@
   "promo_code": "Promo code",
   "request": "Request",
   "loading_your_nearest_driver": "Loading Your Nearest Driver",
-  "loading_driver_dialogue": "Hang tight! We're connecting you with\nthe closest available driver. This may\n take a moment."
-
+  "loading_driver_dialogue": "Hang tight! We're connecting you with\nthe closest available driver. This may\n take a moment.",
+  "no_service": "Hold your horses!   We're not quite there yet, but we're bringing our service to your area soon. Stay tuned!"
 }

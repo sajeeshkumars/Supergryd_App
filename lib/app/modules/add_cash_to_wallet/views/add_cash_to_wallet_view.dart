@@ -42,7 +42,7 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: Get.width,
+              width: MediaQuery.of(context).size.width,
               height: 120,
               color: Colors.blueAccent,
               child: Padding(

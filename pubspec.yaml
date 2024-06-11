@@ -32,6 +32,7 @@ dependencies:
   location: 6.0.1
   maps_launcher: ^2.2.1
   permission_handler: ^11.3.0
+  flutter_rating_bar: ^4.0.1
 
 
 dev_dependencies:

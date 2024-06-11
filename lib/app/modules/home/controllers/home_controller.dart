@@ -83,6 +83,7 @@ class HomeController extends GetxController {
  RxInt count = 0.obs;
  RxBool isDestinationSelected = false.obs;
 
+
   @override
   void onInit() {
     super.onInit();
