@@ -4,22 +4,22 @@ version: 0.0.1
 homepage: https://github.com/Najib-seeroo/package_test
 
 environment:
-  sdk: '>=3.3.4 <4.0.0'
+  sdk: '>=3.4.2 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
   cached_network_image: ^3.3.1
   carousel_slider: ^4.2.1
+  dynamic_fonts: ^2.2.1
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   get: ^4.6.6
-  http: ^0.13.6
+
   smooth_page_indicator: ^1.1.0
   speech_to_text: ^6.6.0
   flutter_svg: ^2.0.9
-  intl: ^0.18.0
   get_storage: ^2.1.1
   internet_connection_checker: ^1.0.0+1
   loading_overlay: ^0.3.0
@@ -28,17 +28,23 @@ dependencies:
   google_maps_place_picker:
      git:
       url: https://github.com/Najib-seeroo/place_picker
-      ref: main
-  location: 6.0.1
+      ref: 0.0.2
+  location: ^6.0.2
   maps_launcher: ^2.2.1
   permission_handler: ^11.3.0
   flutter_rating_bar: ^4.0.1
-
+  json_annotation: ^4.9.0
+  freezed_annotation: ^2.4.1
+dependency_overrides:
+  http: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
+  freezed: ^2.5.2
+  json_serializable: ^6.8.0
+  build_runner: ^2.4.11
 
 
 # For information on the generic Dart part of this file, see the
