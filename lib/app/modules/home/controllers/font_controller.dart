@@ -27,6 +27,8 @@ class FontController extends GetxController {
     isLoading(true);
     log("setFont $fontName called", name: "FONTCONTROLLER");
     requestedFontText(fontName);
+    log("supportedFonts $supportedFonts called", name: "FONTCONTROLLER");
+
     if (supportedFonts.contains(fontName)) {
       fontText(fontName);
       if (fontName.isNotEmpty) {
