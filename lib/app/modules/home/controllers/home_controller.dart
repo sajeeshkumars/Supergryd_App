@@ -1,5 +1,3 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -80,14 +78,12 @@ class HomeController extends GetxController {
   final ColorController colorController = Get.find<ColorController>();
   final location.Location locationStatus = location.Location();
 
- RxInt count = 0.obs;
- RxBool isDestinationSelected = false.obs;
-
+  RxInt count = 0.obs;
+  RxBool isDestinationSelected = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-
   }
 
   @override
@@ -281,7 +277,10 @@ class HomeController extends GetxController {
     }
   }
 
-  void createUser({required String mobile, required String name, required BuildContext context}) async {
+  void createUser(
+      {required String mobile,
+      required String name,
+      required BuildContext context}) async {
     // isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
@@ -407,7 +406,8 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> requestLocationForAndroid({int count = 1, required BuildContext context}) async {
+  Future<void> requestLocationForAndroid(
+      {int count = 1, required BuildContext context}) async {
     try {
       final locationStatus = await Permission.location.request();
 

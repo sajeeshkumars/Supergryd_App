@@ -29,7 +29,7 @@ dependencies:
      git:
       url: https://github.com/Najib-seeroo/place_picker
       ref: 0.0.2
-  location: ^6.0.2
+  location: ^6.0.1
   maps_launcher: ^2.2.1
   permission_handler: ^11.3.0
   flutter_rating_bar: ^4.0.1
