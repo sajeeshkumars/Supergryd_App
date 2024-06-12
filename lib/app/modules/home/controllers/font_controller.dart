@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dynamic_fonts/dynamic_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,6 +23,7 @@ class FontController extends GetxController {
 
   setFont(String fontName) {
     isLoading(true);
+    log("setFont $fontName called", name: "FONTCONTROLLER");
     if (fontName.isNotEmpty) {
       fontText(fontName);
       font.value = DynamicFonts.getTextTheme(

@@ -1,5 +1,7 @@
 library mynewpackage;
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/home/controllers/font_controller.dart';
@@ -33,6 +35,9 @@ class MyPackage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(FontController());
     return Obx(() {
+      log("rebuilded with newFont ${controller.fontText.value} called",
+          name: "MYNEWPACKAGE");
+
       return Theme(
           data: ThemeData(fontFamily: controller.fontText.value),
           child: MainPage(
