@@ -11,8 +11,10 @@ import '../../../core/font_utils.dart';
 class FontController extends GetxController {
   RxBool isLoading = false.obs;
   RxString fontText = "".obs;
+  RxString requestedFontText = "".obs;
+  RxBool fontExists = false.obs;
   static FontService apiService = FontService();
-
+  RxList<String> supportedFonts = <String>[].obs;
   Rx<TextTheme> font = const TextTheme().obs;
 
   @override
@@ -24,14 +26,22 @@ class FontController extends GetxController {
   setFont(String fontName) {
     isLoading(true);
     log("setFont $fontName called", name: "FONTCONTROLLER");
-    if (fontName.isNotEmpty) {
+    requestedFontText(fontName);
+    if (supportedFonts.contains(fontName)) {
       fontText(fontName);
-      font.value = DynamicFonts.getTextTheme(
-        fontText.value,
-      );
+      if (fontName.isNotEmpty) {
+        font.value = DynamicFonts.getTextTheme(
+          fontText.value,
+        );
+      } else {
+        font.value = const TextTheme();
+      }
     } else {
-      font.value = const TextTheme();
+      if (supportedFonts.isEmpty) {
+        registerFontsFromWeb();
+      }
     }
+
     isLoading(false);
   }
 
@@ -67,14 +77,18 @@ class FontController extends GetxController {
   // }
 
   registerFontsFromWeb() async {
+    supportedFonts.clear();
     List<FontResponse> list = await apiService.getFontForRegistration();
     for (var e in list) {
       Map<DynamicFontsVariant, DynamicFontsFile> map =
           FontUtils.convertFontResponseToDynamicFontVarient(e);
       print("getFontForRegistrationCalled ${map}");
-
       if (map.isNotEmpty && e.font != null) {
+        supportedFonts.add(e.font!);
         DynamicFonts.register(e.font!, map);
+      }
+      if (e.font == requestedFontText.value) {
+        setFont(requestedFontText.value);
       }
     }
     // fetchFont();
