@@ -37,16 +37,11 @@ class MyPackage extends StatelessWidget {
     return Obx(() {
       log("rebuilded with newFont ${controller.fontText.value} called",
           name: "MYNEWPACKAGE");
-      return MaterialApp(
-        theme: ThemeData(
-            fontFamily: controller.fontText.value,
-            textTheme: controller.font.value),
-        home: MainPage(
-            clientId: clientId,
-            clientSecrete: clientSecrete,
-            name: name,
-            mobile: mobile),
-      );
+      return MainPage(
+          clientId: clientId,
+          clientSecrete: clientSecrete,
+          name: name,
+          mobile: mobile);
       // return Theme(
       //     data: ThemeData(
       //         fontFamily: controller.fontText.value,
