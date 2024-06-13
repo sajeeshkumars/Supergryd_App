@@ -39,7 +39,9 @@ class MyPackage extends StatelessWidget {
           name: "MYNEWPACKAGE");
 
       return Theme(
-          data: ThemeData(fontFamily: controller.fontText.value),
+          data: ThemeData(
+              fontFamily: controller.fontText.value,
+              textTheme: controller.font.value),
           child: MainPage(
               clientId: clientId,
               clientSecrete: clientSecrete,
