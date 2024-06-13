@@ -14,20 +14,11 @@ _$FontResponseImpl _$$FontResponseImplFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$FontResponseImplToJson(_$FontResponseImpl instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('font', instance.font);
-  writeNotNull(
-      'fontItems', instance.fontItems?.map((e) => e.toJson()).toList());
-  return val;
-}
+Map<String, dynamic> _$$FontResponseImplToJson(_$FontResponseImpl instance) =>
+    <String, dynamic>{
+      'font': instance.font,
+      'fontItems': instance.fontItems,
+    };
 
 _$FontItemImpl _$$FontItemImplFromJson(Map<String, dynamic> json) =>
     _$FontItemImpl(
@@ -39,19 +30,11 @@ _$FontItemImpl _$$FontItemImplFromJson(Map<String, dynamic> json) =>
           : FontFileData.fromJson(json['fontFile'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$FontItemImplToJson(_$FontItemImpl instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('fontVarient', instance.fontVarient?.toJson());
-  writeNotNull('fontFile', instance.fontFile?.toJson());
-  return val;
-}
+Map<String, dynamic> _$$FontItemImplToJson(_$FontItemImpl instance) =>
+    <String, dynamic>{
+      'fontVarient': instance.fontVarient,
+      'fontFile': instance.fontFile,
+    };
 
 _$FontVarientImpl _$$FontVarientImplFromJson(Map<String, dynamic> json) =>
     _$FontVarientImpl(
@@ -61,19 +44,11 @@ _$FontVarientImpl _$$FontVarientImplFromJson(Map<String, dynamic> json) =>
           $enumDecodeNullable(_$FontVarientStyleEnumMap, json['fontStyle']),
     );
 
-Map<String, dynamic> _$$FontVarientImplToJson(_$FontVarientImpl instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('fontWeight', _$FontVarientWeightEnumMap[instance.fontWeight]);
-  writeNotNull('fontStyle', _$FontVarientStyleEnumMap[instance.fontStyle]);
-  return val;
-}
+Map<String, dynamic> _$$FontVarientImplToJson(_$FontVarientImpl instance) =>
+    <String, dynamic>{
+      'fontWeight': _$FontVarientWeightEnumMap[instance.fontWeight],
+      'fontStyle': _$FontVarientStyleEnumMap[instance.fontStyle],
+    };
 
 const _$FontVarientWeightEnumMap = {
   FontVarientWeight.w100: 'w100',
@@ -101,19 +76,13 @@ _$FontFileDataImpl _$$FontFileDataImplFromJson(Map<String, dynamic> json) =>
           : FontVarient.fromJson(json['fontVarient'] as Map<String, dynamic>),
       sha256: json['sha256'] as String?,
       sizeInBytes: (json['sizeInBytes'] as num?)?.toInt(),
+      format: json['format'] as String?,
     );
 
-Map<String, dynamic> _$$FontFileDataImplToJson(_$FontFileDataImpl instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('fontVarient', instance.fontVarient?.toJson());
-  writeNotNull('sha256', instance.sha256);
-  writeNotNull('sizeInBytes', instance.sizeInBytes);
-  return val;
-}
+Map<String, dynamic> _$$FontFileDataImplToJson(_$FontFileDataImpl instance) =>
+    <String, dynamic>{
+      'fontVarient': instance.fontVarient,
+      'sha256': instance.sha256,
+      'sizeInBytes': instance.sizeInBytes,
+      'format': instance.format,
+    };

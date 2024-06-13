@@ -28,10 +28,12 @@ class FontUtils {
                 e.fontFile!.sizeInBytes!,
                 fontResponse.font!,
                 DynamicFontsVariant(
-                    fontWeight: convertFontVarientWeightToFontWeight(
-                        e.fontFile!.fontVarient!.fontWeight!),
-                    fontStyle: convertFontVarientStyleToFontStyle(
-                        e.fontFile!.fontVarient!.fontStyle!)));
+                  fontWeight: convertFontVarientWeightToFontWeight(
+                      e.fontFile!.fontVarient!.fontWeight!),
+                  fontStyle: convertFontVarientStyleToFontStyle(
+                      e.fontFile!.fontVarient!.fontStyle!),
+                ),
+                extension: e.fontFile?.format);
             map[varient] = fontsFile;
           }
         }

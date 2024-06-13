@@ -530,6 +530,7 @@ mixin _$FontFileData {
   FontVarient? get fontVarient => throw _privateConstructorUsedError;
   String? get sha256 => throw _privateConstructorUsedError;
   int? get sizeInBytes => throw _privateConstructorUsedError;
+  String? get format => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -543,7 +544,11 @@ abstract class $FontFileDataCopyWith<$Res> {
           FontFileData value, $Res Function(FontFileData) then) =
       _$FontFileDataCopyWithImpl<$Res, FontFileData>;
   @useResult
-  $Res call({FontVarient? fontVarient, String? sha256, int? sizeInBytes});
+  $Res call(
+      {FontVarient? fontVarient,
+      String? sha256,
+      int? sizeInBytes,
+      String? format});
 
   $FontVarientCopyWith<$Res>? get fontVarient;
 }
@@ -564,6 +569,7 @@ class _$FontFileDataCopyWithImpl<$Res, $Val extends FontFileData>
     Object? fontVarient = freezed,
     Object? sha256 = freezed,
     Object? sizeInBytes = freezed,
+    Object? format = freezed,
   }) {
     return _then(_value.copyWith(
       fontVarient: freezed == fontVarient
@@ -578,6 +584,10 @@ class _$FontFileDataCopyWithImpl<$Res, $Val extends FontFileData>
           ? _value.sizeInBytes
           : sizeInBytes // ignore: cast_nullable_to_non_nullable
               as int?,
+      format: freezed == format
+          ? _value.format
+          : format // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -602,7 +612,11 @@ abstract class _$$FontFileDataImplCopyWith<$Res>
       __$$FontFileDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({FontVarient? fontVarient, String? sha256, int? sizeInBytes});
+  $Res call(
+      {FontVarient? fontVarient,
+      String? sha256,
+      int? sizeInBytes,
+      String? format});
 
   @override
   $FontVarientCopyWith<$Res>? get fontVarient;
@@ -622,6 +636,7 @@ class __$$FontFileDataImplCopyWithImpl<$Res>
     Object? fontVarient = freezed,
     Object? sha256 = freezed,
     Object? sizeInBytes = freezed,
+    Object? format = freezed,
   }) {
     return _then(_$FontFileDataImpl(
       fontVarient: freezed == fontVarient
@@ -636,6 +651,10 @@ class __$$FontFileDataImplCopyWithImpl<$Res>
           ? _value.sizeInBytes
           : sizeInBytes // ignore: cast_nullable_to_non_nullable
               as int?,
+      format: freezed == format
+          ? _value.format
+          : format // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -643,7 +662,8 @@ class __$$FontFileDataImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$FontFileDataImpl implements _FontFileData {
-  const _$FontFileDataImpl({this.fontVarient, this.sha256, this.sizeInBytes});
+  const _$FontFileDataImpl(
+      {this.fontVarient, this.sha256, this.sizeInBytes, this.format});
 
   factory _$FontFileDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$FontFileDataImplFromJson(json);
@@ -654,10 +674,12 @@ class _$FontFileDataImpl implements _FontFileData {
   final String? sha256;
   @override
   final int? sizeInBytes;
+  @override
+  final String? format;
 
   @override
   String toString() {
-    return 'FontFileData(fontVarient: $fontVarient, sha256: $sha256, sizeInBytes: $sizeInBytes)';
+    return 'FontFileData(fontVarient: $fontVarient, sha256: $sha256, sizeInBytes: $sizeInBytes, format: $format)';
   }
 
   @override
@@ -669,13 +691,14 @@ class _$FontFileDataImpl implements _FontFileData {
                 other.fontVarient == fontVarient) &&
             (identical(other.sha256, sha256) || other.sha256 == sha256) &&
             (identical(other.sizeInBytes, sizeInBytes) ||
-                other.sizeInBytes == sizeInBytes));
+                other.sizeInBytes == sizeInBytes) &&
+            (identical(other.format, format) || other.format == format));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, fontVarient, sha256, sizeInBytes);
+      Object.hash(runtimeType, fontVarient, sha256, sizeInBytes, format);
 
   @JsonKey(ignore: true)
   @override
@@ -695,7 +718,8 @@ abstract class _FontFileData implements FontFileData {
   const factory _FontFileData(
       {final FontVarient? fontVarient,
       final String? sha256,
-      final int? sizeInBytes}) = _$FontFileDataImpl;
+      final int? sizeInBytes,
+      final String? format}) = _$FontFileDataImpl;
 
   factory _FontFileData.fromJson(Map<String, dynamic> json) =
       _$FontFileDataImpl.fromJson;
@@ -706,6 +730,8 @@ abstract class _FontFileData implements FontFileData {
   String? get sha256;
   @override
   int? get sizeInBytes;
+  @override
+  String? get format;
   @override
   @JsonKey(ignore: true)
   _$$FontFileDataImplCopyWith<_$FontFileDataImpl> get copyWith =>

@@ -38,11 +38,11 @@ class FontVarient with _$FontVarient {
 
 @freezed
 class FontFileData with _$FontFileData {
-  const factory FontFileData({
-    final FontVarient? fontVarient,
-    final String? sha256,
-    final int? sizeInBytes,
-  }) = _FontFileData;
+  const factory FontFileData(
+      {final FontVarient? fontVarient,
+      final String? sha256,
+      final int? sizeInBytes,
+      final String? format}) = _FontFileData;
 
   factory FontFileData.fromJson(Map<String, dynamic> json) =>
       _$FontFileDataFromJson(json);
