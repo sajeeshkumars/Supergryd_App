@@ -18,6 +18,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 import '../../../../generated/assets.dart';
 import '../../../../widgets/common_text.dart';
 import '../../../core/utility.dart';
+import '../../home/controllers/font_controller.dart';
 
 class RestaurantsDetailsView extends StatefulWidget {
   const RestaurantsDetailsView(
@@ -48,98 +49,109 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        title:
+    final controller = Get.find<FontController>();
 
-            CommonText(
-         text: widget.restaurantData?.restaurantDetails?.first.name ?? "",
-
-          fontWeight: FontWeight.bold, fontSize: 18,
-        ),
-        // }),
+    return Theme(
+      data: ThemeData(
+          fontFamily: controller.fontText.value,
+          textTheme: controller.font.value),
+      child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
-      ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await restaurantsDetailsController.getRestaurantDetails(
-              restaurantId: widget.restaurantId, initial: true);
-        },
-        child: SingleChildScrollView(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BannerAndRatingWidget(
-                    restaurantData: widget.restaurantData,
-                    distance: widget.distance,
-                    controller: restaurantsDetailsController,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SearchWidget(
+        appBar: AppBar(
+          title: CommonText(
+            text: widget.restaurantData?.restaurantDetails?.first.name ?? "",
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+          // }),
+          backgroundColor: AppColors.backgroundColor,
+        ),
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await restaurantsDetailsController.getRestaurantDetails(
+                restaurantId: widget.restaurantId, initial: true);
+          },
+          child: SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BannerAndRatingWidget(
+                      restaurantData: widget.restaurantData,
+                      distance: widget.distance,
                       controller: restaurantsDetailsController,
-                      restaurantData: widget.restaurantData),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ChipWidget(
-                      controller: restaurantsDetailsController,
-                      restaurantId: widget.restaurantId),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Obx(() {
-                    return restaurantsDetailsController.isLoading.value
-                        ? const Center(child: SizedBox.shrink())
-                        : restaurantsDetailsController
-                                .restaurantDishList.isNotEmpty
-                            ? ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return DishCard(
-                                    restaurantsDetailsController:
-                                        restaurantsDetailsController,
-                                    restaurant: restaurantsDetailsController
-                                        .restaurantDishList[index],
-                                    index: index,
-                                    isDishes: false,
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return const SizedBox(
-                                    height: 10,
-                                  );
-                                },
-                                itemCount: restaurantsDetailsController
-                                    .restaurantDishList.length,
-                              )
-                            :  Center(child: Column(
-                              children: [
-                                ColorFiltered(
-                                  colorFilter: ColorFilter.mode(AppColors.primaryColor, BlendMode.modulate),
-                                  child: Image.asset(
-                                    height: 120,
-                                    width: 120,
-                                    'packages/mynewpackage/${Assets.iconsNoFood6}',
-                                    //  height: 100,
-                                    //  width: 100,
-                                    //  color: Colors.red,
-                                    // imagePath: :
-                                  ),
-                                ),
-                                CommonText(text: "We're currently out of ${restaurantsDetailsController.selectedFilter.value == 0 ? "Veg":"Non Veg"} items, but our ${restaurantsDetailsController.selectedFilter.value == 1 ? "Veg":"Non Veg"} selection is sizzling! Take a look!",
-                                                    textAlign: TextAlign.center,fontWeight: FontWeight.w800,),
-
-                              ],
-                            ));
-                  })
-                ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SearchWidget(
+                        controller: restaurantsDetailsController,
+                        restaurantData: widget.restaurantData),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ChipWidget(
+                        controller: restaurantsDetailsController,
+                        restaurantId: widget.restaurantId),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Obx(() {
+                      return restaurantsDetailsController.isLoading.value
+                          ? const Center(child: SizedBox.shrink())
+                          : restaurantsDetailsController
+                                  .restaurantDishList.isNotEmpty
+                              ? ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return DishCard(
+                                      restaurantsDetailsController:
+                                          restaurantsDetailsController,
+                                      restaurant: restaurantsDetailsController
+                                          .restaurantDishList[index],
+                                      index: index,
+                                      isDishes: false,
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return const SizedBox(
+                                      height: 10,
+                                    );
+                                  },
+                                  itemCount: restaurantsDetailsController
+                                      .restaurantDishList.length,
+                                )
+                              : Center(
+                                  child: Column(
+                                  children: [
+                                    ColorFiltered(
+                                      colorFilter: ColorFilter.mode(
+                                          AppColors.primaryColor,
+                                          BlendMode.modulate),
+                                      child: Image.asset(
+                                        height: 120,
+                                        width: 120,
+                                        'packages/mynewpackage/${Assets.iconsNoFood6}',
+                                        //  height: 100,
+                                        //  width: 100,
+                                        //  color: Colors.red,
+                                        // imagePath: :
+                                      ),
+                                    ),
+                                    CommonText(
+                                      text:
+                                          "We're currently out of ${restaurantsDetailsController.selectedFilter.value == 0 ? "Veg" : "Non Veg"} items, but our ${restaurantsDetailsController.selectedFilter.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
+                                      textAlign: TextAlign.center,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ],
+                                ));
+                    })
+                  ],
+                ),
               ),
             ),
           ),
@@ -193,7 +205,6 @@ class _ChipWidgetState extends State<ChipWidget> {
                         height: 35,
                         width: 110,
                         decoration: BoxDecoration(
-
                           borderRadius: const BorderRadius.all(
                             Radius.circular(40),
                           ),
@@ -202,7 +213,10 @@ class _ChipWidgetState extends State<ChipWidget> {
                                 widget.controller.selectedFilter.value == index
                                     ? AppColors.primaryColor
                                     : AppColors.borderColor,
-                            width:widget.controller.selectedFilter.value == index ? 1.5 :  1,
+                            width:
+                                widget.controller.selectedFilter.value == index
+                                    ? 1.5
+                                    : 1,
                             style: BorderStyle.solid,
                           ),
                         ),
@@ -215,8 +229,9 @@ class _ChipWidgetState extends State<ChipWidget> {
                               SvgPicture.asset(
                                   widget.controller.chipImages[index]),
                               CommonText(
-                               text:  widget.controller.chipTitles[index],
-                                    fontSize: 12, textColor: Colors.black,
+                                text: widget.controller.chipTitles[index],
+                                fontSize: 12,
+                                textColor: Colors.black,
                               ),
                               // SizedBox(width: 10,),
                               widget.controller.selectedFilter.value == index
@@ -227,13 +242,18 @@ class _ChipWidgetState extends State<ChipWidget> {
                                       splashColor: Colors.transparent,
                                       onTap: () {
                                         widget.controller.isSelected.value =
-                                        !widget.controller.isSelected.value;
-                                        if (widget.controller.isSelected.value) {
-                                          widget.controller.selectedFilter.value = index;
-                                          widget.controller.restaurantDishFilter();
+                                            !widget.controller.isSelected.value;
+                                        if (widget
+                                            .controller.isSelected.value) {
+                                          widget.controller.selectedFilter
+                                              .value = index;
+                                          widget.controller
+                                              .restaurantDishFilter();
                                         } else {
-                                          widget.controller.selectedFilter.value = 2;
-                                          widget.controller.restaurantDishFilter();
+                                          widget.controller.selectedFilter
+                                              .value = 2;
+                                          widget.controller
+                                              .restaurantDishFilter();
                                         }
                                       },
                                       child: const Icon(
@@ -250,7 +270,6 @@ class _ChipWidgetState extends State<ChipWidget> {
                 ),
               ),
             );
-
     });
   }
 }
@@ -431,18 +450,19 @@ class _BannerCarousalState extends State<BannerCarousal> {
             },
           ),
           items: widget.restaurantData?.bannerImages?.map((banner) {
-            return Builder(
-              builder: (BuildContext context) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
-                  child: CommonImageView(
-                    width: MediaQuery.of(context).size.width * .9,
-                    url: banner.image,
-                  ),
+                return Builder(
+                  builder: (BuildContext context) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: CommonImageView(
+                        width: MediaQuery.of(context).size.width * .9,
+                        url: banner.image,
+                      ),
+                    );
+                  },
                 );
-              },
-            );
-          }).toList() ?? [],
+              }).toList() ??
+              [],
         ),
         Positioned(
           bottom: 10,
@@ -486,8 +506,10 @@ class BannerAndRatingWidget extends StatelessWidget {
         children: [
           Column(
             children: [
-              restaurantData?.bannerImages?.first.image != "" ?  BannerCarousal(
-                  controller: controller, restaurantData: restaurantData):SizedBox.shrink(),
+              restaurantData?.bannerImages?.first.image != ""
+                  ? BannerCarousal(
+                      controller: controller, restaurantData: restaurantData)
+                  : SizedBox.shrink(),
               Padding(
                 padding: const EdgeInsets.only(
                     left: 120, right: 10, top: 10, bottom: 15),
@@ -502,22 +524,21 @@ class BannerAndRatingWidget extends StatelessWidget {
                         child: Wrap(
                           children: [
                             CommonText(
-                             text:  restaurantData?.images?.first.description ?? "",
+                              text: restaurantData?.images?.first.description ??
+                                  "",
                               maxLines: controller.showMore.value ? 10 : 2,
-                                textOverflow: !controller.showMore.value
-                                    ? TextOverflow.ellipsis
-                                    : null,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                textColor: const Color.fromRGBO(69, 84, 97, 1),
-
+                              textOverflow: !controller.showMore.value
+                                  ? TextOverflow.ellipsis
+                                  : null,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              textColor: const Color.fromRGBO(69, 84, 97, 1),
                             ),
                             CommonText(
-                             text: !controller.showMore.value
-                                  ? "Read More"
-                                  : "Read Less",
-                              textColor: AppColors.primaryColor
-                            )
+                                text: !controller.showMore.value
+                                    ? "Read More"
+                                    : "Read Less",
+                                textColor: AppColors.primaryColor)
                           ],
                         ),
                       ),
@@ -537,10 +558,10 @@ class BannerAndRatingWidget extends StatelessWidget {
                                   width: 5,
                                 ),
                                 CommonText(
-                                 text: "${restaurantData?.rating}(${Utility.countConverter(restaurantData?.totalRating)})",
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600
-                                )
+                                    text:
+                                        "${restaurantData?.rating}(${Utility.countConverter(restaurantData?.totalRating)})",
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600)
                               ],
                             ),
                           ),
@@ -553,9 +574,9 @@ class BannerAndRatingWidget extends StatelessWidget {
                               side: const BorderSide(color: Colors.grey),
                             ),
                             label: CommonText(
-                             text: "${distance.toStringAsFixed(1)} km",
-                                  fontSize: 10, fontWeight: FontWeight.w600
-                            ),
+                                text: "${distance.toStringAsFixed(1)} km",
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600),
                           ),
                         ],
                       )

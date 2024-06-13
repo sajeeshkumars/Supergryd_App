@@ -33,8 +33,53 @@ class FontController extends GetxController {
       fontText(fontName);
       if (fontName.isNotEmpty) {
         font.value = DynamicFonts.getTextTheme(
-          fontText.value,
-        );
+            fontText.value,
+            TextTheme(
+                bodyLarge: TextStyle(
+                  fontFamily: fontName,
+                ),
+                bodyMedium: TextStyle(
+                  fontFamily: fontName,
+                ),
+                bodySmall: TextStyle(
+                  fontFamily: fontName,
+                ),
+                displayLarge: TextStyle(
+                  fontFamily: fontName,
+                ),
+                displayMedium: TextStyle(
+                  fontFamily: fontName,
+                ),
+                displaySmall: TextStyle(
+                  fontFamily: fontName,
+                ),
+                headlineLarge: TextStyle(
+                  fontFamily: fontName,
+                ),
+                headlineMedium: TextStyle(
+                  fontFamily: fontName,
+                ),
+                headlineSmall: TextStyle(
+                  fontFamily: fontName,
+                ),
+                labelLarge: TextStyle(
+                  fontFamily: fontName,
+                ),
+                labelMedium: TextStyle(
+                  fontFamily: fontName,
+                ),
+                labelSmall: TextStyle(
+                  fontFamily: fontName,
+                ),
+                titleLarge: TextStyle(
+                  fontFamily: fontName,
+                ),
+                titleMedium: TextStyle(
+                  fontFamily: fontName,
+                ),
+                titleSmall: TextStyle(
+                  fontFamily: fontName,
+                )));
       } else {
         font.value = const TextTheme();
       }

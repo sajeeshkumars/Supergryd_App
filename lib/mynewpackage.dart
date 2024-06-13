@@ -33,24 +33,24 @@ class MyPackage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(FontController());
+    final controller = Get.find<FontController>();
     return Obx(() {
       log("rebuilded with newFont ${controller.fontText.value} called",
           name: "MYNEWPACKAGE");
-      return MainPage(
-          clientId: clientId,
-          clientSecrete: clientSecrete,
-          name: name,
-          mobile: mobile);
-      // return Theme(
-      //     data: ThemeData(
-      //         fontFamily: controller.fontText.value,
-      //         textTheme: controller.font.value),
-      //     child: MainPage(
-      //         clientId: clientId,
-      //         clientSecrete: clientSecrete,
-      //         name: name,
-      //         mobile: mobile));
+      // return MainPage(
+      //     clientId: clientId,
+      //     clientSecrete: clientSecrete,
+      //     name: name,
+      //     mobile: mobile);
+      return Theme(
+          data: ThemeData(
+              fontFamily: controller.fontText.value,
+              textTheme: controller.font.value),
+          child: MainPage(
+              clientId: clientId,
+              clientSecrete: clientSecrete,
+              name: name,
+              mobile: mobile));
     });
   }
 }
