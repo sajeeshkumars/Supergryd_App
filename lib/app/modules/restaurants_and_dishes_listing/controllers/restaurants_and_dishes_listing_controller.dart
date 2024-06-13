@@ -1,3 +1,5 @@
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
@@ -46,7 +48,7 @@ class RestaurantsAndDishesListingController extends GetxController {
   @override
   void onInit() {
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    getRestaurants(initial: true);
+    getRestaurants(initial: true,);
 
     // });
     super.onInit();
@@ -63,7 +65,7 @@ class RestaurantsAndDishesListingController extends GetxController {
   }
 
 
-  Future<void> getRestaurants({required bool initial}) async {
+  Future<void> getRestaurants({required bool initial, BuildContext? context}) async {
     debugPrint("userId ${Constants.userId}");
     if (initial) {
       page = 1;
@@ -110,7 +112,7 @@ class RestaurantsAndDishesListingController extends GetxController {
       } else {
         isLoading(false);
 
-        ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
           content: Text(
             value.message.toString() ?? "",
           ),
@@ -120,7 +122,7 @@ class RestaurantsAndDishesListingController extends GetxController {
     });
   }
 
-  Future<void> getDishes({required bool initial}) async {
+  Future<void> getDishes({required bool initial,BuildContext? context}) async {
     if (initial) {
       page = 1;
       limit = 10;
@@ -161,7 +163,7 @@ class RestaurantsAndDishesListingController extends GetxController {
       } else {
         isLoadingDishes(false);
 
-        ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
           content: Text(
             value.message.toString() ?? "",
           ),

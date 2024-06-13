@@ -6,8 +6,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
+import 'package:mynewpackage/app/modules/history/views/history_view.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 import 'package:mynewpackage/app/modules/home/views/home_view.dart';
+import 'package:mynewpackage/app/modules/trip_rating/views/trip_rating_view.dart';
 import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/widgets/custom_button.dart';
 
@@ -1239,23 +1241,35 @@ class TripCompleteDialog extends StatelessWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          height: 45,
-                          width: 169,
-                          decoration: BoxDecoration(border: Border.all(color:AppColors.borderColor)),
-                          child: Center(
-                            child: CommonText(text: "Booking History",),
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const HistoryView()));
+                          },
+                          child: Container(
+                            height: 45,
+                            width: 169,
+                            decoration: BoxDecoration(border: Border.all(color:AppColors.borderColor)),
+                            child: Center(
+                              child: CommonText(text: "Booking History",),
+                            ),
                           ),
                         ),
                       ),
                       SizedBox(width: 5,),
                       Expanded(
-                        child: Container(
-                          height: 45,
-                          width: 169,
-                          decoration: BoxDecoration(border: Border.all(color:AppColors.borderColor)),
-                          child: Center(
-                            child: CommonText(text: "Rate this ride",),
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const TripRatingView()));
+                          },
+                          child: Container(
+                            height: 45,
+                            width: 169,
+                            decoration: BoxDecoration(border: Border.all(color:AppColors.borderColor)),
+                            child: Center(
+                              child: CommonText(text: "Rate this ride",),
+                            ),
                           ),
                         ),
                       ),
@@ -1313,6 +1327,10 @@ class TripCompleteDialog extends StatelessWidget {
                     },
                   ),
                 ),
+                TextButton(onPressed: (){
+                  Navigator.of(context).pop();
+                }, child: CommonText(text: 'Close',
+                textColor: Colors.black,))
             
             
             

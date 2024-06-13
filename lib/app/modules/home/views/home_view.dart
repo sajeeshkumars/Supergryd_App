@@ -64,7 +64,7 @@ class _HomeViewState extends State<HomeView> {
                       CommonText(
                         fontSize: 14,
                         textColor: AppColors.textLightColor,
-                        text: LocaleKeys.your_location.tr,
+                        text: "Your Location",
 
                       ),
                       const Icon(
@@ -88,6 +88,7 @@ class _HomeViewState extends State<HomeView> {
                         Expanded(
                             child: CommonText(
                               fontSize: 14,
+                              maxLines: 2,
                               fontWeight: FontWeight.w800,
                               textOverflow: TextOverflow.ellipsis,
 
@@ -100,7 +101,7 @@ class _HomeViewState extends State<HomeView> {
             ),
             leading: InkWell(
                 onTap: () {
-                  Get.back();
+                  Navigator.of(context).pop;
                 },
                 child: const Icon(Icons.arrow_back_rounded)),
             actions: [

@@ -38,7 +38,7 @@ class RestaurantsDetailsController extends GetxController {
   RxList<Restaurant> restaurantDishListForApi = <Restaurant>[].obs;
 
   Future<bool> getRestaurantDetails(
-      {required String restaurantId, required bool initial}) async {
+      {required String restaurantId, required bool initial,BuildContext? context}) async {
     // if (initial) {
     //   page = 0;
     //   limit = 0;
@@ -84,7 +84,7 @@ class RestaurantsDetailsController extends GetxController {
         return true;
       } else {
         isLoading(false);
-        ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context!).showSnackBar(SnackBar(
           content: Text(
             value.message.toString(),
           ),

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
 
       supportedLocales: const [
         Locale('en', ''),
@@ -28,10 +28,10 @@ class MyApp extends StatelessWidget {
       //   GlobalWidgetsLocalizations.delegate,
       //   GlobalCupertinoLocalizations.delegate,
       // ],
-      translationsKeys: AppTranslation.translations,
+      // translationsKeys: AppTranslation.translations,
       // localizationsDelegates: GlobalMaterialLocalizations.delegates,
       locale: const Locale('en', 'US'),
-      fallbackLocale: const Locale('en', 'US'),
+      // fallbackLocale: const Locale('en', 'US'),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(

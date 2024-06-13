@@ -41,7 +41,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
   @override
   void initState() {
     restaurantsDetailsController.getRestaurantDetails(
-        restaurantId: widget.restaurantId, initial: true);
+        restaurantId: widget.restaurantId, initial: true,context: context);
     Get.lazyPut(() => RestaurantsDetailsController());
     super.initState();
   }
@@ -64,7 +64,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
       body: RefreshIndicator(
         onRefresh: () async {
           await restaurantsDetailsController.getRestaurantDetails(
-              restaurantId: widget.restaurantId, initial: true);
+              restaurantId: widget.restaurantId, initial: true,context: context);
         },
         child: SingleChildScrollView(
           child: Center(

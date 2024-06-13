@@ -10,6 +10,8 @@ abstract class Routes {
   static const RESTAURANTS_DETAILS = _Paths.RESTAURANTS_DETAILS;
   static const ADD_CASH_TO_WALLET = _Paths.ADD_CASH_TO_WALLET;
   static const PROMO_CODE_LISTING = _Paths.PROMO_CODE_LISTING;
+  static const TRIP_RATING = _Paths.TRIP_RATING;
+  static const HISTORY = _Paths.HISTORY;
 }
 
 abstract class _Paths {
@@ -21,4 +23,6 @@ abstract class _Paths {
   static const RESTAURANTS_DETAILS = '/restaurants-details';
   static const ADD_CASH_TO_WALLET = '/add-cash-to-wallet';
   static const PROMO_CODE_LISTING = '/promo-code-listing';
+  static const TRIP_RATING = '/trip-rating';
+  static const HISTORY = '/history';
 }

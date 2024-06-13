@@ -79,6 +79,7 @@ class _RestaurantsAndDishesListingViewState
                           child: CommonText(
                               text: homeController.address.value,
                               fontSize: 14,
+                              maxLines: 2,
                               fontWeight: FontWeight.w600,
                               textOverflow: TextOverflow.ellipsis))
                     ],
@@ -171,10 +172,10 @@ class _RestaurantsAndDishesListingViewState
                                       if (controller.isSelected.value) {
                                         controller.selectedCategory.value =
                                             index;
-                                        controller.getDishes(initial: true);
+                                        controller.getDishes(initial: true,context: context);
                                       } else {
                                         controller.selectedCategory.value = 2;
-                                        controller.getDishes(initial: true);
+                                        controller.getDishes(initial: true,context: context);
                                       }
 
                                       // controller. dishFilter();
@@ -237,13 +238,13 @@ class _RestaurantsAndDishesListingViewState
                                                               .selectedCategory
                                                               .value = index;
                                                           controller.getDishes(
-                                                              initial: true);
+                                                              initial: true,context: context);
                                                         } else {
                                                           controller
                                                               .selectedCategory
                                                               .value = 2;
                                                           controller.getDishes(
-                                                              initial: true);
+                                                              initial: true,context: context);
                                                         }
 
                                                         // controller.dishFilter();
@@ -272,7 +273,7 @@ class _RestaurantsAndDishesListingViewState
                                             child: RefreshIndicator(
                                               onRefresh: () async {
                                                 await controller.getDishes(
-                                                    initial: true);
+                                                    initial: true,context: context);
                                               },
                                               child: ListView.builder(
                                                 itemCount:
@@ -580,7 +581,7 @@ class RestaurantList extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await controller.getRestaurants(initial: true);
+        await controller.getRestaurants(initial: true, context: context);
       },
       child: ListView.builder(
         itemCount: controller.restaurantList.length,
