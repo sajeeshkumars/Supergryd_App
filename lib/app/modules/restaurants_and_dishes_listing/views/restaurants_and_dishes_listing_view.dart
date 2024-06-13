@@ -41,340 +41,347 @@ class _RestaurantsAndDishesListingViewState
     final cont = Get.find<FontController>();
 
     return Theme(
-      data: ThemeData(
-          fontFamily: cont.fontText.value, textTheme: cont.font.value),
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          backgroundColor: AppColors.backgroundColor,
-          appBar: AppBar(
+        data: ThemeData(
+            fontFamily: cont.fontText.value, textTheme: cont.font.value),
+        child: DefaultTabController(
+          length: 2,
+          child: Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            title: InkWell(
-              onTap: () {
-                homeController.showAddressSelectionBottomSheet(
-                    context: context, controller: controller);
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      CommonText(
-                          text: 'Your Location',
-                          fontSize: 14,
-                          textColor: AppColors.textLightColor),
-                      const Icon(
-                        Icons.keyboard_arrow_down_sharp,
-                        size: 14,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Obx(() {
-                    return Row(
+            appBar: AppBar(
+              backgroundColor: AppColors.backgroundColor,
+              title: InkWell(
+                onTap: () {
+                  homeController.showAddressSelectionBottomSheet(
+                      context: context, controller: controller);
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        SvgPicture.asset(
-                          "packages/mynewpackage/${Assets.iconsLocation}",
-                          color: AppColors.primaryColor,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                            child: CommonText(
-                                text: homeController.address.value,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                textOverflow: TextOverflow.ellipsis))
+                        CommonText(
+                            text: 'Your Location',
+                            fontSize: 14,
+                            textColor: AppColors.textLightColor),
+                        const Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          size: 14,
+                        )
                       ],
-                    );
-                  }),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Obx(() {
+                      return Row(
+                        children: [
+                          SvgPicture.asset(
+                            "packages/mynewpackage/${Assets.iconsLocation}",
+                            color: AppColors.primaryColor,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                              child: CommonText(
+                                  text: homeController.address.value,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  textOverflow: TextOverflow.ellipsis))
+                        ],
+                      );
+                    }),
+                  ],
+                ),
+              ),
+              centerTitle: true,
+              bottom: TabBar(
+                padding: const EdgeInsets.only(left: 20),
+                isScrollable: true,
+                tabAlignment: TabAlignment.start,
+                splashFactory: NoSplash.splashFactory,
+                indicatorColor: AppColors.primaryColor,
+                labelColor: AppColors.primaryColor,
+                labelStyle: context.myTextTheme.headlineMedium?.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+                // const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                tabs: const <Widget>[
+                  Tab(
+                    text: "Restaurants",
+                  ),
+                  Tab(
+                    text: "Dishes",
+                  ),
                 ],
               ),
             ),
-            centerTitle: true,
-            bottom: TabBar(
-              padding: const EdgeInsets.only(left: 20),
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              splashFactory: NoSplash.splashFactory,
-              indicatorColor: AppColors.primaryColor,
-              labelColor: AppColors.primaryColor,
-              labelStyle: context.myTextTheme.headlineMedium?.copyWith(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-              // const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              tabs: const <Widget>[
-                Tab(
-                  text: "Restaurants",
-                ),
-                Tab(
-                  text: "Dishes",
-                ),
-              ],
-            ),
-          ),
-          body: Obx(() {
-            return controller.isLoading.value
-                ? buildShimmerRestaurant()
-                // Center(
-                //         child: CircularProgressIndicator(
-                //         color: AppColors.primaryColor,
-                //       )
-                // )
-                : controller.restaurantList.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SvgPicture.asset(
-                                'packages/mynewpackage/lib/assets/icons/not_available_at_location.svg'),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            CommonText(
-                                text: "Hi ${Constants.name},",
-                                fontWeight: FontWeight.w700,
-                                fontSize: 20),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            const CommonText(
-                                text:
-                                    "Currently we are not serviceable in your location.\nWe are on a process of increasing our service area.",
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            const CommonText(
-                                text:
-                                    "We will notify you once we start our service in your area",
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                                textColor: Color(0xff2C9649)),
-                          ],
-                        ),
-                      )
-                    : TabBarView(
-                        children: <Widget>[
-                          NotificationListener<ScrollNotification>(
-                              onNotification: controller.onScrollOngoing,
-                              child: RestaurantList(controller: controller)),
-                          Column(
+            body: Obx(() {
+              return controller.isLoading.value
+                  ? buildShimmerRestaurant()
+                  // Center(
+                  //         child: CircularProgressIndicator(
+                  //         color: AppColors.primaryColor,
+                  //       )
+                  // )
+                  : controller.restaurantList.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Row(
-                                children: List.generate(
-                                  controller.filterImages.length,
-                                  (index) => Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: InkWell(
-                                      splashFactory: NoSplash.splashFactory,
-                                      onTap: () {
-                                        controller.isSelected.value =
-                                            !controller.isSelected.value;
-                                        if (controller.isSelected.value) {
-                                          controller.selectedCategory.value =
-                                              index;
-                                          controller.getDishes(initial: true);
-                                        } else {
-                                          controller.selectedCategory.value = 2;
-                                          controller.getDishes(initial: true);
-                                        }
+                              SvgPicture.asset(
+                                  'packages/mynewpackage/lib/assets/icons/not_available_at_location.svg'),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              CommonText(
+                                  text: "Hi ${Constants.name},",
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              const CommonText(
+                                  text:
+                                      "Currently we are not serviceable in your location.\nWe are on a process of increasing our service area.",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              const CommonText(
+                                  text:
+                                      "We will notify you once we start our service in your area",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  textColor: Color(0xff2C9649)),
+                            ],
+                          ),
+                        )
+                      : TabBarView(
+                          children: <Widget>[
+                            NotificationListener<ScrollNotification>(
+                                onNotification: controller.onScrollOngoing,
+                                child: RestaurantList(controller: controller)),
+                            Column(
+                              children: [
+                                Row(
+                                  children: List.generate(
+                                    controller.filterImages.length,
+                                    (index) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: InkWell(
+                                        splashFactory: NoSplash.splashFactory,
+                                        onTap: () {
+                                          controller.isSelected.value =
+                                              !controller.isSelected.value;
+                                          if (controller.isSelected.value) {
+                                            controller.selectedCategory.value =
+                                                index;
+                                            controller.getDishes(initial: true);
+                                          } else {
+                                            controller.selectedCategory.value =
+                                                2;
+                                            controller.getDishes(initial: true);
+                                          }
 
-                                        // controller. dishFilter();
-                                      },
-                                      child: Obx(() {
-                                        return Container(
-                                          height: 35,
-                                          width: 110,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(40),
-                                            ),
-                                            border: Border.all(
-                                              color: controller.selectedCategory
-                                                          .value ==
-                                                      index
-                                                  ? AppColors.primaryColor
-                                                  : AppColors.borderColor,
-                                              style: BorderStyle.solid,
-                                              width: controller.selectedCategory
-                                                          .value ==
-                                                      index
-                                                  ? 1.5
-                                                  : 1,
-                                            ),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 5),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                SvgPicture.asset(
-                                                    "packages/mynewpackage/${controller.filterImages[index]}"),
-                                                CommonText(
-                                                    text: controller
-                                                        .filters[index],
-                                                    fontSize: 12,
-                                                    textColor: Colors.black),
-                                                // SizedBox(width: 10,),
-                                                controller.selectedCategory
+                                          // controller. dishFilter();
+                                        },
+                                        child: Obx(() {
+                                          return Container(
+                                            height: 35,
+                                            width: 110,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(40),
+                                              ),
+                                              border: Border.all(
+                                                color: controller
+                                                            .selectedCategory
                                                             .value ==
                                                         index
-                                                    ? Spacer()
-                                                    : SizedBox.shrink(),
-                                                controller.selectedCategory
+                                                    ? AppColors.primaryColor
+                                                    : AppColors.borderColor,
+                                                style: BorderStyle.solid,
+                                                width: controller
+                                                            .selectedCategory
                                                             .value ==
                                                         index
-                                                    ? InkWell(
-                                                        onTap: () {
-                                                          controller.isSelected
-                                                                  .value =
-                                                              !controller
-                                                                  .isSelected
-                                                                  .value;
-                                                          if (controller
-                                                              .isSelected
-                                                              .value) {
-                                                            controller
-                                                                .selectedCategory
-                                                                .value = index;
-                                                            controller
-                                                                .getDishes(
-                                                                    initial:
-                                                                        true);
-                                                          } else {
-                                                            controller
-                                                                .selectedCategory
-                                                                .value = 2;
-                                                            controller
-                                                                .getDishes(
-                                                                    initial:
-                                                                        true);
-                                                          }
-
-                                                          // controller.dishFilter();
-                                                        },
-                                                        child: const Icon(
-                                                          Icons.close_rounded,
-                                                          size: 20,
-                                                        ))
-                                                    : const SizedBox.shrink(),
-                                              ],
+                                                    ? 1.5
+                                                    : 1,
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      }),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 5),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      "packages/mynewpackage/${controller.filterImages[index]}"),
+                                                  CommonText(
+                                                      text: controller
+                                                          .filters[index],
+                                                      fontSize: 12,
+                                                      textColor: Colors.black),
+                                                  // SizedBox(width: 10,),
+                                                  controller.selectedCategory
+                                                              .value ==
+                                                          index
+                                                      ? Spacer()
+                                                      : SizedBox.shrink(),
+                                                  controller.selectedCategory
+                                                              .value ==
+                                                          index
+                                                      ? InkWell(
+                                                          onTap: () {
+                                                            controller
+                                                                    .isSelected
+                                                                    .value =
+                                                                !controller
+                                                                    .isSelected
+                                                                    .value;
+                                                            if (controller
+                                                                .isSelected
+                                                                .value) {
+                                                              controller
+                                                                  .selectedCategory
+                                                                  .value = index;
+                                                              controller.getDishes(
+                                                                  initial: true,
+                                                                  context:
+                                                                      context);
+                                                            } else {
+                                                              controller
+                                                                  .selectedCategory
+                                                                  .value = 2;
+                                                              controller.getDishes(
+                                                                  initial: true,
+                                                                  context:
+                                                                      context);
+                                                            }
+
+                                                            // controller.dishFilter();
+                                                          },
+                                                          child: const Icon(
+                                                            Icons.close_rounded,
+                                                            size: 20,
+                                                          ))
+                                                      : const SizedBox.shrink(),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              NotificationListener<ScrollNotification>(
-                                onNotification: controller.onScrollDishes,
-                                child: Obx(() {
-                                  return controller.isLoadingDishes.value
-                                      ? shimmerDishes()
-                                      : controller.dishList.isNotEmpty
-                                          ? Expanded(
-                                              child: RefreshIndicator(
-                                                onRefresh: () async {
-                                                  await controller.getDishes(
-                                                      initial: true);
-                                                },
-                                                child: ListView.builder(
-                                                  itemCount: controller
-                                                      .dishList.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: InkWell(
-                                                        onTap: () {},
-                                                        child: DishCard(
-                                                          restaurantsAndDishesListingController:
-                                                              controller,
-                                                          dish: controller
-                                                              .dishList[index],
-                                                          index: index,
-                                                          isDishes: true,
+                                NotificationListener<ScrollNotification>(
+                                  onNotification: controller.onScrollDishes,
+                                  child: Obx(() {
+                                    return controller.isLoadingDishes.value
+                                        ? shimmerDishes()
+                                        : controller.dishList.isNotEmpty
+                                            ? Expanded(
+                                                child: RefreshIndicator(
+                                                  onRefresh: () async {
+                                                    await controller.getDishes(
+                                                        initial: true,
+                                                        context: context);
+                                                  },
+                                                  child: ListView.builder(
+                                                    itemCount: controller
+                                                        .dishList.length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: InkWell(
+                                                          onTap: () {},
+                                                          child: DishCard(
+                                                            restaurantsAndDishesListingController:
+                                                                controller,
+                                                            dish: controller
+                                                                    .dishList[
+                                                                index],
+                                                            index: index,
+                                                            isDishes: true,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              )
+                                            : SizedBox(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    2,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height /
+                                                            5,
+                                                      ),
+                                                      ColorFiltered(
+                                                        colorFilter:
+                                                            ColorFilter.mode(
+                                                                AppColors
+                                                                    .primaryColor,
+                                                                BlendMode
+                                                                    .modulate),
+                                                        child: Image.asset(
+                                                          height: 120,
+                                                          width: 120,
+                                                          'packages/mynewpackage/${Assets.iconsNoFood6}',
+                                                          //  height: 100,
+                                                          //  width: 100,
+                                                          //  color: Colors.red,
+                                                          // imagePath: :
                                                         ),
                                                       ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            )
-                                          : SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  2,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height /
-                                                              5,
-                                                    ),
-                                                    ColorFiltered(
-                                                      colorFilter:
-                                                          ColorFilter.mode(
-                                                              AppColors
-                                                                  .primaryColor,
-                                                              BlendMode
-                                                                  .modulate),
-                                                      child: Image.asset(
-                                                        height: 120,
-                                                        width: 120,
-                                                        'packages/mynewpackage/${Assets.iconsNoFood6}',
-                                                        //  height: 100,
-                                                        //  width: 100,
-                                                        //  color: Colors.red,
-                                                        // imagePath: :
+                                                      SizedBox(
+                                                        height: 10,
                                                       ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    CommonText(
-                                                      text:
-                                                          "We're currently out of ${controller.selectedCategory.value == 0 ? "Veg" : "Non Veg"} items, but our ${controller.selectedCategory.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ],
+                                                      CommonText(
+                                                        text:
+                                                            "We're currently out of ${controller.selectedCategory.value == 0 ? "Veg" : "Non Veg"} items, but our ${controller.selectedCategory.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            );
-                                }),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-          }),
-        ),
-      ),
-    );
+                                              );
+                                  }),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+            }),
+          ),
+        ));
   }
 }
 
@@ -601,7 +608,7 @@ class RestaurantList extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await controller.getRestaurants(initial: true);
+        await controller.getRestaurants(initial: true, context: context);
       },
       child: ListView.builder(
         itemCount: controller.restaurantList.length,

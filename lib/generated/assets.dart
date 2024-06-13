@@ -35,6 +35,7 @@ class Assets {
   static const String iconsCall = 'lib/assets/icons/Call.svg';
   static const String iconsClock = 'lib/assets/icons/clock.svg';
   static const String iconsCourier = 'lib/assets/icons/courier.svg';
+  static const String iconsDateRangeLight = 'lib/assets/icons/Date_range_light.svg';
   static const String iconsDestinationIcon = 'lib/assets/icons/destinationIcon.svg';
   static const String iconsDollarCircle = 'lib/assets/icons/dollarCircle.svg';
   static const String iconsEconomyCar = 'lib/assets/icons/economyCar.svg';
@@ -64,6 +65,9 @@ class Assets {
   static const String iconsOfferIcon = 'lib/assets/icons/offerIcon.svg';
   static const String iconsOffice = 'lib/assets/icons/office.svg';
   static const String iconsOthers = 'lib/assets/icons/others.svg';
+  static const String iconsRecomentedService2 = 'lib/assets/icons/recomented_service2.svg';
+  static const String iconsRecomentedService3 = 'lib/assets/icons/recomented_service3.svg';
+  static const String iconsRecomentedServices1 = 'lib/assets/icons/recomented_services1.svg';
   static const String iconsSalonService = 'lib/assets/icons/salon-service.svg';
   static const String iconsSearchIcon = 'lib/assets/icons/search-icon.svg';
   static const String iconsSeats = 'lib/assets/icons/seats.svg';

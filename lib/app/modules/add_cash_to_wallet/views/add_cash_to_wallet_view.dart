@@ -188,7 +188,7 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
-                                          return const CommonAlertDialog(
+                                          return  CommonAlertDialog(
                                             imagePath: Assets.iconsWallet,
                                             contentOne:
                                                 "Want Exlplore Our Services?",
@@ -196,7 +196,13 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
                                                 'Add money to wallet for availing\nthe services',
                                             buttonTextOne:
                                                 'Add Money to Wallet',
-                                            buttonTextTwo: 'Skip',
+                                            buttonTextTwo: 'Skip', onButtonOneTap: (){
+                                            Navigator.of(context).pop();
+
+                                          }, onButtonTwoTap: (){
+                                            Navigator.of(context).pop();
+
+                                          },
                                           );
                                         });
                                   },
@@ -216,7 +222,7 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return const CommonAlertDialog(
+                                        return  CommonAlertDialog(
                                           imagePath: Assets.iconsWallet,
                                           contentOne:
                                           "Congratulations!",
@@ -224,7 +230,12 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
                                           'You added \$500 to your wallet',
                                           buttonTextOne:
                                           'Explore Our Services',
-                                          buttonTextTwo: 'Back to Home',
+                                          buttonTextTwo: 'Back to Home', onButtonOneTap: (){
+                                            Navigator.of(context).pop();
+                                        }, onButtonTwoTap: (){
+                                          Navigator.of(context).pop();
+
+                                        },
                                         );
                                       });
                                 },
@@ -252,13 +263,17 @@ class CommonAlertDialog extends StatelessWidget {
       required this.contentOne,
       required this.contentTwo,
       required this.buttonTextOne,
-      required this.buttonTextTwo});
+       this.buttonTextTwo,
+      required this.onButtonOneTap,
+       this.onButtonTwoTap});
 
   final String imagePath;
   final String contentOne;
   final String contentTwo;
   final String buttonTextOne;
-  final String buttonTextTwo;
+  final String? buttonTextTwo;
+  final  Function onButtonOneTap;
+  final  Function? onButtonTwoTap;
 
   @override
   Widget build(BuildContext context) {
@@ -267,62 +282,68 @@ class CommonAlertDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset("packages/mynewpackage/$imagePath"),
-          SizedBox(height: 20),
-          // Add spacing if needed
-          Column(
-            children: [
-              const Text(
-                "Hi Michael,",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                contentOne,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                contentTwo,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: Get.width,
-                decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(10))),
-                child: TextButton(
+      content: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset("packages/mynewpackage/$imagePath"),
+            SizedBox(height: 20),
+            // Add spacing if needed
+            Column(
+              children: [
+                const Text(
+                  "Hi Michael,",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  contentOne,
+                  style:
+                      const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                  textAlign: TextAlign.center,
+
+
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CommonText(
+                 text:  contentTwo,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: const BorderRadius.all(Radius.circular(10))),
+                  child: TextButton(
+                      onPressed: () {
+                        onButtonOneTap;
+                      },
+                      child: Text(
+                        buttonTextOne,
+                        style: TextStyle(color: AppColors.white),
+                      )),
+                ),
+               buttonTextTwo != "" ? const SizedBox(
+                  height: 10,
+                ):SizedBox.shrink(),
+                buttonTextTwo != "" ? TextButton(
                     onPressed: () {
-                      Get.back();
+                      onButtonOneTap;
                     },
-                    child: Text(
-                      buttonTextOne,
-                      style: TextStyle(color: AppColors.white),
-                    )),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  child: Text(buttonTextTwo))
-            ],
-          ),
-          // Add more widgets as needed
-        ],
+                    child: Text(buttonTextTwo!)):SizedBox.shrink()
+              ],
+            ),
+            // Add more widgets as needed
+          ],
+        ),
       ),
     );
   }

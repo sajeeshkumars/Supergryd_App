@@ -15,7 +15,8 @@ class CommonButton extends StatelessWidget {
       this.backgroundColor,
       this.borderColor,
       this.textColor,
-      this.textSize});
+      this.textSize,
+      this.hasForwardArrow = false});
 
   final Function() onPressed;
   final String text;
@@ -26,6 +27,7 @@ class CommonButton extends StatelessWidget {
   final Color? borderColor;
   final Color? textColor;
   final double? textSize;
+  final bool? hasForwardArrow;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class CommonButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
+            foregroundColor: AppColors.white,
             backgroundColor: backgroundColor ?? AppColors.primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -49,11 +52,17 @@ class CommonButton extends StatelessWidget {
           child: Container(
             child: isLoading!
                 ?  CircularProgressIndicator(color: AppColors.white,)
-                : CommonText(
-              textColor: textColor ?? AppColors.white ,
-                    text: text,
-              textStyle:TextStyle(fontSize: 14) ,
-                  ),
+                : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CommonText(
+                                  textColor: textColor ?? AppColors.white ,
+                        text: text,
+                                  textStyle:TextStyle(fontSize: 14) ,
+                      ),
+                    hasForwardArrow! ? Icon(Icons.arrow_forward_ios,size: 14,):SizedBox.shrink()
+                  ],
+                ),
           ),
         ),
       ),

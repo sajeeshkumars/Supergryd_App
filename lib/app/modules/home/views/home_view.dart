@@ -4,11 +4,10 @@ import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/constants.dart';
-import 'package:mynewpackage/generated/assets.dart';
-import 'package:mynewpackage/generated/locales.g.dart';
-import 'package:mynewpackage/widgets/common_Image_view.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
 
+import '../../../../generated/assets.dart';
+import '../../../../widgets/common_Image_view.dart';
 import '../../../../widgets/common_text.dart';
 import '../controllers/home_controller.dart';
 
@@ -59,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
                       CommonText(
                         fontSize: 14,
                         textColor: AppColors.textLightColor,
-                        text: LocaleKeys.your_location.tr,
+                        text: "Your Location",
                       ),
                       const Icon(
                         Icons.keyboard_arrow_down_sharp,
@@ -83,6 +82,7 @@ class _HomeViewState extends State<HomeView> {
                         Expanded(
                             child: CommonText(
                           fontSize: 14,
+                          maxLines: 2,
                           fontWeight: FontWeight.w800,
                           textOverflow: TextOverflow.ellipsis,
                           text: controller.address.value,
@@ -95,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
             ),
             leading: InkWell(
                 onTap: () {
-                  Get.back();
+                  Navigator.of(context).pop;
                 },
                 child: const Icon(Icons.arrow_back_rounded)),
             actions: [

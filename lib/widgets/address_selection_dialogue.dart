@@ -1,16 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
+import 'package:mynewpackage/app/modules/history/views/history_view.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 import 'package:mynewpackage/app/modules/home/views/home_view.dart';
+import 'package:mynewpackage/app/modules/trip_rating/views/trip_rating_view.dart';
 import 'package:mynewpackage/app_colors.dart';
+import 'package:mynewpackage/widgets/custom_button.dart';
 
 import '../app/modules/promo_code_listing/views/promo_code_listing_view.dart';
 import '../generated/assets.dart';
+import 'common_Image_view.dart';
 import 'common_text.dart';
 
 class RideDialog extends StatelessWidget {
@@ -539,248 +544,256 @@ class TripDetails extends StatelessWidget {
       child:  Padding(
         padding: EdgeInsets
             .symmetric(vertical: 25,horizontal: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CommonText(text: "Trip Details",fontWeight: FontWeight.w800,fontSize: 14,),
-            ListTile(
-              leading: CircleAvatar(),
-              title:CommonText(text: "Henry",fontWeight: FontWeight.w700),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CommonText(text: "Experience 1 year"),
-                  CommonText(text: "Total Rides: 1000"),
-                  RatingBarIndicator(
-                    rating: 2.5,
-                    itemBuilder: (context, index) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
+        child: InkWell(
+          onTap: (){
+            // Navigator.of(context).pop();
+            showDialog(context: context,  builder: (BuildContext context) {
+              return const TripCompleteDialog();
+            },);
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CommonText(text: "Trip Details",fontWeight: FontWeight.w800,fontSize: 14,),
+              ListTile(
+                leading: CircleAvatar(),
+                title:CommonText(text: "Henry",fontWeight: FontWeight.w700),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonText(text: "Experience 1 year"),
+                    CommonText(text: "Total Rides: 1000"),
+                    RatingBarIndicator(
+                      rating: 2.5,
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      itemCount: 5,
+                      itemSize: 14.0,
                     ),
-                    itemCount: 5,
-                    itemSize: 14.0,
-                  ),
 
-                ],
-              ),
+                  ],
+                ),
 
-            ),
-            Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    "packages/mynewpackage/${Assets.iconsKilometer}",
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(
-                        context)
-                        .size
-                        .width *
-                        .01,
-                  ),
-                  const CommonText(
-                      text: "21 km"),
-                  SizedBox(
-                    width: MediaQuery.of(
-                        context)
-                        .size
-                        .width *
-                        .15,
-                  ),
-                  SvgPicture.asset(
-                    "packages/mynewpackage/${Assets.iconsClock}",
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(
-                        context)
-                        .size
-                        .width *
-                        .01,
-                  ),
-                  const CommonText(
-                      text: "8 min"),
-                  SizedBox(
-                    width: MediaQuery.of(
-                        context)
-                        .size
-                        .width *
-                        .15,
-                  ),
-                  SvgPicture.asset(
-                    "packages/mynewpackage/${Assets.iconsDollarCircle}",
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(
-                        context)
-                        .size
-                        .width *
-                        .01,
-                  ),
-                  const CommonText(
-                      text: "\$1.99"),
-                ],
               ),
-            ),
-            ListTile(
-              leading:  SvgPicture.asset(
-                "packages/mynewpackage/${Assets.iconsEconomyCar}",
-              ),
-              title: CommonText(text: 'Economy',),
-              subtitle: Row(
-                children: [
-                  SvgPicture.asset(
+              Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      "packages/mynewpackage/${Assets.iconsKilometer}",
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(
+                          context)
+                          .size
+                          .width *
+                          .01,
+                    ),
+                    const CommonText(
+                        text: "21 km"),
+                    SizedBox(
+                      width: MediaQuery.of(
+                          context)
+                          .size
+                          .width *
+                          .15,
+                    ),
+                    SvgPicture.asset(
                       "packages/mynewpackage/${Assets.iconsClock}",
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(
+                          context)
+                          .size
+                          .width *
+                          .01,
+                    ),
+                    const CommonText(
+                        text: "8 min"),
+                    SizedBox(
+                      width: MediaQuery.of(
+                          context)
+                          .size
+                          .width *
+                          .15,
+                    ),
+                    SvgPicture.asset(
+                      "packages/mynewpackage/${Assets.iconsDollarCircle}",
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(
+                          context)
+                          .size
+                          .width *
+                          .01,
+                    ),
+                    const CommonText(
+                        text: "\$1.99"),
+                  ],
+                ),
+              ),
+              ListTile(
+                leading:  SvgPicture.asset(
+                  "packages/mynewpackage/${Assets.iconsEconomyCar}",
+                ),
+                title: CommonText(text: 'Economy',),
+                subtitle: Row(
+                  children: [
+                    SvgPicture.asset(
+                        "packages/mynewpackage/${Assets.iconsClock}",
+                        color: AppColors
+                            .borderColor),
+                    // Icon(Icons.access_time,size: 16,color: AppColors.borderColor,),
+                    CommonText(
+                      text:
+                      '2 min',
+                      fontSize:
+                      16,
+                      textColor:
+                      AppColors
+                          .borderColor,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+
+                    SvgPicture
+                        .asset(
+                      "packages/mynewpackage/${Assets.iconsSeats}",
                       color: AppColors
-                          .borderColor),
-                  // Icon(Icons.access_time,size: 16,color: AppColors.borderColor,),
-                  CommonText(
-                    text:
-                    '2 min',
-                    fontSize:
-                    16,
-                    textColor:
-                    AppColors
-                        .borderColor,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
+                          .borderColor,
+                    ),
 
-                  SvgPicture
-                      .asset(
-                    "packages/mynewpackage/${Assets.iconsSeats}",
-                    color: AppColors
-                        .borderColor,
-                  ),
-
-                  CommonText(
-                    text:
-                    '5 Seats',
-                    fontSize:
-                    16,
-                    textColor:
-                    AppColors
-                        .borderColor,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                      SvgPicture.asset(
-                        "packages/mynewpackage/${Assets.iconsStartLocation}",
-                        height: 24,
-                        width: 24,
-                      ),
-                      Container(
-                        height: 40,
-                        width: 1,
-                        color: Colors.blue,
-                      ),
-                      SvgPicture.asset(
-                        "packages/mynewpackage/${Assets.iconsDestinationIcon}",
-                        height: 24,
-                        width: 24,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 10),
-                  const Column(
-                    crossAxisAlignment:
-                    CrossAxisAlignment
-                        .start,
-                    children: [
-                      CommonText(
-                        text: "Pick-up",
-                        fontSize: 12,
-                        textColor: Colors.grey,
-                      ),
-                      SizedBox(height: 2),
-                      CommonText(
-                        text:
-                        "Sonnenweg 32, 79669 Berlin, Germany",
-                        fontSize: 14,
-                      ),
-                      SizedBox(height: 20),
-                      CommonText(
-                        text:
-                        "Drop off (optional)",
-                        fontSize: 12,
-                        textColor: Colors.grey,
-                      ),
-                      SizedBox(height: 2),
-                      CommonText(
-                        text: "St.-Martin-Straße 14, 93099 Berlin,Germany",
-                        fontSize: 14,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  CommonText(text: "Payment option"),
-                  Spacer(),
-                  CommonText(text: "Apple Pay")
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  CommonText(text: "Total price"),
-                  Spacer(),
-                  CommonText(text: "\$1.99",fontWeight: FontWeight.w700,)
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  height: 55,
-                  width: 206,
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.primaryColor),
-                  borderRadius: BorderRadius.circular(100)
+                    CommonText(
+                      text:
+                      '5 Seats',
+                      fontSize:
+                      16,
+                      textColor:
+                      AppColors
+                          .borderColor,
+                    ),
+                  ],
                 ),
-                  child:
-                Center(child: CommonText(text: 'Cancel',textColor: AppColors.primaryColor,)),),
-                // SizedBox(width: 5,),
-
-                SvgPicture.asset(
-                  "packages/mynewpackage/${Assets.iconsMessage}",
-                  height: 55,
-                  width: 55,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        SvgPicture.asset(
+                          "packages/mynewpackage/${Assets.iconsStartLocation}",
+                          height: 24,
+                          width: 24,
+                        ),
+                        Container(
+                          height: 40,
+                          width: 1,
+                          color: Colors.blue,
+                        ),
+                        SvgPicture.asset(
+                          "packages/mynewpackage/${Assets.iconsDestinationIcon}",
+                          height: 24,
+                          width: 24,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 10),
+                    const Column(
+                      crossAxisAlignment:
+                      CrossAxisAlignment
+                          .start,
+                      children: [
+                        CommonText(
+                          text: "Pick-up",
+                          fontSize: 12,
+                          textColor: Colors.grey,
+                        ),
+                        SizedBox(height: 2),
+                        CommonText(
+                          text:
+                          "Sonnenweg 32, 79669 Berlin, Germany",
+                          fontSize: 14,
+                        ),
+                        SizedBox(height: 20),
+                        CommonText(
+                          text:
+                          "Drop off (optional)",
+                          fontSize: 12,
+                          textColor: Colors.grey,
+                        ),
+                        SizedBox(height: 2),
+                        CommonText(
+                          text: "St.-Martin-Straße 14, 93099 Berlin,Germany",
+                          fontSize: 14,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                // SizedBox(width: 5,),
-                SvgPicture.asset(
-                  "packages/mynewpackage/${Assets.iconsCall}",
-                  height: 55,
-                  width: 55,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    CommonText(text: "Payment option"),
+                    Spacer(),
+                    CommonText(text: "Apple Pay")
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    CommonText(text: "Total price"),
+                    Spacer(),
+                    CommonText(text: "\$1.99",fontWeight: FontWeight.w700,)
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: 55,
+                    width: 206,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.primaryColor),
+                    borderRadius: BorderRadius.circular(100)
+                  ),
+                    child:
+                  Center(child: CommonText(text: 'Cancel',textColor: AppColors.primaryColor,)),),
+                  // SizedBox(width: 5,),
+
+                  SvgPicture.asset(
+                    "packages/mynewpackage/${Assets.iconsMessage}",
+                    height: 55,
+                    width: 55,
+                  ),
+                  // SizedBox(width: 5,),
+                  SvgPicture.asset(
+                    "packages/mynewpackage/${Assets.iconsCall}",
+                    height: 55,
+                    width: 55,
+                  ),
+                ],
+              ),
 
 
 
 
 
 
-          ]
+            ]
 
-    )
+              ),
+        )
                 ));
   }
 }
@@ -1025,3 +1038,310 @@ class DestinationSelection extends StatelessWidget {
       );
   }
 }
+
+class TripCompleteDialog extends StatelessWidget {
+  const TripCompleteDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 8),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SvgPicture.asset(
+                    "packages/mynewpackage/${Assets.iconsSuccess}",
+                  height: 60,
+                  width: 60,
+                   ),
+                SizedBox(height: 5,),
+                CommonText(text: 'Hi Michel,',fontSize: 16,),
+                SizedBox(height: 5,),
+                CommonText(text: 'Your Ride Completed',fontSize: 16,fontWeight: FontWeight.w600,),
+                SizedBox(height: 5,),
+                CommonText(text: 'ID123456789',fontWeight: FontWeight.w600,textColor: AppColors.primaryColor,),
+                SizedBox(height: 5,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CommonText(text: 'Wallet Balance',fontWeight: FontWeight.w600,),
+                    CommonText(text: ' \$95.85',fontWeight: FontWeight.w600,textColor: Colors.red,),
+                  ],
+                ),
+                SizedBox(height: 5,),
+            
+                SizedBox(
+                  width: 200,
+                  child: CommonButton(onPressed: (){}, text: "Add Cash to Wallet",hasForwardArrow: true,
+                  textSize: 12,),
+                ),
+                SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        "packages/mynewpackage/${Assets.iconsDateRangeLight}",
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(
+                            context)
+                            .size
+                            .width *
+                            .01,
+                      ),
+                      const CommonText(
+                          text: "28 May 2024"),
+                      SizedBox(
+                        width: MediaQuery.of(
+                            context)
+                            .size
+                            .width *
+                            .045,
+                      ),
+            
+                      SvgPicture.asset(
+                        "packages/mynewpackage/${Assets.iconsClock}",
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(
+                            context)
+                            .size
+                            .width *
+                            .01,
+                      ),
+            
+                      const CommonText(
+                          text: "10:45AM"),
+                      SizedBox(
+                        width: MediaQuery.of(
+                            context)
+                            .size
+                            .width *
+                            .045,
+                      ),
+                      SvgPicture.asset(
+                        "packages/mynewpackage/${Assets.iconsDollarCircle}",
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(
+                            context)
+                            .size
+                            .width *
+                            .01,
+                      ),
+                      const CommonText(
+                          text: "\$1.99"),
+                    ],
+                  ),
+                ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    children: [
+                      SvgPicture.asset(
+                        "packages/mynewpackage/${Assets.iconsStartLocation}",
+                        height: 24,
+                        width: 24,
+                      ),
+                      Container(
+                        height: 40,
+                        width: 1,
+                        color: Colors.blue,
+                      ),
+                      SvgPicture.asset(
+                        "packages/mynewpackage/${Assets.iconsDestinationIcon}",
+                        height: 24,
+                        width: 24,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CommonText(
+                          text: "Pick-up",
+                          fontSize: 12,
+                          textColor: Colors.grey,
+                        ),
+                        SizedBox(height: 2),
+                        CommonText(
+                          text: "Sonnenweg 32, 79669 Berlin, Germany",
+                          fontSize: 14,
+                          textOverflow: TextOverflow.ellipsis, // Handle overflow
+                        ),
+                        SizedBox(height: 20),
+                        CommonText(
+                          text: "Drop off (optional)",
+                          fontSize: 12,
+                          textColor: Colors.grey,
+                        ),
+                        SizedBox(height: 2),
+                        CommonText(
+                          text: "St.-Martin-Straße 14, 93099 Berlin, Germany",
+                          fontSize: 14,
+                          textOverflow: TextOverflow.ellipsis, // Handle overflow
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const CircleAvatar(),
+              title: const Row(
+                children: [
+                  CommonText(
+                    text: "Henry",
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  Spacer(),
+                  CommonText(
+                    text: 'Your trip fare',
+                    fontSize: 12,
+                  ),
+                  SizedBox(width: 3,),
+                  CommonText(
+                    text: '\$1.99',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ],
+              ),
+              subtitle: Row(
+                children: [
+                  SvgPicture.asset(
+                    "packages/mynewpackage/${Assets.iconsStar}",
+                    height: 12,
+                    width: 12,
+                  ),
+                  CommonText(text: "5"),
+                  Spacer(),
+                  CommonText(text: "Payment Option",
+                    fontSize: 12,),
+                  SizedBox(width: 3,),
+                  CommonText(text: "Apple Pay",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,)
+                ],
+              ),
+            ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const HistoryView()));
+                          },
+                          child: Container(
+                            height: 45,
+                            width: 169,
+                            decoration: BoxDecoration(border: Border.all(color:AppColors.borderColor)),
+                            child: Center(
+                              child: CommonText(text: "Booking History",),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 5,),
+                      Expanded(
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const TripRatingView()));
+                          },
+                          child: Container(
+                            height: 45,
+                            width: 169,
+                            decoration: BoxDecoration(border: Border.all(color:AppColors.borderColor)),
+                            child: Center(
+                              child: CommonText(text: "Rate this ride",),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CommonText(text: 'Recommended Services',
+                      fontWeight: FontWeight.w700,),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: controller.recommendedServices.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: InkWell(
+                          splashColor: Colors.transparent,
+                          onTap: () {
+                            // Get.to(() => AddCashToWalletView());
+                          },
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CommonImageView(
+                                  height: 100,
+                                  width: 100,
+                                  imagePath:
+                                  "packages/mynewpackage/${controller
+                                      .specialOfferImages[index]}",
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              CommonText(
+                                fontSize: 12,
+
+                                textAlign: TextAlign.center,
+                                text: controller.recommendedServices[index],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                TextButton(onPressed: (){
+                  Navigator.of(context).pop();
+                }, child: CommonText(text: 'Close',
+                textColor: Colors.black,))
+            
+            
+            
+            
+            
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+

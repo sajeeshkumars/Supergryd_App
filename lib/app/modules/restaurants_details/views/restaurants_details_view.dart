@@ -42,7 +42,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
   @override
   void initState() {
     restaurantsDetailsController.getRestaurantDetails(
-        restaurantId: widget.restaurantId, initial: true);
+        restaurantId: widget.restaurantId, initial: true, context: context);
     Get.lazyPut(() => RestaurantsDetailsController());
     super.initState();
   }
@@ -52,112 +52,114 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
     final controller = Get.find<FontController>();
 
     return Theme(
-      data: ThemeData(
-          fontFamily: controller.fontText.value,
-          textTheme: controller.font.value),
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        appBar: AppBar(
-          title: CommonText(
-            text: widget.restaurantData?.restaurantDetails?.first.name ?? "",
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-          // }),
-          backgroundColor: AppColors.backgroundColor,
-        ),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            await restaurantsDetailsController.getRestaurantDetails(
-                restaurantId: widget.restaurantId, initial: true);
-          },
-          child: SingleChildScrollView(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BannerAndRatingWidget(
-                      restaurantData: widget.restaurantData,
-                      distance: widget.distance,
-                      controller: restaurantsDetailsController,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SearchWidget(
-                        controller: restaurantsDetailsController,
-                        restaurantData: widget.restaurantData),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ChipWidget(
-                        controller: restaurantsDetailsController,
-                        restaurantId: widget.restaurantId),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Obx(() {
-                      return restaurantsDetailsController.isLoading.value
-                          ? const Center(child: SizedBox.shrink())
-                          : restaurantsDetailsController
-                                  .restaurantDishList.isNotEmpty
-                              ? ListView.separated(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return DishCard(
-                                      restaurantsDetailsController:
-                                          restaurantsDetailsController,
-                                      restaurant: restaurantsDetailsController
-                                          .restaurantDishList[index],
-                                      index: index,
-                                      isDishes: false,
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return const SizedBox(
-                                      height: 10,
-                                    );
-                                  },
-                                  itemCount: restaurantsDetailsController
-                                      .restaurantDishList.length,
-                                )
-                              : Center(
-                                  child: Column(
-                                  children: [
-                                    ColorFiltered(
-                                      colorFilter: ColorFilter.mode(
-                                          AppColors.primaryColor,
-                                          BlendMode.modulate),
-                                      child: Image.asset(
-                                        height: 120,
-                                        width: 120,
-                                        'packages/mynewpackage/${Assets.iconsNoFood6}',
-                                        //  height: 100,
-                                        //  width: 100,
-                                        //  color: Colors.red,
-                                        // imagePath: :
-                                      ),
-                                    ),
-                                    CommonText(
-                                      text:
-                                          "We're currently out of ${restaurantsDetailsController.selectedFilter.value == 0 ? "Veg" : "Non Veg"} items, but our ${restaurantsDetailsController.selectedFilter.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
-                                      textAlign: TextAlign.center,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ],
-                                ));
-                    })
-                  ],
-                ),
+        data: ThemeData(
+            fontFamily: controller.fontText.value,
+            textTheme: controller.font.value),
+        child: Scaffold(
+            backgroundColor: AppColors.backgroundColor,
+            appBar: AppBar(
+              title: CommonText(
+                text:
+                    widget.restaurantData?.restaurantDetails?.first.name ?? "",
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
               ),
+              // }),
+              backgroundColor: AppColors.backgroundColor,
             ),
-          ),
-        ),
-      ),
-    );
+            body: RefreshIndicator(
+                onRefresh: () async {
+                  await restaurantsDetailsController.getRestaurantDetails(
+                      restaurantId: widget.restaurantId, initial: true);
+                },
+                child: SingleChildScrollView(
+                    child: Center(
+                        child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                BannerAndRatingWidget(
+                                  restaurantData: widget.restaurantData,
+                                  distance: widget.distance,
+                                  controller: restaurantsDetailsController,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                SearchWidget(
+                                    controller: restaurantsDetailsController,
+                                    restaurantData: widget.restaurantData),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                ChipWidget(
+                                    controller: restaurantsDetailsController,
+                                    restaurantId: widget.restaurantId),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Obx(() {
+                                  return restaurantsDetailsController
+                                          .isLoading.value
+                                      ? const Center(child: SizedBox.shrink())
+                                      : restaurantsDetailsController
+                                              .restaurantDishList.isNotEmpty
+                                          ? ListView.separated(
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemBuilder: (context, index) {
+                                                return DishCard(
+                                                  restaurantsDetailsController:
+                                                      restaurantsDetailsController,
+                                                  restaurant:
+                                                      restaurantsDetailsController
+                                                              .restaurantDishList[
+                                                          index],
+                                                  index: index,
+                                                  isDishes: false,
+                                                );
+                                              },
+                                              separatorBuilder:
+                                                  (context, index) {
+                                                return const SizedBox(
+                                                  height: 10,
+                                                );
+                                              },
+                                              itemCount:
+                                                  restaurantsDetailsController
+                                                      .restaurantDishList
+                                                      .length,
+                                            )
+                                          : Center(
+                                              child: Column(
+                                              children: [
+                                                ColorFiltered(
+                                                  colorFilter: ColorFilter.mode(
+                                                      AppColors.primaryColor,
+                                                      BlendMode.modulate),
+                                                  child: Image.asset(
+                                                    height: 120,
+                                                    width: 120,
+                                                    'packages/mynewpackage/${Assets.iconsNoFood6}',
+                                                    //  height: 100,
+                                                    //  width: 100,
+                                                    //  color: Colors.red,
+                                                    // imagePath: :
+                                                  ),
+                                                ),
+                                                CommonText(
+                                                  text:
+                                                      "We're currently out of ${restaurantsDetailsController.selectedFilter.value == 0 ? "Veg" : "Non Veg"} items, but our ${restaurantsDetailsController.selectedFilter.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
+                                                  textAlign: TextAlign.center,
+                                                  fontWeight: FontWeight.w800,
+                                                ),
+                                              ],
+                                            ));
+                                })
+                              ],
+                            )))))));
   }
 }
 

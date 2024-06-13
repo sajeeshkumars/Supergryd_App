@@ -75,6 +75,9 @@ class HomeController extends GetxController {
     Assets.imagesTopOffer4,
     Assets.imagesTopOffer5
   ];
+  List recommendedServicesImages =[Assets.iconsRecomentedServices1,Assets.iconsRecomentedService2,Assets.iconsRecomentedService3];
+  List recommendedServices = ["25 people booked\n ticket to visit\n Brandenburg Gate past 5 days ",
+  "50 people from New\n York ate Schnitzel\n from Schnitzelei Mitte ","15 people from New York\n ate Salat from\n 1990 Vegan Living"];
   final ColorController colorController = Get.find<ColorController>();
   final location.Location locationStatus = location.Location();
 
