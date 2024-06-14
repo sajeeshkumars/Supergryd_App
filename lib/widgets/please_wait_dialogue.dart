@@ -24,7 +24,7 @@ class AuthenticationDialog extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         color: AppColors.backgroundColor),
-                    width: authenticated ? loaderBackground : Get.width,
+                    width: authenticated ? loaderBackground : MediaQuery.of(context).size.width,
                     child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       SpinKitRing(

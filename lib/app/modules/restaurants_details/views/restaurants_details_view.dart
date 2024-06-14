@@ -16,6 +16,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../../generated/assets.dart';
+import '../../../../widgets/common_text.dart';
 import '../../../core/utility.dart';
 
 class RestaurantsDetailsView extends StatefulWidget {
@@ -40,7 +41,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
   @override
   void initState() {
     restaurantsDetailsController.getRestaurantDetails(
-        restaurantId: widget.restaurantId, initial: true);
+        restaurantId: widget.restaurantId, initial: true,context: context);
     Get.lazyPut(() => RestaurantsDetailsController());
     super.initState();
   }
@@ -51,15 +52,11 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         title:
-            // Obx(() {
-            //   return
-            // restaurantsDetailsController.isLoading.value? const Center(child: CircularProgressIndicator(color: Colors.transparent,)):
-            Text(
-          widget.restaurantData?.restaurantDetails?.first.name ?? "",
-          // restaurantsDetailsController
-          //         .restaurantDetails.first.restaurantDetails?.first.name ??
-          //     '',
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+
+            CommonText(
+         text: widget.restaurantData?.restaurantDetails?.first.name ?? "",
+
+          fontWeight: FontWeight.bold, fontSize: 18,
         ),
         // }),
         backgroundColor: AppColors.backgroundColor,
@@ -67,7 +64,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
       body: RefreshIndicator(
         onRefresh: () async {
           await restaurantsDetailsController.getRestaurantDetails(
-              restaurantId: widget.restaurantId, initial: true);
+              restaurantId: widget.restaurantId, initial: true,context: context);
         },
         child: SingleChildScrollView(
           child: Center(
@@ -136,8 +133,8 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
                                     // imagePath: :
                                   ),
                                 ),
-                                Text("We're currently out of ${restaurantsDetailsController.selectedFilter.value == 0 ? "Veg":"Non Veg"} items, but our ${restaurantsDetailsController.selectedFilter.value == 1 ? "Veg":"Non Veg"} selection is sizzling! Take a look!",
-                                                    textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.w800),),
+                                CommonText(text: "We're currently out of ${restaurantsDetailsController.selectedFilter.value == 0 ? "Veg":"Non Veg"} items, but our ${restaurantsDetailsController.selectedFilter.value == 1 ? "Veg":"Non Veg"} selection is sizzling! Take a look!",
+                                                    textAlign: TextAlign.center,fontWeight: FontWeight.w800,),
 
                               ],
                             ));
@@ -217,10 +214,9 @@ class _ChipWidgetState extends State<ChipWidget> {
                             children: [
                               SvgPicture.asset(
                                   widget.controller.chipImages[index]),
-                              Text(
-                                widget.controller.chipTitles[index],
-                                style: const TextStyle(
-                                    fontSize: 12, color: Colors.black),
+                              CommonText(
+                               text:  widget.controller.chipTitles[index],
+                                    fontSize: 12, textColor: Colors.black,
                               ),
                               // SizedBox(width: 10,),
                               widget.controller.selectedFilter.value == index
@@ -255,71 +251,6 @@ class _ChipWidgetState extends State<ChipWidget> {
               ),
             );
 
-      // return widget.controller.isLoading.value ? const CircularProgressIndicator() : SizedBox(
-      //   height: 50,
-      //   child: ListView.separated(
-      //     scrollDirection: Axis.horizontal,
-      //     shrinkWrap: true,
-      //     itemBuilder: (context, index) {
-      //       return Obx(
-      //          () {
-      //           return GestureDetector(
-      //             onTap: () {
-      //                 widget.controller.selectedFilter.value = index;
-      //                 // widget.controller.getRestaurantDetails(restaurantId:widget.restaurantId , initial: true);
-      //               widget.controller.restaurantDishFilter();
-      //             },
-      //             child: Chip(
-      //               shape: RoundedRectangleBorder(
-      //                 borderRadius: BorderRadius.circular(50.0),
-      //                 side: const BorderSide(color: Colors.grey),
-      //               ),
-      //               label: Row(
-      //                 mainAxisAlignment: MainAxisAlignment.start,
-      //                 mainAxisSize: MainAxisSize.min,
-      //                 children: [
-      //                   CommonImageView(
-      //                     svgPath:widget.controller.chipImages[index],
-      //                     color: widget.controller.selectedFilter.value == index ? Colors.white : null,
-      //                   ),
-      //
-      //                   const SizedBox(
-      //                     width: 5,
-      //                   ),
-      //                   Text(
-      //                     widget.controller.chipTitles[index],
-      //                     style: TextStyle(
-      //                       fontSize: 12,
-      //                       fontWeight: FontWeight.w600,
-      //                       color:
-      //                       widget.controller.selectedFilter.value == index ? Colors.white : Colors.black,
-      //                     ),
-      //                   ),
-      //                   SizedBox(width: 10,),
-      //                   widget.controller.selectedFilter.value == index? InkWell(
-      //                     onTap: (){
-      //                       debugPrint("hello");
-      //                       widget.controller.selectedFilter.value = 3;
-      //                       widget.controller.restaurantDishFilter();
-      //                     },
-      //                       child: Icon(Icons.close_rounded,size: 20,)):SizedBox.shrink()
-      //                 ],
-      //               ),
-      //               backgroundColor:
-      //               widget.controller.selectedFilter.value == index ? AppColors.primaryColor : null,
-      //             ),
-      //           );
-      //         }
-      //       );
-      //     },
-      //     separatorBuilder: (context, index) {
-      //       return const SizedBox(
-      //         width: 10,
-      //       );
-      //     },
-      //     itemCount: widget.controller.chipTitles.length,
-      //   ),
-      // );
     });
   }
 }
@@ -570,23 +501,22 @@ class BannerAndRatingWidget extends StatelessWidget {
                         },
                         child: Wrap(
                           children: [
-                            Text(
-                              restaurantData?.images?.first.description ?? "",
+                            CommonText(
+                             text:  restaurantData?.images?.first.description ?? "",
                               maxLines: controller.showMore.value ? 10 : 2,
-                              style: TextStyle(
-                                overflow: !controller.showMore.value
+                                textOverflow: !controller.showMore.value
                                     ? TextOverflow.ellipsis
                                     : null,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 14,
-                                color: const Color.fromRGBO(69, 84, 97, 1),
-                              ),
+                                textColor: const Color.fromRGBO(69, 84, 97, 1),
+
                             ),
-                            Text(
-                              !controller.showMore.value
+                            CommonText(
+                             text: !controller.showMore.value
                                   ? "Read More"
                                   : "Read Less",
-                              style: TextStyle(color: AppColors.primaryColor),
+                              textColor: AppColors.primaryColor
                             )
                           ],
                         ),
@@ -606,11 +536,10 @@ class BannerAndRatingWidget extends StatelessWidget {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Text(
-                                  "${restaurantData?.rating}(${Utility.countConverter(restaurantData?.totalRating)})",
-                                  style: const TextStyle(
+                                CommonText(
+                                 text: "${restaurantData?.rating}(${Utility.countConverter(restaurantData?.totalRating)})",
                                       fontSize: 10,
-                                      fontWeight: FontWeight.w600),
+                                      fontWeight: FontWeight.w600
                                 )
                               ],
                             ),
@@ -623,10 +552,9 @@ class BannerAndRatingWidget extends StatelessWidget {
                               borderRadius: BorderRadius.circular(80.0),
                               side: const BorderSide(color: Colors.grey),
                             ),
-                            label: Text(
-                              "${distance.toStringAsFixed(1)} km",
-                              style: const TextStyle(
-                                  fontSize: 10, fontWeight: FontWeight.w600),
+                            label: CommonText(
+                             text: "${distance.toStringAsFixed(1)} km",
+                                  fontSize: 10, fontWeight: FontWeight.w600
                             ),
                           ),
                         ],

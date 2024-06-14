@@ -2,12 +2,18 @@ import 'package:get/get.dart';
 
 import '../modules/add_cash_to_wallet/bindings/add_cash_to_wallet_binding.dart';
 import '../modules/add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
+import '../modules/history/bindings/history_binding.dart';
+import '../modules/history/views/history_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/promo_code_listing/bindings/promo_code_listing_binding.dart';
+import '../modules/promo_code_listing/views/promo_code_listing_view.dart';
 import '../modules/restaurants_and_dishes_listing/bindings/restaurants_and_dishes_listing_binding.dart';
 import '../modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import '../modules/restaurants_details/bindings/restaurants_details_binding.dart';
 import '../modules/restaurants_details/views/restaurants_details_view.dart';
+import '../modules/trip_rating/bindings/trip_rating_binding.dart';
+import '../modules/trip_rating/views/trip_rating_view.dart';
 
 part 'app_routes.dart';
 
@@ -19,7 +25,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.HOME,
-      page: () =>  HomeView(),
+      page: () => HomeView(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -37,8 +43,23 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ADD_CASH_TO_WALLET,
-      page: () =>  AddCashToWalletView(),
+      page: () => AddCashToWalletView(),
       binding: AddCashToWalletBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROMO_CODE_LISTING,
+      page: () => const PromoCodeListingView(),
+      binding: PromoCodeListingBinding(),
+    ),
+    GetPage(
+      name: _Paths.TRIP_RATING,
+      page: () => const TripRatingView(),
+      binding: TripRatingBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY,
+      page: () => const HistoryView(),
+      binding: HistoryBinding(),
     ),
   ];
 }

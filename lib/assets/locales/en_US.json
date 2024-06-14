@@ -1,5 +1,5 @@
 {
-"your_location": "Your Location",
+  "your_location": "Your Location",
   "hi": "Hi",
   "explore_the_popular_category": "Explore The Popular Categories",
   "others": "Others",
@@ -18,5 +18,19 @@
   "add_credit_card": "Add Credit Card/ Debit Card",
   "net_banking": "Net Banking",
   "add_later": "Add Later",
-  "add_cash_to_wallet": "Add Cash to Wallet"
+  "add_cash_to_wallet": "Add Cash to Wallet",
+  "home": "Home",
+  "Office": "Office",
+  "where_are_you_going_today": "Where are you going",
+  "pick_up": "Pick-up",
+  "my_current_location": "My current location",
+  "drop_off": "Drop off",
+  "where_to": "Where to?",
+  "saved_places": "Saved places",
+  "choose_your_ride": "Choose your ride",
+  "promo_code": "Promo code",
+  "request": "Request",
+  "loading_your_nearest_driver": "Loading Your Nearest Driver",
+  "loading_driver_dialogue": "Hang tight! We're connecting you with\nthe closest available driver. This may\n take a moment.",
+  "no_service": "Hold your horses!   We're not quite there yet, but we're bringing our service to your area soon. Stay tuned!"
 }

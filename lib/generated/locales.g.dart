@@ -23,6 +23,13 @@ class LocaleKeys {
   static const km = 'km';
   static const restaurants = 'restaurants';
   static const dishes = 'dishes';
+  static const read_more = 'read_more';
+  static const read_less = 'read_less';
+  static const total_balance = 'total_balance';
+  static const add_credit_card = 'add_credit_card';
+  static const net_banking = 'net_banking';
+  static const add_later = 'add_later';
+  static const add_cash_to_wallet = 'add_cash_to_wallet';
 }
 
 class Locales {
@@ -42,5 +49,12 @@ class Locales {
     'km': 'km',
     'restaurants': 'Restaurants',
     'dishes': 'Dishes',
+    'read_more': 'Read More',
+    'read_less': 'Read Less',
+    'total_balance': 'Total Balance',
+    'add_credit_card': 'Add Credit Card/ Debit Card',
+    'net_banking': 'Net Banking',
+    'add_later': 'Add Later',
+    'add_cash_to_wallet': 'Add Cash to Wallet',
   };
 }
