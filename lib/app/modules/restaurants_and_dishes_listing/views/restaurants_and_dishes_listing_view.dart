@@ -79,7 +79,7 @@ class _RestaurantsAndDishesListingViewState
                           child: CommonText(
                               text: homeController.address.value,
                               fontSize: 14,
-                              maxLines: 2,
+                              maxLines: 1,
                               fontWeight: FontWeight.w600,
                               textOverflow: TextOverflow.ellipsis))
                     ],
@@ -775,11 +775,12 @@ class RestaurantList extends StatelessWidget {
                                     .description ??
                                 "",
                             fontSize: 14,
+                            maxLines: 1,
                             textColor: AppColors.textColor,
                             textOverflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         controller.restaurantList[index].isAvailable == 2

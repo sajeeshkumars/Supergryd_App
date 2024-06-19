@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:mynewpackage/generated/locales.g.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mynewpackage/assets/localize.dart';
 import 'package:mynewpackage/mynewpackage.dart';
-import 'package:flutter/services.dart';
-
-
 
 
 void main() {
@@ -18,19 +15,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
-      supportedLocales: const [
-        Locale('en', ''),
-      ],
-      // localizationsDelegates: [
+      // localizationsDelegates:  const [
       //   AppLocalizations.delegate,
       //   GlobalMaterialLocalizations.delegate,
       //   GlobalWidgetsLocalizations.delegate,
-      //   GlobalCupertinoLocalizations.delegate,
       // ],
-      // translationsKeys: AppTranslation.translations,
-      // localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      locale: const Locale('en', 'US'),
+      // supportedLocales: const [
+      //   Locale('en', ''),
+      // ],
       // fallbackLocale: const Locale('en', 'US'),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -53,11 +45,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
         fontFamily: "Mullish",
-
-
-
       ),
-      home: const MyPackage(clientId: 'SGD_test_55be429e-485b-45c2-b281-3f818d32769a', clientSecrete: 'SGD_test_8a680b2b-f8d0-491a-8346-63f3a2cace04', name: '', mobile: '',),
+      home: const MyPackage(
+        clientId: 'SGD_test_55be429e-485b-45c2-b281-3f818d32769a',
+        clientSecrete: 'SGD_test_8a680b2b-f8d0-491a-8346-63f3a2cace04',
+        name: '',
+        mobile: '',
+      ),
     );
   }
 }

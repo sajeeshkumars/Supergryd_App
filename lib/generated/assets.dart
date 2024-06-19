@@ -2,20 +2,24 @@
 class Assets {
   Assets._();
 
-  static const String assetsLocalizations = 'lib/assets/localizations.dart';
+  static const String assetsLocalizations = 'lib/assets/localize.dart';
   static const String authenticationAuthenticationRepo = 'lib/app/authentication/authentication_repo.dart';
   static const String authenticationAuthenticationService = 'lib/app/authentication/authentication_service.dart';
   static const String bindingsAddCashToWalletBinding = 'lib/app/modules/add_cash_to_wallet/bindings/add_cash_to_wallet_binding.dart';
+  static const String bindingsHistoryBinding = 'lib/app/modules/history/bindings/history_binding.dart';
   static const String bindingsHomeBinding = 'lib/app/modules/home/bindings/home_binding.dart';
   static const String bindingsPromoCodeListingBinding = 'lib/app/modules/promo_code_listing/bindings/promo_code_listing_binding.dart';
   static const String bindingsRestaurantsAndDishesListingBinding = 'lib/app/modules/restaurants_and_dishes_listing/bindings/restaurants_and_dishes_listing_binding.dart';
   static const String bindingsRestaurantsDetailsBinding = 'lib/app/modules/restaurants_details/bindings/restaurants_details_binding.dart';
+  static const String bindingsTripRatingBinding = 'lib/app/modules/trip_rating/bindings/trip_rating_binding.dart';
   static const String controllersAddCashToWalletController = 'lib/app/modules/add_cash_to_wallet/controllers/add_cash_to_wallet_controller.dart';
   static const String controllersColorController = 'lib/app/modules/home/controllers/color_controller.dart';
+  static const String controllersHistoryController = 'lib/app/modules/history/controllers/history_controller.dart';
   static const String controllersHomeController = 'lib/app/modules/home/controllers/home_controller.dart';
   static const String controllersPromoCodeListingController = 'lib/app/modules/promo_code_listing/controllers/promo_code_listing_controller.dart';
   static const String controllersRestaurantsAndDishesListingController = 'lib/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
   static const String controllersRestaurantsDetailsController = 'lib/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
+  static const String controllersTripRatingController = 'lib/app/modules/trip_rating/controllers/trip_rating_controller.dart';
   static const String coreUtility = 'lib/app/core/utility.dart';
   static const String dataDishListingRequest = 'lib/app/modules/restaurants_and_dishes_listing/data/dish_listing_request.dart';
   static const String dataDishListingResponse = 'lib/app/modules/restaurants_and_dishes_listing/data/dish_listing_response.dart';
@@ -99,6 +103,7 @@ class Assets {
   static const String libDependecy = 'lib/dependecy.dart';
   static const String libMynewpackage = 'lib/mynewpackage.dart';
   static const String libSizeUtils = 'lib/size_utils.dart';
+  static const String localesAppEn = 'lib/assets/locales/app_en.arb';
   static const String localesEnUS = 'lib/assets/locales/en_US.json';
   static const String modelAuthenticationRequestModel = 'lib/app/authentication/model/authentication_request_model.dart';
   static const String modelAuthenticationResponse = 'lib/app/authentication/model/authentication_response.dart';
@@ -112,10 +117,12 @@ class Assets {
   static const String servicesApiService = 'lib/services/api_service.dart';
   static const String servicesConfig = 'lib/services/config.dart';
   static const String viewsAddCashToWalletView = 'lib/app/modules/add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
+  static const String viewsHistoryView = 'lib/app/modules/history/views/history_view.dart';
   static const String viewsHomeView = 'lib/app/modules/home/views/home_view.dart';
   static const String viewsPromoCodeListingView = 'lib/app/modules/promo_code_listing/views/promo_code_listing_view.dart';
   static const String viewsRestaurantsAndDishesListingView = 'lib/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
   static const String viewsRestaurantsDetailsView = 'lib/app/modules/restaurants_details/views/restaurants_details_view.dart';
+  static const String viewsTripRatingView = 'lib/app/modules/trip_rating/views/trip_rating_view.dart';
   static const String widgetsAddressSelectionDialogue = 'lib/widgets/address_selection_dialogue.dart';
   static const String widgetsAddressSelectionWidget = 'lib/widgets/address_selection_widget.dart';
   static const String widgetsCommonImageView = 'lib/widgets/common_Image_view.dart';
