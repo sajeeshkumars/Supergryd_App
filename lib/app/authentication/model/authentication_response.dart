@@ -16,8 +16,8 @@ class AuthenticationResponse {
 }
 
   AuthenticationResponse.fromJson(dynamic json) {
-    _status = json['status'];
-    _message = json['message'];
+    _status = int.parse(json['status'].toString());
+    _message = json['message'].toString();
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   num? _status;
@@ -69,10 +69,10 @@ class Data {
 }
 
   Data.fromJson(dynamic json) {
-    _accessToken = json['accessToken'];
-    _refreshToken = json['refreshToken'];
-    _accessTokenExpiry = json['accessTokenExpiry'];
-    _refreshTokenExpiry = json['refreshTokenExpiry'];
+    _accessToken = json['accessToken'].toString();
+    _refreshToken = json['refreshToken'].toString();
+    _accessTokenExpiry = json['accessTokenExpiry'].toString();
+    _refreshTokenExpiry = json['refreshTokenExpiry'].toString();
     if (json['themes'] != null) {
       _themes = [];
       json['themes'].forEach((v) {
@@ -139,11 +139,11 @@ class Themes {
 }
 
   Themes.fromJson(dynamic json) {
-    _primaryColor = json['primary_color'];
-    _secondaryColor = json['secondary_color'];
-    _accentColor = json['accent_color'];
-    _font = json['font'];
-    _id = json['_id'];
+    _primaryColor = json['primary_color'].toString();
+    _secondaryColor = json['secondary_color'].toString();
+    _accentColor = json['accent_color'].toString();
+    _font = json['font'].toString();
+    _id = json['_id'].toString();
   }
   String? _primaryColor;
   String? _secondaryColor;

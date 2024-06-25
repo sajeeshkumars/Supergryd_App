@@ -1,9 +1,10 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/state_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart' as location;
 import 'package:mynewpackage/app/authentication/authentication_repo.dart';
@@ -18,6 +19,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app_colors.dart';
 import '../../../../generated/assets.dart';
+import '../data/models/ride_estimation_response.dart';
 import '../data/models/service_category_response.dart';
 import 'color_controller.dart';
 
@@ -53,15 +55,35 @@ class HomeController extends GetxController {
     "lat": 13.094478,
     "long": 77.720049,
   }.obs;
+  RxMap selectedPickupCoordinates = {
+    "lat": 13.094478,
+    "long": 77.720049,
+  }.obs;
+  RxMap selectedDropoffCoordinates = {
+    "lat": 13.094478,
+    "long": 77.720049,
+  }.obs;
   RxString address = "Select Address".obs;
+  RxString selectedPickUp ="".obs;
+  RxString selectedDropOff = "".obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingServices = false.obs;
+  RxBool isEstimationLoading = false.obs;
+  RxBool isRequestRideLoading = false.obs;
+   RxBool isRequestSent = false.obs;
+   RxString productId = "".obs;
+   RxString fareId = "".obs;
+   RxString price = "".obs;
+
 
   // AppStorage storage = AppStorage();
   AuthRepository authRepository = Get.put(AuthRepository());
   HomeRepository homeRepository = Get.put(HomeRepository());
   RxList<ServiceCategories> serviceList =
       List<ServiceCategories>.empty(growable: true).obs;
+
+  RxList<RideEstimationList> estimationList =
+      List<RideEstimationList>.empty(growable: true).obs;
 
   List specialOfferTitle = [
     "Special\nFood Menu",
@@ -77,20 +99,25 @@ class HomeController extends GetxController {
     Assets.imagesTopOffer4,
     Assets.imagesTopOffer5
   ];
-  List recommendedServicesImages =[Assets.iconsRecomentedServices1,Assets.iconsRecomentedService2,Assets.iconsRecomentedService3];
-  List recommendedServices = ["25 people booked\n ticket to visit\n Brandenburg Gate past 5 days ",
-  "50 people from New\n York ate Schnitzel\n from Schnitzelei Mitte ","15 people from New York\n ate Salat from\n 1990 Vegan Living"];
+  List recommendedServicesImages = [
+    Assets.iconsRecomentedServices1,
+    Assets.iconsRecomentedService2,
+    Assets.iconsRecomentedService3
+  ];
+  List recommendedServices = [
+    "25 people booked\n ticket to visit\n Brandenburg Gate past 5 days ",
+    "50 people from New\n York ate Schnitzel\n from Schnitzelei Mitte ",
+    "15 people from New York\n ate Salat from\n 1990 Vegan Living"
+  ];
   final ColorController colorController = Get.find<ColorController>();
   final location.Location locationStatus = location.Location();
 
- RxInt count = 0.obs;
- RxBool isDestinationSelected = false.obs;
-
+  RxInt count = 0.obs;
+  RxBool isDestinationSelected = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-
   }
 
   @override
@@ -165,11 +192,12 @@ class HomeController extends GetxController {
                                 onTap: () {
                                   controller?.restaurantList.clear();
                                   controller?.dishList.clear();
-                                  address.value = addressDescription[index];
-                                  debugPrint("value ${address.value}");
+                                  address.value =
+                                      addressDescription[index].toString();
+                                  debugPrint('value ${address.value}');
                                   selectedLocationCoordinates.value =
-                                      locationCoordinates[
-                                          addressHeading[index]];
+                                      locationCoordinates[addressHeading[index]]
+                                          as Map<dynamic, dynamic>;
                                   debugPrint("value ${address.value}");
                                   debugPrint(
                                       "selectedLocationCordinates $selectedLocationCoordinates");
@@ -190,13 +218,125 @@ class HomeController extends GetxController {
                                         child: SvgPicture.asset(
                                             "packages/mynewpackage/${addressTypeImage[index]}")),
                                     title: Text(
-                                      addressHeading[index],
+                                      addressHeading[index].toString(),
                                       style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600),
                                     ),
                                     subtitle: Text(
-                                      addressDescription[index],
+                                      addressDescription[index].toString(),
+                                      style: (TextStyle(
+                                          color: AppColors.textColor)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+        });
+      },
+    );
+  }
+
+  void showLocationSelectionBottomSheet(
+      {required BuildContext context, required String locationType}) {
+    showModalBottomSheet(
+      isDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Obx(() {
+          return isLoading.value
+              ? SizedBox.shrink()
+              : Container(
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // InkWell(
+                      //   onTap: () {},
+                      //   child: Row(
+                      //     children: [
+                      //       Icon(
+                      //         Icons.add_circle_outline,
+                      //         color: colorController.primaryColor.value,
+                      //       ),
+                      //       const SizedBox(
+                      //         width: 10,
+                      //       ),
+                      //       Text(
+                      //         "Add New Address",
+                      //         style: TextStyle(
+                      //             color: colorController.primaryColor.value,
+                      //             fontWeight: FontWeight.w800),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      const Text(
+                        'Saved Address',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w800),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: addressDescription.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                onTap: () {
+                                  if (locationType == 'PickUp') {
+                                    selectedPickUp.value =
+                                        addressDescription[index].toString();
+                                  } else {
+                                    selectedDropOff.value =
+                                        addressDescription[index].toString();
+                                    isDestinationSelected.value = true;
+                                    getEstimations();
+                                  }
+                                  Navigator.pop(context);
+
+                                  //
+                                  // address.value = addressDescription[index];
+                                  // debugPrint("value ${address.value}");
+                                  // selectedLocationCoordinates.value =
+                                  // locationCoordinates[
+                                  // addressHeading[index]];
+                                  // debugPrint("value ${address.value}");
+                                  // debugPrint(
+                                  //     "selectedLocationCordinates $selectedLocationCoordinates");
+                                  // Navigator.pop(context);
+                                  // count.value = 1;
+
+                                  // Get.back();
+                                },
+                                child: Container(
+                                  color: colorController.primaryColor.value
+                                      .withOpacity(.05),
+                                  child: ListTile(
+                                    leading: ColorFiltered(
+                                        colorFilter: ColorFilter.mode(
+                                            AppColors.accentColor,
+                                            BlendMode.modulate),
+                                        child: SvgPicture.asset(
+                                            "packages/mynewpackage/${addressTypeImage[index]}")),
+                                    title: Text(
+                                      addressHeading[index].toString(),
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    subtitle: Text(
+                                      addressDescription[index].toString(),
                                       style: (TextStyle(
                                           color: AppColors.textColor)),
                                     ),
@@ -284,7 +424,10 @@ class HomeController extends GetxController {
     }
   }
 
-  void createUser({required String mobile, required String name, required BuildContext context}) async {
+  void createUser(
+      {required String mobile,
+      required String name,
+      required BuildContext context}) async {
     // isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
@@ -410,7 +553,8 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> requestLocationForAndroid({int count = 1, required BuildContext context}) async {
+  Future<void> requestLocationForAndroid(
+      {int count = 1, required BuildContext context}) async {
     try {
       final locationStatus = await Permission.location.request();
 
@@ -465,4 +609,60 @@ class HomeController extends GetxController {
       },
     );
   }
+
+
+  Future<void> getEstimations() async {
+    estimationList.clear();
+    isEstimationLoading(true);
+    await homeRepository.getRideEstimation(
+        {
+          "start_location": {"lat": 12.9147399, "long": 77.5972174},
+          "end_location": {"lat": 12.90, "long": 77.57}
+        } ).then((value){
+      if (value.data != [] && (value.status == 200)) {
+        estimationList.addAll(value.data ?? []);
+        isEstimationLoading(false);
+      } else {
+        isEstimationLoading(false);
+        getEstimations();
+      }
+    });
+
+  }
+
+  Future<void> requestRide() async {
+    isRequestRideLoading(true);
+    await homeRepository.requestRide(
+        {
+          'first_name': "first name",
+          'last_name': 'last name',
+          'phone_number': '9878765434',
+          'email': 'example@gmail.com',
+          'start_location': {
+            'lat': '12.9147399',
+            'long': '77.5972174',
+            'address': 'Kochi'
+          },
+          'end_location': {
+            'lat': '12.90',
+            'long': '77.57',
+            'address': 'Kochi airport'
+          },
+          'product_id': productId.value,
+          'fare_id': fareId.value,
+          'user_id': "66595991f94a7ec05b88ebf9",
+          'price': num.parse(price.value)
+        } ).then((value){
+      if (value.status == 200) {
+        isRequestSent.value = true;
+
+        // estimationList.addAll(value.data ?? []);
+        isRequestRideLoading(false);
+      } else {
+        isRequestRideLoading(false);
+      }
+    });
+
+  }
+
 }

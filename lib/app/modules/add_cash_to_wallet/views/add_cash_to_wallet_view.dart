@@ -287,7 +287,7 @@ class CommonAlertDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset("packages/mynewpackage/$imagePath"),
+            SvgPicture.asset("imagePathBase/$imagePath"),
             SizedBox(height: 20),
             // Add spacing if needed
             Column(

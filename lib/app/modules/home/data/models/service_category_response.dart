@@ -16,8 +16,8 @@ class ServiceCategoryResponse {
   }
 
   ServiceCategoryResponse.fromJson(dynamic json) {
-    _status = json['status'];
-    _message = json['message'];
+    _status = int.parse(json['status'].toString());
+    _message = json['message'].toString();
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   num? _status;
@@ -60,7 +60,7 @@ class Data {
   }
 
   Data.fromJson(dynamic json) {
-    _id = json['_id'];
+    _id = json['_id'].toString();
     if (json['ServiceCategories'] != null) {
       _serviceCategories = [];
       json['ServiceCategories'].forEach((v) {
@@ -112,10 +112,10 @@ class ServiceCategories {
   }
 
   ServiceCategories.fromJson(dynamic json) {
-    _id = json['_id'];
-    _categoryName = json['category_name'];
-    _categoryCode = json['category_code'];
-    _status = json['status'];
+    _id = json['_id'].toString();
+    _categoryName = json['category_name'].toString();
+    _categoryCode = json['category_code'].toString();
+    _status = int.parse(json['status'].toString());
     if (json['images'] != null) {
       _images = [];
       json['images'].forEach((v) {
@@ -170,7 +170,7 @@ class Images {
   }
 
   Images.fromJson(dynamic json) {
-    _primary = json['primary'];
+    _primary = json['primary'].toString();
   }
   String? _primary;
   Images copyWith({  String? primary,

@@ -22,8 +22,8 @@ class GetRestaurantDetailsResponse {
   }
 
   GetRestaurantDetailsResponse.fromJson(dynamic json) {
-    _status = json['status'];
-    _message = json['message'];
+    _status = int.parse(json['status'].toString());
+    _message = json['message'].toString();
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
@@ -164,24 +164,24 @@ class Restaurant {
   }
 
   Restaurant.fromJson(dynamic json) {
-    _id = json['_id'];
-    _productId = json['product_id'];
-    _descriptionBig = json['description_big'];
-    _descriptionSmall = json['description_small'];
+    _id = json['_id'].toString();
+    _productId = int.parse(json['product_id'].toString());
+    _descriptionBig = json['description_big'].toString();
+    _descriptionSmall = json['description_small'].toString();
     _images = json['images'] != null ? Images.fromJson(json['images']) : null;
-    _isActive = json['is_active'];
-    _isAvailable = json['is_available'];
-    _name = json['name'];
-    _price = json['price'];
-    _priceWithoutTax = json['price_without_tax'];
+    _isActive = int.parse(json['is_active'].toString());
+    _isAvailable = int.parse(json['is_available'].toString());
+    _name = json['name'].toString();
+    _price = json['price'].toString();
+    _priceWithoutTax = json['price_without_tax'].toString();
     _productDetails = json['product_details'] != null
         ? ProductDetails.fromJson(json['product_details'])
         : null;
-    _rating = json['rating'];
-    _serviceProviderId = json['service_provider_id'];
-    _serviceProviderLocationId = json['service_provider_location_id'];
-    _productCategoryId = json['product_category_id'];
-    _isVeg = json['is_veg'];
+    _rating = int.parse(json['rating'].toString());
+    _serviceProviderId = json['service_provider_id'].toString();
+    _serviceProviderLocationId = json['service_provider_location_id'].toString();
+    _productCategoryId = json['product_category_id'].toString();
+    _isVeg = int.parse(json['is_veg'].toString());
     if (json['restaurantDetails'] != null) {
       _restaurantDetails = [];
       json['restaurantDetails'].forEach((v) {
@@ -345,12 +345,12 @@ class RestaurantDetails {
   }
 
   RestaurantDetails.fromJson(dynamic json) {
-    _id = json['_id'];
-    _name = json['name'];
-    _email = json['email'];
-    _status = json['status'];
-    _isDeleted = json['is_deleted'];
-    _phoneNumber = json['phone_number'];
+    _id = json['_id'].toString();
+    _name = json['name'].toString();
+    _email = json['email'].toString();
+    _status = bool.parse(json['status'].toString());
+    _isDeleted = bool.parse(json['is_deleted'].toString());
+    _phoneNumber = json['phone_number'].toString();
   }
 
   String? _id;
@@ -421,7 +421,7 @@ class ProductDetails {
 
   ProductDetails.fromJson(dynamic json) {
     _productVideoLink = json['product_video_link'];
-    _countOfRating = json['count_of_rating'];
+    _countOfRating = int.parse(json['count_of_rating'].toString());
   }
 
   dynamic _productVideoLink;
@@ -468,9 +468,9 @@ class Images {
   }
 
   Images.fromJson(dynamic json) {
-    _productImageUrl = json['product_imageUrl'];
-    _imageSmallSize = json['image_small_size'];
-    _imageMobile = json['image_mobile'];
+    _productImageUrl = json['product_imageUrl'].toString();
+    _imageSmallSize = json['image_small_size'].toString();
+    _imageMobile = json['image_mobile'].toString();
   }
 
   String? _productImageUrl;

@@ -13,8 +13,8 @@ class AuthenticationRequestModel {
 }
 
   AuthenticationRequestModel.fromJson(dynamic json) {
-    _clientId = json['client_id'];
-    _clientSecrete = json['client_secrete'];
+    _clientId = json['client_id'].toString();
+    _clientSecrete = json['client_secrete'].toString();
   }
   String? _clientId;
   String? _clientSecrete;

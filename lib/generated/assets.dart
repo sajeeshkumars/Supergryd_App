@@ -2,7 +2,7 @@
 class Assets {
   Assets._();
 
-  static const String assetsLocalizations = 'lib/assets/localize.dart';
+  static const String assetsAppEn = 'lib/assets/app_en.arb';
   static const String authenticationAuthenticationRepo = 'lib/app/authentication/authentication_repo.dart';
   static const String authenticationAuthenticationService = 'lib/app/authentication/authentication_service.dart';
   static const String bindingsAddCashToWalletBinding = 'lib/app/modules/add_cash_to_wallet/bindings/add_cash_to_wallet_binding.dart';
@@ -103,14 +103,15 @@ class Assets {
   static const String libDependecy = 'lib/dependecy.dart';
   static const String libMynewpackage = 'lib/mynewpackage.dart';
   static const String libSizeUtils = 'lib/size_utils.dart';
-  static const String localesAppEn = 'lib/assets/locales/app_en.arb';
-  static const String localesEnUS = 'lib/assets/locales/en_US.json';
   static const String modelAuthenticationRequestModel = 'lib/app/authentication/model/authentication_request_model.dart';
   static const String modelAuthenticationResponse = 'lib/app/authentication/model/authentication_response.dart';
   static const String modelCreateUserRequestModel = 'lib/app/authentication/model/create_user_request_model.dart';
   static const String modelCreateUserResponse = 'lib/app/authentication/model/create_user_response.dart';
   static const String modelRefreshTokenModel = 'lib/model/refresh_token_model.dart';
   static const String modelServiceCategoryResponse = 'lib/app/authentication/model/service_category_response.dart';
+  static const String modelsRequestRideResponse = 'lib/app/modules/home/data/models/request_ride_response.dart';
+  static const String modelsRideEstimationRequest = 'lib/app/modules/home/data/models/ride_estimation_request.dart';
+  static const String modelsRideEstimationResponse = 'lib/app/modules/home/data/models/ride_estimation_response.dart';
   static const String modelsServiceCategoryResponse = 'lib/app/modules/home/data/models/service_category_response.dart';
   static const String routesAppPages = 'lib/app/routes/app_pages.dart';
   static const String routesAppRoutes = 'lib/app/routes/app_routes.dart';

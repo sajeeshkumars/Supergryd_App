@@ -16,9 +16,9 @@ class CreateUserRequestModel {
   }
 
   CreateUserRequestModel.fromJson(dynamic json) {
-    _phoneNumber = json['phone_number'];
-    _phoneCode = json['phone_code'];
-    _name = json['name'];
+    _phoneNumber = json['phone_number'].toString();
+    _phoneCode = json['phone_code'].toString();
+    _name = json['name'].toString();
   }
   String? _phoneNumber;
   String? _phoneCode;

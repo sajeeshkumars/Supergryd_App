@@ -16,8 +16,8 @@ class RefreshTokenModel {
 }
 
   RefreshTokenModel.fromJson(dynamic json) {
-    _status = json['status'];
-    _message = json['message'];
+    _status = int.parse(json['status'].toString());
+    _message = json['message'].toString();
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   num? _status;
@@ -60,8 +60,8 @@ class Data {
 }
 
   Data.fromJson(dynamic json) {
-    _accessToken = json['access_token'];
-    _refreshToken = json['refresh_token'];
+    _accessToken = json['access_token'].toString();
+    _refreshToken = json['refresh_token'].toString();
   }
   String? _accessToken;
   String? _refreshToken;

@@ -172,10 +172,12 @@ class _RestaurantsAndDishesListingViewState
                                       if (controller.isSelected.value) {
                                         controller.selectedCategory.value =
                                             index;
-                                        controller.getDishes(initial: true,context: context);
+                                        controller.getDishes(
+                                            initial: true, context: context);
                                       } else {
                                         controller.selectedCategory.value = 2;
-                                        controller.getDishes(initial: true,context: context);
+                                        controller.getDishes(
+                                            initial: true, context: context);
                                       }
 
                                       // controller. dishFilter();
@@ -210,10 +212,11 @@ class _RestaurantsAndDishesListingViewState
                                                 MainAxisAlignment.center,
                                             children: [
                                               SvgPicture.asset(
-                                                  "packages/mynewpackage/${controller.filterImages[index]}"),
+                                                  'packages/mynewpackage/${controller.filterImages[index]}'),
                                               CommonText(
-                                                  text:
-                                                      controller.filters[index],
+                                                  text: controller
+                                                      .filters[index]
+                                                      .toString(),
                                                   fontSize: 12,
                                                   textColor: Colors.black),
                                               // SizedBox(width: 10,),
@@ -238,13 +241,15 @@ class _RestaurantsAndDishesListingViewState
                                                               .selectedCategory
                                                               .value = index;
                                                           controller.getDishes(
-                                                              initial: true,context: context);
+                                                              initial: true,
+                                                              context: context);
                                                         } else {
                                                           controller
                                                               .selectedCategory
                                                               .value = 2;
                                                           controller.getDishes(
-                                                              initial: true,context: context);
+                                                              initial: true,
+                                                              context: context);
                                                         }
 
                                                         // controller.dishFilter();
@@ -273,7 +278,8 @@ class _RestaurantsAndDishesListingViewState
                                             child: RefreshIndicator(
                                               onRefresh: () async {
                                                 await controller.getDishes(
-                                                    initial: true,context: context);
+                                                    initial: true,
+                                                    context: context);
                                               },
                                               child: ListView.builder(
                                                 itemCount:
@@ -455,7 +461,7 @@ class _DishCardState extends State<DishCard> {
                       // Price
                       CommonText(
                         text:
-                            "₹ ${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.price)}",
+                            '₹ ${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.price)}',
                         fontWeight: FontWeight.w500,
                       ),
                       const SizedBox(height: 8),
@@ -469,7 +475,7 @@ class _DishCardState extends State<DishCard> {
                             ),
                             CommonText(
                               text:
-                                  "${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating ?? 0 : widget.restaurant?.productDetails?.countOfRating ?? 0)})",
+                                  '${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating?.toInt() ?? 0 : widget.restaurant?.productDetails?.countOfRating?.toInt() ?? 0)})',
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),
@@ -738,7 +744,7 @@ class RestaurantList extends StatelessWidget {
                                         "packages/mynewpackage/${Assets.iconsStar}"),
                                     CommonText(
                                         text:
-                                            "${controller.restaurantList[index].rating}(${Utility.countConverter(controller.restaurantList[index].totalRating)})",
+                                            "${controller.restaurantList[index].rating}(${Utility.countConverter(controller.restaurantList[index].totalRating!.toInt())})",
                                         fontWeight: FontWeight.w500,
                                         fontSize: 10),
                                   ],

@@ -1,20 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app_colors.dart';
-import 'package:mynewpackage/assets/localize.dart';
 import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/generated/assets.dart';
-import 'package:mynewpackage/generated/locales.g.dart';
-import 'package:mynewpackage/widgets/address_selection_dialogue.dart';
 import 'package:mynewpackage/widgets/common_Image_view.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
 
-import '../../../../widgets/address_selection_widget.dart';
 import '../../../../widgets/common_text.dart';
-import '../../add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends StatefulWidget {
@@ -64,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
                       CommonText(
                         fontSize: 14,
                         textColor: AppColors.textLightColor,
-                        text:  "Your Location",
+                        text: "Your Location",
                       ),
                       const Icon(
                         Icons.keyboard_arrow_down_sharp,
@@ -167,7 +161,7 @@ class _HomeViewState extends State<HomeView> {
                                   CommonText(
                                     fontSize: 12,
                                     textAlign: TextAlign.center,
-                                    text: controller.specialOfferTitle[index],
+                                    text: controller.specialOfferTitle[index].toString(),
                                   )
                                 ],
                               ),

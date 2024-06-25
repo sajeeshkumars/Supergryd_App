@@ -16,8 +16,8 @@ class CreateUserResponse {
   }
 
   CreateUserResponse.fromJson(dynamic json) {
-    _status = json['status'];
-    _message = json['message'];
+    _status = int.parse(json['status'].toString());
+    _message = json['message'].toString();
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   num? _status;
@@ -69,11 +69,11 @@ class Data {
   }
 
   Data.fromJson(dynamic json) {
-    _id = json['_id'];
-    _phoneNumber = json['phone_number'];
-    _v = json['__v'];
-    _hostId = json['host_id'];
-    _phoneCode = json['phone_code'];
+    _id = json['_id'].toString();
+    _phoneNumber = json['phone_number'].toString();
+    // _v = json['__v'];
+    _hostId = json['host_id'].toString();
+    _phoneCode = json['phone_code'].toString();
   }
   String? _id;
   String? _phoneNumber;

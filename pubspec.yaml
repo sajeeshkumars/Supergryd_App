@@ -39,6 +39,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  very_good_analysis: ^5.1.0
 
 
 # For information on the generic Dart part of this file, see the
@@ -50,7 +51,6 @@ flutter:
   assets:
     - lib/assets/images/
     - lib/assets/icons/
-    - lib/assets/locales/app_en.arb
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
   #
