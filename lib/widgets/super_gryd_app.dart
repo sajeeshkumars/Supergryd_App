@@ -29,7 +29,9 @@ class SuperGrydApp extends StatelessWidget {
           return builder(
               context,
               GrydFeatures(
-                  localizations: AppLocalizations.of(context),
+                  localizationDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  locales: AppLocalizations.supportedLocales,
                   textTheme: controller.font.value,
                   fontFamily: controller.fontText.value));
         },
