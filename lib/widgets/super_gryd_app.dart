@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mynewpackage/l10n/app_localizations.dart';
 import 'package:mynewpackage/model/gryd_features.dart';
 
 import '../app/modules/home/controllers/font_controller.dart';
@@ -28,6 +29,7 @@ class SuperGrydApp extends StatelessWidget {
           return builder(
               context,
               GrydFeatures(
+                  localizations: AppLocalizations.of(context),
                   textTheme: controller.font.value,
                   fontFamily: controller.fontText.value));
         },
