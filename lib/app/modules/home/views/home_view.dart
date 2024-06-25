@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/constants.dart';
+import 'package:mynewpackage/l10n/lang_extensions.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
 
 import '../../../../generated/assets.dart';
@@ -176,9 +177,9 @@ class _HomeViewState extends State<HomeView> {
                       text:
                           "Hi ${Constants.name.toUpperCase().capitalizeFirst},",
                     ),
-                    const CommonText(
+                    CommonText(
                       fontSize: 22,
-                      text: "Explore The Popular Categories",
+                      text: context.loc.explore_the_popular_category,
                     ),
                     const SizedBox(
                       height: 10,
