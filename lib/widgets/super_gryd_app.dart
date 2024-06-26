@@ -7,10 +7,13 @@ import 'package:mynewpackage/model/gryd_features.dart';
 
 import '../app/modules/home/controllers/font_controller.dart';
 
+AppLocalizations? parentLocalizations;
+
 class SuperGrydApp extends StatelessWidget {
   final Function(BuildContext context, GrydFeatures grydFeatures) builder;
+  final AppLocalizations? appLocalizations;
 
-  const SuperGrydApp({super.key, required this.builder});
+  const SuperGrydApp({super.key, required this.builder, this.appLocalizations});
 
   static initialize() {
     final controller = Get.put(FontController());
@@ -20,6 +23,9 @@ class SuperGrydApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<FontController>();
+    if (appLocalizations != null) {
+      parentLocalizations = appLocalizations;
+    }
     return Obx(() {
       log("rebuilded font in material ${controller.fontText.value}");
       return Builder(
