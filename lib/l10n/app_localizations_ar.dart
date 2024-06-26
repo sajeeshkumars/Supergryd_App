@@ -2,7 +2,7 @@ import 'app_localizations.dart';
 
 /// The translations for Arabic (`ar`).
 class AppLocalizationsAr extends AppLocalizations {
-  AppLocalizationsAr([super.locale = 'ar']);
+  AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
   String get your_location => 'موقعك';
@@ -26,8 +26,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get saved_address => 'Saved Address';
 
   @override
-  String get no_service_message =>
-      'حاليًا نحن لسنا قابلين للخدمة في موقعك. \n  في عملية زيادة منطقة الخدمة لدينا.';
+  String get no_service_message => 'حاليًا نحن لسنا قابلين للخدمة في موقعك. \n  في عملية زيادة منطقة الخدمة لدينا.';
 
   @override
   String get notify_service => 'سوف نعلمك بمجرد أن نبدأ خدمتنا في منطقتك';
@@ -102,10 +101,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get loading_your_nearest_driver => 'تحميل أقرب سائق الخاص بك';
 
   @override
-  String get loading_driver_dialogue =>
-      'تمسك جيدا!نحن نربطك بـ \n أقرب برنامج تشغيل متاح.هذا قد يستغرق لحظة.';
+  String get loading_driver_dialogue => 'تمسك جيدا!نحن نربطك بـ \n أقرب برنامج تشغيل متاح.هذا قد يستغرق لحظة.';
 
   @override
-  String get no_service =>
-      'اكبح جماح نفسك!نحن لسنا هناك بعد ، لكننا نقدم خدمتنا إلى منطقتك قريبًا.ابقوا متابعين!';
+  String get no_service => 'اكبح جماح نفسك!نحن لسنا هناك بعد ، لكننا نقدم خدمتنا إلى منطقتك قريبًا.ابقوا متابعين!';
 }
