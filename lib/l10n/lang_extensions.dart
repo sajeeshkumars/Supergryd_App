@@ -9,8 +9,10 @@ import 'app_localizations.dart';
 extension LocalizedBuildContext on BuildContext {
   AppLocalizations get loc {
     try {
+      log("parentLocalizations $parentLocalizations ${Localizations.of(this, AppLocalizations)}",
+          name: "Localized");
       return parentLocalizations ??
-          AppLocalizations.of(this) ??
+          Localizations.of(this, AppLocalizations) ??
           AppLocalizationsEn();
     } catch (e, stack) {
       log("Exception occurred $e,stack$stack", name: "Localized");
