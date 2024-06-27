@@ -12,13 +12,13 @@ class AuthRepository implements AuthService {
   final fontController = Get.find<FontController>();
 
   @override
-  Future<AuthenticationResponse> authenticate()
-  // Future<AuthenticationResponse> authenticate(Map<String, dynamic>? params)
+  // Future<AuthenticationResponse> authenticate()
+  Future<AuthenticationResponse> authenticate(Map<String, dynamic>? params)
   async {
     AuthenticationResponse authenticationResponse;
     Response response =
-        // await apiService.authenticationReqst(url: 'auth/auth-verificationV2', params: params);
-        await apiService.authenticationReqst(url: 'auth/auth-verificationV2');
+        await apiService.authenticationReqst(url: 'auth/auth-verification', params: params);
+        // await apiService.authenticationReqst(url: 'auth/auth-verificationV2');
     debugPrint(response.statusCode.toString());
     try {
       authenticationResponse = AuthenticationResponse.fromJson(response.body);

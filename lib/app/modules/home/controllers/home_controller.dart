@@ -364,14 +364,14 @@ class HomeController extends GetxController {
     isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
-    // AuthenticationRequestModel requestModel = AuthenticationRequestModel(
-    //     clientId: clientId, clientSecrete: clientSecrete);
+    AuthenticationRequestModel requestModel = AuthenticationRequestModel(
+        clientId: clientId, clientSecrete: clientSecrete);
 
     var result = await InternetConnectionChecker().hasConnection;
 
     if (result == true) {
-      // await authRepository.authenticate(requestModel.toJson()).then((value) {
-      await authRepository.authenticate().then((value) {
+      await authRepository.authenticate(requestModel.toJson()).then((value) {
+      // await authRepository.authenticate().then((value) {
         if (value.status == 200) {
           debugPrint("after success${isLoading.value}");
 
