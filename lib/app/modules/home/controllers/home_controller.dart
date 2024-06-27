@@ -2,14 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/state_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart' as location;
 import 'package:mynewpackage/app/authentication/authentication_repo.dart';
 import 'package:mynewpackage/app/authentication/model/authentication_request_model.dart';
 import 'package:mynewpackage/app/authentication/model/create_user_request_model.dart';
+import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
 import 'package:mynewpackage/app/modules/home/data/home_repository.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
 import 'package:mynewpackage/constants.dart';
@@ -64,17 +62,16 @@ class HomeController extends GetxController {
     "long": 77.720049,
   }.obs;
   RxString address = "Select Address".obs;
-  RxString selectedPickUp ="".obs;
+  RxString selectedPickUp = "".obs;
   RxString selectedDropOff = "".obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingServices = false.obs;
   RxBool isEstimationLoading = false.obs;
   RxBool isRequestRideLoading = false.obs;
-   RxBool isRequestSent = false.obs;
-   RxString productId = "".obs;
-   RxString fareId = "".obs;
-   RxDouble price = 0.0.obs;
-
+  RxBool isRequestSent = false.obs;
+  RxString productId = "".obs;
+  RxString fareId = "".obs;
+  RxDouble price = 0.0.obs;
 
   // AppStorage storage = AppStorage();
   AuthRepository authRepository = Get.put(AuthRepository());
@@ -371,7 +368,7 @@ class HomeController extends GetxController {
 
     if (result == true) {
       await authRepository.authenticate(requestModel.toJson()).then((value) {
-      // await authRepository.authenticate().then((value) {
+        // await authRepository.authenticate().then((value) {
         if (value.status == 200) {
           debugPrint("after success${isLoading.value}");
 
@@ -488,32 +485,35 @@ class HomeController extends GetxController {
         await showDialog(
           context: context,
           builder: (BuildContext context) {
-            return RideDialog(
-              onSelected: (address, lat, lng, zip, city, state, streetNumber,
-                  route, homeAddress) {},
-              onDataReceived: (
-                String address,
-                double lat,
-                double lng,
-                String zip,
-                String city,
-                String state,
-                String streetNumber,
-                String route,
-                String stateIsoCode,
-              ) {
-                // onAddressSelect(
-                //   address,
-                //   lat,
-                //   lng,
-                //   zip,
-                //   city,
-                //   state,
-                //   streetNumber,
-                //   route,
-                //   stateIsoCode,
-                // );
-              },
+            return Scaffold(
+              backgroundColor: Colors.transparent,
+              body: RideDialog(
+                onSelected: (address, lat, lng, zip, city, state, streetNumber,
+                    route, homeAddress) {},
+                onDataReceived: (
+                  String address,
+                  double lat,
+                  double lng,
+                  String zip,
+                  String city,
+                  String state,
+                  String streetNumber,
+                  String route,
+                  String stateIsoCode,
+                ) {
+                  // onAddressSelect(
+                  //   address,
+                  //   lat,
+                  //   lng,
+                  //   zip,
+                  //   city,
+                  //   state,
+                  //   streetNumber,
+                  //   route,
+                  //   stateIsoCode,
+                  // );
+                },
+              ),
             );
           },
         );
@@ -611,59 +611,56 @@ class HomeController extends GetxController {
     );
   }
 
-
   Future<void> getEstimations() async {
     estimationList.clear();
     isEstimationLoading(true);
-    await homeRepository.getRideEstimation(
-        {
-          "start_location": {"lat": 12.9147399, "long": 77.5972174},
-          "end_location": {"lat": 12.90, "long": 77.57}
-        } ).then((value){
+    await homeRepository.getRideEstimation({
+      "start_location": {"lat": 12.9147399, "long": 77.5972174},
+      "end_location": {"lat": 12.90, "long": 77.57}
+    }).then((value) {
       if (value.data != [] && (value.status == 200)) {
         estimationList.addAll(value.data ?? []);
         isEstimationLoading(false);
+        final cabController = Get.find<CabMapController>();
+        cabController.onDestinationSelected();
       } else {
         isEstimationLoading(false);
         getEstimations();
       }
     });
-
   }
 
   Future<void> requestRide() async {
     isRequestRideLoading(true);
-    await homeRepository.requestRide(
-        {
-          'first_name': "first name",
-          'last_name': 'last name',
-          'phone_number': '9878765434',
-          'email': 'example@gmail.com',
-          "start_location": {
-            "lat": "10.055348",
-            "long": "76.321888",
-            "address": "Devalokam,Thevakal"
-          },
-          "end_location": {
-            "lat": "10.064588",
-            "long": "76.351151",
-            "address": "Seeroo it solutions"
-          },
-          'product_id': productId.value,
-          'fare_id': fareId.value,
-          'user_id': "66595991f94a7ec05b88ebf9",
-          'price': price.value
-        } ).then((value){
+    await homeRepository.requestRide({
+      'first_name': "first name",
+      'last_name': 'last name',
+      'phone_number': '9878765434',
+      'email': 'example@gmail.com',
+      "start_location": {
+        "lat": "10.055348",
+        "long": "76.321888",
+        "address": "Devalokam,Thevakal"
+      },
+      "end_location": {
+        "lat": "10.064588",
+        "long": "76.351151",
+        "address": "Seeroo it solutions"
+      },
+      'product_id': productId.value,
+      'fare_id': fareId.value,
+      'user_id': "66595991f94a7ec05b88ebf9",
+      'price': price.value
+    }).then((value) {
       if (value.status == 200) {
         isRequestSent.value = true;
-
+        final cabController = Get.find<CabMapController>();
+        cabController.cabStatus(CabStates.searchingCab);
         // estimationList.addAll(value.data ?? []);
         isRequestRideLoading(false);
       } else {
         isRequestRideLoading(false);
       }
     });
-
   }
-
 }
