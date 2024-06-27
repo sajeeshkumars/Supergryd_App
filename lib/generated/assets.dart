@@ -2,7 +2,6 @@
 class Assets {
   Assets._();
 
-  static const String assetsAppEn = 'lib/assets/app_en.arb';
   static const String authenticationAuthenticationRepo = 'lib/app/authentication/authentication_repo.dart';
   static const String authenticationAuthenticationService = 'lib/app/authentication/authentication_service.dart';
   static const String bindingsAddCashToWalletBinding = 'lib/app/modules/add_cash_to_wallet/bindings/add_cash_to_wallet_binding.dart';
@@ -14,15 +13,19 @@ class Assets {
   static const String bindingsTripRatingBinding = 'lib/app/modules/trip_rating/bindings/trip_rating_binding.dart';
   static const String controllersAddCashToWalletController = 'lib/app/modules/add_cash_to_wallet/controllers/add_cash_to_wallet_controller.dart';
   static const String controllersColorController = 'lib/app/modules/home/controllers/color_controller.dart';
+  static const String controllersFontController = 'lib/app/modules/home/controllers/font_controller.dart';
   static const String controllersHistoryController = 'lib/app/modules/history/controllers/history_controller.dart';
   static const String controllersHomeController = 'lib/app/modules/home/controllers/home_controller.dart';
   static const String controllersPromoCodeListingController = 'lib/app/modules/promo_code_listing/controllers/promo_code_listing_controller.dart';
   static const String controllersRestaurantsAndDishesListingController = 'lib/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
   static const String controllersRestaurantsDetailsController = 'lib/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
   static const String controllersTripRatingController = 'lib/app/modules/trip_rating/controllers/trip_rating_controller.dart';
+  static const String coreFontUtils = 'lib/app/core/font_utils.dart';
+  static const String coreThemeExtension = 'lib/app/core/theme_extension.dart';
   static const String coreUtility = 'lib/app/core/utility.dart';
   static const String dataDishListingRequest = 'lib/app/modules/restaurants_and_dishes_listing/data/dish_listing_request.dart';
   static const String dataDishListingResponse = 'lib/app/modules/restaurants_and_dishes_listing/data/dish_listing_response.dart';
+  static const String dataFontService = 'lib/app/modules/home/data/font_service.dart';
   static const String dataGetRestaurantDetailsResponse = 'lib/app/modules/restaurants_details/data/get_restaurant_details_response.dart';
   static const String dataHomeRepository = 'lib/app/modules/home/data/home_repository.dart';
   static const String dataHomeService = 'lib/app/modules/home/data/home_service.dart';
@@ -105,8 +108,11 @@ class Assets {
   static const String libSizeUtils = 'lib/size_utils.dart';
   static const String modelAuthenticationRequestModel = 'lib/app/authentication/model/authentication_request_model.dart';
   static const String modelAuthenticationResponse = 'lib/app/authentication/model/authentication_response.dart';
+  static const String modelCommonFontFile = 'lib/model/common_font_file.dart';
   static const String modelCreateUserRequestModel = 'lib/app/authentication/model/create_user_request_model.dart';
   static const String modelCreateUserResponse = 'lib/app/authentication/model/create_user_response.dart';
+  static const String modelFontResponse = 'lib/model/font_response.dart';
+  static const String modelGrydFeatures = 'lib/model/gryd_features.dart';
   static const String modelRefreshTokenModel = 'lib/model/refresh_token_model.dart';
   static const String modelServiceCategoryResponse = 'lib/app/authentication/model/service_category_response.dart';
   static const String modelsRequestRideResponse = 'lib/app/modules/home/data/models/request_ride_response.dart';
@@ -131,5 +137,6 @@ class Assets {
   static const String widgetsCustomButton = 'lib/widgets/custom_button.dart';
   static const String widgetsLoadingView = 'lib/widgets/loading_view.dart';
   static const String widgetsPleaseWaitDialogue = 'lib/widgets/please_wait_dialogue.dart';
+  static const String widgetsSuperGrydApp = 'lib/widgets/super_gryd_app.dart';
 
 }

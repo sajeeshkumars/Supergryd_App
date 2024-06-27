@@ -177,7 +177,7 @@ class Restaurant {
     _productDetails = json['product_details'] != null
         ? ProductDetails.fromJson(json['product_details'])
         : null;
-    _rating = int.parse(json['rating'].toString());
+    _rating = double.parse(json['rating'].toString());
     _serviceProviderId = json['service_provider_id'].toString();
     _serviceProviderLocationId = json['service_provider_location_id'].toString();
     _productCategoryId = json['product_category_id'].toString();

@@ -14,14 +14,23 @@ enum Method { POST, GET, PUT, DELETE, PATCH }
 class ApiService extends GetConnect implements GetxService {
   final String baseUrl;
   late Map<String, String> _headers;
+  late Map<String, String> _authenticationHeaders;
 
   // AppStorage storage = Get.put(AppStorage());
   int nullResCount = 0;
   bool showingExpiryDialog = false;
+  String key = Constants.key;
 
   ApiService({required this.baseUrl}) {
+    debugPrint("constant value ${key}");
     _headers = {
       'Content-Type': 'application/json',
+    };
+    _authenticationHeaders = {
+      'Content-Type': 'application/json',
+      'x-api-key':Constants.key,
+      'x-api-signature':Constants.secrete
+
     };
   }
 
@@ -97,9 +106,74 @@ class ApiService extends GetConnect implements GetxService {
     }
   }
 
+  Future<Response> authenticationReqst(
+      {required String url,
+        Method? method = Method.POST,
+        Map<String, dynamic>? params}) async {
+    Response response;
+    try {
+      bool result = await InternetConnectionChecker().hasConnection;
+      if (result == true) {
+        // if (storage.isAuthenticated()) {
+        if (Constants.isAuthenticated) {
+          updateHeaders();
+        }
+          response = await post(url, params, headers: _authenticationHeaders);
+
+        debugPrint("request url : ${baseUrl}$url");
+        debugPrint("request : $params");
+        debugPrint("headers : $_authenticationHeaders");
+        debugPrint("headers : ${Constants.secrete}");
+        debugPrint("status code :${response.statusCode}  ulr : ${url}");
+        log("response : ${response.body}");
+        if (response.body == null && nullResCount < 2) {
+          nullResCount++;
+          return reqst(url: url, method: method, params: params);
+        } else {
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            nullResCount = 0;
+            return response;
+          } else if (response.statusCode == 401) {
+            //  throw Exception("Something Went Wrong");
+            return await refreshTokenApi(url, params, method);
+          }
+          else if (response.statusCode == 403) {
+            return await refreshTokenApi(url, params, method);
+
+            throw Exception("Something Went Wrong");
+          }
+          else if (response.statusCode == 500) {
+            throw Exception("Server Error");
+          } else {
+            throw Exception("Something Went Wrong");
+          }
+        }
+      } else {
+        throw Exception("No Internet Connection");
+      }
+    } on SocketException catch (e) {
+      throw Exception("No Internet Connection");
+    } on FormatException {
+      throw Exception("Bad Response Format!");
+    } catch (e) {
+      return Response(
+        body: {
+          'status': false,
+          'message': e.toString().replaceAll("Exception:", "")
+        },
+        statusCode: 500,
+      );
+    }
+  }
+
   updateHeaders() {
     // _headers['Authorization'] ="Bearer ${storage.getAccessToken()}";
     _headers['Authorization'] ="Bearer ${Constants.accessToken}";
+  }
+
+  updateAuthenticationHeaders() {
+    // _headers['Authorization'] ="Bearer ${storage.getAccessToken()}";
+    _authenticationHeaders['Authorization'] ="Bearer ${Constants.accessToken}";
   }
 
   Future<Response> refreshTokenApi(

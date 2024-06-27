@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,8 @@ import 'package:mynewpackage/generated/assets.dart';
 import 'package:mynewpackage/widgets/common_Image_view.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
 
+import '../../../../generated/assets.dart';
+import '../../../../widgets/common_Image_view.dart';
 import '../../../../widgets/common_text.dart';
 import '../controllers/home_controller.dart';
 
@@ -58,7 +61,7 @@ class _HomeViewState extends State<HomeView> {
                       CommonText(
                         fontSize: 14,
                         textColor: AppColors.textLightColor,
-                        text: "Your Location",
+                        text:  "Your Location",
                       ),
                       const Icon(
                         Icons.keyboard_arrow_down_sharp,

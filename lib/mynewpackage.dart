@@ -1,8 +1,11 @@
 library mynewpackage;
 
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mynewpackage/app/modules/home/controllers/font_controller.dart';
 import 'package:mynewpackage/app/modules/home/views/home_view.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app/routes/app_pages.dart';
@@ -12,46 +15,101 @@ import 'package:mynewpackage/constants.dart';
 import 'app/modules/home/controllers/home_controller.dart';
 import 'app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
 import 'dependecy.dart';
+import 'package:crypto/crypto.dart';
 
 export 'package:mynewpackage/app/routes/app_pages.dart';
 
-class MyPackage extends StatefulWidget {
+class MyPackage extends StatelessWidget {
+  final String? route;
+  final String clientId;
+  final String clientSecrete;
+  final String name;
+  final String mobile;
+  const MyPackage(
+      {super.key,
+      this.route,
+      required this.clientId,
+      required this.clientSecrete,
+      required this.name,
+      required this.mobile});
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<FontController>();
+    return Obx(() {
+      log("rebuilded with newFont ${controller.fontText.value} called",
+          name: "MYNEWPACKAGE");
+      // return MainPage(
+      //     clientId: clientId,
+      //     clientSecrete: clientSecrete,
+      //     name: name,
+      //     mobile: mobile);
+      return Theme(
+          data: ThemeData(
+              fontFamily: controller.fontText.value,
+              textTheme: controller.font.value),
+          child: MainPage(
+              clientId: clientId,
+              clientSecrete: clientSecrete,
+              name: name,
+              mobile: mobile));
+    });
+  }
+}
+
+class MainPage extends StatefulWidget {
   final String? route;
   final String clientId;
   final String clientSecrete;
   final String name;
   final String mobile;
 
-  const MyPackage(
+  const MainPage(
       {super.key,
       this.route,
       required this.clientId,
       required this.clientSecrete,
-        required this.name,
-        required this.mobile
-      });
+      required this.name,
+      required this.mobile});
 
   @override
-  State<MyPackage> createState() => _MyPackageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _MyPackageState extends State<MyPackage> {
+class _MainPageState extends State<MainPage> {
   @override
   void initState() {
-    DependencyCreator.init();
+    var apiKey = widget.clientId;
+    var apiSecret = widget.clientSecrete;
 
+    var now = DateTime.now().millisecondsSinceEpoch;
+    var utz = (now ~/ 1000 ~/ 300).toInt();
+    var key = '$utz:$apiSecret';
+
+    var hmacSha256 = Hmac(sha256, utf8.encode(apiSecret));
+    var signature = base64Encode(hmacSha256.convert(utf8.encode(key)).bytes);
+
+    Constants.key = apiKey;
+    Constants.secrete = signature;
+    // Constants.secrete = apiSecret;
+
+    debugPrint("api key ${Constants.key}");
+    debugPrint("api secrete $apiSecret");
+
+    DependencyCreator.init();
     HomeController homeController = Get.put(HomeController());
     Constants.name = widget.name;
     Constants.nameFirstLetter = getFirstLetter(widget.name).toUpperCase();
     debugPrint("name letter ${Constants.nameFirstLetter}");
 
-    homeController.authenticate(
-        clientId: widget.clientId, clientSecrete: widget.clientSecrete,name:widget.name,mobile:widget.mobile, context: context);
+      homeController.authenticate(
+          clientId: widget.clientId,
+          clientSecrete: widget.clientSecrete,
+          name: widget.name,
+          mobile: widget.mobile,
+          context: context);
     debugPrint("primary color ${AppColors.primaryColor}");
-
-
     debugPrint("clientid ${widget.clientId}");
-
     Get.lazyPut(() => RestaurantsAndDishesListingController());
     // TODO: implement initState
     super.initState();
@@ -61,10 +119,11 @@ class _MyPackageState extends State<MyPackage> {
   Widget build(BuildContext context) {
     return switch (widget.route) {
       Routes.RESTAURANTS_AND_DISHES_LISTING =>
-        RestaurantsAndDishesListingView(),
-      _ =>  HomeView(),
+        const RestaurantsAndDishesListingView(),
+      _ => const HomeView(),
     };
   }
+
   String getFirstLetter(String input) {
     if (input.isNotEmpty) {
       return input.substring(0, 1);
@@ -72,5 +131,4 @@ class _MyPackageState extends State<MyPackage> {
       return ''; // Return an empty string if the input is empty
     }
   }
-
 }

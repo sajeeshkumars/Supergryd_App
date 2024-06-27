@@ -156,6 +156,9 @@ class RideTypeChoose extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDriverLoaded = false.obs;
     final totalPrice = rideEstimationList.first.estimation?.estimate.obs;
+    controller.productId = (rideEstimationList.first.estimation!.productId ?? "").obs;
+    controller.fareId = (rideEstimationList.first.estimation?.fareId.toString() ?? "").obs;
+    controller.price = (rideEstimationList.first.estimation?.estimate?.toDouble() ?? 0.0).obs;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -249,7 +252,7 @@ class RideTypeChoose extends StatelessWidget {
                                             groupValue: selectedType?.value,
                                             onChanged: (value) {
                                               totalPrice?.value   =   rideEstimationList[index].estimation!.estimate!.toDouble();
-                                              controller.price.value = rideEstimationList[index].estimation!.estimate.toString();
+                                              controller.price.value = rideEstimationList[index].estimation!.estimate!.toDouble();
                                               controller.fareId.value = rideEstimationList[index].estimation!.fareId.toString();
                                               controller.productId.value = rideEstimationList[index].estimation!.productId.toString();
                                               selectedType?.value = value!;

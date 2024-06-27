@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:mynewpackage/app/core/theme_extension.dart';
 import 'package:mynewpackage/app/core/utility.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
@@ -15,6 +16,7 @@ import '../../../../constants.dart';
 import '../../../../generated/assets.dart';
 import '../../../../widgets/common_Image_view.dart';
 import '../../../../widgets/common_text.dart';
+import '../../home/controllers/font_controller.dart';
 import '../../restaurants_details/data/get_restaurant_details_response.dart';
 import '../controllers/restaurants_and_dishes_listing_controller.dart';
 import '../data/dish_listing_response.dart';
@@ -321,46 +323,49 @@ class _RestaurantsAndDishesListingViewState
                                                                 .size
                                                                 .height /
                                                             5,
+                                                      ),
+                                                      ColorFiltered(
+                                                        colorFilter:
+                                                            ColorFilter.mode(
+                                                                AppColors
+                                                                    .primaryColor,
+                                                                BlendMode
+                                                                    .modulate),
+                                                        child: Image.asset(
+                                                          height: 120,
+                                                          width: 120,
+                                                          'packages/mynewpackage/${Assets.iconsNoFood6}',
+                                                          //  height: 100,
+                                                          //  width: 100,
+                                                          //  color: Colors.red,
+                                                          // imagePath: :
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      CommonText(
+                                                        text:
+                                                            "We're currently out of ${controller.selectedCategory.value == 0 ? "Veg" : "Non Veg"} items, but our ${controller.selectedCategory.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ],
                                                   ),
-                                                  ColorFiltered(
-                                                    colorFilter:
-                                                        ColorFilter.mode(
-                                                            AppColors
-                                                                .primaryColor,
-                                                            BlendMode.modulate),
-                                                    child: Image.asset(
-                                                      height: 120,
-                                                      width: 120,
-                                                      'packages/mynewpackage/${Assets.iconsNoFood6}',
-                                                      //  height: 100,
-                                                      //  width: 100,
-                                                      //  color: Colors.red,
-                                                      // imagePath: :
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  CommonText(
-                                                    text:
-                                                        "We're currently out of ${controller.selectedCategory.value == 0 ? "Veg" : "Non Veg"} items, but our ${controller.selectedCategory.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                              }),
+                                                ),
+                                              );
+                                  }),
+                                ),
+                              ],
                             ),
                           ],
-                        ),
-                      ],
-                    );
-        }),
-      ),
-    );
+                        );
+            }),
+          ),
+        );
   }
 }
 

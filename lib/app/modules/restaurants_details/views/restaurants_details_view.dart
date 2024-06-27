@@ -199,6 +199,7 @@ class _ChipWidgetState extends State<ChipWidget> {
                         height: 35,
                         width: 110,
                         decoration: BoxDecoration(
+
                           borderRadius: const BorderRadius.all(
                             Radius.circular(40),
                           ),
@@ -264,6 +265,7 @@ class _ChipWidgetState extends State<ChipWidget> {
                 ),
               ),
             );
+
     });
   }
 }

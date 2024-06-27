@@ -76,7 +76,6 @@ class Data {
   }
 
   Data.fromJson(dynamic json) {
-    _totalcount = int.parse(json['totalcount'].toString());
     if (json['dishes'] != null) {
       _dishes = [];
       json['dishes'].forEach((v) {
@@ -365,7 +364,7 @@ class StoreProducts {
     _productDetails = json['product_details'] != null
         ? ProductDetails.fromJson(json['product_details'])
         : null;
-    _rating = int.parse(json['rating'].toString());
+    _rating = double.parse(json['rating'].toString());
     _serviceProviderId = json['service_provider_id'].toString();
     _serviceProviderLocationId =
         json['service_provider_location_id'].toString();
