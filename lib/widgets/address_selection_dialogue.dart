@@ -1,9 +1,12 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_place_picker/google_maps_place_picker.dart';
+import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
 import 'package:mynewpackage/app/modules/history/views/history_view.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 import 'package:mynewpackage/app/modules/home/data/models/ride_estimation_response.dart';
@@ -42,6 +45,10 @@ class RideDialog extends StatefulWidget {
 }
 
 class _RideDialogState extends State<RideDialog> {
+  Timer? _timer;
+  int _markerIndex = 0; // Index of the current position in _routeCoordinates
+  GoogleMapController? _controller;
+
   String? zipCode = '';
 
   String? city = '';
@@ -63,6 +70,112 @@ class _RideDialogState extends State<RideDialog> {
     "packages/mynewpackage/${Assets.iconsEconomyCar}",
     "packages/mynewpackage/${Assets.iconsEconomyCar}"
   ];
+  final Set<Polyline> _polylines = {};
+  final List<LatLng> _routeCoordinates = [
+    LatLng(10.048726, 76.318781),
+    LatLng(10.050847, 76.319333),
+    LatLng(10.051901, 76.31972),
+    LatLng(10.05229, 76.319835),
+    LatLng(10.052395, 76.320123),
+    LatLng(10.053021, 76.321193),
+    LatLng(10.054492, 76.321823),
+    LatLng(10.054967, 76.321889),
+    LatLng(10.055238, 76.321951),
+    LatLng(10.055348, 76.321888), // Splitting point
+    LatLng(10.055348, 76.321888), // Splitting point
+    LatLng(10.055348, 76.321888),
+    LatLng(10.05584, 76.322294),
+    LatLng(10.057875, 76.324598),
+    LatLng(10.060516, 76.326551),
+    LatLng(10.06415, 76.329083),
+    LatLng(10.066537, 76.335756),
+    LatLng(10.066508, 76.335625),
+    LatLng(10.067714, 76.339166),
+    LatLng(10.068647, 76.342179),
+    LatLng(10.068624, 76.343715),
+    LatLng(10.068364, 76.344748),
+    LatLng(10.068021, 76.34584),
+    LatLng(10.067678, 76.347257),
+    LatLng(10.066707, 76.350607),
+    LatLng(10.066522, 76.351306),
+    LatLng(10.06642, 76.351764),
+    LatLng(10.065774, 76.351721),
+    LatLng(10.065171, 76.351757),
+    LatLng(10.06474, 76.351739),
+    LatLng(10.064588, 76.351151),
+  ];
+  BitmapDescriptor? _carIcon; // Custom BitmapDescriptor for the car marker icon
+
+  Marker _carMarker = Marker(
+    markerId: MarkerId('car'),
+    position: LatLng(10.048726, 76.318781), // Starting position
+    // Use a default icon until the custom icon is loaded
+    // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+  );
+  // void _startMovingMarker() {
+  //   // Set up a timer to update the position of the marker every second
+  //   _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+  //     setState(() {
+  //       if (_markerIndex < _routeCoordinates.length - 1) {
+  //         _markerIndex++;
+  //         _carMarker = _carMarker.copyWith(
+  //           positionParam: _routeCoordinates[_markerIndex],
+  //         );
+  //       } else {
+  //         _timer?.cancel();
+  //       }
+  //     });
+  //   });
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    // _setPolylines();
+    // _loadCarIcon(); // Load the custom car icon
+    // _startMovingMarker();
+  }
+
+  // void _setPolylines() {
+  //   // Split _routeCoordinates based on LatLng(10.055348, 76.321888)
+  //   int splitIndex = _routeCoordinates.indexWhere(
+  //       (coord) => coord.latitude == 10.055348 && coord.longitude == 76.321888);
+  //
+  //   List<LatLng> firstPart = _routeCoordinates.sublist(0, splitIndex);
+  //   List<LatLng> secondPart = _routeCoordinates.sublist(splitIndex);
+  //
+  //   setState(() {
+  //     _polylines.add(
+  //       Polyline(
+  //         polylineId: PolylineId('route1'),
+  //         visible: true,
+  //         points: firstPart,
+  //         width: 4,
+  //         color: Colors.black,
+  //       ),
+  //     );
+  //     _polylines.add(
+  //       Polyline(
+  //         polylineId: PolylineId('route2'),
+  //         visible: true,
+  //         points: secondPart,
+  //         width: 4,
+  //         color: Colors.red,
+  //       ),
+  //     );
+  //   });
+  // }
+
+  // Method to load custom marker icon from assets
+  // void _loadCarIcon() async {
+  //   _carIcon = await BitmapDescriptor.asset(
+  //     const ImageConfiguration(size: Size(30, 30)), // Adjust size as needed
+  //     'assets/images-removebg-preview.png', // Replace with your image path
+  //   );
+  //   setState(() {
+  //     // Set state to rebuild the widget with the loaded icon
+  //   });
+  // }
 
   List rideType = ["Normal", "Economy", "Comfort"];
 
@@ -80,61 +193,193 @@ class _RideDialogState extends State<RideDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (bool){
-        controller.isRequestSent.value = false;
-        controller.isDestinationSelected.value = false;
-      },
-      child: SafeArea(
-        child: Scaffold(
+    final cabController = Get.put(CabMapController());
+    controller.selectedDropOff("");
+    cabController.resetRide();
+    return Obx(() {
+      return PopScope(
+        // canPop: false,
+        canPop: cabController.canExit.value,
+        onPopInvoked: (bool) {
+          // controller.isRequestSent.value = false;
+          // controller.isDestinationSelected.value = false;
+          switch (cabController.cabStatus.value) {
+            case CabStates.initial:
+              cabController.setExitTrue();
+            case CabStates.loading:
+            // TODO: Handle this case.
+            case CabStates.rideSelection:
+              cabController.cabStatus(CabStates.initial);
+            case CabStates.searchingCab:
+              cabController.cabStatus(CabStates.rideSelection);
+            case CabStates.cabAllocated:
+              cabController.setExitTrue();
+            case CabStates.cabApproachingPassenger:
+              cabController.setExitTrue();
 
-          backgroundColor: Colors.transparent,
-          body: Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: double.infinity,
-              color: Colors.white,
-              child: PlacePicker(
-                apiKey: 'AIzaSyBkEMGux54F5lqQ7_bXIjWVf5m3jaRdYdk',
-                initialPosition: const LatLng(9.9816, 76.2999),
-                resizeToAvoidBottomInset: false,
-                enableMyLocationButton: false,
-                enableMapTypeButton: false,
-                introModalWidgetBuilder:
-                    (context, result) {
-                  return Positioned(
-                    bottom: 1,
-                    left: 1,
-                    right: 1,
-                    // child: state == SearchingState.Searching
-                    //     ? Container(
-                    //   height: 100,
-                    //   color: Colors.white,
-                    //   width: MediaQuery.of(context).size.width,
-                    //   child: const Center(
-                    //     child: CircularProgressIndicator(),
-                    //   ),
-                    // )
-                    //     :
-                  child: Obx(() {
-                      return controller.isDestinationSelected.value == false
-                          ? const _DestinationSelection()
-                          : controller.isEstimationLoading.value ? CircularProgressIndicator(): RideTypeChoose(
-                        rideEstimationList:homeController.estimationList,
-                        rideType: rideType,
-                        selectedType: selectedType,
-                        selectedPaymentType: selectedPaymentType,
+            case CabStates.cabArrived:
+              cabController.setExitTrue();
+
+            case CabStates.cabStartedJourney:
+              cabController.setExitTrue();
+
+            case CabStates.cabReachedDestination:
+              cabController.setExitTrue();
+          }
+        },
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(),
+            body: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: double.infinity,
+                color: Colors.white,
+                child: Stack(
+                  children: [
+                    Obx(() {
+                      if (cabController.cabStatus ==
+                          CabStates.cabReachedDestination) {
+                        Future.delayed(Duration(seconds: 0), () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return TripCompleteDialog();
+                              });
+                        });
+                      }
+                      return GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                          target: cabController.routeCoordinates[0],
+                          zoom: 12,
+                        ),
+                        polylines: cabController.polylines,
+                        markers: {
+                          Marker(
+                            markerId: MarkerId('car'),
+                            position: cabController.carMarker.value.position,
+                            // icon: _carIcon!,
+                          ),
+                        },
+                        onMapCreated: (controller) {
+                          log("onMap created called");
+                          setState(() {
+                            _controller = controller;
+                          });
+                          if (cabController.cabStatus !=
+                              CabStates.cabStartedJourney) {
+                            showBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Obx(() {
+                                    if (cabController.cabStatus ==
+                                        CabStates.cabStartedJourney) {
+                                      Future.delayed(Duration(seconds: 1), () {
+                                        Navigator.pop(context);
+                                      });
+                                    }
+                                    return switch (
+                                        cabController.cabStatus.value) {
+                                      CabStates.initial =>
+                                        _DestinationSelection(),
+                                      CabStates.rideSelection => RideTypeChoose(
+                                          rideEstimationList:
+                                              homeController.estimationList,
+                                          rideType: rideType,
+                                          selectedType: selectedType,
+                                          selectedPaymentType:
+                                              selectedPaymentType,
+                                        ),
+                                      CabStates.loading =>
+                                        CircularProgressIndicator(),
+                                      // _ => Container()
+                                      // TODO: Handle this case.
+                                      CabStates.searchingCab => InkWell(
+                                          onTap: () {
+                                            cabController.setCabAllocated();
+                                          },
+                                          child: const FindingDriver()),
+                                      // _ => Container(),
+
+                                      CabStates.cabAllocated => InkWell(
+                                          onTap: () {},
+                                          child: const FindingDriver()),
+                                      CabStates.cabApproachingPassenger =>
+                                        InkWell(
+                                            onTap: () {},
+                                            child: const FindingDriver()),
+                                      CabStates.cabArrived => InkWell(
+                                          onTap: () {},
+                                          child: const FindingDriver()),
+                                      CabStates.cabStartedJourney => Container(
+                                          height: 0,
+                                          width: 0,
+                                        ),
+                                      CabStates.cabReachedDestination =>
+                                        Container(
+                                          height: 0,
+                                          width: 0,
+                                        ),
+                                    };
+                                  });
+                                });
+                          }
+                        },
                       );
                     }),
-                  );
-                },
+
+                    // RideTypeChoose(
+                    //   rideEstimationList: homeController.estimationList,
+                    //   rideType: rideType,
+                    //   selectedType: selectedType,
+                    //   selectedPaymentType: selectedPaymentType,
+                    // ),
+                  ],
+                ),
+                // child: PlacePicker(
+                //   apiKey: 'AIzaSyBkEMGux54F5lqQ7_bXIjWVf5m3jaRdYdk',
+                //   initialPosition: const LatLng(9.9816, 76.2999),
+                //   resizeToAvoidBottomInset: false,
+                //   enableMyLocationButton: false,
+                //   enableMapTypeButton: false,
+
+                // introModalWidgetBuilder: (context, result) {
+                //   return Positioned(
+                //     bottom: 1,
+                //     left: 1,
+                //     right: 1,
+                //     // child: state == SearchingState.Searching
+                //     //     ? Container(
+                //     //   height: 100,
+                //     //   color: Colors.white,
+                //     //   width: MediaQuery.of(context).size.width,
+                //     //   child: const Center(
+                //     //     child: CircularProgressIndicator(),
+                //     //   ),
+                //     // )
+                //     //     :
+                //     child: Obx(() {
+                //       return controller.isDestinationSelected.value == false
+                //           ? const _DestinationSelection()
+                //           : controller.isEstimationLoading.value
+                //               ? CircularProgressIndicator()
+                //               : RideTypeChoose(
+                //                   rideEstimationList:
+                //                       homeController.estimationList,
+                //                   rideType: rideType,
+                //                   selectedType: selectedType,
+                //                   selectedPaymentType: selectedPaymentType,
+                //                 );
+                //     }),
+                //   );
+                // },
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -144,7 +389,7 @@ class RideTypeChoose extends StatelessWidget {
     required this.rideType,
     required this.selectedType,
     required this.selectedPaymentType,
-    required  this.rideEstimationList,
+    required this.rideEstimationList,
   });
 
   final List rideType;
@@ -156,9 +401,12 @@ class RideTypeChoose extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDriverLoaded = false.obs;
     final totalPrice = rideEstimationList.first.estimation?.estimate.obs;
-    controller.productId = (rideEstimationList.first.estimation!.productId ?? "").obs;
-    controller.fareId = (rideEstimationList.first.estimation?.fareId.toString() ?? "").obs;
-    controller.price = (rideEstimationList.first.estimation?.estimate?.toDouble() ?? 0.0).obs;
+    controller.productId =
+        (rideEstimationList.first.estimation!.productId ?? "").obs;
+    controller.fareId =
+        (rideEstimationList.first.estimation?.fareId.toString() ?? "").obs;
+    controller.price =
+        (rideEstimationList.first.estimation?.estimate?.toDouble() ?? 0.0).obs;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -199,17 +447,21 @@ class RideTypeChoose extends StatelessWidget {
                                   color: AppColors.white,
                                   child: ListTile(
                                     leading: SvgPicture.network(
-                                      rideEstimationList[index].image.toString()
-                                    ),
+                                        rideEstimationList[index]
+                                            .image
+                                            .toString()),
                                     title: CommonText(
-                                      text: rideEstimationList[index].name.toString(),
+                                      text: rideEstimationList[index]
+                                          .name
+                                          .toString(),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                     ),
                                     subtitle: Row(
                                       children: [
                                         CommonText(
-                                            text: "₹ ${rideEstimationList[index].estimation!.estimate.toString()}",
+                                            text:
+                                                "₹ ${rideEstimationList[index].estimation!.estimate.toString()}",
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600),
                                         const SizedBox(
@@ -220,7 +472,8 @@ class RideTypeChoose extends StatelessWidget {
                                             color: AppColors.borderColor),
                                         // Icon(Icons.access_time,size: 16,color: AppColors.borderColor,),
                                         CommonText(
-                                          text: '${rideEstimationList[index].estimation!.duration.toString()} min',
+                                          text:
+                                              '${rideEstimationList[index].estimation!.duration.toString()} min',
                                           fontSize: 12,
                                           textColor: AppColors.borderColor,
                                         ),
@@ -235,13 +488,13 @@ class RideTypeChoose extends StatelessWidget {
                                         ),
 
                                         CommonText(
-                                          text: '${rideEstimationList[index].capacity.toString()} Seats',
+                                          text:
+                                              '${rideEstimationList[index].capacity.toString()} Seats',
                                           fontSize: 12,
                                           textColor: AppColors.borderColor,
                                         ),
                                       ],
                                     ),
-
                                     trailing: SizedBox(
                                       height: 23,
                                       width: 23,
@@ -251,12 +504,27 @@ class RideTypeChoose extends StatelessWidget {
                                             value: index,
                                             groupValue: selectedType?.value,
                                             onChanged: (value) {
-                                              totalPrice?.value   =   rideEstimationList[index].estimation!.estimate!.toDouble();
-                                              controller.price.value = rideEstimationList[index].estimation!.estimate!.toDouble();
-                                              controller.fareId.value = rideEstimationList[index].estimation!.fareId.toString();
-                                              controller.productId.value = rideEstimationList[index].estimation!.productId.toString();
+                                              totalPrice?.value =
+                                                  rideEstimationList[index]
+                                                      .estimation!
+                                                      .estimate!
+                                                      .toDouble();
+                                              controller.price.value =
+                                                  rideEstimationList[index]
+                                                      .estimation!
+                                                      .estimate!
+                                                      .toDouble();
+                                              controller.fareId.value =
+                                                  rideEstimationList[index]
+                                                      .estimation!
+                                                      .fareId
+                                                      .toString();
+                                              controller.productId.value =
+                                                  rideEstimationList[index]
+                                                      .estimation!
+                                                      .productId
+                                                      .toString();
                                               selectedType?.value = value!;
-                                              
                                             });
                                       }),
                                     ),
@@ -274,7 +542,9 @@ class RideTypeChoose extends StatelessWidget {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * .01,
                               ),
-                               CommonText(text: "${rideEstimationList.first.estimation?.distance} km"),
+                              CommonText(
+                                  text:
+                                      "${rideEstimationList.first.estimation?.distance} km"),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * .15,
                               ),
@@ -284,10 +554,13 @@ class RideTypeChoose extends StatelessWidget {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * .01,
                               ),
-                               CommonText(text: "${rideEstimationList.first.estimation?.duration} min"),
+                              CommonText(
+                                  text:
+                                      "${rideEstimationList.first.estimation?.duration} min"),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * .15,
                               ),
+
                               ///price tag
                               SvgPicture.asset(
                                 "packages/mynewpackage/${Assets.iconsDollarCircle}",
@@ -295,7 +568,7 @@ class RideTypeChoose extends StatelessWidget {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * .01,
                               ),
-                               CommonText(text: '${totalPrice}'),
+                              CommonText(text: '${totalPrice}'),
                             ],
                           ),
                           SizedBox(
@@ -375,6 +648,7 @@ class RideTypeChoose extends StatelessWidget {
                                     text: "Request",
                                     textColor: AppColors.white,
                                   ),
+
                                   ///price
                                   Spacer(),
                                   CommonText(
@@ -408,6 +682,273 @@ class RideTypeChoose extends StatelessWidget {
                         },
                         child: const FindingDriver())
                     : const TripDetails());
+        // child: controller.isRequestSent.value == false
+        //     ? Container(
+        //         decoration: const BoxDecoration(
+        //           borderRadius: BorderRadius.all(Radius.circular(20)),
+        //           color: Colors.white,
+        //         ),
+        //         width: MediaQuery.of(context).size.width,
+        //         padding: const EdgeInsets.symmetric(
+        //             vertical: 24, horizontal: 20),
+        //         child: SingleChildScrollView(
+        //           child: Column(
+        //             mainAxisAlignment: MainAxisAlignment.start,
+        //             mainAxisSize: MainAxisSize.min,
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [
+        //               const CommonText(
+        //                 text: "Choose your ride",
+        //                 fontSize: 24,
+        //                 fontWeight: FontWeight.bold,
+        //               ),
+        //               const SizedBox(height: 10),
+        //               SizedBox(
+        //                 height: 150,
+        //                 child: ListView.builder(
+        //                   itemCount: rideEstimationList.length,
+        //                   itemBuilder: (context, index) {
+        //                     return Card(
+        //                       elevation: 1,
+        //                       surfaceTintColor: AppColors.white,
+        //                       color: AppColors.white,
+        //                       child: ListTile(
+        //                         leading: SvgPicture.network(
+        //                             rideEstimationList[index]
+        //                                 .image
+        //                                 .toString()),
+        //                         title: CommonText(
+        //                           text: rideEstimationList[index]
+        //                               .name
+        //                               .toString(),
+        //                           fontSize: 14,
+        //                           fontWeight: FontWeight.w600,
+        //                         ),
+        //                         subtitle: Row(
+        //                           children: [
+        //                             CommonText(
+        //                                 text:
+        //                                     "₹ ${rideEstimationList[index].estimation!.estimate.toString()}",
+        //                                 fontSize: 12,
+        //                                 fontWeight: FontWeight.w600),
+        //                             const SizedBox(
+        //                               width: 3,
+        //                             ),
+        //                             SvgPicture.asset(
+        //                                 "packages/mynewpackage/${Assets.iconsClock}",
+        //                                 color: AppColors.borderColor),
+        //                             // Icon(Icons.access_time,size: 16,color: AppColors.borderColor,),
+        //                             CommonText(
+        //                               text:
+        //                                   '${rideEstimationList[index].estimation!.duration.toString()} min',
+        //                               fontSize: 12,
+        //                               textColor: AppColors.borderColor,
+        //                             ),
+        //                             const SizedBox(
+        //                               width: 3,
+        //                             ),
+        //
+        //                             // Icon(Icons.person_pin,color: AppColors.borderColor,size: 16,),
+        //                             SvgPicture.asset(
+        //                               "packages/mynewpackage/${Assets.iconsSeats}",
+        //                               color: AppColors.borderColor,
+        //                             ),
+        //
+        //                             CommonText(
+        //                               text:
+        //                                   '${rideEstimationList[index].capacity.toString()} Seats',
+        //                               fontSize: 12,
+        //                               textColor: AppColors.borderColor,
+        //                             ),
+        //                           ],
+        //                         ),
+        //                         trailing: SizedBox(
+        //                           height: 23,
+        //                           width: 23,
+        //                           child: Obx(() {
+        //                             return Radio(
+        //                                 activeColor: AppColors.primaryColor,
+        //                                 value: index,
+        //                                 groupValue: selectedType?.value,
+        //                                 onChanged: (value) {
+        //                                   totalPrice?.value =
+        //                                       rideEstimationList[index]
+        //                                           .estimation!
+        //                                           .estimate!
+        //                                           .toDouble();
+        //                                   controller.price.value =
+        //                                       rideEstimationList[index]
+        //                                           .estimation!
+        //                                           .estimate!
+        //                                           .toDouble();
+        //                                   controller.fareId.value =
+        //                                       rideEstimationList[index]
+        //                                           .estimation!
+        //                                           .fareId
+        //                                           .toString();
+        //                                   controller.productId.value =
+        //                                       rideEstimationList[index]
+        //                                           .estimation!
+        //                                           .productId
+        //                                           .toString();
+        //                                   selectedType?.value = value!;
+        //                                 });
+        //                           }),
+        //                         ),
+        //                       ),
+        //                     );
+        //                   },
+        //                 ),
+        //               ),
+        //               const SizedBox(height: 20),
+        //               Row(
+        //                 children: [
+        //                   SvgPicture.asset(
+        //                     "packages/mynewpackage/${Assets.iconsKilometer}",
+        //                   ),
+        //                   SizedBox(
+        //                     width: MediaQuery.of(context).size.width * .01,
+        //                   ),
+        //                   CommonText(
+        //                       text:
+        //                           "${rideEstimationList.first.estimation?.distance} km"),
+        //                   SizedBox(
+        //                     width: MediaQuery.of(context).size.width * .15,
+        //                   ),
+        //                   SvgPicture.asset(
+        //                     "packages/mynewpackage/${Assets.iconsClock}",
+        //                   ),
+        //                   SizedBox(
+        //                     width: MediaQuery.of(context).size.width * .01,
+        //                   ),
+        //                   CommonText(
+        //                       text:
+        //                           "${rideEstimationList.first.estimation?.duration} min"),
+        //                   SizedBox(
+        //                     width: MediaQuery.of(context).size.width * .15,
+        //                   ),
+        //
+        //                   ///price tag
+        //                   SvgPicture.asset(
+        //                     "packages/mynewpackage/${Assets.iconsDollarCircle}",
+        //                   ),
+        //                   SizedBox(
+        //                     width: MediaQuery.of(context).size.width * .01,
+        //                   ),
+        //                   CommonText(text: '${totalPrice}'),
+        //                 ],
+        //               ),
+        //               SizedBox(
+        //                 height: MediaQuery.of(context).size.height * .02,
+        //               ),
+        //               Row(
+        //                 children: [
+        //                   Obx(() {
+        //                     return DropdownButton<String>(
+        //                       icon: const Icon(Icons.keyboard_arrow_down),
+        //                       value: selectedPaymentType.value,
+        //                       onChanged: (String? newValue) {
+        //                         selectedPaymentType.value = newValue!;
+        //                       },
+        //                       items: <String>['Apple Pay', 'Card', 'Cash']
+        //                           .map<DropdownMenuItem<String>>(
+        //                               (String value) {
+        //                         return DropdownMenuItem<String>(
+        //                           value: value,
+        //                           child: CommonText(
+        //                             text: value,
+        //                             fontSize: 12,
+        //                           ),
+        //                         );
+        //                       }).toList(),
+        //                     );
+        //                   }),
+        //                   Spacer(),
+        //                   InkWell(
+        //                     onTap: () {
+        //                       Navigator.of(context).push(MaterialPageRoute(
+        //                           builder: (context) =>
+        //                               const PromoCodeListingView()));
+        //                     },
+        //                     child: Container(
+        //                       height: 40,
+        //                       // width: 100,
+        //                       decoration: BoxDecoration(
+        //                           borderRadius: BorderRadius.circular(25),
+        //                           border: Border.all(
+        //                               color: AppColors.borderColor)),
+        //                       child: Padding(
+        //                         padding: const EdgeInsets.all(8.0),
+        //                         child: Row(
+        //                           children: [
+        //                             SvgPicture.asset(
+        //                               "packages/mynewpackage/${Assets.iconsOfferIcon}",
+        //                               height: 15,
+        //                             ),
+        //                             const SizedBox(
+        //                               width: 2,
+        //                             ),
+        //                             const CommonText(
+        //                               text: "Promo code",
+        //                               fontSize: 12,
+        //                             )
+        //                           ],
+        //                         ),
+        //                       ),
+        //                     ),
+        //                   )
+        //                 ],
+        //               ),
+        //               ElevatedButton(
+        //                   style: ButtonStyle(
+        //                     backgroundColor: MaterialStateProperty.all(
+        //                         AppColors.primaryColor),
+        //                     minimumSize:
+        //                         MaterialStateProperty.all(Size(340, 70)),
+        //                   ),
+        //                   onPressed: () {
+        //                     controller.requestRide();
+        //                   },
+        //                   child: Row(
+        //                     children: [
+        //                       CommonText(
+        //                         text: "Request",
+        //                         textColor: AppColors.white,
+        //                       ),
+        //
+        //                       ///price
+        //                       Spacer(),
+        //                       CommonText(
+        //                           text: "${totalPrice}",
+        //                           textColor: AppColors.white),
+        //                       SizedBox(
+        //                         width: 10,
+        //                       ),
+        //                       Container(
+        //                         height: 40,
+        //                         width: 40,
+        //                         decoration: BoxDecoration(
+        //                             color: AppColors.white,
+        //                             borderRadius:
+        //                                 BorderRadius.circular(30)),
+        //                         child: Icon(
+        //                           Icons.arrow_forward_ios,
+        //                           color: AppColors.primaryColor,
+        //                         ),
+        //                       )
+        //                     ],
+        //                   ))
+        //             ],
+        //           ),
+        //         ),
+        //       )
+        //     : isDriverLoaded.value == false
+        //         ? InkWell(
+        //             onTap: () {
+        //               isDriverLoaded.value = true;
+        //             },
+        //             child: const FindingDriver())
+        //         : const TripDetails());
       }),
     );
   }
@@ -656,37 +1197,58 @@ class FindingDriver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cabController = Get.put(CabMapController());
+
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: Colors.white,
       ),
       width: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 25),
-        child: Column(
-          children: [
-            SvgPicture.asset(
-                "packages/mynewpackage/${Assets.iconsLoadingDriver}"),
-            CommonText(
-              text: "Loading Your Nearest Driver",
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-            ),
-            CommonText(
-              text:
-                  "Hang tight! We're connecting you with\nthe closest available driver. This may\ntake a moment.",
-              textAlign: TextAlign.center,
-            )
-          ],
-        ),
-      ),
+      child: Obx(() {
+        String title = "Loading Your Nearest Driver";
+        String subtitle =
+            "Hang tight! We're connecting you with\nthe closest available driver. This may\ntake a moment.";
+        if (cabController.cabStatus.value == CabStates.cabAllocated ||
+            cabController.cabStatus.value ==
+                CabStates.cabApproachingPassenger) {
+          title = "Driver is headed your way";
+          subtitle = "Meet at the pickpoint";
+        }
+
+        if (cabController.cabStatus.value == CabStates.cabArrived) {
+          title = "Driver Arrived";
+          subtitle = "Meet at the pickpoint";
+        }
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 25),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                  "packages/mynewpackage/${Assets.iconsLoadingDriver}"),
+              CommonText(
+                text: title,
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+              ),
+              CommonText(
+                text: subtitle,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 100,
+              )
+            ],
+          ),
+        );
+      }),
     );
   }
 }
 
 class _DestinationSelection extends StatelessWidget {
-
   const _DestinationSelection({
     super.key,
   });
@@ -755,7 +1317,9 @@ class _DestinationSelection extends StatelessWidget {
                           InkWell(
                             onTap: () {
                               controller.showLocationSelectionBottomSheet(
-                                  context: context, locationType: 'PickUp',);
+                                context: context,
+                                locationType: 'PickUp',
+                              );
                             },
                             child: Obx(() {
                               return CommonText(
