@@ -34,6 +34,9 @@ class ApiService extends GetConnect implements GetxService {
     };
   }
 
+
+
+
   @override
   void onInit() {
     timeout = Duration(minutes: 1);

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -13,6 +14,7 @@ import 'package:mynewpackage/app/modules/home/data/models/ride_estimation_respon
 import 'package:mynewpackage/app/modules/home/views/home_view.dart';
 import 'package:mynewpackage/app/modules/trip_rating/views/trip_rating_view.dart';
 import 'package:mynewpackage/app_colors.dart';
+import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/widgets/custom_button.dart';
 
 import '../app/modules/promo_code_listing/views/promo_code_listing_view.dart';
@@ -65,117 +67,19 @@ class _RideDialogState extends State<RideDialog> {
 
   HomeController homeController = Get.find();
 
+
   List carImage = [
     "packages/mynewpackage/${Assets.iconsNormal}",
     "packages/mynewpackage/${Assets.iconsEconomyCar}",
     "packages/mynewpackage/${Assets.iconsEconomyCar}"
   ];
-  final Set<Polyline> _polylines = {};
-  final List<LatLng> _routeCoordinates = [
-    LatLng(10.048726, 76.318781),
-    LatLng(10.050847, 76.319333),
-    LatLng(10.051901, 76.31972),
-    LatLng(10.05229, 76.319835),
-    LatLng(10.052395, 76.320123),
-    LatLng(10.053021, 76.321193),
-    LatLng(10.054492, 76.321823),
-    LatLng(10.054967, 76.321889),
-    LatLng(10.055238, 76.321951),
-    LatLng(10.055348, 76.321888), // Splitting point
-    LatLng(10.055348, 76.321888), // Splitting point
-    LatLng(10.055348, 76.321888),
-    LatLng(10.05584, 76.322294),
-    LatLng(10.057875, 76.324598),
-    LatLng(10.060516, 76.326551),
-    LatLng(10.06415, 76.329083),
-    LatLng(10.066537, 76.335756),
-    LatLng(10.066508, 76.335625),
-    LatLng(10.067714, 76.339166),
-    LatLng(10.068647, 76.342179),
-    LatLng(10.068624, 76.343715),
-    LatLng(10.068364, 76.344748),
-    LatLng(10.068021, 76.34584),
-    LatLng(10.067678, 76.347257),
-    LatLng(10.066707, 76.350607),
-    LatLng(10.066522, 76.351306),
-    LatLng(10.06642, 76.351764),
-    LatLng(10.065774, 76.351721),
-    LatLng(10.065171, 76.351757),
-    LatLng(10.06474, 76.351739),
-    LatLng(10.064588, 76.351151),
-  ];
-  BitmapDescriptor? _carIcon; // Custom BitmapDescriptor for the car marker icon
 
-  Marker _carMarker = Marker(
-    markerId: MarkerId('car'),
-    position: LatLng(10.048726, 76.318781), // Starting position
-    // Use a default icon until the custom icon is loaded
-    // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-  );
-  // void _startMovingMarker() {
-  //   // Set up a timer to update the position of the marker every second
-  //   _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-  //     setState(() {
-  //       if (_markerIndex < _routeCoordinates.length - 1) {
-  //         _markerIndex++;
-  //         _carMarker = _carMarker.copyWith(
-  //           positionParam: _routeCoordinates[_markerIndex],
-  //         );
-  //       } else {
-  //         _timer?.cancel();
-  //       }
-  //     });
-  //   });
-  // }
 
   @override
   void initState() {
     super.initState();
-    // _setPolylines();
-    // _loadCarIcon(); // Load the custom car icon
-    // _startMovingMarker();
   }
 
-  // void _setPolylines() {
-  //   // Split _routeCoordinates based on LatLng(10.055348, 76.321888)
-  //   int splitIndex = _routeCoordinates.indexWhere(
-  //       (coord) => coord.latitude == 10.055348 && coord.longitude == 76.321888);
-  //
-  //   List<LatLng> firstPart = _routeCoordinates.sublist(0, splitIndex);
-  //   List<LatLng> secondPart = _routeCoordinates.sublist(splitIndex);
-  //
-  //   setState(() {
-  //     _polylines.add(
-  //       Polyline(
-  //         polylineId: PolylineId('route1'),
-  //         visible: true,
-  //         points: firstPart,
-  //         width: 4,
-  //         color: Colors.black,
-  //       ),
-  //     );
-  //     _polylines.add(
-  //       Polyline(
-  //         polylineId: PolylineId('route2'),
-  //         visible: true,
-  //         points: secondPart,
-  //         width: 4,
-  //         color: Colors.red,
-  //       ),
-  //     );
-  //   });
-  // }
-
-  // Method to load custom marker icon from assets
-  // void _loadCarIcon() async {
-  //   _carIcon = await BitmapDescriptor.asset(
-  //     const ImageConfiguration(size: Size(30, 30)), // Adjust size as needed
-  //     'assets/images-removebg-preview.png', // Replace with your image path
-  //   );
-  //   setState(() {
-  //     // Set state to rebuild the widget with the loaded icon
-  //   });
-  // }
 
   List rideType = ["Normal", "Economy", "Comfort"];
 
@@ -195,7 +99,7 @@ class _RideDialogState extends State<RideDialog> {
   Widget build(BuildContext context) {
     final cabController = Get.put(CabMapController());
     controller.selectedDropOff("");
-    cabController.resetRide();
+    // cabController.resetRide();
     return Obx(() {
       return PopScope(
         // canPop: false,
@@ -212,18 +116,31 @@ class _RideDialogState extends State<RideDialog> {
               cabController.cabStatus(CabStates.initial);
             case CabStates.searchingCab:
               cabController.cabStatus(CabStates.rideSelection);
-            case CabStates.cabAllocated:
-              cabController.setExitTrue();
-            case CabStates.cabApproachingPassenger:
-              cabController.setExitTrue();
+              cabController.setExitFalse();
+            case CabStates.accepted:
+              cabController.setExitFalse();
 
-            case CabStates.cabArrived:
-              cabController.setExitTrue();
+            case CabStates.arriving:
+              cabController.setExitFalse();
 
-            case CabStates.cabStartedJourney:
-              cabController.setExitTrue();
 
-            case CabStates.cabReachedDestination:
+            case CabStates.arrived:
+              cabController.setExitFalse();
+
+
+            case CabStates.otpVerified:
+              cabController.setExitFalse();
+
+            case CabStates.inProgress:
+              cabController.setExitFalse();
+
+
+            case CabStates.completed:
+              restartApp();
+
+
+              cabController.setCabJourneyCompleted;
+              cabController.resetRide();
               cabController.setExitTrue();
           }
         },
@@ -240,7 +157,7 @@ class _RideDialogState extends State<RideDialog> {
                   children: [
                     Obx(() {
                       if (cabController.cabStatus ==
-                          CabStates.cabReachedDestination) {
+                          CabStates.completed) {
                         Future.delayed(Duration(seconds: 0), () {
                           showDialog(
                               context: context,
@@ -252,7 +169,7 @@ class _RideDialogState extends State<RideDialog> {
                       return GoogleMap(
                         initialCameraPosition: CameraPosition(
                           target: cabController.routeCoordinates[0],
-                          zoom: 12,
+                          zoom: 15,
                         ),
                         polylines: cabController.polylines,
                         markers: {
@@ -267,18 +184,20 @@ class _RideDialogState extends State<RideDialog> {
                           setState(() {
                             _controller = controller;
                           });
+
                           if (cabController.cabStatus !=
-                              CabStates.cabStartedJourney) {
+      CabStates.completed) {
                             showBottomSheet(
+                                enableDrag: false,
                                 context: context,
                                 builder: (context) {
                                   return Obx(() {
-                                    if (cabController.cabStatus ==
-                                        CabStates.cabStartedJourney) {
-                                      Future.delayed(Duration(seconds: 1), () {
-                                        Navigator.pop(context);
-                                      });
-                                    }
+                                    // if (cabController.cabStatus ==
+                                    //     CabStates.accepted) {
+                                    //   Future.delayed(Duration(seconds: 1), () {
+                                    //     Navigator.pop(context);
+                                    //   });
+                                    // }
                                     return switch (
                                         cabController.cabStatus.value) {
                                       CabStates.initial =>
@@ -295,36 +214,44 @@ class _RideDialogState extends State<RideDialog> {
                                         CircularProgressIndicator(),
                                       // _ => Container()
                                       // TODO: Handle this case.
-                                      CabStates.searchingCab => InkWell(
-                                          onTap: () {
-                                            cabController.setCabAllocated();
-                                          },
-                                          child: const FindingDriver()),
+                                      CabStates.searchingCab =>InkWell(
+                                        onTap: (){
+                                        },
+                                          child: SearchingCab(homeController: homeController)),
+                                          // InkWell(
+                                          // onTap: () {
+                                          //   cabController.onCabSearch;
+                                          // },
+                                          // child: const FindingDriver()),
                                       // _ => Container(),
 
-                                      CabStates.cabAllocated => InkWell(
-                                          onTap: () {},
-                                          child: const FindingDriver()),
-                                      CabStates.cabApproachingPassenger =>
-                                        InkWell(
-                                            onTap: () {},
-                                            child: const FindingDriver()),
-                                      CabStates.cabArrived => InkWell(
-                                          onTap: () {},
-                                          child: const FindingDriver()),
-                                      CabStates.cabStartedJourney => Container(
+                                      CabStates.accepted =>
+                                          buildAcceptedWidget(context,"Meet at the pickup point".obs,false.obs),
+                                      CabStates.arriving =>
+                                          buildAcceptedWidget(context,'Driver is headed your way'.obs,false.obs),
+                                      CabStates.arrived =>  buildAcceptedWidget(context,'Driver Arrived'.obs,  true.obs),
+                                      CabStates.otpVerified => Container(
                                           height: 0,
                                           width: 0,
                                         ),
-                                      CabStates.cabReachedDestination =>
-                                        Container(
-                                          height: 0,
-                                          width: 0,
-                                        ),
+                                      CabStates.inProgress => Container(
+                                        height: 0,
+                                        width: 0,
+                                      ),
+                                      CabStates.completed =>
+                                          Container(
+                                            height: 0,
+                                            width: 0,
+                                          )
+                                          // InkWell(
+                                          //     onTap: () {},
+                                          //     child: const FindingDriver()),
                                     };
                                   });
                                 });
                           }
+                          TripDetails();
+
                         },
                       );
                     }),
@@ -380,6 +307,215 @@ class _RideDialogState extends State<RideDialog> {
         ),
       );
     });
+  }
+
+  Padding buildAcceptedWidget(BuildContext context,RxString text,RxBool isOtpShow) {
+    return Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 15),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Obx(
+                                                () {
+                                                  return CommonText(
+                                                    text: text.value,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  );
+                                                }
+                                              ),
+                                              !isOtpShow.value ?   Container(
+                                                height: 56,
+                                                width: 50,
+                                                padding: const EdgeInsets.all(8.0),
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.primaryColor,
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    CommonText(
+                                                      text: "5",
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                      textColor: Colors.white,
+                                                    ),
+                                                    CommonText(
+                                                      text: "Min",
+                                                      fontSize: 12,
+                                                      textColor: Colors.white,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ):
+                                                  Row(
+                                                    children:List.generate(4,(index) => Padding(
+                                                      padding: const EdgeInsets.all(2.0),
+                                                      child: Container(
+                                                        height: 56,
+                                                        width: 50,
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        decoration: BoxDecoration(
+                                                          color: AppColors.primaryColor,
+                                                          borderRadius: BorderRadius.circular(8),
+                                                        ),
+                                                        child: Center(
+                                                          child: CommonText(
+                                                            text: "5",
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight.bold,
+                                                            textColor: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ))
+                                                    ,
+                                                  )
+
+                                            ],
+                                          ),
+                                          SizedBox(height: 20),
+                                          ListTile(
+                                            contentPadding: EdgeInsets.zero,
+                                            leading: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 30,
+                                                  backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+                                                ),
+                                                Positioned(
+                                                  right: -10,
+                                                  bottom: -10,
+                                                  child: SvgPicture.asset(
+                                                    "packages/mynewpackage/${Assets.iconsCab}",
+                                                    height: 40,
+                                                    width: 40,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            title: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                              children: [
+                                                SizedBox(
+
+                                                ),
+                                                CommonText(
+                                                  text: Constants.driverName.toString(),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ],
+                                            ),
+                                            subtitle: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                              children: [
+                                                SizedBox(
+                                                ),
+
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    CommonText(text: Constants.vehicleNumber.toString()),
+                                                    CommonText(text: Constants.vehicleMake.toString()),
+                                                    Row(
+                                                      children: [
+                                                        SvgPicture.asset("packages/mynewpackage/${Assets.iconsStar}"),
+                                                        CommonText(text: "5.0"),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: 20),
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                flex: 3,
+                                                child: CommonButton(
+                                                  onPressed: () {},
+                                                  text: "Cancel",
+                                                  width: MediaQuery.of(context).size.width * 0.6,
+                                                ),
+                                              ),
+                                              Flexible(
+                                                child: IconButton(
+                                                  icon: SvgPicture.asset("packages/mynewpackage/${Assets.iconsMessage}"),
+                                                  onPressed: () {},
+                                                ),
+                                              ),
+                                              Flexible(
+                                                child: IconButton(
+                                                  icon: SvgPicture.asset("packages/mynewpackage/${Assets.iconsCall}"),
+                                                  onPressed: () {},
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+  }
+}
+
+class SearchingCab extends StatelessWidget {
+  const SearchingCab({
+    super.key,
+    required this.homeController,
+  });
+
+  final HomeController homeController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CommonText(
+            text: "Looking for Near Drivers",
+            fontSize: 20,
+            fontWeight: FontWeight.w800,
+          ),
+          SvgPicture.asset( "packages/mynewpackage/${Assets.iconsCab}",),
+          ListTile(
+            leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsPickupDriverLoading}",),
+            title: CommonText(text: 'Pick up',fontSize: 14,textColor: AppColors.textLightColor,),
+            subtitle: CommonText(text: homeController.selectedPickUp.value,fontWeight: FontWeight.w500,fontSize: 15),
+          ),
+          ListTile(
+            leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsDestinationDriverLoading}",),
+
+            title: CommonText(text: 'Drop off',fontSize: 14,textColor: AppColors.textLightColor,),
+            subtitle: CommonText(text: homeController.selectedDropOff.value,fontWeight: FontWeight.w500,fontSize: 15),
+          ),
+
+          ListTile(
+            leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsDollarCircle}",),
+
+            title: CommonText(text: 'Cash',),
+            subtitle: CommonText(text: "₹ ${homeController.price.value.toString()}",fontWeight: FontWeight.w500,fontSize: 15,),
+          ),
+          CommonButton(onPressed: (){}, text: "Cancel")
+
+          // CommonText(
+          //   text: subtitle,
+          //   textAlign: TextAlign.center,
+          // ),
+
+        ],
+      ),
+    );
   }
 }
 
@@ -1190,60 +1326,283 @@ class TripDetails extends StatelessWidget {
   }
 }
 
-class FindingDriver extends StatelessWidget {
+class FindingDriver extends StatefulWidget {
   const FindingDriver({
     super.key,
   });
 
   @override
+  State<FindingDriver> createState() => _FindingDriverState();
+}
+
+class _FindingDriverState extends State<FindingDriver> {
+  @override
   Widget build(BuildContext context) {
     final cabController = Get.put(CabMapController());
 
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-        color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          color: Colors.white,
+        ),
+        width: MediaQuery.of(context).size.width,
+        child: Obx(() {
+          // String title = "Looking for Near Driver";
+          // String subtitle =
+          //     "Hang tight! We're connecting you with\nthe closest available driver. This may\ntake a moment.";
+          // if (cabController.cabStatus.value == CabStates.cabAllocated ||
+          //     cabController.cabStatus.value ==
+          //         CabStates.cabApproachingPassenger) {
+          //   title = "Driver is headed your way";
+          //   subtitle = "Meet at the pickpoint";
+          // }
+          //
+          // if (cabController.cabStatus.value == CabStates.cabArrived) {
+          //   title = "Driver Arrived";
+          //   subtitle = "Meet at the pickpoint";
+          // }
+
+          return(cabController.cabStatus.value == CabStates.accepted ||
+                  cabController.cabStatus.value ==
+                      CabStates.arriving)?
+
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CommonText(
+                      text: "Meet at the pickup point",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    Container(
+                      height: 56,
+                      width: 50,
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        children: [
+                          CommonText(
+                            text: "5",
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            textColor: Colors.white,
+                          ),
+                          CommonText(
+                            text: "Min",
+                            fontSize: 12,
+                            textColor: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+                      ),
+                      Positioned(
+                        right: -10,
+                        bottom: -10,
+                        child: SvgPicture.asset(
+                          "packages/mynewpackage/${Assets.iconsCab}",
+                          height: 40,
+                          width: 40,
+                        ),
+                      ),
+                    ],
+                  ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                    children: [
+                      SizedBox(
+
+                      ),
+                      CommonText(
+                        text: Constants.driverName.toString(),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ],
+                  ),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                    children: [
+                      SizedBox(
+                      ),
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonText(text: Constants.vehicleNumber.toString()),
+                          CommonText(text: Constants.vehicleMake.toString()),
+                          Row(
+                            children: [
+                              SvgPicture.asset("packages/mynewpackage/${Assets.iconsStar}"),
+                              CommonText(text: "5.0"),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 3,
+                      child: CommonButton(
+                        onPressed: () {},
+                        text: "Cancel",
+                        width: MediaQuery.of(context).size.width * 0.6,
+                      ),
+                    ),
+                    Flexible(
+                      child: IconButton(
+                        icon: SvgPicture.asset("packages/mynewpackage/${Assets.iconsMessage}"),
+                        onPressed: () {},
+                      ),
+                    ),
+                    Flexible(
+                      child: IconButton(
+                        icon: SvgPicture.asset("packages/mynewpackage/${Assets.iconsCall}"),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
+              :cabController.cabStatus.value == CabStates.arrived ?
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25,horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CommonText(
+                  text: "Driver Arrived",
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+                ListTile(
+                  leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsLocation}",),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                    children: [
+                      Spacer(),
+                      CommonText(text: Constants.driverName.toString()),
+                      CommonText(text: Constants.vehicleNumber.toString()),
+                      CommonText(text: Constants.vehicleMake.toString())
+                    ],
+                  ),
+                ),
+
+
+                // CommonText(
+                //   text: subtitle,
+                //   textAlign: TextAlign.center,
+                // ),
+                SizedBox(
+                  height: 100,
+                )
+              ],
+            ),
+          ):
+          cabController.cabStatus.value == CabStates.completed ?
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CommonText(
+                  text: "Ride Completed",
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+                SvgPicture.asset( "packages/mynewpackage/${Assets.iconsLoadingDriver}",),
+
+
+                ListTile(
+                  leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsDollarCircle}",),
+
+                  title: CommonText(text: 'Cash',),
+                  subtitle: CommonText(text: controller.price.value.toString(),),
+                ),
+
+                // CommonText(
+                //   text: subtitle,
+                //   textAlign: TextAlign.center,
+                // ),
+                SizedBox(
+                  height: 100,
+                )
+              ],
+            ),
+          ):
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CommonText(
+                  text: "Looking for Near Drivers",
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+                SvgPicture.asset( "packages/mynewpackage/${Assets.iconsCab}",),
+                ListTile(
+                  leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsPickupDriverLoading}",),
+                  title: CommonText(text: 'Pick up',fontSize: 14,textColor: AppColors.textLightColor,),
+                  subtitle: CommonText(text: controller.selectedPickUp.value,fontWeight: FontWeight.w500,fontSize: 15),
+                ),
+                ListTile(
+                  leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsDestinationDriverLoading}",),
+
+                  title: CommonText(text: 'Drop off',fontSize: 14,textColor: AppColors.textLightColor,),
+                  subtitle: CommonText(text: controller.selectedDropOff.value,fontWeight: FontWeight.w500,fontSize: 15),
+                ),
+
+                ListTile(
+                  leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsDollarCircle}",),
+
+                  title: CommonText(text: 'Cash',),
+                  subtitle: CommonText(text: "₹ ${controller.price.value.toString()}",fontWeight: FontWeight.w500,fontSize: 15,),
+                ),
+                CommonButton(onPressed: (){}, text: "Cancel")
+
+                // CommonText(
+                //   text: subtitle,
+                //   textAlign: TextAlign.center,
+                // ),
+
+              ],
+            ),
+          );
+        }),
       ),
-      width: MediaQuery.of(context).size.width,
-      child: Obx(() {
-        String title = "Loading Your Nearest Driver";
-        String subtitle =
-            "Hang tight! We're connecting you with\nthe closest available driver. This may\ntake a moment.";
-        if (cabController.cabStatus.value == CabStates.cabAllocated ||
-            cabController.cabStatus.value ==
-                CabStates.cabApproachingPassenger) {
-          title = "Driver is headed your way";
-          subtitle = "Meet at the pickpoint";
-        }
-
-        if (cabController.cabStatus.value == CabStates.cabArrived) {
-          title = "Driver Arrived";
-          subtitle = "Meet at the pickpoint";
-        }
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 25),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                  "packages/mynewpackage/${Assets.iconsLoadingDriver}"),
-              CommonText(
-                text: title,
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-              ),
-              CommonText(
-                text: subtitle,
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 100,
-              )
-            ],
-          ),
-        );
-      }),
     );
   }
 }
@@ -1758,6 +2117,9 @@ class TripCompleteDialog extends StatelessWidget {
                 TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
+                      // CabMapController cabMapController = Get.find();
+                      // cabMapController.resetRide();
+                      // debugPrint("current status ${cabMapController.cabStatus.value}");
                     },
                     child: CommonText(
                       text: 'Close',
@@ -1769,5 +2131,15 @@ class TripCompleteDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+void restartApp() {
+  if (Platform.isAndroid) {
+    // For Android, use this code:
+    Process.run('adb', ['shell', 'am', 'restart']);
+  } else if (Platform.isIOS) {
+    // For iOS, you can't programmatically restart the app due to platform restrictions.
+    // Instead, consider using a state management solution to reset the app state.
+    // Alternatively, navigate to the initial route or reset state as needed.
   }
 }

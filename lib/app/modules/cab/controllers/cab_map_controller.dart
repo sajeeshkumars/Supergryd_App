@@ -4,6 +4,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:mynewpackage/app/modules/cab/cab_repository.dart';
+import 'package:mynewpackage/app/modules/cab/ride_track_response.dart';
+import 'package:mynewpackage/constants.dart';
 
 class CabMapController extends GetxController {
   Rx<CabStates> cabStatus = CabStates.initial.obs;
@@ -11,7 +15,11 @@ class CabMapController extends GetxController {
   Rx<int> markerIndex = 0.obs;
   final Set<Polyline> polylines = {};
   RxBool canExit = true.obs;
+  CabRepository cabRepository = CabRepository();
   // Index of the current position in _routeCoordinates
+
+  RideTrackResponse? trackResponse;
+  RxBool rideCompleted = false.obs;
 
   RxList<LatLng> routeCoordinates = <LatLng>[
     LatLng(10.048726, 76.318781),
@@ -63,6 +71,7 @@ class CabMapController extends GetxController {
     cabStatus(CabStates.initial);
     markerIndex(0);
     canExit(true);
+    // routeCoordinates.clear();
 
     carMarker(Marker(
       markerId: MarkerId('car'),
@@ -72,83 +81,209 @@ class CabMapController extends GetxController {
     ));
   }
 
-  onRideSelection() {
-    _setPolylines();
+  initial(){
+    // resetRide();
+    cabStatus(CabStates.initial);
+    onRideSelection();
   }
 
-  setCabApproachingPassenger() {
-    cabStatus(CabStates.cabApproachingPassenger);
-    Future.delayed(Duration(seconds: 2), () {
-      setCabArrived();
-    });
+  onRideSelection() {
+    debugPrint("inside reide selection up ${cabStatus.value}");
+    cabStatus(CabStates.rideSelection);
+    debugPrint("inside reide selection ${cabStatus.value}");
+
+    // _startMoving();
   }
+
+  onCabSearch(){
+    cabStatus(CabStates.searchingCab);
+
+    setCabAccepted();
+
+  }
+
+  setCabAccepted(){
+    _startMoving();
+
+    _setPolylines();
+
+  }
+
+  // setCabApproachingPassenger() {
+  //   _startMoving();
+  //
+  //   cabStatus(CabStates.arriving);
+  //   // Future.delayed(Duration(seconds: 2), () {
+  //   //   setCabArrived();
+  //   // });
+  // }
+  //
+  // setCabArrived() {
+  //   cabStatus(CabStates.arrived);
+  //
+  //   // Future.delayed(Duration(seconds: 2), () {
+  //   //   setCabJourneyStarted();
+  //   // });
+  // }
+  //
+  // setOtpVerified(){
+  //   cabStatus(CabStates.otpVerified);
+  // }
+  //
+  // setCabJourneyStarted(){
+  //   cabStatus(CabStates.inProgress);
+  // }
 
   setCabJourneyCompleted(Timer timer) {
     timer.cancel();
-    cabStatus(CabStates.cabReachedDestination);
+    cabStatus(CabStates.completed);
+    resetRide();
+    rideCompleted(true);
   }
 
-  setCabArrived() {
-    cabStatus(CabStates.cabArrived);
 
-    Future.delayed(Duration(seconds: 2), () {
-      setCabJourneyStarted();
-    });
-  }
 
-  setCabAllocated() {
-    cabStatus(CabStates.cabAllocated);
-    _setPolylines();
-    _startMoving();
-    // Future.delayed(Duration(seconds: 2), () {
-    //   setCabApproachingPassenger();
-    // });
-  }
+  // setCabAllocated() {
+  //   cabStatus(CabStates.cabAllocated);
+  //   _setPolylines();
+  //   _startMoving();
+  //   // Future.delayed(Duration(seconds: 2), () {
+  //   //   setCabApproachingPassenger();
+  //   // });
+  // }
 
-  setCabJourneyStarted() {
-    cabStatus(CabStates.cabStartedJourney);
 
-    onCabStartJourney();
-  }
 
-  onCabStartJourney() {
-    _startMoving();
-  }
+  // onCabStartJourney() {
+  //   _startMoving();
+  // }
 
-  onDestinationSelected() {
-    cabStatus(CabStates.rideSelection);
-    canExit(false);
-  }
+  // onDestinationSelected() {
+  //   cabStatus(CabStates.rideSelection);
+  //   canExit(false);
+  // }
 
   _startMoving() {
+    initial();
     int splitIndex = routeCoordinates.indexWhere(
         (coord) => coord.latitude == 10.055348 && coord.longitude == 76.321888);
 
     List<LatLng> firstPart = routeCoordinates.sublist(0, splitIndex);
     List<LatLng> secondPart = routeCoordinates.sublist(splitIndex);
-    Timer _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      log("startMoving called");
-      if (markerIndex < (routeCoordinates.length - 1)) {
-        markerIndex(markerIndex.value + 1);
-        carMarker.value = carMarker.value.copyWith(
-          positionParam: routeCoordinates[markerIndex.value],
-        );
-        if (firstPart.contains(carMarker.value.position)) {
-          setCabApproachingPassenger();
-        }
-        if (carMarker.value.position == LatLng(10.055348, 76.321888)) {
-          setCabArrived();
-        }
-        if (secondPart.contains(carMarker.value.position)) {
-          setCabJourneyStarted();
-        }
-        update();
-      } else {
-        setCabJourneyCompleted(timer);
-        update();
+    Timer _timer = Timer.periodic(const Duration(seconds: 5), (timer) async{
+
+      if(rideCompleted.value){
+        return ;
       }
+      ///api call
+      log("startMoving called");
+      // if (markerIndex < (routeCoordinates.length - 1)) {
+      //   for(var i=0; i< routeCoordinates.length; i++){
+
+         await trackRide();
+         debugPrint("print tracr ${CabStates}");
+
+          markerIndex(markerIndex.value + 1);
+          carMarker.value = carMarker.value.copyWith(
+            // positionParam: routeCoordinates[markerIndex.value],
+            positionParam: LatLng(double.parse(trackResponse!.driverLat.toString()), double.parse(trackResponse!.driverLng.toString())),
+          );
+          // if (firstPart.contains(carMarker.value.position)) {
+          //   setCabApproachingPassenger();
+          // }
+          // if (carMarker.value.position == LatLng(10.055348, 76.321888)) {
+          //   // setCabArrived();
+          //   setCabJourneyStarted();
+          //
+          // }
+          // if (secondPart.contains(carMarker.value.position)) {
+          //   setCabJourneyStarted();
+          // }
+          // if(carMarker.value.position == LatLng(10.064588, 76.351151) ){
+          //   setCabJourneyCompleted(timer);
+          // }
+        // }
+      // }
+      // else {
+      //   setCabJourneyCompleted(timer);
+      //   update();
+      // }
     });
   }
+
+
+  Future<dynamic> trackRide() async {
+    try {
+
+      // Assuming you have some state management logic to indicate loading
+      // isLoadingServices(true);
+
+      // Await the trackRide call and handle the response
+       trackResponse = await cabRepository.trackRide(requestId: Constants.requestId ?? 1);
+
+      if (trackResponse?.requestId != null) {
+        debugPrint("Driver Latitude: ${trackResponse?.driverLat}");
+        debugPrint("Updating value: ${Constants.long}");
+        Constants.driverName = trackResponse?.driverDetails?.name;
+        Constants.vehicleNumber = trackResponse?.vehicle?.licensePlate;
+        Constants.vehicleMake = trackResponse?.vehicle?.make;
+
+          switch (trackResponse?.rideStatus) {
+            case 1:
+              debugPrint("inside case 1");
+              return cabStatus(CabStates.accepted);
+            case 2:
+              debugPrint("inside case 2");
+
+              return cabStatus(CabStates.arriving);
+            case 3:
+              debugPrint("inside case 3");
+
+              return cabStatus(CabStates.arrived);
+            case 4:
+              debugPrint("inside case 4");
+
+              return cabStatus(CabStates.otpVerified);
+            case 5:
+              debugPrint("inside case 5");
+
+              return cabStatus(CabStates.inProgress);
+            case 6:
+              debugPrint("inside case 6");
+
+              return cabStatus(CabStates.completed);
+            default:
+              throw Exception("Unknown status: ");
+          }
+
+
+
+
+        // if(trackResponse.)
+
+        // routeCoordinates.addAll(LatLng(trackResponse.driverLat, trackResponse.driverLng),);
+        // Add any additional state updates or logic here
+        // e.g., update the map with driver's new location
+      } else {
+
+
+        return;
+
+
+        debugPrint("No request ID found in the response.");
+        // Handle the case where the request ID is null
+        // e.g., show an error message to the user
+      }
+    } catch (e) {
+      debugPrint("An error occurred while tracking the ride: $e");
+      // Handle the error appropriately
+      // e.g., show an error message to the user
+    } finally {
+      // Ensure that loading state is updated in all cases
+      // isLoadingServices(false);
+    }
+  }
+
 
   void _setPolylines() {
     // Split _routeCoordinates based on LatLng(10.055348, 76.321888)
@@ -192,9 +327,22 @@ enum CabStates {
   loading,
   rideSelection,
   searchingCab,
-  cabAllocated,
-  cabApproachingPassenger,
-  cabArrived,
-  cabStartedJourney,
-  cabReachedDestination,
+  accepted,
+  arriving,
+  arrived,
+  otpVerified,
+  inProgress,
+  completed
+
+
+  // cabAllocated,
+  // cabApproachingPassenger,
+  // cabArrived,
+  // cabStartedJourney,
+  // cabReachedDestination,
 }
+
+
+
+
+

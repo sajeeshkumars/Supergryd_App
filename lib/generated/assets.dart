@@ -11,7 +11,11 @@ class Assets {
   static const String bindingsRestaurantsAndDishesListingBinding = 'lib/app/modules/restaurants_and_dishes_listing/bindings/restaurants_and_dishes_listing_binding.dart';
   static const String bindingsRestaurantsDetailsBinding = 'lib/app/modules/restaurants_details/bindings/restaurants_details_binding.dart';
   static const String bindingsTripRatingBinding = 'lib/app/modules/trip_rating/bindings/trip_rating_binding.dart';
+  static const String cabCabRepository = 'lib/app/modules/cab/cab_repository.dart';
+  static const String cabCabService = 'lib/app/modules/cab/cab_service.dart';
+  static const String cabRideTrackResponse = 'lib/app/modules/cab/ride_track_response.dart';
   static const String controllersAddCashToWalletController = 'lib/app/modules/add_cash_to_wallet/controllers/add_cash_to_wallet_controller.dart';
+  static const String controllersCabMapController = 'lib/app/modules/cab/controllers/cab_map_controller.dart';
   static const String controllersColorController = 'lib/app/modules/home/controllers/color_controller.dart';
   static const String controllersFontController = 'lib/app/modules/home/controllers/font_controller.dart';
   static const String controllersHistoryController = 'lib/app/modules/history/controllers/history_controller.dart';
@@ -43,6 +47,7 @@ class Assets {
   static const String iconsClock = 'lib/assets/icons/clock.svg';
   static const String iconsCourier = 'lib/assets/icons/courier.svg';
   static const String iconsDateRangeLight = 'lib/assets/icons/Date_range_light.svg';
+  static const String iconsDestinationDriverLoading = 'lib/assets/icons/destinationDriverLoading.svg';
   static const String iconsDestinationIcon = 'lib/assets/icons/destinationIcon.svg';
   static const String iconsDollarCircle = 'lib/assets/icons/dollarCircle.svg';
   static const String iconsEconomyCar = 'lib/assets/icons/economyCar.svg';
@@ -72,6 +77,7 @@ class Assets {
   static const String iconsOfferIcon = 'lib/assets/icons/offerIcon.svg';
   static const String iconsOffice = 'lib/assets/icons/office.svg';
   static const String iconsOthers = 'lib/assets/icons/others.svg';
+  static const String iconsPickupDriverLoading = 'lib/assets/icons/pickupDriverLoading.svg';
   static const String iconsRecomentedService2 = 'lib/assets/icons/recomented_service2.svg';
   static const String iconsRecomentedService3 = 'lib/assets/icons/recomented_service3.svg';
   static const String iconsRecomentedServices1 = 'lib/assets/icons/recomented_services1.svg';
@@ -122,6 +128,7 @@ class Assets {
   static const String routesAppPages = 'lib/app/routes/app_pages.dart';
   static const String routesAppRoutes = 'lib/app/routes/app_routes.dart';
   static const String servicesApiService = 'lib/services/api_service.dart';
+  static const String servicesApiServiceExternal = 'lib/services/api_service_external.dart';
   static const String servicesConfig = 'lib/services/config.dart';
   static const String viewsAddCashToWalletView = 'lib/app/modules/add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
   static const String viewsHistoryView = 'lib/app/modules/history/views/history_view.dart';

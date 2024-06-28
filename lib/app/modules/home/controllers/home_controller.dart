@@ -62,7 +62,7 @@ class HomeController extends GetxController {
     "long": 77.720049,
   }.obs;
   RxString address = "Select Address".obs;
-  RxString selectedPickUp = "".obs;
+  RxString selectedPickUp = "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India".obs;
   RxString selectedDropOff = "".obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingServices = false.obs;
@@ -111,6 +111,7 @@ class HomeController extends GetxController {
 
   RxInt count = 0.obs;
   RxBool isDestinationSelected = false.obs;
+  CabMapController cabMapController = Get.put(CabMapController());
 
   @override
   void onInit() {
@@ -298,7 +299,9 @@ class HomeController extends GetxController {
                                     selectedDropOff.value =
                                         addressDescription[index].toString();
                                     isDestinationSelected.value = true;
+
                                     getEstimations();
+
                                   }
                                   Navigator.pop(context);
 
@@ -622,7 +625,10 @@ class HomeController extends GetxController {
         estimationList.addAll(value.data ?? []);
         isEstimationLoading(false);
         final cabController = Get.find<CabMapController>();
-        cabController.onDestinationSelected();
+        debugPrint("ride selection top ${cabController.cabStatus.value}");
+        cabController.onRideSelection();
+        debugPrint("ride selection after reset ${cabController.cabStatus.value}");
+
       } else {
         isEstimationLoading(false);
         getEstimations();
@@ -654,8 +660,9 @@ class HomeController extends GetxController {
     }).then((value) {
       if (value.status == 200) {
         isRequestSent.value = true;
+        Constants.requestId = value.data?.requestedId?.toInt();
         final cabController = Get.find<CabMapController>();
-        cabController.cabStatus(CabStates.searchingCab);
+        cabController.onCabSearch();
         // estimationList.addAll(value.data ?? []);
         isRequestRideLoading(false);
       } else {
