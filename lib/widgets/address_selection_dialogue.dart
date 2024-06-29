@@ -99,6 +99,7 @@ class _RideDialogState extends State<RideDialog> {
   Widget build(BuildContext context) {
     final cabController = Get.put(CabMapController());
     controller.selectedDropOff("");
+    debugPrint("cabstatus inside mapview ${cabController.cabStatus.value}");
     // cabController.resetRide();
     return Obx(() {
       return PopScope(
@@ -110,6 +111,7 @@ class _RideDialogState extends State<RideDialog> {
           switch (cabController.cabStatus.value) {
             case CabStates.initial:
               cabController.setExitTrue();
+              homeController.clearValues();
             case CabStates.loading:
             // TODO: Handle this case.
             case CabStates.rideSelection:
@@ -136,12 +138,14 @@ class _RideDialogState extends State<RideDialog> {
 
 
             case CabStates.completed:
-              restartApp();
+              homeController.clearValues();
+
 
 
               cabController.setCabJourneyCompleted;
               cabController.resetRide();
               cabController.setExitTrue();
+
           }
         },
         child: SafeArea(
@@ -202,7 +206,8 @@ class _RideDialogState extends State<RideDialog> {
                                         cabController.cabStatus.value) {
                                       CabStates.initial =>
                                         _DestinationSelection(),
-                                      CabStates.rideSelection => RideTypeChoose(
+                                      CabStates.rideSelection =>
+                                        RideTypeChoose(
                                           rideEstimationList:
                                               homeController.estimationList,
                                           rideType: rideType,
@@ -250,7 +255,7 @@ class _RideDialogState extends State<RideDialog> {
                                   });
                                 });
                           }
-                          TripDetails();
+                          // TripDetails();
 
                         },
                       );
@@ -551,8 +556,10 @@ class RideTypeChoose extends StatelessWidget {
             color: AppColors.white,
             surfaceTintColor: AppColors.white,
             elevation: 5,
-            child: controller.isRequestSent.value == false
-                ? Container(
+            child:
+            controller.isRequestSent.value == false
+                ?
+            Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: Colors.white,
@@ -810,281 +817,16 @@ class RideTypeChoose extends StatelessWidget {
                         ],
                       ),
                     ),
-                  )
-                : isDriverLoaded.value == false
-                    ? InkWell(
-                        onTap: () {
-                          isDriverLoaded.value = true;
-                        },
-                        child: const FindingDriver())
-                    : const TripDetails());
-        // child: controller.isRequestSent.value == false
-        //     ? Container(
-        //         decoration: const BoxDecoration(
-        //           borderRadius: BorderRadius.all(Radius.circular(20)),
-        //           color: Colors.white,
-        //         ),
-        //         width: MediaQuery.of(context).size.width,
-        //         padding: const EdgeInsets.symmetric(
-        //             vertical: 24, horizontal: 20),
-        //         child: SingleChildScrollView(
-        //           child: Column(
-        //             mainAxisAlignment: MainAxisAlignment.start,
-        //             mainAxisSize: MainAxisSize.min,
-        //             crossAxisAlignment: CrossAxisAlignment.start,
-        //             children: [
-        //               const CommonText(
-        //                 text: "Choose your ride",
-        //                 fontSize: 24,
-        //                 fontWeight: FontWeight.bold,
-        //               ),
-        //               const SizedBox(height: 10),
-        //               SizedBox(
-        //                 height: 150,
-        //                 child: ListView.builder(
-        //                   itemCount: rideEstimationList.length,
-        //                   itemBuilder: (context, index) {
-        //                     return Card(
-        //                       elevation: 1,
-        //                       surfaceTintColor: AppColors.white,
-        //                       color: AppColors.white,
-        //                       child: ListTile(
-        //                         leading: SvgPicture.network(
-        //                             rideEstimationList[index]
-        //                                 .image
-        //                                 .toString()),
-        //                         title: CommonText(
-        //                           text: rideEstimationList[index]
-        //                               .name
-        //                               .toString(),
-        //                           fontSize: 14,
-        //                           fontWeight: FontWeight.w600,
-        //                         ),
-        //                         subtitle: Row(
-        //                           children: [
-        //                             CommonText(
-        //                                 text:
-        //                                     "₹ ${rideEstimationList[index].estimation!.estimate.toString()}",
-        //                                 fontSize: 12,
-        //                                 fontWeight: FontWeight.w600),
-        //                             const SizedBox(
-        //                               width: 3,
-        //                             ),
-        //                             SvgPicture.asset(
-        //                                 "packages/mynewpackage/${Assets.iconsClock}",
-        //                                 color: AppColors.borderColor),
-        //                             // Icon(Icons.access_time,size: 16,color: AppColors.borderColor,),
-        //                             CommonText(
-        //                               text:
-        //                                   '${rideEstimationList[index].estimation!.duration.toString()} min',
-        //                               fontSize: 12,
-        //                               textColor: AppColors.borderColor,
-        //                             ),
-        //                             const SizedBox(
-        //                               width: 3,
-        //                             ),
-        //
-        //                             // Icon(Icons.person_pin,color: AppColors.borderColor,size: 16,),
-        //                             SvgPicture.asset(
-        //                               "packages/mynewpackage/${Assets.iconsSeats}",
-        //                               color: AppColors.borderColor,
-        //                             ),
-        //
-        //                             CommonText(
-        //                               text:
-        //                                   '${rideEstimationList[index].capacity.toString()} Seats',
-        //                               fontSize: 12,
-        //                               textColor: AppColors.borderColor,
-        //                             ),
-        //                           ],
-        //                         ),
-        //                         trailing: SizedBox(
-        //                           height: 23,
-        //                           width: 23,
-        //                           child: Obx(() {
-        //                             return Radio(
-        //                                 activeColor: AppColors.primaryColor,
-        //                                 value: index,
-        //                                 groupValue: selectedType?.value,
-        //                                 onChanged: (value) {
-        //                                   totalPrice?.value =
-        //                                       rideEstimationList[index]
-        //                                           .estimation!
-        //                                           .estimate!
-        //                                           .toDouble();
-        //                                   controller.price.value =
-        //                                       rideEstimationList[index]
-        //                                           .estimation!
-        //                                           .estimate!
-        //                                           .toDouble();
-        //                                   controller.fareId.value =
-        //                                       rideEstimationList[index]
-        //                                           .estimation!
-        //                                           .fareId
-        //                                           .toString();
-        //                                   controller.productId.value =
-        //                                       rideEstimationList[index]
-        //                                           .estimation!
-        //                                           .productId
-        //                                           .toString();
-        //                                   selectedType?.value = value!;
-        //                                 });
-        //                           }),
-        //                         ),
-        //                       ),
-        //                     );
-        //                   },
-        //                 ),
-        //               ),
-        //               const SizedBox(height: 20),
-        //               Row(
-        //                 children: [
-        //                   SvgPicture.asset(
-        //                     "packages/mynewpackage/${Assets.iconsKilometer}",
-        //                   ),
-        //                   SizedBox(
-        //                     width: MediaQuery.of(context).size.width * .01,
-        //                   ),
-        //                   CommonText(
-        //                       text:
-        //                           "${rideEstimationList.first.estimation?.distance} km"),
-        //                   SizedBox(
-        //                     width: MediaQuery.of(context).size.width * .15,
-        //                   ),
-        //                   SvgPicture.asset(
-        //                     "packages/mynewpackage/${Assets.iconsClock}",
-        //                   ),
-        //                   SizedBox(
-        //                     width: MediaQuery.of(context).size.width * .01,
-        //                   ),
-        //                   CommonText(
-        //                       text:
-        //                           "${rideEstimationList.first.estimation?.duration} min"),
-        //                   SizedBox(
-        //                     width: MediaQuery.of(context).size.width * .15,
-        //                   ),
-        //
-        //                   ///price tag
-        //                   SvgPicture.asset(
-        //                     "packages/mynewpackage/${Assets.iconsDollarCircle}",
-        //                   ),
-        //                   SizedBox(
-        //                     width: MediaQuery.of(context).size.width * .01,
-        //                   ),
-        //                   CommonText(text: '${totalPrice}'),
-        //                 ],
-        //               ),
-        //               SizedBox(
-        //                 height: MediaQuery.of(context).size.height * .02,
-        //               ),
-        //               Row(
-        //                 children: [
-        //                   Obx(() {
-        //                     return DropdownButton<String>(
-        //                       icon: const Icon(Icons.keyboard_arrow_down),
-        //                       value: selectedPaymentType.value,
-        //                       onChanged: (String? newValue) {
-        //                         selectedPaymentType.value = newValue!;
-        //                       },
-        //                       items: <String>['Apple Pay', 'Card', 'Cash']
-        //                           .map<DropdownMenuItem<String>>(
-        //                               (String value) {
-        //                         return DropdownMenuItem<String>(
-        //                           value: value,
-        //                           child: CommonText(
-        //                             text: value,
-        //                             fontSize: 12,
-        //                           ),
-        //                         );
-        //                       }).toList(),
-        //                     );
-        //                   }),
-        //                   Spacer(),
-        //                   InkWell(
-        //                     onTap: () {
-        //                       Navigator.of(context).push(MaterialPageRoute(
-        //                           builder: (context) =>
-        //                               const PromoCodeListingView()));
-        //                     },
-        //                     child: Container(
-        //                       height: 40,
-        //                       // width: 100,
-        //                       decoration: BoxDecoration(
-        //                           borderRadius: BorderRadius.circular(25),
-        //                           border: Border.all(
-        //                               color: AppColors.borderColor)),
-        //                       child: Padding(
-        //                         padding: const EdgeInsets.all(8.0),
-        //                         child: Row(
-        //                           children: [
-        //                             SvgPicture.asset(
-        //                               "packages/mynewpackage/${Assets.iconsOfferIcon}",
-        //                               height: 15,
-        //                             ),
-        //                             const SizedBox(
-        //                               width: 2,
-        //                             ),
-        //                             const CommonText(
-        //                               text: "Promo code",
-        //                               fontSize: 12,
-        //                             )
-        //                           ],
-        //                         ),
-        //                       ),
-        //                     ),
-        //                   )
-        //                 ],
-        //               ),
-        //               ElevatedButton(
-        //                   style: ButtonStyle(
-        //                     backgroundColor: MaterialStateProperty.all(
-        //                         AppColors.primaryColor),
-        //                     minimumSize:
-        //                         MaterialStateProperty.all(Size(340, 70)),
-        //                   ),
-        //                   onPressed: () {
-        //                     controller.requestRide();
-        //                   },
-        //                   child: Row(
-        //                     children: [
-        //                       CommonText(
-        //                         text: "Request",
-        //                         textColor: AppColors.white,
-        //                       ),
-        //
-        //                       ///price
-        //                       Spacer(),
-        //                       CommonText(
-        //                           text: "${totalPrice}",
-        //                           textColor: AppColors.white),
-        //                       SizedBox(
-        //                         width: 10,
-        //                       ),
-        //                       Container(
-        //                         height: 40,
-        //                         width: 40,
-        //                         decoration: BoxDecoration(
-        //                             color: AppColors.white,
-        //                             borderRadius:
-        //                                 BorderRadius.circular(30)),
-        //                         child: Icon(
-        //                           Icons.arrow_forward_ios,
-        //                           color: AppColors.primaryColor,
-        //                         ),
-        //                       )
-        //                     ],
-        //                   ))
-        //             ],
-        //           ),
-        //         ),
-        //       )
-        //     : isDriverLoaded.value == false
-        //         ? InkWell(
-        //             onTap: () {
-        //               isDriverLoaded.value = true;
-        //             },
-        //             child: const FindingDriver())
-        //         : const TripDetails());
+                  ):SizedBox()
+                // : isDriverLoaded.value == false
+                //     ? InkWell(
+                //         onTap: () {
+                //           isDriverLoaded.value = true;
+                //         },
+                //         child: const TripDetails())
+                //     : const TripDetails()
+        );
+
       }),
     );
   }
@@ -1326,286 +1068,286 @@ class TripDetails extends StatelessWidget {
   }
 }
 
-class FindingDriver extends StatefulWidget {
-  const FindingDriver({
-    super.key,
-  });
+// class FindingDriver extends StatefulWidget {
+//   const FindingDriver({
+//     super.key,
+//   });
+//
+//   @override
+//   State<FindingDriver> createState() => _FindingDriverState();
+// }
 
-  @override
-  State<FindingDriver> createState() => _FindingDriverState();
-}
-
-class _FindingDriverState extends State<FindingDriver> {
-  @override
-  Widget build(BuildContext context) {
-    final cabController = Get.put(CabMapController());
-
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          color: Colors.white,
-        ),
-        width: MediaQuery.of(context).size.width,
-        child: Obx(() {
-          // String title = "Looking for Near Driver";
-          // String subtitle =
-          //     "Hang tight! We're connecting you with\nthe closest available driver. This may\ntake a moment.";
-          // if (cabController.cabStatus.value == CabStates.cabAllocated ||
-          //     cabController.cabStatus.value ==
-          //         CabStates.cabApproachingPassenger) {
-          //   title = "Driver is headed your way";
-          //   subtitle = "Meet at the pickpoint";
-          // }
-          //
-          // if (cabController.cabStatus.value == CabStates.cabArrived) {
-          //   title = "Driver Arrived";
-          //   subtitle = "Meet at the pickpoint";
-          // }
-
-          return(cabController.cabStatus.value == CabStates.accepted ||
-                  cabController.cabStatus.value ==
-                      CabStates.arriving)?
-
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CommonText(
-                      text: "Meet at the pickup point",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    Container(
-                      height: 56,
-                      width: 50,
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Column(
-                        children: [
-                          CommonText(
-                            text: "5",
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            textColor: Colors.white,
-                          ),
-                          CommonText(
-                            text: "Min",
-                            fontSize: 12,
-                            textColor: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage('https://via.placeholder.com/150'),
-                      ),
-                      Positioned(
-                        right: -10,
-                        bottom: -10,
-                        child: SvgPicture.asset(
-                          "packages/mynewpackage/${Assets.iconsCab}",
-                          height: 40,
-                          width: 40,
-                        ),
-                      ),
-                    ],
-                  ),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                    children: [
-                      SizedBox(
-
-                      ),
-                      CommonText(
-                        text: Constants.driverName.toString(),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ],
-                  ),
-                  subtitle: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                    children: [
-                      SizedBox(
-                      ),
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CommonText(text: Constants.vehicleNumber.toString()),
-                          CommonText(text: Constants.vehicleMake.toString()),
-                          Row(
-                            children: [
-                              SvgPicture.asset("packages/mynewpackage/${Assets.iconsStar}"),
-                              CommonText(text: "5.0"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  children: [
-                    Flexible(
-                      flex: 3,
-                      child: CommonButton(
-                        onPressed: () {},
-                        text: "Cancel",
-                        width: MediaQuery.of(context).size.width * 0.6,
-                      ),
-                    ),
-                    Flexible(
-                      child: IconButton(
-                        icon: SvgPicture.asset("packages/mynewpackage/${Assets.iconsMessage}"),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Flexible(
-                      child: IconButton(
-                        icon: SvgPicture.asset("packages/mynewpackage/${Assets.iconsCall}"),
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )
-              :cabController.cabStatus.value == CabStates.arrived ?
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25,horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CommonText(
-                  text: "Driver Arrived",
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                ),
-                ListTile(
-                  leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsLocation}",),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-
-                    children: [
-                      Spacer(),
-                      CommonText(text: Constants.driverName.toString()),
-                      CommonText(text: Constants.vehicleNumber.toString()),
-                      CommonText(text: Constants.vehicleMake.toString())
-                    ],
-                  ),
-                ),
-
-
-                // CommonText(
-                //   text: subtitle,
-                //   textAlign: TextAlign.center,
-                // ),
-                SizedBox(
-                  height: 100,
-                )
-              ],
-            ),
-          ):
-          cabController.cabStatus.value == CabStates.completed ?
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 25),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CommonText(
-                  text: "Ride Completed",
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                ),
-                SvgPicture.asset( "packages/mynewpackage/${Assets.iconsLoadingDriver}",),
-
-
-                ListTile(
-                  leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsDollarCircle}",),
-
-                  title: CommonText(text: 'Cash',),
-                  subtitle: CommonText(text: controller.price.value.toString(),),
-                ),
-
-                // CommonText(
-                //   text: subtitle,
-                //   textAlign: TextAlign.center,
-                // ),
-                SizedBox(
-                  height: 100,
-                )
-              ],
-            ),
-          ):
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CommonText(
-                  text: "Looking for Near Drivers",
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                ),
-                SvgPicture.asset( "packages/mynewpackage/${Assets.iconsCab}",),
-                ListTile(
-                  leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsPickupDriverLoading}",),
-                  title: CommonText(text: 'Pick up',fontSize: 14,textColor: AppColors.textLightColor,),
-                  subtitle: CommonText(text: controller.selectedPickUp.value,fontWeight: FontWeight.w500,fontSize: 15),
-                ),
-                ListTile(
-                  leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsDestinationDriverLoading}",),
-
-                  title: CommonText(text: 'Drop off',fontSize: 14,textColor: AppColors.textLightColor,),
-                  subtitle: CommonText(text: controller.selectedDropOff.value,fontWeight: FontWeight.w500,fontSize: 15),
-                ),
-
-                ListTile(
-                  leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsDollarCircle}",),
-
-                  title: CommonText(text: 'Cash',),
-                  subtitle: CommonText(text: "₹ ${controller.price.value.toString()}",fontWeight: FontWeight.w500,fontSize: 15,),
-                ),
-                CommonButton(onPressed: (){}, text: "Cancel")
-
-                // CommonText(
-                //   text: subtitle,
-                //   textAlign: TextAlign.center,
-                // ),
-
-              ],
-            ),
-          );
-        }),
-      ),
-    );
-  }
-}
+// class _FindingDriverState extends State<FindingDriver> {
+//   @override
+//   Widget build(BuildContext context) {
+//     final cabController = Get.put(CabMapController());
+//
+//     return Padding(
+//       padding: const EdgeInsets.all(8.0),
+//       child: Container(
+//         decoration: const BoxDecoration(
+//           borderRadius: BorderRadius.all(Radius.circular(20)),
+//           color: Colors.white,
+//         ),
+//         width: MediaQuery.of(context).size.width,
+//         child: Obx(() {
+//           // String title = "Looking for Near Driver";
+//           // String subtitle =
+//           //     "Hang tight! We're connecting you with\nthe closest available driver. This may\ntake a moment.";
+//           // if (cabController.cabStatus.value == CabStates.cabAllocated ||
+//           //     cabController.cabStatus.value ==
+//           //         CabStates.cabApproachingPassenger) {
+//           //   title = "Driver is headed your way";
+//           //   subtitle = "Meet at the pickpoint";
+//           // }
+//           //
+//           // if (cabController.cabStatus.value == CabStates.cabArrived) {
+//           //   title = "Driver Arrived";
+//           //   subtitle = "Meet at the pickpoint";
+//           // }
+//
+//           return(cabController.cabStatus.value == CabStates.accepted ||
+//                   cabController.cabStatus.value ==
+//                       CabStates.arriving)?
+//
+//           Padding(
+//             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 15),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                   children: [
+//                     CommonText(
+//                       text: "Meet at the pickup point",
+//                       fontSize: 16,
+//                       fontWeight: FontWeight.w600,
+//                     ),
+//                     Container(
+//                       height: 56,
+//                       width: 50,
+//                       padding: const EdgeInsets.all(8.0),
+//                       decoration: BoxDecoration(
+//                         color: AppColors.primaryColor,
+//                         borderRadius: BorderRadius.circular(8),
+//                       ),
+//                       child: Column(
+//                         children: [
+//                           CommonText(
+//                             text: "5",
+//                             fontSize: 16,
+//                             fontWeight: FontWeight.bold,
+//                             textColor: Colors.white,
+//                           ),
+//                           CommonText(
+//                             text: "Min",
+//                             fontSize: 12,
+//                             textColor: Colors.white,
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//                 SizedBox(height: 20),
+//                 ListTile(
+//                   contentPadding: EdgeInsets.zero,
+//                   leading: Stack(
+//                     alignment: Alignment.center,
+//                     children: [
+//                       CircleAvatar(
+//                         radius: 30,
+//                         backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+//                       ),
+//                       Positioned(
+//                         right: -10,
+//                         bottom: -10,
+//                         child: SvgPicture.asset(
+//                           "packages/mynewpackage/${Assets.iconsCab}",
+//                           height: 40,
+//                           width: 40,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                   title: Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//
+//                     children: [
+//                       SizedBox(
+//
+//                       ),
+//                       CommonText(
+//                         text: Constants.driverName.toString(),
+//                         fontSize: 16,
+//                         fontWeight: FontWeight.bold,
+//                       ),
+//                     ],
+//                   ),
+//                   subtitle: Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//
+//                     children: [
+//                       SizedBox(
+//                       ),
+//
+//                       Column(
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+//                           CommonText(text: Constants.vehicleNumber.toString()),
+//                           CommonText(text: Constants.vehicleMake.toString()),
+//                           Row(
+//                             children: [
+//                               SvgPicture.asset("packages/mynewpackage/${Assets.iconsStar}"),
+//                               CommonText(text: "5.0"),
+//                             ],
+//                           ),
+//                         ],
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//                 SizedBox(height: 20),
+//                 Row(
+//                   children: [
+//                     Flexible(
+//                       flex: 3,
+//                       child: CommonButton(
+//                         onPressed: () {},
+//                         text: "Cancel",
+//                         width: MediaQuery.of(context).size.width * 0.6,
+//                       ),
+//                     ),
+//                     Flexible(
+//                       child: IconButton(
+//                         icon: SvgPicture.asset("packages/mynewpackage/${Assets.iconsMessage}"),
+//                         onPressed: () {},
+//                       ),
+//                     ),
+//                     Flexible(
+//                       child: IconButton(
+//                         icon: SvgPicture.asset("packages/mynewpackage/${Assets.iconsCall}"),
+//                         onPressed: () {},
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ],
+//             ),
+//           )
+//               :cabController.cabStatus.value == CabStates.arrived ?
+//           Padding(
+//             padding: const EdgeInsets.symmetric(vertical: 25,horizontal: 20),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 CommonText(
+//                   text: "Driver Arrived",
+//                   fontSize: 20,
+//                   fontWeight: FontWeight.w800,
+//                 ),
+//                 ListTile(
+//                   leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsLocation}",),
+//                   subtitle: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//
+//                     children: [
+//                       Spacer(),
+//                       CommonText(text: Constants.driverName.toString()),
+//                       CommonText(text: Constants.vehicleNumber.toString()),
+//                       CommonText(text: Constants.vehicleMake.toString())
+//                     ],
+//                   ),
+//                 ),
+//
+//
+//                 // CommonText(
+//                 //   text: subtitle,
+//                 //   textAlign: TextAlign.center,
+//                 // ),
+//                 SizedBox(
+//                   height: 100,
+//                 )
+//               ],
+//             ),
+//           ):
+//           cabController.cabStatus.value == CabStates.completed ?
+//           Padding(
+//             padding: const EdgeInsets.symmetric(vertical: 25),
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 CommonText(
+//                   text: "Ride Completed",
+//                   fontSize: 20,
+//                   fontWeight: FontWeight.w800,
+//                 ),
+//                 SvgPicture.asset( "packages/mynewpackage/${Assets.iconsLoadingDriver}",),
+//
+//
+//                 ListTile(
+//                   leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsDollarCircle}",),
+//
+//                   title: CommonText(text: 'Cash',),
+//                   subtitle: CommonText(text: controller.price.value.toString(),),
+//                 ),
+//
+//                 // CommonText(
+//                 //   text: subtitle,
+//                 //   textAlign: TextAlign.center,
+//                 // ),
+//                 SizedBox(
+//                   height: 100,
+//                 )
+//               ],
+//             ),
+//           ):
+//           Padding(
+//             padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 CommonText(
+//                   text: "Looking for Near Drivers",
+//                   fontSize: 20,
+//                   fontWeight: FontWeight.w800,
+//                 ),
+//                 SvgPicture.asset( "packages/mynewpackage/${Assets.iconsCab}",),
+//                 ListTile(
+//                   leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsPickupDriverLoading}",),
+//                   title: CommonText(text: 'Pick up',fontSize: 14,textColor: AppColors.textLightColor,),
+//                   subtitle: CommonText(text: controller.selectedPickUp.value,fontWeight: FontWeight.w500,fontSize: 15),
+//                 ),
+//                 ListTile(
+//                   leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsDestinationDriverLoading}",),
+//
+//                   title: CommonText(text: 'Drop off',fontSize: 14,textColor: AppColors.textLightColor,),
+//                   subtitle: CommonText(text: controller.selectedDropOff.value,fontWeight: FontWeight.w500,fontSize: 15),
+//                 ),
+//
+//                 ListTile(
+//                   leading: SvgPicture.asset( "packages/mynewpackage/${Assets.iconsDollarCircle}",),
+//
+//                   title: CommonText(text: 'Cash',),
+//                   subtitle: CommonText(text: "₹ ${controller.price.value.toString()}",fontWeight: FontWeight.w500,fontSize: 15,),
+//                 ),
+//                 CommonButton(onPressed: (){}, text: "Cancel")
+//
+//                 // CommonText(
+//                 //   text: subtitle,
+//                 //   textAlign: TextAlign.center,
+//                 // ),
+//
+//               ],
+//             ),
+//           );
+//         }),
+//       ),
+//     );
+//   }
+// }
 
 class _DestinationSelection extends StatelessWidget {
   const _DestinationSelection({
@@ -2116,9 +1858,21 @@ class TripCompleteDialog extends StatelessWidget {
                 ),
                 TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop();
-                      // CabMapController cabMapController = Get.find();
-                      // cabMapController.resetRide();
+                      // Navigator.of(context).pop();
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeView()),
+                            (route) => false,
+                      );
+
+
+                      CabMapController cabMapController = Get.find();
+                      HomeController homeController = Get.find();
+                      // cabMapController.initial();
+                      // cabMapController.dispose();
+
+                      cabMapController.resetRide();
+                      homeController.clearValues();
                       // debugPrint("current status ${cabMapController.cabStatus.value}");
                     },
                     child: CommonText(
@@ -2131,15 +1885,5 @@ class TripCompleteDialog extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-void restartApp() {
-  if (Platform.isAndroid) {
-    // For Android, use this code:
-    Process.run('adb', ['shell', 'am', 'restart']);
-  } else if (Platform.isIOS) {
-    // For iOS, you can't programmatically restart the app due to platform restrictions.
-    // Instead, consider using a state management solution to reset the app state.
-    // Alternatively, navigate to the initial route or reset state as needed.
   }
 }

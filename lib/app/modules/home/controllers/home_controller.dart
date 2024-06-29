@@ -670,4 +670,21 @@ class HomeController extends GetxController {
       }
     });
   }
+
+  void clearValues(){
+     address = "Select Address".obs;
+     selectedPickUp = "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India".obs;
+     selectedDropOff = "".obs;
+     isLoading = false.obs;
+     isLoadingServices = false.obs;
+     isEstimationLoading = false.obs;
+     isRequestRideLoading = false.obs;
+     isRequestSent = false.obs;
+     productId = "".obs;
+     fareId = "".obs;
+     price = 0.0.obs;
+     estimationList.clear();
+
+  }
 }
+
