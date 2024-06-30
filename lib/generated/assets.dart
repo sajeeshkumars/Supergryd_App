@@ -112,6 +112,11 @@ class Assets {
   static const String libDependecy = 'lib/dependecy.dart';
   static const String libMynewpackage = 'lib/mynewpackage.dart';
   static const String libSizeUtils = 'lib/size_utils.dart';
+  static const String mapDialogDestinationSelection = 'lib/widgets/map_dialog/destinationSelection.dart';
+  static const String mapDialogRideTypeChoose = 'lib/widgets/map_dialog/RideTypeChoose.dart';
+  static const String mapDialogSearchingCab = 'lib/widgets/map_dialog/searchingCab.dart';
+  static const String mapDialogTripCompleteDialog = 'lib/widgets/map_dialog/tripCompleteDialog.dart';
+  static const String mapDialogTripDetails = 'lib/widgets/map_dialog/TripDetails.dart';
   static const String modelAuthenticationRequestModel = 'lib/app/authentication/model/authentication_request_model.dart';
   static const String modelAuthenticationResponse = 'lib/app/authentication/model/authentication_response.dart';
   static const String modelCommonFontFile = 'lib/model/common_font_file.dart';
@@ -120,6 +125,7 @@ class Assets {
   static const String modelFontResponse = 'lib/model/font_response.dart';
   static const String modelGrydFeatures = 'lib/model/gryd_features.dart';
   static const String modelRefreshTokenModel = 'lib/model/refresh_token_model.dart';
+  static const String modelRideDetailsResponse = 'lib/app/modules/cab/model/ride_details_response.dart';
   static const String modelServiceCategoryResponse = 'lib/app/authentication/model/service_category_response.dart';
   static const String modelsRequestRideResponse = 'lib/app/modules/home/data/models/request_ride_response.dart';
   static const String modelsRideEstimationRequest = 'lib/app/modules/home/data/models/ride_estimation_request.dart';

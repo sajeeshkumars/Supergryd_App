@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 /// request_id : "50"
 /// status : "inprogress"
 /// message : "Driver on the way to destination location"
@@ -8,20 +9,24 @@ import 'dart:convert';
 /// driver_lng : "76.322294"
 /// driver_details : {"phone_number":"14155551214","rating":4.1,"picture_url":"https://supergrydapi.ritikasingh.site/uploads/drivers/driver-2.png","name":"S Kumar","sms_number":"14155551214"}
 /// vehicle : {"make":"BMW","picture_url":"https://supergrydapi.ritikasingh.site/uploads/vehicle/bmw.png","model":"7-series","license_plate":"KL-123 456"}
+/// otp : "123456"
 
 RideTrackResponse rideTrackResponseFromJson(String str) => RideTrackResponse.fromJson(json.decode(str));
 String rideTrackResponseToJson(RideTrackResponse data) => json.encode(data.toJson());
+
 class RideTrackResponse {
   RideTrackResponse({
-      String? requestId, 
-      String? status, 
-      String? message, 
-      String? code, 
-      num? rideStatus, 
-      String? driverLat, 
-      String? driverLng, 
-      DriverDetails? driverDetails, 
-      Vehicle? vehicle,}){
+    String? requestId,
+    String? status,
+    String? message,
+    String? code,
+    num? rideStatus,
+    String? driverLat,
+    String? driverLng,
+    DriverDetails? driverDetails,
+    Vehicle? vehicle,
+    String? otp,
+  }){
     _requestId = requestId;
     _status = status;
     _message = message;
@@ -31,7 +36,8 @@ class RideTrackResponse {
     _driverLng = driverLng;
     _driverDetails = driverDetails;
     _vehicle = vehicle;
-}
+    _otp = otp;
+  }
 
   RideTrackResponse.fromJson(dynamic json) {
     _requestId = json['request_id'];
@@ -43,7 +49,9 @@ class RideTrackResponse {
     _driverLng = json['driver_lng'];
     _driverDetails = json['driver_details'] != null ? DriverDetails.fromJson(json['driver_details']) : null;
     _vehicle = json['vehicle'] != null ? Vehicle.fromJson(json['vehicle']) : null;
+    _otp = json['otp'].toString();
   }
+
   String? _requestId;
   String? _status;
   String? _message;
@@ -53,25 +61,32 @@ class RideTrackResponse {
   String? _driverLng;
   DriverDetails? _driverDetails;
   Vehicle? _vehicle;
-RideTrackResponse copyWith({  String? requestId,
-  String? status,
-  String? message,
-  String? code,
-  num? rideStatus,
-  String? driverLat,
-  String? driverLng,
-  DriverDetails? driverDetails,
-  Vehicle? vehicle,
-}) => RideTrackResponse(  requestId: requestId ?? _requestId,
-  status: status ?? _status,
-  message: message ?? _message,
-  code: code ?? _code,
-  rideStatus: rideStatus ?? _rideStatus,
-  driverLat: driverLat ?? _driverLat,
-  driverLng: driverLng ?? _driverLng,
-  driverDetails: driverDetails ?? _driverDetails,
-  vehicle: vehicle ?? _vehicle,
-);
+  String? _otp;
+
+  RideTrackResponse copyWith({
+    String? requestId,
+    String? status,
+    String? message,
+    String? code,
+    num? rideStatus,
+    String? driverLat,
+    String? driverLng,
+    DriverDetails? driverDetails,
+    Vehicle? vehicle,
+    String? otp,
+  }) => RideTrackResponse(
+    requestId: requestId ?? _requestId,
+    status: status ?? _status,
+    message: message ?? _message,
+    code: code ?? _code,
+    rideStatus: rideStatus ?? _rideStatus,
+    driverLat: driverLat ?? _driverLat,
+    driverLng: driverLng ?? _driverLng,
+    driverDetails: driverDetails ?? _driverDetails,
+    vehicle: vehicle ?? _vehicle,
+    otp: otp ?? _otp,
+  );
+
   String? get requestId => _requestId;
   String? get status => _status;
   String? get message => _message;
@@ -81,6 +96,7 @@ RideTrackResponse copyWith({  String? requestId,
   String? get driverLng => _driverLng;
   DriverDetails? get driverDetails => _driverDetails;
   Vehicle? get vehicle => _vehicle;
+  String? get otp => _otp;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -97,9 +113,9 @@ RideTrackResponse copyWith({  String? requestId,
     if (_vehicle != null) {
       map['vehicle'] = _vehicle?.toJson();
     }
+    map['otp'] = _otp;
     return map;
   }
-
 }
 
 /// make : "BMW"
@@ -109,17 +125,19 @@ RideTrackResponse copyWith({  String? requestId,
 
 Vehicle vehicleFromJson(String str) => Vehicle.fromJson(json.decode(str));
 String vehicleToJson(Vehicle data) => json.encode(data.toJson());
+
 class Vehicle {
   Vehicle({
-      String? make, 
-      String? pictureUrl, 
-      String? model, 
-      String? licensePlate,}){
+    String? make,
+    String? pictureUrl,
+    String? model,
+    String? licensePlate,
+  }){
     _make = make;
     _pictureUrl = pictureUrl;
     _model = model;
     _licensePlate = licensePlate;
-}
+  }
 
   Vehicle.fromJson(dynamic json) {
     _make = json['make'];
@@ -127,19 +145,24 @@ class Vehicle {
     _model = json['model'];
     _licensePlate = json['license_plate'];
   }
+
   String? _make;
   String? _pictureUrl;
   String? _model;
   String? _licensePlate;
-Vehicle copyWith({  String? make,
-  String? pictureUrl,
-  String? model,
-  String? licensePlate,
-}) => Vehicle(  make: make ?? _make,
-  pictureUrl: pictureUrl ?? _pictureUrl,
-  model: model ?? _model,
-  licensePlate: licensePlate ?? _licensePlate,
-);
+
+  Vehicle copyWith({
+    String? make,
+    String? pictureUrl,
+    String? model,
+    String? licensePlate,
+  }) => Vehicle(
+    make: make ?? _make,
+    pictureUrl: pictureUrl ?? _pictureUrl,
+    model: model ?? _model,
+    licensePlate: licensePlate ?? _licensePlate,
+  );
+
   String? get make => _make;
   String? get pictureUrl => _pictureUrl;
   String? get model => _model;
@@ -153,7 +176,6 @@ Vehicle copyWith({  String? make,
     map['license_plate'] = _licensePlate;
     return map;
   }
-
 }
 
 /// phone_number : "14155551214"
@@ -164,19 +186,21 @@ Vehicle copyWith({  String? make,
 
 DriverDetails driverDetailsFromJson(String str) => DriverDetails.fromJson(json.decode(str));
 String driverDetailsToJson(DriverDetails data) => json.encode(data.toJson());
+
 class DriverDetails {
   DriverDetails({
-      String? phoneNumber, 
-      num? rating, 
-      String? pictureUrl, 
-      String? name, 
-      String? smsNumber,}){
+    String? phoneNumber,
+    num? rating,
+    String? pictureUrl,
+    String? name,
+    String? smsNumber,
+  }){
     _phoneNumber = phoneNumber;
     _rating = rating;
     _pictureUrl = pictureUrl;
     _name = name;
     _smsNumber = smsNumber;
-}
+  }
 
   DriverDetails.fromJson(dynamic json) {
     _phoneNumber = json['phone_number'];
@@ -185,22 +209,27 @@ class DriverDetails {
     _name = json['name'];
     _smsNumber = json['sms_number'];
   }
+
   String? _phoneNumber;
   num? _rating;
   String? _pictureUrl;
   String? _name;
   String? _smsNumber;
-DriverDetails copyWith({  String? phoneNumber,
-  num? rating,
-  String? pictureUrl,
-  String? name,
-  String? smsNumber,
-}) => DriverDetails(  phoneNumber: phoneNumber ?? _phoneNumber,
-  rating: rating ?? _rating,
-  pictureUrl: pictureUrl ?? _pictureUrl,
-  name: name ?? _name,
-  smsNumber: smsNumber ?? _smsNumber,
-);
+
+  DriverDetails copyWith({
+    String? phoneNumber,
+    num? rating,
+    String? pictureUrl,
+    String? name,
+    String? smsNumber,
+  }) => DriverDetails(
+    phoneNumber: phoneNumber ?? _phoneNumber,
+    rating: rating ?? _rating,
+    pictureUrl: pictureUrl ?? _pictureUrl,
+    name: name ?? _name,
+    smsNumber: smsNumber ?? _smsNumber,
+  );
+
   String? get phoneNumber => _phoneNumber;
   num? get rating => _rating;
   String? get pictureUrl => _pictureUrl;
@@ -216,5 +245,4 @@ DriverDetails copyWith({  String? phoneNumber,
     map['sms_number'] = _smsNumber;
     return map;
   }
-
 }

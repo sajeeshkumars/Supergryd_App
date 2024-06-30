@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/state_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart' as location;
 import 'package:mynewpackage/app/authentication/authentication_repo.dart';
@@ -72,6 +75,10 @@ class HomeController extends GetxController {
   RxString productId = "".obs;
   RxString fareId = "".obs;
   RxDouble price = 0.0.obs;
+  RxString carType = "".obs;
+  RxString rideDuration = "".obs;
+  RxString rideDistance = "".obs;
+  RxString seatCapacity = "".obs;
 
   // AppStorage storage = AppStorage();
   AuthRepository authRepository = Get.put(AuthRepository());
@@ -112,6 +119,7 @@ class HomeController extends GetxController {
   RxInt count = 0.obs;
   RxBool isDestinationSelected = false.obs;
   CabMapController cabMapController = Get.put(CabMapController());
+
 
   @override
   void onInit() {
@@ -659,10 +667,13 @@ class HomeController extends GetxController {
       'price': price.value
     }).then((value) {
       if (value.status == 200) {
+
         isRequestSent.value = true;
         Constants.requestId = value.data?.requestedId?.toInt();
+        debugPrint("Request id from api ${Constants.requestId}");
         final cabController = Get.find<CabMapController>();
         cabController.onCabSearch();
+
         // estimationList.addAll(value.data ?? []);
         isRequestRideLoading(false);
       } else {
@@ -676,7 +687,6 @@ class HomeController extends GetxController {
      selectedPickUp = "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India".obs;
      selectedDropOff = "".obs;
      isLoading = false.obs;
-     isLoadingServices = false.obs;
      isEstimationLoading = false.obs;
      isRequestRideLoading = false.obs;
      isRequestSent = false.obs;

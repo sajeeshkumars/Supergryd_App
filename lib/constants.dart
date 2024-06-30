@@ -15,5 +15,10 @@ class Constants{
  static String? driverName;
  static String? vehicleNumber;
  static String? vehicleMake;
+ static String? vehicleModel;
+ static String? vehicleImage;
+ static String? driverImage;
+ static String? rating;
+ static String? otp;
  // static String nameFirstLetter = "S";
 }

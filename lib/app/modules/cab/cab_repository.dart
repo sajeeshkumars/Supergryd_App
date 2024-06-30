@@ -1,19 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:mynewpackage/app/modules/cab/model/ride_details_response.dart';
 import 'package:mynewpackage/app/modules/cab/ride_track_response.dart';
-import 'package:mynewpackage/services/api_service_external.dart';
+import 'package:mynewpackage/services/api_service.dart';
+import 'package:mynewpackage/services/api_service_external.dart' as externalApi;
 
 
 import 'cab_service.dart';
 
 
 class CabRepository implements CabService {
-  ApiServiceExternal apiService = Get.find();
+  externalApi. ApiServiceExternal apiServiceExternal = Get.find();
+  ApiService apiService = Get.find();
 
-  Future<RideTrackResponse> trackRide({required int requestId}) async {
+  Future<RideTrackResponse> trackRide({required int requestId,int? otp}) async {
     RideTrackResponse rideTrackResponse;
-    Response response = await apiService.reqst(
-        url: '/booking/track-ride?request_id=$requestId&otp=1234', method: Method.GET);
+    Response response = await apiServiceExternal.reqst(
+        url: '/booking/track-ride?request_id=$requestId&otp=$otp', method: externalApi.Method.GET);
     debugPrint(response.statusCode.toString());
     try {
       debugPrint("response at try ${response.body}");
@@ -24,6 +27,23 @@ class CabRepository implements CabService {
       debugPrint(s.toString());
       debugPrint(e.toString());
       return RideTrackResponse(message: "Server Error", status: 401.toString());
+    }
+  }
+
+
+  Future<RideDetailsResponse> rideDetails({required int requestId}) async {
+    RideDetailsResponse rideDetailsResponse;
+    Response response = await apiService.reqst(
+        url: 'ride-hail/booking-deatils/$requestId', method: Method.GET);
+    debugPrint(response.statusCode.toString());
+    try {
+      debugPrint("response at try ${response.body}");
+      rideDetailsResponse = RideDetailsResponse.fromJson(response.body);
+      return rideDetailsResponse;
+    } catch (e, s) {
+      debugPrint(s.toString());
+      debugPrint(e.toString());
+      return RideDetailsResponse(message: "Server Error", status: 401);
     }
   }
 
