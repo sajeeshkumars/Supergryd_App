@@ -71,6 +71,7 @@ class CabMapController extends GetxController {
     cabStatus(CabStates.initial);
     markerIndex(0);
     canExit(true);
+    polylines.clear();
     // routeCoordinates.clear();
 
     carMarker(Marker(
@@ -290,7 +291,7 @@ class CabMapController extends GetxController {
       // else {
       //   setCabJourneyCompleted(timer);
       //   update();
-          await Future.delayed(Duration(seconds: 5));
+          await Future.delayed(Duration(seconds: 1));
       }
 
   }

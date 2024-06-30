@@ -549,6 +549,8 @@ class RideTypeChoose extends StatelessWidget {
     controller.price =
         (rideEstimationList.first.estimation?.estimate?.toDouble() ?? 0.0).obs;
 
+    CabMapController cabMapController = Get.find();
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Obx(() {
@@ -558,8 +560,7 @@ class RideTypeChoose extends StatelessWidget {
             elevation: 5,
             child:
             controller.isRequestSent.value == false
-                ?
-            Container(
+                ? Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: Colors.white,
@@ -817,14 +818,15 @@ class RideTypeChoose extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ):SizedBox()
-                // : isDriverLoaded.value == false
-                //     ? InkWell(
-                //         onTap: () {
-                //           isDriverLoaded.value = true;
-                //         },
-                //         child: const TripDetails())
-                //     : const TripDetails()
+                  )
+                :  SearchingCab(homeController: controller,)
+            // isDriverLoaded.value == false
+            //         ? InkWell(
+            //             onTap: () {
+            //               isDriverLoaded.value = true;
+            //             },
+            //             child: const TripDetails())
+            //         : const TripDetails()
         );
 
       }),

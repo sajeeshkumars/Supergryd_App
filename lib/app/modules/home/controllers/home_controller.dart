@@ -659,10 +659,11 @@ class HomeController extends GetxController {
       'price': price.value
     }).then((value) {
       if (value.status == 200) {
-        isRequestSent.value = true;
-        Constants.requestId = value.data?.requestedId?.toInt();
         final cabController = Get.find<CabMapController>();
         cabController.onCabSearch();
+        isRequestSent.value = true;
+        Constants.requestId = value.data?.requestedId?.toInt();
+
         // estimationList.addAll(value.data ?? []);
         isRequestRideLoading(false);
       } else {
@@ -676,7 +677,6 @@ class HomeController extends GetxController {
      selectedPickUp = "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India".obs;
      selectedDropOff = "".obs;
      isLoading = false.obs;
-     isLoadingServices = false.obs;
      isEstimationLoading = false.obs;
      isRequestRideLoading = false.obs;
      isRequestSent = false.obs;
