@@ -1,30 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
 
 import '../../app/modules/home/controllers/home_controller.dart';
 import '../../app_colors.dart';
 import '../../generated/assets.dart';
 import '../common_text.dart';
 import '../custom_button.dart';
+import 'cancel_reason.dart';
 
 class SearchingCab extends StatelessWidget {
-  const SearchingCab({
+   SearchingCab({
     super.key,
     required this.homeController,
   });
 
   final HomeController homeController;
+  CabMapController cabMapController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+    debugPrint("inside search cab ${cabMapController.isCancelClicked.value}");
+    return  Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           CommonText(
-            text: "Looking for Near Drivers",
+            text: "Finding Your Ride",
             fontSize: 20,
             fontWeight: FontWeight.w800,
           ),
@@ -73,7 +78,16 @@ class SearchingCab extends StatelessWidget {
               fontSize: 15,
             ),
           ),
-          CommonButton(onPressed: () {}, text: "Cancel")
+          CommonButton(onPressed: () {
+            cabMapController.isCancelClicked.value = true;
+            cabMapController.onCancel();
+
+            // Navigator.of(context).push(
+            //     MaterialPageRoute(
+            //         builder: (context) =>
+            //     CancelReason()));
+
+          }, text: "Cancel")
         ],
       ),
     );

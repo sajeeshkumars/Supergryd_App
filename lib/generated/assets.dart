@@ -55,6 +55,7 @@ class Assets {
   static const String iconsFood = 'lib/assets/icons/food.svg';
   static const String iconsFurniture = 'lib/assets/icons/furniture.svg';
   static const String iconsGifts = 'lib/assets/icons/gifts.svg';
+  static const String iconsGpsLocation = 'lib/assets/icons/gpsLocation.png';
   static const String iconsGrocery = 'lib/assets/icons/grocery.svg';
   static const String iconsHomeIcon = 'lib/assets/icons/homeIcon.svg';
   static const String iconsHomeService = 'lib/assets/icons/home-service.svg';
@@ -81,15 +82,19 @@ class Assets {
   static const String iconsRecomentedService2 = 'lib/assets/icons/recomented_service2.svg';
   static const String iconsRecomentedService3 = 'lib/assets/icons/recomented_service3.svg';
   static const String iconsRecomentedServices1 = 'lib/assets/icons/recomented_services1.svg';
+  static const String iconsRideTracker = 'lib/assets/icons/ride_tracker.jpg';
   static const String iconsSalonService = 'lib/assets/icons/salon-service.svg';
   static const String iconsSearchIcon = 'lib/assets/icons/search-icon.svg';
   static const String iconsSeats = 'lib/assets/icons/seats.svg';
   static const String iconsShopIcon = 'lib/assets/icons/shop_icon.svg';
+  static const String iconsSos = 'lib/assets/icons/sos.svg';
   static const String iconsStar = 'lib/assets/icons/Star.svg';
   static const String iconsStartLocation = 'lib/assets/icons/startLocation.svg';
   static const String iconsStaytuned2 = 'lib/assets/icons/staytuned2.svg';
   static const String iconsStepper = 'lib/assets/icons/stepper.svg';
   static const String iconsSuccess = 'lib/assets/icons/success.svg';
+  static const String iconsTrackPin = 'lib/assets/icons/track_pin.png';
+  static const String iconsTracker = 'lib/assets/icons/tracker.png';
   static const String iconsVeg = 'lib/assets/icons/veg.svg';
   static const String iconsWallet = 'lib/assets/icons/wallet.svg';
   static const String imagesBanner = 'lib/assets/images/banner.jpg';
@@ -112,6 +117,7 @@ class Assets {
   static const String libDependecy = 'lib/dependecy.dart';
   static const String libMynewpackage = 'lib/mynewpackage.dart';
   static const String libSizeUtils = 'lib/size_utils.dart';
+  static const String mapDialogCancelReason = 'lib/widgets/map_dialog/cancel_reason.dart';
   static const String mapDialogDestinationSelection = 'lib/widgets/map_dialog/destinationSelection.dart';
   static const String mapDialogRideTypeChoose = 'lib/widgets/map_dialog/RideTypeChoose.dart';
   static const String mapDialogSearchingCab = 'lib/widgets/map_dialog/searchingCab.dart';
@@ -119,6 +125,7 @@ class Assets {
   static const String mapDialogTripDetails = 'lib/widgets/map_dialog/TripDetails.dart';
   static const String modelAuthenticationRequestModel = 'lib/app/authentication/model/authentication_request_model.dart';
   static const String modelAuthenticationResponse = 'lib/app/authentication/model/authentication_response.dart';
+  static const String modelCanceReasonsResponse = 'lib/app/modules/cab/model/cance_reasons_response.dart';
   static const String modelCommonFontFile = 'lib/model/common_font_file.dart';
   static const String modelCreateUserRequestModel = 'lib/app/authentication/model/create_user_request_model.dart';
   static const String modelCreateUserResponse = 'lib/app/authentication/model/create_user_response.dart';

@@ -32,7 +32,7 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
           child: SingleChildScrollView(
             child: Column(
               children: [

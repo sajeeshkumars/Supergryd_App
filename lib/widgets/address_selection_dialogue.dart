@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,6 +13,7 @@ import 'package:mynewpackage/app/modules/home/views/home_view.dart';
 import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/widgets/custom_button.dart';
+import 'package:mynewpackage/widgets/map_dialog/cancel_reason.dart';
 
 import '../generated/assets.dart';
 import 'common_Image_view.dart';
@@ -84,6 +87,7 @@ class _RideDialogState extends State<RideDialog> {
     final cabController = Get.put(CabMapController());
     controller.selectedDropOff("");
     debugPrint("cabstatus inside mapview ${cabController.cabStatus.value}");
+    debugPrint("cancel click ${cabController.isCancelClicked.value}");
     return Obx(() {
       return PopScope(
         canPop: cabController.canExit.value,
@@ -120,12 +124,18 @@ class _RideDialogState extends State<RideDialog> {
               cabController.setCabJourneyCompleted;
               cabController.resetRide();
               cabController.setExitTrue();
+            case CabStates.canceled:
+              cabController.setExitFalse();
+
+          // TODO: Handle this case.
           }
         },
         child: SafeArea(
           child: Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(),
+            // appBar: AppBar(
+            //   backgroundColor: Colors.transparent,
+            //   surfaceTintColor: Colors.transparent,
+            // ),
             body: Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -143,87 +153,176 @@ class _RideDialogState extends State<RideDialog> {
                               });
                         });
                       }
-                      return GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                          target: cabController.routeCoordinates[0],
-                          zoom: 17,
-                        ),
-                        polylines: cabController.polylines,
-                        markers: {
-                          Marker(
-                            markerId: MarkerId('car'),
-                            position: cabController.carMarker.value.position,
-                          ),
-                          Marker(
-                              markerId: MarkerId('destination'),
-                              position: cabController
-                                  .destinationMarker.value.position),
-                        },
-                        onMapCreated: (controller) {
-                          log("onMap created called");
-                          setState(() {
-                            cabController.mapController = controller;
-                          });
+                      return Stack(
+                        children:[
 
-                          if (cabController.cabStatus != CabStates.completed) {
-                            showBottomSheet(
-                                enableDrag: false,
-                                context: context,
-                                builder: (context) {
-                                  return Obx(() {
-                                    return switch (
+                        cabController.customIcon == null ? CircularProgressIndicator():  GoogleMap(
+                            initialCameraPosition: CameraPosition(
+                              target: cabController.routeCoordinates[0],
+                              zoom: 17,
+                            ),
+
+                            polylines: cabController.polylines,
+                            markers: {
+                              Marker(
+                                markerId: MarkerId('car'),
+                                position: cabController.carMarker.value.position,
+                                icon: cabController.customIcon!
+                              ),
+                              Marker(
+                                  markerId: MarkerId('destination'),
+                                  position: cabController
+                                      .destinationMarker.value.position),
+                            },
+                            onMapCreated: (controller) {
+                              log("onMap created called");
+                              setState(() {
+                                cabController.mapController = controller;
+                              });
+
+                              if (cabController.cabStatus != CabStates.completed) {
+                                showBottomSheet(
+                                  backgroundColor: Colors.transparent,
+
+                                    enableDrag: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return Obx(() {
+                                        return switch (
                                         cabController.cabStatus.value) {
-                                      CabStates.initial =>
-                                        DestinationSelection(),
-                                      CabStates.rideSelection => RideTypeChoose(
-                                          rideEstimationList:
-                                              homeController.estimationList,
-                                          selectedType: selectedType,
-                                          selectedPaymentType:
-                                              selectedPaymentType,
-                                        ),
-                                      CabStates.loading =>
-                                        CircularProgressIndicator(),
-                                      // _ => Container()
-                                      // TODO: Handle this case.
-                                      CabStates.searchingCab => InkWell(
-                                          onTap: () {},
-                                          child: SearchingCab(
-                                              homeController: homeController)),
-                                      CabStates.accepted => TripDetails(),
-                                      // buildAcceptedWidget(context,"Meet at the pickup point".obs,false.obs),
-                                      CabStates.arriving => buildAcceptedWidget(
-                                          context,
-                                          'Driver is headed your way'.obs,
-                                          false.obs,
-                                          false.obs),
-                                      CabStates.arrived => buildAcceptedWidget(
-                                          context,
-                                          'Driver Arrived'.obs,
-                                          true.obs,
-                                          false.obs),
-                                      CabStates.otpVerified =>
-                                        buildAcceptedWidget(
-                                            context,
-                                            'Active Ride'.obs,
-                                            false.obs,
-                                            false.obs),
-                                      CabStates.inProgress =>
-                                        buildAcceptedWidget(
-                                            context,
-                                            'Active Ride'.obs,
-                                            false.obs,
-                                            true.obs),
-                                      CabStates.completed => Container(
-                                          height: 0,
-                                          width: 0,
+                                          CabStates.initial =>
+                                              DestinationSelection(),
+                                          CabStates.rideSelection => RideTypeChoose(
+                                            rideEstimationList:
+                                            homeController.estimationList,
+                                            selectedType: selectedType,
+                                            selectedPaymentType:
+                                            selectedPaymentType,
+                                          ),
+                                          CabStates.loading =>
+                                              CircularProgressIndicator(),
+                                        // _ => Container()
+                                        // TODO: Handle this case.
+                                          CabStates.searchingCab =>  SearchingCab(
+                                              homeController: homeController),
+                                          CabStates.accepted => TripDetails(),
+                                        // buildAcceptedWidget(context,"Meet at the pickup point".obs,false.obs),
+                                          CabStates.arriving => buildAcceptedWidget(
+                                              context,
+                                              'Your Ride Is On The Way'.obs,
+                                              false.obs,
+                                              false.obs),
+                                          CabStates.arrived => buildAcceptedWidget(
+                                              context,
+                                              'Your Ride Is Here'.obs,
+                                              true.obs,
+                                              false.obs),
+                                          CabStates.otpVerified =>
+                                              buildAcceptedWidget(
+                                                  context,
+                                                  'Ongoing Ride'.obs,
+                                                  false.obs,
+                                                  false.obs),
+                                          CabStates.inProgress =>
+                                              buildAcceptedWidget(
+                                                  context,
+                                                  'Ongoing Ride'.obs,
+                                                  false.obs,
+                                                  true.obs),
+                                          CabStates.completed => Container(
+                                            height: 0,
+                                            width: 0,
+                                          ),
+                                        CabStates.canceled => Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SizedBox(
+                                            height: 200,
+                                            child: Card(
+                                              elevation: 5,
+                                            color: AppColors.white,
+
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(15.0),
+                                                child: Column(
+                                                children: [
+                                                  CommonText(text: "Do you want to cancel the ride? ",
+                                                  fontSize: 15,fontWeight: FontWeight.w700,),
+                                                  CommonText(text: "You won't be charged a cancellation fee",
+                                                  textColor: AppColors.textLightColor,),
+                                                  Spacer(),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(child: CommonButton(onPressed: (){
+                                                        // cabController.onCabSearch();
+                                                        cabController.isCancelClicked.value = false;
+
+                                                        cabController.trackRide();
+
+                                                        Navigator.pop(context);
+                                                        // cabController.initial();
+
+                                                      }, text: "No")),
+                                                      SizedBox(width: 5,),
+                                                      Expanded(child: CommonButton(onPressed: (){
+
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                            CancelReason()));
+                                                      }, text: "Yes,Cancel"))
+                                                    ],
+                                                  )
+                                                ],
+                                                                                            ),
+                                              ),),
+                                          ),
                                         )
-                                    };
-                                  });
-                                });
-                          }
-                          // TripDetails();
-                        },
+                                        };
+                                      });
+                                    });
+                              }
+                              // TripDetails();
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              child: Align(
+                                child: Icon(Icons.arrow_back),
+                                alignment: Alignment.topLeft,
+                              ),
+                              onTap: (){
+                                if(cabController.cabStatus.value == CabStates.initial){
+
+                                  Navigator.pop(context);
+
+                                }else if (cabController.cabStatus.value == CabStates.rideSelection){
+                                  Navigator.pop(context);
+
+
+                                }else if (cabController.cabStatus.value == CabStates.searchingCab){
+                                  cabController.setExitFalse();
+
+                                }else{
+                                  cabController.setExitFalse();
+
+                                }
+
+                              },
+                            ),
+                          ),
+                          cabController.cabStatus.value == CabStates.inProgress ?  Positioned(
+                            child: Column(
+                              children: [
+                                SizedBox(height: 400,),
+                                SvgPicture.asset(
+                                    height: 80,
+                                    width: 80,
+                                    'packages/mynewpackage/${Assets.iconsSos}'),
+                              ],
+                            ),
+                          ):SizedBox.shrink(),
+                        ]
                       );
                     }),
                   ],

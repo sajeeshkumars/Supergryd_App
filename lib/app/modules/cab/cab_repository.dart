@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:mynewpackage/app/modules/cab/model/cance_reasons_response.dart';
 import 'package:mynewpackage/app/modules/cab/model/ride_details_response.dart';
 import 'package:mynewpackage/app/modules/cab/ride_track_response.dart';
 import 'package:mynewpackage/services/api_service.dart';
@@ -44,6 +45,22 @@ class CabRepository implements CabService {
       debugPrint(s.toString());
       debugPrint(e.toString());
       return RideDetailsResponse(message: "Server Error", status: 401);
+    }
+  }
+
+  Future<CancelReasonsResponse> rideCancelReasons() async {
+    CancelReasonsResponse cancelReasonsResponse;
+    Response response = await apiServiceExternal.reqst(
+        url: '/booking/cancel/reasons/rider', method: externalApi.Method.GET);
+    debugPrint(response.statusCode.toString());
+    try {
+      debugPrint("response at try ${response.body}");
+      cancelReasonsResponse = CancelReasonsResponse.fromJson(response.body);
+      return cancelReasonsResponse;
+    } catch (e, s) {
+      debugPrint(s.toString());
+      debugPrint(e.toString());
+      return CancelReasonsResponse();
     }
   }
 
