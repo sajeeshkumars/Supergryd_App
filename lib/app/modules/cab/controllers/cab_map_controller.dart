@@ -2,12 +2,17 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mynewpackage/app/modules/cab/cab_repository.dart';
+import 'package:mynewpackage/app/modules/cab/model/cance_reasons_response.dart';
 import 'package:mynewpackage/app/modules/cab/model/ride_details_response.dart';
 import 'package:mynewpackage/app/modules/cab/ride_track_response.dart';
 import 'package:mynewpackage/constants.dart';
+
+import '../../../../generated/assets.dart';
+
 
 class CabMapController extends GetxController {
   Rx<CabStates> cabStatus = CabStates.initial.obs;
@@ -19,8 +24,38 @@ class CabMapController extends GetxController {
   RideTrackResponse? trackResponse;
   RxBool rideCompleted = false.obs;
    GoogleMapController? mapController;
+   BitmapDescriptor? customIcon;
+  RxBool isCancelClicked = false.obs;
+  RxInt selectedCancelReason = 0.obs;
+   List<CancelReasonsResponse>? cancelReasonsResponse;
 
-   RideDetailsResponse? rideDetailsResponse;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    createCustomMarkerIcon();
+    rideCancelReasons();
+
+  }
+
+
+
+  RideDetailsResponse? rideDetailsResponse;
+
+
+  void createCustomMarkerIcon() async {
+    customIcon = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(40, 40)),
+      'packages/mynewpackage/${Assets.iconsTracker}',
+    );
+
+  }
+
+
+
+
+
 
 
 
@@ -90,6 +125,10 @@ class CabMapController extends GetxController {
     setCabAccepted();
   }
 
+  onCancel() {
+    cabStatus(CabStates.canceled);
+  }
+
   setCabAccepted() {
     _startMoving();
   }
@@ -102,50 +141,57 @@ class CabMapController extends GetxController {
   }
 
   Future<CabStates?> trackRide() async {
+    debugPrint("inside trackid ${isCancelClicked.value}");
     if (Constants.requestId == null) {
       debugPrint("Request ID is null");
       return null;
     }
 
     try {
-      trackResponse = await cabRepository.trackRide(requestId: Constants.requestId!,otp:trackResponse?.rideStatus == 3 ? int.parse(Constants.otp.toString()) : 1234);
+      if(!isCancelClicked.value){
+        trackResponse = await cabRepository.trackRide(
+            requestId: Constants.requestId!,
+            otp: trackResponse?.rideStatus == 3
+                ? int.parse(Constants.otp.toString())
+                : 1234);
 
-      if (trackResponse?.requestId != null) {
-        debugPrint("Driver Latitude: ${trackResponse?.driverLat}");
-        Constants.driverName = trackResponse?.driverDetails?.name;
-        Constants.vehicleNumber = trackResponse?.vehicle?.licensePlate;
-        Constants.vehicleMake = trackResponse?.vehicle?.make;
-        Constants.vehicleModel = trackResponse?.vehicle?.model;
-        Constants.vehicleImage = trackResponse?.vehicle?.pictureUrl;
-        Constants.driverImage = trackResponse?.driverDetails?.pictureUrl;
-        Constants.rating = trackResponse?.driverDetails?.rating.toString();
-        if(trackResponse?.rideStatus == 1){
-          Constants.otp = trackResponse?.otp;
-          debugPrint("otp inside ${ Constants.otp}");
-          getRideDetails();
+        if (trackResponse?.requestId != null) {
+          debugPrint("Driver Latitude: ${trackResponse?.driverLat}");
+          Constants.driverName = trackResponse?.driverDetails?.name;
+          Constants.vehicleNumber = trackResponse?.vehicle?.licensePlate;
+          Constants.vehicleMake = trackResponse?.vehicle?.make;
+          Constants.vehicleModel = trackResponse?.vehicle?.model;
+          Constants.vehicleImage = trackResponse?.vehicle?.pictureUrl;
+          Constants.driverImage = trackResponse?.driverDetails?.pictureUrl;
+          Constants.rating = trackResponse?.driverDetails?.rating.toString();
+          if (trackResponse?.rideStatus == 1) {
+            Constants.otp = trackResponse?.otp;
+            debugPrint("otp inside ${Constants.otp}");
+            getRideDetails();
+          }
 
+          switch (trackResponse?.rideStatus) {
+            case 1:
+              return cabStatus(CabStates.accepted);
+            case 2:
+              return cabStatus(CabStates.arriving);
+            case 3:
+              return cabStatus(CabStates.arrived);
+            case 4:
+              return cabStatus(CabStates.otpVerified);
+            case 5:
+              return cabStatus(CabStates.inProgress);
+            case 6:
+              return cabStatus(CabStates.completed);
+            default:
+              throw Exception("Unknown status: ");
+          }
+        } else {
+          return null;
         }
-
-        switch (trackResponse?.rideStatus) {
-          case 1:
-            return cabStatus(CabStates.accepted);
-          case 2:
-            return cabStatus(CabStates.arriving);
-          case 3:
-            return cabStatus(CabStates.arrived);
-          case 4:
-            return cabStatus(CabStates.otpVerified);
-          case 5:
-            return cabStatus(CabStates.inProgress);
-          case 6:
-            return cabStatus(CabStates.completed);
-          default:
-            throw Exception("Unknown status: ");
-        }
-      } else {
-        return null;
       }
-    } catch (e) {
+    }
+    catch (e) {
       return null;
     }
   }
@@ -153,6 +199,18 @@ class CabMapController extends GetxController {
   Future<void> getRideDetails() async {
     rideDetailsResponse =  await cabRepository.rideDetails(requestId: Constants.requestId!).then((value) {
       if (value.data != [] ) {
+
+      } else {
+
+      }
+    });
+  }
+
+  Future<void> rideCancelReasons() async {
+     await cabRepository.rideCancelReasons().then((value) {
+      if (value != [] ) {
+
+        // cancelReasonsResponse = List.of(value);
 
       } else {
 
@@ -169,6 +227,10 @@ class CabMapController extends GetxController {
 
     Timer.periodic(Duration(seconds: 5), (timer) async {
       if (rideCompleted.value) {
+        timer.cancel();
+        return;
+      }
+      if(isCancelClicked.value){
         timer.cancel();
         return;
       }
@@ -236,4 +298,5 @@ enum CabStates {
   otpVerified,
   inProgress,
   completed,
+  canceled
 }
