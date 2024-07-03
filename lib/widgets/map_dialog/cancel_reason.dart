@@ -36,37 +36,41 @@ class CancelReason extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back)),
+                    IconButton(onPressed: (){
+                      Navigator.pop(context);
+                    }, icon: Icon(Icons.arrow_back)),
                     SizedBox(width: MediaQuery.of(context).size.width/10,),
                     CommonText(text: 'Cancel Booking',fontSize: 18,fontWeight: FontWeight.w700,)
                   ],
                 ),
                 CommonText(text: 'Please select the reason for cancellation'),
                 SizedBox(
-                  height: 250,
-                  child: ListView.builder(
-                    itemCount: cabMapController.cancelReasons?.length,
-                      itemBuilder: (context, index){
-                    return Row(
-                      children: [
-                        Obx(
-                           () {
-                            return Radio(    value: index,
-                                activeColor: AppColors.primaryColor,
-                                groupValue: cabMapController.selectedCancelReason.value, onChanged: (value){
-                              debugPrint("radio clicked");
-                                  cabMapController.selectedCancelReason.value = value!;
-                                  cabMapController.selectedReasonId.value = cabMapController.cancelReasons![index].reasonId!.toInt();
-                                  debugPrint("asd ${cabMapController.selectedReasonId.value}");
-                                  debugPrint("asd2 ${cabMapController.cancelReasons![index].reasonId!.toInt()}");
-                                  cabMapController.selectedCancelReasonText.value = cabMapController.cancelReasons![index].reason.toString();
-                                });
-                          }
-                        ),
-                        CommonText(text: cabMapController.cancelReasons![index].reason.toString(),fontSize: 16,fontWeight: FontWeight.w500,)
-                      ],
-                    );
-                  }),
+                  child: Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: cabMapController.cancelReasons?.length,
+                        itemBuilder: (context, index){
+                      return Row(
+                        children: [
+                          Obx(
+                             () {
+                              return Radio(    value: index,
+                                  activeColor: AppColors.primaryColor,
+                                  groupValue: cabMapController.selectedCancelReason.value, onChanged: (value){
+                                debugPrint("radio clicked");
+                                    cabMapController.selectedCancelReason.value = value!;
+                                    cabMapController.selectedReasonId.value = cabMapController.cancelReasons![index].reasonId!.toInt();
+                                    debugPrint("asd ${cabMapController.selectedReasonId.value}");
+                                    debugPrint("asd2 ${cabMapController.cancelReasons![index].reasonId!.toInt()}");
+                                    cabMapController.selectedCancelReasonText.value = cabMapController.cancelReasons![index].reason.toString();
+                                  });
+                            }
+                          ),
+                          CommonText(text: cabMapController.cancelReasons![index].reason.toString(),fontSize: 16,fontWeight: FontWeight.w500,)
+                        ],
+                      );
+                    }),
+                  ),
                 ),
                 // SizedBox(height: 10,),
 

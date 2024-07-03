@@ -246,7 +246,7 @@ class CabMapController extends GetxController {
     }
     log("startMoving called");
 
-    Timer.periodic(Duration(seconds: 1), (timer) async {
+    Timer.periodic(Duration(seconds: 3), (timer) async {
       if (rideCompleted.value) {
         timer.cancel();
         return;
