@@ -13,6 +13,7 @@ import 'package:mynewpackage/app/modules/home/views/home_view.dart';
 import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/widgets/custom_button.dart';
+import 'package:mynewpackage/widgets/custom_ride_button.dart';
 import 'package:mynewpackage/widgets/map_dialog/cancel_reason.dart';
 
 import '../generated/assets.dart';
@@ -252,24 +253,43 @@ class _RideDialogState extends State<RideDialog> {
                                                   Spacer(),
                                                   Row(
                                                     children: [
-                                                      Expanded(child: CommonButton(onPressed: (){
-                                                        // cabController.onCabSearch();
-                                                        cabController.isCancelClicked.value = false;
+                                                      Expanded(
+                                                          child:
+                                                          CustomRideButton(text: 'No', onTap: (){
+                                                              cabController.onCabSearch();
+                                                              cabController.isCancelClicked.value = false;
 
-                                                        cabController.trackRide();
+                                                              cabController.trackRide();
+                                                          },)
+                                                      //     CommonButton(onPressed: (){
+                                                      //   cabController.onCabSearch();
+                                                      //   cabController.isCancelClicked.value = false;
+                                                      //
+                                                      //   cabController.trackRide();
+                                                      //
+                                                      //   // Navigator.pop(context);
+                                                      //   // cabController.initial();
+                                                      //
+                                                      // }, text: "No")
 
-                                                        Navigator.pop(context);
-                                                        // cabController.initial();
-
-                                                      }, text: "No")),
+                                                      ),
                                                       SizedBox(width: 5,),
-                                                      Expanded(child: CommonButton(onPressed: (){
+                                                      Expanded(child:
+                                                          CustomRideButton(text: 'Yes,Cancel', onTap: (){
+                                                              Navigator.of(context).push(
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                  CancelReason()));
+                                                          },)
+                                                      // CommonButton(onPressed: (){
+                                                      //
+                                                      //   Navigator.of(context).push(
+                                                      //       MaterialPageRoute(
+                                                      //           builder: (context) =>
+                                                      //       CancelReason()));
+                                                      // }, text: "Yes,Cancel")
 
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                            CancelReason()));
-                                                      }, text: "Yes,Cancel"))
+                                                      )
                                                     ],
                                                   )
                                                 ],
@@ -312,6 +332,7 @@ class _RideDialogState extends State<RideDialog> {
                             ),
                           ),
                           cabController.cabStatus.value == CabStates.inProgress ?  Positioned(
+                            bottom: 300,
                             child: Column(
                               children: [
                                 SizedBox(height: 400,),
@@ -372,177 +393,181 @@ class _RideDialogState extends State<RideDialog> {
     });
   }
 
-  Card buildAcceptedWidget(BuildContext context, RxString text,
+  Widget buildAcceptedWidget(BuildContext context, RxString text,
       RxBool isOtpShow, RxBool rideStarted) {
-    return Card(
-      color: AppColors.white,
-      surfaceTintColor: AppColors.white,
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Obx(() {
-                  return CommonText(
-                    text: text.value,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  );
-                }),
-                !isOtpShow.value
-                    ? Container(
-                        height: 56,
-                        width: 50,
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          children: [
-                            CommonText(
-                              text: "5",
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              textColor: Colors.white,
-                            ),
-                            CommonText(
-                              text: "Min",
-                              fontSize: 12,
-                              textColor: Colors.white,
-                            ),
-                          ],
-                        ),
-                      )
-                    : Row(
-                        children: List.generate(
-                            4,
-                            (index) => Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Container(
-                                    height: 56,
-                                    width: 50,
-                                    padding: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.primaryColor,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Center(
-                                      child: CommonText(
-                                        text: Constants.otp!.split('')[index],
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        textColor: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        color: AppColors.white,
+        surfaceTintColor: AppColors.white,
+        elevation: 10,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Obx(() {
+                    return CommonText(
+                      text: text.value,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    );
+                  }),
+                  !isOtpShow.value
+                      ? Container(
+                          height: 56,
+                          width: 50,
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryColor,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            children: [
+                              CommonText(
+                                text: "5",
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                textColor: Colors.white,
+                              ),
+                              CommonText(
+                                text: "Min",
+                                fontSize: 12,
+                                textColor: Colors.white,
+                              ),
+                            ],
+                          ),
+                        )
+                      : Row(
+                          children: List.generate(
+                              4,
+                              (index) => Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Container(
+                                      height: 56,
+                                      width: 50,
+                                      padding: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primaryColor,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Center(
+                                        child: CommonText(
+                                          text: Constants.otp!.split('')[index],
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          textColor: Colors.white,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                )),
-                      )
-              ],
-            ),
-            SizedBox(height: 20),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    right: -10,
-                    bottom: -10,
-                    child: CommonImageView(
-                      height: 50,
-                      width: 50,
-                      url: Constants.vehicleImage,
+                                  )),
+                        )
+                ],
+              ),
+              SizedBox(height: 20),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      right: -10,
+                      bottom: -10,
+                      child: CommonImageView(
+                        height: 50,
+                        width: 50,
+                        url: Constants.vehicleImage,
+                      ),
                     ),
-                  ),
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      Constants.driverImage.toString(),
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        Constants.driverImage.toString(),
+                      ),
+                      radius: 50,
                     ),
-                    radius: 50,
-                  ),
-                ],
-              ),
-              title: Row(
-                children: [
-                  SizedBox(
-                    width: 80,
-                  ),
-                  CommonText(
-                    text: Constants.driverName.toString(),
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ],
-              ),
-              subtitle: Row(
-                children: [
-                  SizedBox(
-                    width: 80,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CommonText(
-                        text: Constants.vehicleNumber.toString(),
-                        fontSize: 18,
-                      ),
-                      CommonText(
-                        text: Constants.vehicleMake.toString() +
-                            ' ' +
-                            Constants.vehicleModel.toString(),
-                        fontSize: 16,
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(
-                              "packages/mynewpackage/${Assets.iconsStar}"),
-                          CommonText(text: Constants.rating.toString()),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                  flex: 3,
-                  child: CommonButton(
-                    onPressed: () {},
-                    text: "Cancel",
-                    width: MediaQuery.of(context).size.width * 0.6,
-                  ),
+                  ],
                 ),
-                !rideStarted.value
-                    ? Flexible(
-                        child: IconButton(
-                          icon: SvgPicture.asset(
-                              "packages/mynewpackage/${Assets.iconsMessage}"),
-                          onPressed: () {},
+                title: Row(
+                  children: [
+                    SizedBox(
+                      width: 80,
+                    ),
+                    CommonText(
+                      text: Constants.driverName.toString(),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ],
+                ),
+                subtitle: Row(
+                  children: [
+                    SizedBox(
+                      width: 80,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CommonText(
+                          text: Constants.vehicleNumber.toString(),
+                          fontSize: 18,
                         ),
-                      )
-                    : SizedBox.shrink(),
-                !rideStarted.value
-                    ? Flexible(
-                        child: IconButton(
-                          icon: SvgPicture.asset(
-                              "packages/mynewpackage/${Assets.iconsCall}"),
-                          onPressed: () {},
+                        CommonText(
+                          text: Constants.vehicleMake.toString() +
+                              ' ' +
+                              Constants.vehicleModel.toString(),
+                          fontSize: 16,
                         ),
-                      )
-                    : SizedBox.shrink()
-              ],
-            ),
-          ],
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                                "packages/mynewpackage/${Assets.iconsStar}"),
+                            CommonText(text: Constants.rating.toString()),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    flex: 3,
+                    child: CustomRideButton(text: 'Cancel', onTap: (){
+                      CabMapController cabMapController = Get.find();
+                      cabMapController.cabStatus(CabStates.canceled);
+
+                      cabMapController.isCancelClicked.value = true;
+                    },),
+                  ),
+                  !rideStarted.value
+                      ? Flexible(
+                          child: IconButton(
+                            icon: SvgPicture.asset(
+                                "packages/mynewpackage/${Assets.iconsMessage}"),
+                            onPressed: () {},
+                          ),
+                        )
+                      : SizedBox.shrink(),
+                  !rideStarted.value
+                      ? Flexible(
+                          child: IconButton(
+                            icon: SvgPicture.asset(
+                                "packages/mynewpackage/${Assets.iconsCall}"),
+                            onPressed: () {},
+                          ),
+                        )
+                      : SizedBox.shrink()
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

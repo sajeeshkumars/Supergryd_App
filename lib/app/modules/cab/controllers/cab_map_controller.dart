@@ -2,17 +2,17 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mynewpackage/app/modules/cab/cab_repository.dart';
-import 'package:mynewpackage/app/modules/cab/model/cance_reasons_response.dart';
 import 'package:mynewpackage/app/modules/cab/model/ride_details_response.dart';
 import 'package:mynewpackage/app/modules/cab/ride_track_response.dart';
 import 'package:mynewpackage/constants.dart';
 
 import '../../../../generated/assets.dart';
-
+import '../../home/controllers/home_controller.dart';
+import '../../home/views/home_view.dart';
+import '../model/cancel_reasons_response.dart';
 
 class CabMapController extends GetxController {
   Rx<CabStates> cabStatus = CabStates.initial.obs;
@@ -23,12 +23,14 @@ class CabMapController extends GetxController {
   CabRepository cabRepository = CabRepository();
   RideTrackResponse? trackResponse;
   RxBool rideCompleted = false.obs;
-   GoogleMapController? mapController;
-   BitmapDescriptor? customIcon;
+  GoogleMapController? mapController;
+  BitmapDescriptor? customIcon;
   RxBool isCancelClicked = false.obs;
   RxInt selectedCancelReason = 0.obs;
-   List<CancelReasonsResponse>? cancelReasonsResponse;
-
+  List<CancelReasons>? cancelReasons;
+  RxBool isRideCancelLoading = false.obs;
+  RxInt selectedReasonId = 0.obs;
+  RxString selectedCancelReasonText = ''.obs;
 
   @override
   void onInit() {
@@ -36,28 +38,16 @@ class CabMapController extends GetxController {
     super.onInit();
     createCustomMarkerIcon();
     rideCancelReasons();
-
   }
 
-
-
   RideDetailsResponse? rideDetailsResponse;
-
 
   void createCustomMarkerIcon() async {
     customIcon = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(size: Size(40, 40)),
-      'packages/mynewpackage/${Assets.iconsTracker}',
+      'packages/mynewpackage/${Assets.iconsCarTrackIcon}',
     );
-
   }
-
-
-
-
-
-
-
 
   RxList<LatLng> routeCoordinates = <LatLng>[
     LatLng(10.048726, 76.318781),
@@ -82,8 +72,6 @@ class CabMapController extends GetxController {
     );
   }
 
-
-
   @override
   void dispose() {
     super.dispose();
@@ -97,11 +85,14 @@ class CabMapController extends GetxController {
 
   resetRide() {
     cabStatus(CabStates.initial);
+     isCancelClicked = false.obs;
+
     markerIndex(0);
     canExit(true);
     polylines.clear();
     routeCoordinates.clear(); // Reset the route coordinates
-    routeCoordinates.add(LatLng(10.048726, 76.318781)); // Re-add the starting position
+    routeCoordinates
+        .add(LatLng(10.048726, 76.318781)); // Re-add the starting position
 
     carMarker(Marker(
       markerId: MarkerId('car'),
@@ -148,7 +139,7 @@ class CabMapController extends GetxController {
     }
 
     try {
-      if(!isCancelClicked.value){
+      if (!isCancelClicked.value) {
         trackResponse = await cabRepository.trackRide(
             requestId: Constants.requestId!,
             otp: trackResponse?.rideStatus == 3
@@ -190,30 +181,60 @@ class CabMapController extends GetxController {
           return null;
         }
       }
-    }
-    catch (e) {
+    } catch (e) {
       return null;
     }
   }
 
   Future<void> getRideDetails() async {
-    rideDetailsResponse =  await cabRepository.rideDetails(requestId: Constants.requestId!).then((value) {
-      if (value.data != [] ) {
-
-      } else {
-
-      }
+    rideDetailsResponse = await cabRepository
+        .rideDetails(requestId: Constants.requestId!)
+        .then((value) {
+      if (value.data != []) {
+      } else {}
     });
   }
 
   Future<void> rideCancelReasons() async {
-     await cabRepository.rideCancelReasons().then((value) {
-      if (value != [] ) {
+    await cabRepository.rideCancelReasons().then((value) {
+      if (value.data != []) {
+        cancelReasons = value.data;
+        selectedCancelReasonText.value = cancelReasons?.first.reason ?? "";
+        selectedReasonId.value = cancelReasons?.first.reasonId?.toInt() ?? 1;
+      } else {}
+    });
+  }
 
-        // cancelReasonsResponse = List.of(value);
+  Future<void> cancelRide({required BuildContext context ,required int requestId,required int reasonId,required String reason}) async {
+    isRideCancelLoading(true);
+    await cabRepository.cancelRide({
+      "request_id":requestId,
+      "reason_id":reasonId,
+      "reason":reason
+    }).then((value) {
+      if (value.status == 200) {
+        isRideCancelLoading(false);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+            value.message.toString(),
+      )));
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeView()),
+              (route) => false,
+        );
 
+        CabMapController cabMapController = Get.find();
+        HomeController homeController = Get.find();
+
+        cabMapController.resetRide();
+        homeController.clearValues();
       } else {
-
+        isRideCancelLoading(false);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              value.message.toString(),
+            )));
       }
     });
   }
@@ -225,12 +246,12 @@ class CabMapController extends GetxController {
     }
     log("startMoving called");
 
-    Timer.periodic(Duration(seconds: 5), (timer) async {
+    Timer.periodic(Duration(seconds: 1), (timer) async {
       if (rideCompleted.value) {
         timer.cancel();
         return;
       }
-      if(isCancelClicked.value){
+      if (isCancelClicked.value) {
         timer.cancel();
         return;
       }
@@ -238,7 +259,6 @@ class CabMapController extends GetxController {
 
       var response = await trackRide();
       debugPrint("after api call");
-
 
       if (response != null) {
         markerIndex(markerIndex.value + 1);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
+import 'package:mynewpackage/widgets/custom_ride_button.dart';
 
 import '../../app/modules/home/controllers/home_controller.dart';
 import '../../app_colors.dart';
@@ -78,9 +79,11 @@ class SearchingCab extends StatelessWidget {
               fontSize: 15,
             ),
           ),
-          CommonButton(onPressed: () {
+
+          CustomRideButton(onTap: () {
+            cabMapController.cabStatus(CabStates.canceled);
+
             cabMapController.isCancelClicked.value = true;
-            cabMapController.onCancel();
 
             // Navigator.of(context).push(
             //     MaterialPageRoute(

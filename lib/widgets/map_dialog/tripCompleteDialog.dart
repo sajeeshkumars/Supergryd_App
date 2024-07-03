@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:mynewpackage/app/modules/history/controllers/history_controller.dart';
 
 import '../../app/modules/cab/controllers/cab_map_controller.dart';
 import '../../app/modules/history/views/history_view.dart';
@@ -245,6 +246,9 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
                       Expanded(
                         child: InkWell(
                           onTap: () {
+                            HistoryController historyController = Get.find();
+                            historyController.getRideHistory();
+
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => const HistoryView()));
                           },

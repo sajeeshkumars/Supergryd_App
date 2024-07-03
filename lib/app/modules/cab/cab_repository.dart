@@ -1,23 +1,25 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:mynewpackage/app/modules/cab/model/cance_reasons_response.dart';
+import 'package:mynewpackage/app/modules/cab/model/cancel_response.dart';
 import 'package:mynewpackage/app/modules/cab/model/ride_details_response.dart';
 import 'package:mynewpackage/app/modules/cab/ride_track_response.dart';
 import 'package:mynewpackage/services/api_service.dart';
 import 'package:mynewpackage/services/api_service_external.dart' as externalApi;
 
-
 import 'cab_service.dart';
-
+import 'model/cancel_reasons_response.dart';
 
 class CabRepository implements CabService {
-  externalApi. ApiServiceExternal apiServiceExternal = Get.find();
+  externalApi.ApiServiceExternal apiServiceExternal = Get.find();
   ApiService apiService = Get.find();
 
-  Future<RideTrackResponse> trackRide({required int requestId,int? otp}) async {
+  Future<RideTrackResponse> trackRide(
+      {required int requestId, int? otp}) async {
     RideTrackResponse rideTrackResponse;
     Response response = await apiServiceExternal.reqst(
-        url: '/booking/track-ride?request_id=$requestId&otp=$otp', method: externalApi.Method.GET);
+        url: '/booking/track-ride?request_id=$requestId&otp=$otp',
+        method: externalApi.Method.GET);
     debugPrint(response.statusCode.toString());
     try {
       debugPrint("response at try ${response.body}");
@@ -30,7 +32,6 @@ class CabRepository implements CabService {
       return RideTrackResponse(message: "Server Error", status: 401.toString());
     }
   }
-
 
   Future<RideDetailsResponse> rideDetails({required int requestId}) async {
     RideDetailsResponse rideDetailsResponse;
@@ -64,4 +65,19 @@ class CabRepository implements CabService {
     }
   }
 
+  Future<CancelResponse> cancelRide(Map<String, dynamic>? params) async {
+    CancelResponse cancelResponse;
+    Response response = await apiService.reqst(
+        url: 'ride-hail/ride-cancel',params: params);
+    debugPrint(response.statusCode.toString());
+    try {
+      debugPrint("response at try ${response.body}");
+      cancelResponse = CancelResponse.fromJson(response.body);
+      return cancelResponse;
+    } catch (e, s) {
+      debugPrint(s.toString());
+      debugPrint(e.toString());
+      return CancelResponse();
+    }
+  }
 }

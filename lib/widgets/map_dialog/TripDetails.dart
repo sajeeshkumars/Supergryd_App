@@ -2,12 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
 
 import '../../app/modules/home/views/home_view.dart';
 import '../../app_colors.dart';
 import '../../constants.dart';
 import '../../generated/assets.dart';
 import '../common_text.dart';
+import '../custom_ride_button.dart';
 
 class TripDetails extends StatelessWidget {
   const TripDetails({
@@ -215,30 +218,30 @@ class TripDetails extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              height: 55,
-                              width: 206,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: AppColors.primaryColor),
-                                  borderRadius: BorderRadius.circular(100)),
-                              child: Center(
-                                  child: CommonText(
-                                    text: 'Cancel',
-                                    textColor: AppColors.primaryColor,
-                                  )),
-                            ),
+                            Flexible(
+                              flex: 2,
+                                child: CustomRideButton(text: 'Cancel', onTap: (){
+                                  CabMapController cabMapController = Get.find();
+                                  cabMapController.cabStatus(CabStates.canceled);
+
+                                  cabMapController.isCancelClicked.value = true;
+                                },)),
                             // SizedBox(width: 5,),
 
-                            SvgPicture.asset(
-                              "packages/mynewpackage/${Assets.iconsMessage}",
-                              height: 55,
-                              width: 55,
+                            Expanded(
+                              child: SvgPicture.asset(
+                                "packages/mynewpackage/${Assets.iconsMessage}",
+                                height: 55,
+                                width: 55,
+                              ),
                             ),
                             // SizedBox(width: 5,),
-                            SvgPicture.asset(
-                              "packages/mynewpackage/${Assets.iconsCall}",
-                              height: 55,
-                              width: 55,
+                            Expanded(
+                              child: SvgPicture.asset(
+                                "packages/mynewpackage/${Assets.iconsCall}",
+                                height: 55,
+                                width: 55,
+                              ),
                             ),
                           ],
                         ),
@@ -248,3 +251,4 @@ class TripDetails extends StatelessWidget {
     );
   }
 }
+

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:mynewpackage/app/core/utility.dart';
 import 'package:mynewpackage/widgets/common_text.dart';
 import 'package:mynewpackage/widgets/custom_button.dart';
 
@@ -90,172 +91,198 @@ class HistoryView extends GetView<HistoryController> {
             ],
           ),
         ),
-        body: TabBarView(
-          children: <Widget>[
-            // Add your widgets here
-            Center(child: ListView.builder(
-              itemCount:3,
+        body: Obx(
+          () {
+            return controller.isRideHistoryLoading.value ? Center(child: CircularProgressIndicator()): controller.historyList.isEmpty ? Center(child: CommonText(text: 'No Ride Found')): TabBarView(
+              children: <Widget>[
+                // Add your widgets here
+                Center(child: ListView.builder(
+                  itemCount:controller.historyList.length,
 
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    color: AppColors.white,
-                    surfaceTintColor:AppColors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        color: AppColors.white,
+                        surfaceTintColor:AppColors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                children: [
-                                  SvgPicture.asset(
-                                    "packages/mynewpackage/${Assets.iconsStartLocation}",
-                                    height: 24,
-                                    width: 24,
-                                  ),
-                                  Container(
-                                    height: 40,
-                                    width: 1,
-                                    color: Colors.blue,
-                                  ),
-                                  SvgPicture.asset(
-                                    "packages/mynewpackage/${Assets.iconsDestinationIcon}",
-                                    height: 24,
-                                    width: 24,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 10),
-                               Column(
+                              Row(
                                 crossAxisAlignment:
-                                CrossAxisAlignment
-                                    .start,
+                                CrossAxisAlignment.start,
                                 children: [
-                                  CommonText(
-                                    text:
-                                    "Sonnenweg 32, 79669 Berlin, Germany",
-                                    fontSize: 14,
+                                  Column(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "packages/mynewpackage/${Assets.iconsStartLocation}",
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                      Container(
+                                        height: 40,
+                                        width: 1,
+                                        color: Colors.blue,
+                                      ),
+                                      SvgPicture.asset(
+                                        "packages/mynewpackage/${Assets.iconsDestinationIcon}",
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                    ],
                                   ),
-                                  CommonText(text: "7:34 AM",textColor: AppColors.borderColor,),
-                                  SizedBox(height: 20),
-                                  CommonText(
-                                    text: "St.-Martin-Straße 14, 93099 Berlin,Germany",
-                                    fontSize: 14,
-                                  ),
-                                  CommonText(text: "7:48 AM",textColor: AppColors.borderColor,),
+                                  const SizedBox(width: 10),
+                                   Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      CommonText(
+                                        text:
+                                        controller.historyList[index].originAddress!.first.address.toString(),
+                                        fontSize: 14,
+                                      ),
+                                      CommonText(text:controller.historyList[index].startTime != null ?Utility.dateAndTime(controller.historyList[index].startTime.toString()):"" ,textColor: AppColors.borderColor,),
+                                      SizedBox(height: 20),
+                                      CommonText(
+                                        text: controller.historyList[index].destinationAddress!.first.address.toString(),
+                                        fontSize: 14,
+                                      ),
+                                      CommonText(text:controller.historyList[index].endTime != null ? Utility.dateAndTime(controller.historyList[index].endTime.toString()):"",textColor: AppColors.borderColor,),
 
+                                    ],
+                                  ),
                                 ],
                               ),
+                              SizedBox(height: 5,),
+                              Container(
+                                width: 82,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color:controller.historyList[index].status == 6 ? Colors.green : Colors.red,
+
+                                ),
+                                child: Center(
+                                  child: CommonText(text: controller.historyList[index].status == 6 ?"Completed":"Canceled",textColor:AppColors.white,
+                                  fontSize: 12,),
+                                ),
+                              ),
+                              SizedBox(height: 5,),
+                              Divider(),
+
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                child:Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      "packages/mynewpackage/${Assets.iconsDollarCircle}",
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(
+                                          context)
+                                          .size
+                                          .width *
+                                          .01,
+                                    ),
+                                    CommonText(
+                                        text: '₹ '+controller.historyList[index].estimatedPrice.toString()),
+                                  ],
+                                )
+
+                                // Row(
+                                //   children: [
+                                //     SvgPicture.asset(
+                                //       "packages/mynewpackage/${Assets.iconsDateRangeLight}",
+                                //     ),
+                                //     SizedBox(
+                                //       width: MediaQuery.of(
+                                //           context)
+                                //           .size
+                                //           .width *
+                                //           .01,
+                                //     ),
+                                //      CommonText(
+                                //         text: controller.historyList[index].requestedTime.toString()),
+                                //     SizedBox(
+                                //       width: MediaQuery.of(
+                                //           context)
+                                //           .size
+                                //           .width *
+                                //           .045,
+                                //     ),
+                                //
+                                //     SvgPicture.asset(
+                                //       "packages/mynewpackage/${Assets.iconsClock}",
+                                //     ),
+                                //     SizedBox(
+                                //       width: MediaQuery.of(
+                                //           context)
+                                //           .size
+                                //           .width *
+                                //           .01,
+                                //     ),
+                                //
+                                //      CommonText(
+                                //         text: controller.historyList[index].startTime.toString()),
+                                //   Spacer(),
+                                //     SvgPicture.asset(
+                                //       "packages/mynewpackage/${Assets.iconsDollarCircle}",
+                                //     ),
+                                //     SizedBox(
+                                //       width: MediaQuery.of(
+                                //           context)
+                                //           .size
+                                //           .width *
+                                //           .01,
+                                //     ),
+                                //      CommonText(
+                                //         text: controller.historyList[index].estimatedPrice.toString()),
+                                //
+                                //   ],
+                                // ),
+                              ),
+                              Divider(),
+
+                              controller.historyList[index].status == 6 ?      ListTile(
+                                  leading:controller.historyList[index].driverDetails!.isNotEmpty ? CircleAvatar(
+                                    radius: 30.0,
+                                    backgroundImage:
+                                    NetworkImage(controller.historyList[index].driverDetails!.first.pictureUrl.toString()),
+                                    backgroundColor: Colors.transparent,
+                                  ):CircleAvatar(),
+                                title: CommonText(text:(controller.historyList[index].driverDetails!.isNotEmpty ? controller.historyList[index].driverDetails?.first.name : "").toString(),),
+                                subtitle: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      "packages/mynewpackage/${Assets.iconsStar}",
+                                    ),
+                                    SizedBox(width: 2,),
+                                    CommonText(text:(controller.historyList[index].driverDetails!.isNotEmpty ?  controller.historyList[index].driverDetails?.first.rating : "").toString())
+                                  ],
+                                ),
+                                trailing: CommonButton(
+                                  width: 140,
+                                    height: 45,
+                                    onPressed: (){}, text: "Rebook"),
+                              ):SizedBox.shrink()
                             ],
                           ),
-                          SizedBox(height: 5,),
-                          Container(
-                            width: 82,
-                            height: 24,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Colors.green,
-
-                            ),
-                            child: Center(
-                              child: CommonText(text: 'Completed',textColor:AppColors.white,
-                              fontSize: 12,),
-                            ),
-                          ),
-                          SizedBox(height: 5,),
-                          Divider(),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "packages/mynewpackage/${Assets.iconsDateRangeLight}",
-                                ),
-                                SizedBox(
-                                  width: MediaQuery.of(
-                                      context)
-                                      .size
-                                      .width *
-                                      .01,
-                                ),
-                                const CommonText(
-                                    text: "28 May 2024"),
-                                SizedBox(
-                                  width: MediaQuery.of(
-                                      context)
-                                      .size
-                                      .width *
-                                      .045,
-                                ),
-
-                                SvgPicture.asset(
-                                  "packages/mynewpackage/${Assets.iconsClock}",
-                                ),
-                                SizedBox(
-                                  width: MediaQuery.of(
-                                      context)
-                                      .size
-                                      .width *
-                                      .01,
-                                ),
-
-                                const CommonText(
-                                    text: "10:45AM"),
-                              Spacer(),
-                                SvgPicture.asset(
-                                  "packages/mynewpackage/${Assets.iconsDollarCircle}",
-                                ),
-                                SizedBox(
-                                  width: MediaQuery.of(
-                                      context)
-                                      .size
-                                      .width *
-                                      .01,
-                                ),
-                                const CommonText(
-                                    text: "\$1.99"),
-
-                              ],
-                            ),
-                          ),
-                          Divider(),
-
-                          ListTile(
-                            leading: CircleAvatar(),
-                            title: CommonText(text: "John Doe",),
-                            subtitle: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "packages/mynewpackage/${Assets.iconsStar}",
-                                ),
-                                SizedBox(width: 2,),
-                                CommonText(text: "4.5")
-                              ],
-                            ),
-                            trailing: CommonButton(
-                              width: 140,
-                                height: 45,
-                                onPressed: (){}, text: "Rebook"),
-                          )
-                        ],
+                        )
                       ),
-                    )
-                  ),
-                );
+                    );
 
-              },
+                  },
 
-            ),),
-            Center(child: Text('Dishes')),
-            Center(child: Text('Dishes')),
-            Center(child: Text('Dishes')),
-          ],
+                ),),
+                Center(child: Text('Dishes')),
+                Center(child: Text('Dishes')),
+                Center(child: Text('Dishes')),
+              ],
+            );
+          }
         ),
       ),
     );

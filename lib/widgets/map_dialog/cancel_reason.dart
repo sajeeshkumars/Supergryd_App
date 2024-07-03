@@ -4,7 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
+import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/widgets/custom_button.dart';
+import 'package:mynewpackage/widgets/custom_ride_button.dart';
 
 import '../../app/modules/home/views/home_view.dart';
 import '../../app_colors.dart';
@@ -43,7 +45,7 @@ class CancelReason extends StatelessWidget {
                 SizedBox(
                   height: 250,
                   child: ListView.builder(
-                    itemCount: 4,
+                    itemCount: cabMapController.cancelReasons?.length,
                       itemBuilder: (context, index){
                     return Row(
                       children: [
@@ -52,47 +54,67 @@ class CancelReason extends StatelessWidget {
                             return Radio(    value: index,
                                 activeColor: AppColors.primaryColor,
                                 groupValue: cabMapController.selectedCancelReason.value, onChanged: (value){
+                              debugPrint("radio clicked");
                                   cabMapController.selectedCancelReason.value = value!;
+                                  cabMapController.selectedReasonId.value = cabMapController.cancelReasons![index].reasonId!.toInt();
+                                  debugPrint("asd ${cabMapController.selectedReasonId.value}");
+                                  debugPrint("asd2 ${cabMapController.cancelReasons![index].reasonId!.toInt()}");
+                                  cabMapController.selectedCancelReasonText.value = cabMapController.cancelReasons![index].reason.toString();
                                 });
                           }
                         ),
-                        CommonText(text: '')
+                        CommonText(text: cabMapController.cancelReasons![index].reason.toString(),fontSize: 16,fontWeight: FontWeight.w500,)
                       ],
                     );
                   }),
                 ),
-                CommonText(text: 'Other',fontSize: 16,fontWeight: FontWeight.w700,),
-                SizedBox(height: 10,),
-                TextFormField(
-                  maxLines: 5,
+                // SizedBox(height: 10,),
 
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                      borderSide: BorderSide(
-                        color: AppColors.borderColor,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                      borderSide: BorderSide(
-                        color: AppColors.borderColor,
-                        width: 2.0,
-                      ),
-                    ),
-                    border: InputBorder.none,
-                    hintText: 'Enter your reason',
-                    hintStyle: TextStyle(color: AppColors.borderColor),
-                    fillColor: AppColors.textFieldBackground,
-                    contentPadding: const EdgeInsets.only(
-                        left: 14.0, bottom: 6.0, top: 8.0),
-
-                  ),
-                ),
+                // CommonText(text: 'Other',fontSize: 16,fontWeight: FontWeight.w700,),
+                // SizedBox(height: 10,),
+                // TextFormField(
+                //   maxLines: 5,
+                //
+                //   decoration: InputDecoration(
+                //     focusedBorder: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(15.0),
+                //       borderSide: BorderSide(
+                //         color: AppColors.borderColor,
+                //       ),
+                //     ),
+                //     enabledBorder: OutlineInputBorder(
+                //       borderRadius: BorderRadius.circular(15.0),
+                //       borderSide: BorderSide(
+                //         color: AppColors.borderColor,
+                //         width: 2.0,
+                //       ),
+                //     ),
+                //     border: InputBorder.none,
+                //     hintText: 'Enter your reason',
+                //     hintStyle: TextStyle(color: AppColors.borderColor),
+                //     fillColor: AppColors.textFieldBackground,
+                //     contentPadding: const EdgeInsets.only(
+                //         left: 14.0, bottom: 6.0, top: 8.0),
+                //
+                //   ),
+                // ),
                 Spacer(),
-                CommonButton(onPressed: (){
+                Obx(
+                   () {
+                    return CustomRideButton(text: "Cancel Ride",
+                        isLoading: cabMapController.isRideCancelLoading.value,
+                        onTap: (){
+                        cabMapController.cancelRide(context: context, requestId: Constants.requestId ?? 0, reasonId: cabMapController.selectedReasonId.value, reason: cabMapController.selectedCancelReasonText.value);
 
-                }, text:'Cancel Ride')
+                    });
+                    //   CommonButton(
+                    //   isLoading: cabMapController.isRideCancelLoading.value,
+                    //     onPressed: (){
+                    //   cabMapController.cancelRide(context: context, requestId: Constants.requestId ?? 0, reasonId: cabMapController.selectedReasonId.value, reason: cabMapController.selectedCancelReasonText.value);
+                    //
+                    // }, text:'Cancel Ride');
+                  }
+                )
 
               ],
             ),

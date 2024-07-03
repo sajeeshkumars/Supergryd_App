@@ -31,6 +31,8 @@ class Assets {
   static const String dataDishListingResponse = 'lib/app/modules/restaurants_and_dishes_listing/data/dish_listing_response.dart';
   static const String dataFontService = 'lib/app/modules/home/data/font_service.dart';
   static const String dataGetRestaurantDetailsResponse = 'lib/app/modules/restaurants_details/data/get_restaurant_details_response.dart';
+  static const String dataHistoryRepo = 'lib/app/modules/history/data/history_repo.dart';
+  static const String dataHistoryService = 'lib/app/modules/history/data/history_service.dart';
   static const String dataHomeRepository = 'lib/app/modules/home/data/home_repository.dart';
   static const String dataHomeService = 'lib/app/modules/home/data/home_service.dart';
   static const String dataRestaurantAndDishListingRepo = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_repo.dart';
@@ -44,6 +46,7 @@ class Assets {
   static const String iconsAddIcon = 'lib/assets/icons/add_icon.svg';
   static const String iconsCab = 'lib/assets/icons/cab.svg';
   static const String iconsCall = 'lib/assets/icons/Call.svg';
+  static const String iconsCarTrackIcon = 'lib/assets/icons/car_track_icon.png';
   static const String iconsClock = 'lib/assets/icons/clock.svg';
   static const String iconsCourier = 'lib/assets/icons/courier.svg';
   static const String iconsDateRangeLight = 'lib/assets/icons/Date_range_light.svg';
@@ -125,7 +128,8 @@ class Assets {
   static const String mapDialogTripDetails = 'lib/widgets/map_dialog/TripDetails.dart';
   static const String modelAuthenticationRequestModel = 'lib/app/authentication/model/authentication_request_model.dart';
   static const String modelAuthenticationResponse = 'lib/app/authentication/model/authentication_response.dart';
-  static const String modelCanceReasonsResponse = 'lib/app/modules/cab/model/cance_reasons_response.dart';
+  static const String modelCancelReasonsResponse = 'lib/app/modules/cab/model/cancel_reasons_response.dart';
+  static const String modelCancelResponse = 'lib/app/modules/cab/model/cancel_response.dart';
   static const String modelCommonFontFile = 'lib/model/common_font_file.dart';
   static const String modelCreateUserRequestModel = 'lib/app/authentication/model/create_user_request_model.dart';
   static const String modelCreateUserResponse = 'lib/app/authentication/model/create_user_response.dart';
@@ -134,6 +138,7 @@ class Assets {
   static const String modelRefreshTokenModel = 'lib/model/refresh_token_model.dart';
   static const String modelRideDetailsResponse = 'lib/app/modules/cab/model/ride_details_response.dart';
   static const String modelServiceCategoryResponse = 'lib/app/authentication/model/service_category_response.dart';
+  static const String modelsCabHistoryResponse = 'lib/app/modules/history/data/models/cab_history_response.dart';
   static const String modelsRequestRideResponse = 'lib/app/modules/home/data/models/request_ride_response.dart';
   static const String modelsRideEstimationRequest = 'lib/app/modules/home/data/models/ride_estimation_request.dart';
   static const String modelsRideEstimationResponse = 'lib/app/modules/home/data/models/ride_estimation_response.dart';
@@ -155,6 +160,7 @@ class Assets {
   static const String widgetsCommonImageView = 'lib/widgets/common_Image_view.dart';
   static const String widgetsCommonText = 'lib/widgets/common_text.dart';
   static const String widgetsCustomButton = 'lib/widgets/custom_button.dart';
+  static const String widgetsCustomRideButton = 'lib/widgets/custom_ride_button.dart';
   static const String widgetsLoadingView = 'lib/widgets/loading_view.dart';
   static const String widgetsPleaseWaitDialogue = 'lib/widgets/please_wait_dialogue.dart';
   static const String widgetsSuperGrydApp = 'lib/widgets/super_gryd_app.dart';

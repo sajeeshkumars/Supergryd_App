@@ -678,7 +678,6 @@ class HomeController extends GetxController {
   }
 
   void clearValues(){
-     address = "Select Address".obs;
      selectedPickUp = "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India".obs;
      selectedDropOff = "".obs;
      isLoading = false.obs;

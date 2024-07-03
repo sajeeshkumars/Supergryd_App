@@ -20,5 +20,6 @@ class Constants{
  static String? driverImage;
  static String? rating;
  static String? otp;
+ static String? cancelReason;
  // static String nameFirstLetter = "S";
 }
