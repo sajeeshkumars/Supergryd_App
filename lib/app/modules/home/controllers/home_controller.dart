@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart' as location;
 import 'package:mynewpackage/app/authentication/authentication_repo.dart';
@@ -17,6 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app_colors.dart';
 import '../../../../generated/assets.dart';
+import '../data/models/request_ride_response.dart';
 import '../data/models/ride_estimation_response.dart';
 import '../data/models/service_category_response.dart';
 import 'color_controller.dart';
@@ -73,9 +75,12 @@ class HomeController extends GetxController {
   RxString fareId = "".obs;
   RxDouble price = 0.0.obs;
   RxString carType = "".obs;
-  RxString rideDuration = "".obs;
+  RxDouble rideDuration = 0.0.obs;
   RxString rideDistance = "".obs;
   RxString seatCapacity = "".obs;
+  RequestRideData? requestRideData;
+
+
 
   // AppStorage storage = AppStorage();
   AuthRepository authRepository = Get.put(AuthRepository());
@@ -663,10 +668,13 @@ class HomeController extends GetxController {
       'price': price.value
     }).then((value) {
       if (value.status == 200) {
+        requestRideData = value.data;
 
         isRequestSent.value = true;
         Constants.requestId = value.data?.requestedId?.toInt();
-        debugPrint("Request id from api ${Constants.requestId}");
+        price.value = value.data!.estimatedPrice!.toDouble();
+        debugPrint("price.value ${price.value}");
+        debugPrint("price.value ${value.data!.estimatedPrice!.toDouble()}");
         final cabController = Get.find<CabMapController>();
         cabController.onCabSearch();
         // estimationList.addAll(value.data ?? []);

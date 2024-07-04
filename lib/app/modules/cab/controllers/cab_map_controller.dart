@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mynewpackage/app/modules/cab/cab_repository.dart';
-import 'package:mynewpackage/app/modules/cab/model/ride_details_response.dart';
 import 'package:mynewpackage/app/modules/cab/ride_track_response.dart';
 import 'package:mynewpackage/constants.dart';
 
 import '../../../../generated/assets.dart';
 import '../../home/controllers/home_controller.dart';
 import '../../home/views/home_view.dart';
+import '../model/Ride_details_response.dart';
 import '../model/cancel_reasons_response.dart';
 
 class CabMapController extends GetxController {
@@ -31,6 +31,8 @@ class CabMapController extends GetxController {
   RxBool isRideCancelLoading = false.obs;
   RxInt selectedReasonId = 0.obs;
   RxString selectedCancelReasonText = ''.obs;
+  RxBool isRideCompleteDataLoading = false.obs;
+  bool isDelayApplied = false;
 
   @override
   void onInit() {
@@ -40,14 +42,81 @@ class CabMapController extends GetxController {
     rideCancelReasons();
   }
 
+
+
   RideDetailsResponse? rideDetailsResponse;
 
   void createCustomMarkerIcon() async {
     customIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(40, 40)),
+      ImageConfiguration(size: Size(80, 80)),
       'packages/mynewpackage/${Assets.iconsCarTrackIcon}',
     );
   }
+
+  ///for drawing polyline initially
+
+  void _setPolylines() {
+    // Split _routeCoordinates based on LatLng(10.055348, 76.321888)
+    int splitIndex = _routeCoordinates.indexWhere((coord) =>
+    coord.latitude == 10.055348 && coord.longitude == 76.321888);
+
+    List<LatLng> firstPart = _routeCoordinates.sublist(0, splitIndex);
+    List<LatLng> secondPart = _routeCoordinates.sublist(splitIndex);
+
+    polylines.add(
+      Polyline(
+        polylineId: PolylineId('route1'),
+        visible: true,
+        points: firstPart,
+        width: 4,
+        color: Colors.black,
+      ),
+    );
+    polylines.add(
+      Polyline(
+        polylineId: PolylineId('route2'),
+        visible: true,
+        points: secondPart,
+        width: 4,
+        color: Colors.red,
+      ),
+    );
+  }
+/// initial polyline
+  final List<LatLng> _routeCoordinates = [
+    LatLng(10.048726, 76.318781),
+    LatLng(10.050847, 76.319333),
+    LatLng(10.051901, 76.31972),
+    LatLng(10.05229, 76.319835),
+    LatLng(10.052395, 76.320123),
+    LatLng(10.053021, 76.321193),
+    LatLng(10.054492, 76.321823),
+    LatLng(10.054967, 76.321889),
+    LatLng(10.055238, 76.321951),
+    LatLng(10.055348, 76.321888), // Splitting point
+    LatLng(10.055348, 76.321888), // Splitting point
+    LatLng(10.055348, 76.321888),
+    LatLng(10.05584, 76.322294),
+    LatLng(10.057875, 76.324598),
+    LatLng(10.060516, 76.326551),
+    LatLng(10.06415, 76.329083),
+    LatLng(10.066537, 76.335756),
+    LatLng(10.066508, 76.335625),
+    LatLng(10.067714, 76.339166),
+    LatLng(10.068647, 76.342179),
+    LatLng(10.068624, 76.343715),
+    LatLng(10.068364, 76.344748),
+    LatLng(10.068021, 76.34584),
+    LatLng(10.067678, 76.347257),
+    LatLng(10.066707, 76.350607),
+    LatLng(10.066522, 76.351306),
+    LatLng(10.06642, 76.351764),
+    LatLng(10.065774, 76.351721),
+    LatLng(10.065171, 76.351757),
+    LatLng(10.06474, 76.351739),
+    LatLng(10.064588, 76.351151),
+  ];
+
 
   RxList<LatLng> routeCoordinates = <LatLng>[
     LatLng(10.048726, 76.318781),
@@ -121,6 +190,10 @@ class CabMapController extends GetxController {
   }
 
   setCabAccepted() {
+    cabStatus(CabStates.accepted);
+    // _setPolylines();
+    // update();
+
     _startMoving();
   }
 
@@ -160,6 +233,9 @@ class CabMapController extends GetxController {
             debugPrint("otp inside ${Constants.otp}");
             getRideDetails();
           }
+          if(trackResponse?.rideStatus == 3){
+            Future.delayed(Duration(seconds: 20));
+          }
 
           switch (trackResponse?.rideStatus) {
             case 1:
@@ -187,11 +263,16 @@ class CabMapController extends GetxController {
   }
 
   Future<void> getRideDetails() async {
-    rideDetailsResponse = await cabRepository
+    isRideCompleteDataLoading(true);
+     await cabRepository
         .rideDetails(requestId: Constants.requestId!)
         .then((value) {
       if (value.data != []) {
-      } else {}
+        isRideCompleteDataLoading(false);
+        rideDetailsResponse = value;
+      } else {
+        isRideCompleteDataLoading(false);
+      }
     });
   }
 
@@ -246,7 +327,7 @@ class CabMapController extends GetxController {
     }
     log("startMoving called");
 
-    Timer.periodic(Duration(seconds: 3), (timer) async {
+    Timer.periodic(Duration(seconds: 5), (timer) async {
       if (rideCompleted.value) {
         timer.cancel();
         return;
@@ -261,6 +342,8 @@ class CabMapController extends GetxController {
       debugPrint("after api call");
 
       if (response != null) {
+        debugPrint("cab status ${cabStatus.value}");
+
         markerIndex(markerIndex.value + 1);
         LatLng newLatLng = LatLng(
             double.parse(trackResponse!.driverLat.toString()),
@@ -272,7 +355,9 @@ class CabMapController extends GetxController {
 
         if (!routeCoordinates.contains(newLatLng)) {
           routeCoordinates.add(newLatLng);
-          _setPolyline();
+          /// for live ployline
+          // _setPolyline();
+          _setPolylines();
         }
 
         moveCamera(newLatLng); // Move the camera to the new marker position

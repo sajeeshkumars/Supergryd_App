@@ -205,7 +205,7 @@ class _RideDialogState extends State<RideDialog> {
                                         // _ => Container()
                                         // TODO: Handle this case.
                                           CabStates.searchingCab =>  SearchingCab(
-                                              homeController: homeController),
+                                           ),
                                           CabStates.accepted => TripDetails(),
                                         // buildAcceptedWidget(context,"Meet at the pickup point".obs,false.obs),
                                           CabStates.arriving => buildAcceptedWidget(

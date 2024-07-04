@@ -263,10 +263,10 @@ class HistoryView extends GetView<HistoryController> {
                                     CommonText(text:(controller.historyList[index].driverDetails!.isNotEmpty ?  controller.historyList[index].driverDetails?.first.rating : "").toString())
                                   ],
                                 ),
-                                trailing: CommonButton(
-                                  width: 140,
-                                    height: 45,
-                                    onPressed: (){}, text: "Rebook"),
+                                // trailing: CommonButton(
+                                //   width: 140,
+                                //     height: 45,
+                                //     onPressed: (){}, text: "Rebook"),
                               ):SizedBox.shrink()
                             ],
                           ),

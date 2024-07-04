@@ -21,5 +21,8 @@ class Constants{
  static String? rating;
  static String? otp;
  static String? cancelReason;
+ static String? rideDistance;
+ static double? rideDuration;
+
  // static String nameFirstLetter = "S";
 }

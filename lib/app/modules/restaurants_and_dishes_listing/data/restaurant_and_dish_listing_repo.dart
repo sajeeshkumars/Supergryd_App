@@ -37,7 +37,7 @@ class RestaurantAndDishRepository implements RestaurantService {
       dishListingResponse = DishListingResponse.fromJson(response.body);
       return dishListingResponse;
     } catch (e, s) {
-      debugPrint(e.toString()+s.toString());
+      debugPrint("hello hai${e.toString()+s.toString()}");
       return DishListingResponse(message: "Server Error", status: 401);
     }
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/widgets/map_dialog/searchingCab.dart';
 
 import '../../app/modules/home/data/models/ride_estimation_response.dart';
@@ -33,19 +34,21 @@ class RideTypeChoose extends StatelessWidget {
         (rideEstimationList.first.estimation?.fareId.toString() ?? "").obs;
     controller.price =
         (rideEstimationList.first.estimation?.estimate?.toDouble() ?? 0.0).obs;
+    controller.rideDuration.value = rideEstimationList.first.estimation!.duration!.toDouble();
+    controller.rideDistance.value = rideEstimationList.first.estimation!.distance.toString();
 
-    controller.rideDistance =
-        (rideEstimationList.first.estimation!.distance.toString()).obs;
+    // controller.rideDistance =
+    //     (rideEstimationList.first.estimation!.distance.toString()).obs;
+    //
+    // controller.rideDuration =
+    //     (rideEstimationList.first.estimation!.duration.toString()).obs;
+    //
+    // controller.carType =
+    //     (rideEstimationList.first.estimation!.localizedDisplayName.toString())
+    //         .obs;
 
-    controller.rideDuration =
-        (rideEstimationList.first.estimation!.duration.toString()).obs;
-
-    controller.carType =
-        (rideEstimationList.first.estimation!.localizedDisplayName.toString())
-            .obs;
-
-    controller.seatCapacity =
-        (rideEstimationList.first.capacity.toString()).obs;
+    // controller.seatCapacity =
+    //     (rideEstimationList.first.capacity.toString()).obs;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -127,7 +130,7 @@ class RideTypeChoose extends StatelessWidget {
                                       color: AppColors.textLightColor),
                                   CommonText(
                                     text:
-                                    '${rideEstimationList[index].estimation!.duration.toString()} min',
+                                    '${(rideEstimationList[index].estimation!.duration!/60).toStringAsFixed(2)} min',
                                     fontSize: 12,
                                     textColor: AppColors.textLightColor,
                                   ),
@@ -165,6 +168,7 @@ class RideTypeChoose extends StatelessWidget {
                                                 .estimation!
                                                 .estimate!
                                                 .toDouble();
+                                        debugPrint("price of ride ${controller.price.value}");
                                         controller.fareId.value =
                                             rideEstimationList[index]
                                                 .estimation!
@@ -175,6 +179,8 @@ class RideTypeChoose extends StatelessWidget {
                                                 .estimation!
                                                 .productId
                                                 .toString();
+                                        controller.rideDuration.value =  rideEstimationList[index].estimation!.duration!.toDouble();
+                                        controller.rideDistance.value = rideEstimationList[index].estimation!.distance.toString();
                                         selectedType?.value = value!;
                                       });
                                 }),
@@ -290,7 +296,6 @@ class RideTypeChoose extends StatelessWidget {
               ),
             )
                 : SearchingCab(
-              homeController: controller,
             ));
       }),
     );

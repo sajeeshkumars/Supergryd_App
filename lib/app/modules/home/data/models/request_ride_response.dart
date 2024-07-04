@@ -9,7 +9,7 @@ class RequestRideResponse {
   RequestRideResponse({
       num? status, 
       String? message, 
-      Data? data,}){
+      RequestRideData? data,}){
     _status = status;
     _message = message;
     _data = data;
@@ -18,21 +18,21 @@ class RequestRideResponse {
   RequestRideResponse.fromJson(dynamic json) {
     _status =int.parse( json['status'].toString());
     _message = json['message'].toString();
-    _data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    _data = json['data'] != null ? RequestRideData.fromJson(json['data']) : null;
   }
   num? _status;
   String? _message;
-  Data? _data;
+  RequestRideData? _data;
 RequestRideResponse copyWith({  num? status,
   String? message,
-  Data? data,
+  RequestRideData? data,
 }) => RequestRideResponse(  status: status ?? _status,
   message: message ?? _message,
   data: data ?? _data,
 );
   num? get status => _status;
   String? get message => _message;
-  Data? get data => _data;
+  RequestRideData? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -68,10 +68,10 @@ RequestRideResponse copyWith({  num? status,
 /// ride_review : []
 /// __v : 0
 
-Data dataFromJson(String str) => Data.fromJson(json.decode(str));
-String dataToJson(Data data) => json.encode(data.toJson());
-class Data {
-  Data({
+RequestRideData dataFromJson(String str) => RequestRideData.fromJson(json.decode(str));
+String dataToJson(RequestRideData data) => json.encode(data.toJson());
+class RequestRideData {
+  RequestRideData({
       String? uniqueId, 
       String? userId, 
       String? serviceCategoryId, 
@@ -116,7 +116,7 @@ class Data {
     _v = v;
 }
 
-  Data.fromJson(dynamic json) {
+  RequestRideData.fromJson(dynamic json) {
     _uniqueId = json['unique_id'].toString();
     _userId = json['user_id'].toString();
     _serviceCategoryId = json['service_category_id'].toString();
@@ -185,7 +185,7 @@ class Data {
   String? _id;
   List<dynamic>? _rideReview;
   num? _v;
-Data copyWith({  String? uniqueId,
+RequestRideData copyWith({  String? uniqueId,
   String? userId,
   String? serviceCategoryId,
   List<OriginAddress>? originAddress,
@@ -206,7 +206,7 @@ Data copyWith({  String? uniqueId,
   String? id,
   List<dynamic>? rideReview,
   num? v,
-}) => Data(  uniqueId: uniqueId ?? _uniqueId,
+}) => RequestRideData(  uniqueId: uniqueId ?? _uniqueId,
   userId: userId ?? _userId,
   serviceCategoryId: serviceCategoryId ?? _serviceCategoryId,
   originAddress: originAddress ?? _originAddress,

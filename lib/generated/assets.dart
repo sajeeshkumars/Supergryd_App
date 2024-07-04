@@ -136,7 +136,7 @@ class Assets {
   static const String modelFontResponse = 'lib/model/font_response.dart';
   static const String modelGrydFeatures = 'lib/model/gryd_features.dart';
   static const String modelRefreshTokenModel = 'lib/model/refresh_token_model.dart';
-  static const String modelRideDetailsResponse = 'lib/app/modules/cab/model/ride_details_response.dart';
+  static const String modelRideDetailsResponse = 'lib/app/modules/cab/model/Ride_details_response.dart';
   static const String modelServiceCategoryResponse = 'lib/app/authentication/model/service_category_response.dart';
   static const String modelsCabHistoryResponse = 'lib/app/modules/history/data/models/cab_history_response.dart';
   static const String modelsRequestRideResponse = 'lib/app/modules/home/data/models/request_ride_response.dart';

@@ -114,7 +114,8 @@ class PromoCodeListingView extends GetView<PromoCodeListingController> {
                                     AppColors.primaryColor),
                                 foregroundColor:
                                     MaterialStateProperty.all(AppColors.white),
-                              )),
+                              )
+                          ),
                         ),
                       ),
                     ),

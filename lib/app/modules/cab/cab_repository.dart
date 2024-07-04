@@ -2,12 +2,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/cab/model/cancel_response.dart';
-import 'package:mynewpackage/app/modules/cab/model/ride_details_response.dart';
 import 'package:mynewpackage/app/modules/cab/ride_track_response.dart';
 import 'package:mynewpackage/services/api_service.dart';
 import 'package:mynewpackage/services/api_service_external.dart' as externalApi;
 
 import 'cab_service.dart';
+import 'model/Ride_details_response.dart';
 import 'model/cancel_reasons_response.dart';
 
 class CabRepository implements CabService {

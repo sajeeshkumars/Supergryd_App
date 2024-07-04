@@ -15,10 +15,8 @@ import 'cancel_reason.dart';
 class SearchingCab extends StatelessWidget {
    SearchingCab({
     super.key,
-    required this.homeController,
   });
-
-  final HomeController homeController;
+HomeController homeController = Get.find();
   CabMapController cabMapController = Get.find();
 
   @override
@@ -26,72 +24,78 @@ class SearchingCab extends StatelessWidget {
     debugPrint("inside search cab ${cabMapController.isCancelClicked.value}");
     return  Padding(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CommonText(
-            text: "Finding Your Ride",
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-          ),
-          SvgPicture.asset(
-            "packages/mynewpackage/${Assets.iconsCab}",
-          ),
-          ListTile(
-            leading: SvgPicture.asset(
-              "packages/mynewpackage/${Assets.iconsPickupDriverLoading}",
-            ),
-            title: CommonText(
-              text: 'Pick up',
-              fontSize: 14,
-              textColor: AppColors.textLightColor,
-            ),
-            subtitle: CommonText(
-                text: homeController.selectedPickUp.value,
-                fontWeight: FontWeight.w500,
-                fontSize: 15),
-          ),
-          ListTile(
-            leading: SvgPicture.asset(
-              "packages/mynewpackage/${Assets.iconsDestinationDriverLoading}",
-            ),
-            title: CommonText(
-              text: 'Drop off',
-              fontSize: 14,
-              textColor: AppColors.textLightColor,
-            ),
-            subtitle: CommonText(
-                text: homeController.selectedDropOff.value,
-                fontWeight: FontWeight.w500,
-                fontSize: 15),
-          ),
+      child: Obx(
+         () {
+          return homeController.isRequestRideLoading.value ? Center(child: CircularProgressIndicator()): Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CommonText(
+                text: "Finding Your Ride",
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+              ),
+              SvgPicture.asset(
+                "packages/mynewpackage/${Assets.iconsCab}",
+              ),
+              ListTile(
+                leading: SvgPicture.asset(
+                  "packages/mynewpackage/${Assets.iconsPickupDriverLoading}",
+                ),
+                title: CommonText(
+                  text: 'Pick up',
+                  fontSize: 14,
+                  textColor: AppColors.textLightColor,
+                ),
+                subtitle: CommonText(
+                    // text: homeController.selectedPickUp.value,
+                    text: homeController.requestRideData!.originAddress!.first.address.toString(),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15),
+              ),
+              ListTile(
+                leading: SvgPicture.asset(
+                  "packages/mynewpackage/${Assets.iconsDestinationDriverLoading}",
+                ),
+                title: CommonText(
+                  text: 'Drop off',
+                  fontSize: 14,
+                  textColor: AppColors.textLightColor,
+                ),
+                subtitle: CommonText(
+                    // text: homeController.selectedDropOff.value,
+                    text: homeController.requestRideData!.destinationAddress!.first.address.toString(),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15),
+              ),
 
-          ListTile(
-            leading: SvgPicture.asset(
-              "packages/mynewpackage/${Assets.iconsDollarCircle}",
-            ),
-            title: CommonText(
-              text: 'Cash',
-            ),
-            subtitle: CommonText(
-              text: "₹ ${homeController.price.value.toString()}",
-              fontWeight: FontWeight.w500,
-              fontSize: 15,
-            ),
-          ),
+              ListTile(
+                leading: SvgPicture.asset(
+                  "packages/mynewpackage/${Assets.iconsDollarCircle}",
+                ),
+                title: CommonText(
+                  text: 'Cash',
+                ),
+                subtitle: CommonText(
+                  text: "₹ ${homeController.requestRideData?.estimatedPrice}",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                ),
+              ),
 
-          CustomRideButton(onTap: () {
-            cabMapController.cabStatus(CabStates.canceled);
+              CustomRideButton(onTap: () {
+                cabMapController.cabStatus(CabStates.canceled);
 
-            cabMapController.isCancelClicked.value = true;
+                cabMapController.isCancelClicked.value = true;
 
-            // Navigator.of(context).push(
-            //     MaterialPageRoute(
-            //         builder: (context) =>
-            //     CancelReason()));
+                // Navigator.of(context).push(
+                //     MaterialPageRoute(
+                //         builder: (context) =>
+                //     CancelReason()));
 
-          }, text: "Cancel")
-        ],
+              }, text: "Cancel")
+            ],
+          );
+        }
       ),
     );
   }

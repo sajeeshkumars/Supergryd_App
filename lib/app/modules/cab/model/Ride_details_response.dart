@@ -1,7 +1,7 @@
 import 'dart:convert';
 /// status : 200
 /// message : "Success."
-/// data : [{"_id":"66827d124d8df0c05da6328b","origin_address":[{"lat":"10.055348","long":"76.321888","address":"Devalokam,Thevakal","address_id":null,"_id":"66827d124d8df0c05da6328c"}],"destination_address":[{"lat":"10.064588","long":"76.351151","address":"Seeroo it solutions","address_id":null,"_id":"66827d124d8df0c05da6328d"}],"status":3,"estimated_price":151.24,"driver_details":[{"phone_number":"14155551214","rating":4.1,"picture_url":"https://supergrydapi.ritikasingh.site/uploads/drivers/driver-2.png","name":"S Kumar","sms_number":"14155551214"}],"vehicle_details":[{"make":"BMW","picture_url":"https://supergrydapi.ritikasingh.site/uploads/vehicle/bmw.png","model":"7-series","license_plate":"KL-123 456"}],"otp":2235}]
+/// data : [{"_id":"66866d7af1a68d09bae948da","unique_id":"SGRD-RIDEBK-1105-2024","origin_address":[{"lat":"10.055348","long":"76.321888","address":"Devalokam,Thevakal","address_id":null,"_id":"66866d7af1a68d09bae948db"}],"destination_address":[{"lat":"10.064588","long":"76.351151","address":"Seeroo it solutions","address_id":null,"_id":"66866d7af1a68d09bae948dc"}],"status":6,"requested_time":"2024-07-04T09:38:02.203Z","start_time":"2024-07-04T09:40:02.486Z","end_time":"2024-07-04T09:43:02.643Z","estimated_price":151.24,"driver_details":[{"phone_number":"14155551229","rating":4.1,"picture_url":"https://supergrydapi.ritikasingh.site/uploads/drivers/driver-5.png","name":"Rimpa","sms_number":"14155551229"}],"vehicle_details":[{"make":"BMW","picture_url":"https://supergrydapi.ritikasingh.site/uploads/vehicle/bmw.png","model":"9-series","license_plate":"KL-568 258"}],"otp":3820,"cancel_reason":null,"duration":202,"distance":3.36,"ride_review":[]}]
 
 RideDetailsResponse rideDetailsResponseFromJson(String str) => RideDetailsResponse.fromJson(json.decode(str));
 String rideDetailsResponseToJson(RideDetailsResponse data) => json.encode(data.toJson());
@@ -51,39 +51,64 @@ RideDetailsResponse copyWith({  num? status,
 
 }
 
-/// _id : "66827d124d8df0c05da6328b"
-/// origin_address : [{"lat":"10.055348","long":"76.321888","address":"Devalokam,Thevakal","address_id":null,"_id":"66827d124d8df0c05da6328c"}]
-/// destination_address : [{"lat":"10.064588","long":"76.351151","address":"Seeroo it solutions","address_id":null,"_id":"66827d124d8df0c05da6328d"}]
-/// status : 3
+/// _id : "66866d7af1a68d09bae948da"
+/// unique_id : "SGRD-RIDEBK-1105-2024"
+/// origin_address : [{"lat":"10.055348","long":"76.321888","address":"Devalokam,Thevakal","address_id":null,"_id":"66866d7af1a68d09bae948db"}]
+/// destination_address : [{"lat":"10.064588","long":"76.351151","address":"Seeroo it solutions","address_id":null,"_id":"66866d7af1a68d09bae948dc"}]
+/// status : 6
+/// requested_time : "2024-07-04T09:38:02.203Z"
+/// start_time : "2024-07-04T09:40:02.486Z"
+/// end_time : "2024-07-04T09:43:02.643Z"
 /// estimated_price : 151.24
-/// driver_details : [{"phone_number":"14155551214","rating":4.1,"picture_url":"https://supergrydapi.ritikasingh.site/uploads/drivers/driver-2.png","name":"S Kumar","sms_number":"14155551214"}]
-/// vehicle_details : [{"make":"BMW","picture_url":"https://supergrydapi.ritikasingh.site/uploads/vehicle/bmw.png","model":"7-series","license_plate":"KL-123 456"}]
-/// otp : 2235
+/// driver_details : [{"phone_number":"14155551229","rating":4.1,"picture_url":"https://supergrydapi.ritikasingh.site/uploads/drivers/driver-5.png","name":"Rimpa","sms_number":"14155551229"}]
+/// vehicle_details : [{"make":"BMW","picture_url":"https://supergrydapi.ritikasingh.site/uploads/vehicle/bmw.png","model":"9-series","license_plate":"KL-568 258"}]
+/// otp : 3820
+/// cancel_reason : null
+/// duration : 202
+/// distance : 3.36
+/// ride_review : []
 
 Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
 class Data {
   Data({
       String? id, 
+      String? uniqueId, 
       List<OriginAddress>? originAddress, 
       List<DestinationAddress>? destinationAddress, 
       num? status, 
+      String? requestedTime, 
+      String? startTime, 
+      String? endTime, 
       num? estimatedPrice, 
       List<DriverDetails>? driverDetails, 
       List<VehicleDetails>? vehicleDetails, 
-      num? otp,}){
+      num? otp, 
+      dynamic cancelReason, 
+      num? duration, 
+      num? distance, 
+      List<dynamic>? rideReview,}){
     _id = id;
+    _uniqueId = uniqueId;
     _originAddress = originAddress;
     _destinationAddress = destinationAddress;
     _status = status;
+    _requestedTime = requestedTime;
+    _startTime = startTime;
+    _endTime = endTime;
     _estimatedPrice = estimatedPrice;
     _driverDetails = driverDetails;
     _vehicleDetails = vehicleDetails;
     _otp = otp;
+    _cancelReason = cancelReason;
+    _duration = duration;
+    _distance = distance;
+    _rideReview = rideReview;
 }
 
   Data.fromJson(dynamic json) {
     _id = json['_id'];
+    _uniqueId = json['unique_id'];
     if (json['origin_address'] != null) {
       _originAddress = [];
       json['origin_address'].forEach((v) {
@@ -97,6 +122,9 @@ class Data {
       });
     }
     _status = json['status'];
+    _requestedTime = json['requested_time'];
+    _startTime = json['start_time'];
+    _endTime = json['end_time'];
     _estimatedPrice = json['estimated_price'];
     if (json['driver_details'] != null) {
       _driverDetails = [];
@@ -111,44 +139,86 @@ class Data {
       });
     }
     _otp = json['otp'];
+    _cancelReason = json['cancel_reason'];
+    _duration = json['duration'];
+    _distance = json['distance'];
+    // if (json['ride_review'] != null) {
+    //   _rideReview = [];
+    //   json['ride_review'].forEach((v) {
+    //     _rideReview?.add(Dynamic.fromJson(v));
+    //   });
+    // }
   }
   String? _id;
+  String? _uniqueId;
   List<OriginAddress>? _originAddress;
   List<DestinationAddress>? _destinationAddress;
   num? _status;
+  String? _requestedTime;
+  String? _startTime;
+  String? _endTime;
   num? _estimatedPrice;
   List<DriverDetails>? _driverDetails;
   List<VehicleDetails>? _vehicleDetails;
   num? _otp;
+  dynamic _cancelReason;
+  num? _duration;
+  num? _distance;
+  List<dynamic>? _rideReview;
 Data copyWith({  String? id,
+  String? uniqueId,
   List<OriginAddress>? originAddress,
   List<DestinationAddress>? destinationAddress,
   num? status,
+  String? requestedTime,
+  String? startTime,
+  String? endTime,
   num? estimatedPrice,
   List<DriverDetails>? driverDetails,
   List<VehicleDetails>? vehicleDetails,
   num? otp,
+  dynamic cancelReason,
+  num? duration,
+  num? distance,
+  List<dynamic>? rideReview,
 }) => Data(  id: id ?? _id,
+  uniqueId: uniqueId ?? _uniqueId,
   originAddress: originAddress ?? _originAddress,
   destinationAddress: destinationAddress ?? _destinationAddress,
   status: status ?? _status,
+  requestedTime: requestedTime ?? _requestedTime,
+  startTime: startTime ?? _startTime,
+  endTime: endTime ?? _endTime,
   estimatedPrice: estimatedPrice ?? _estimatedPrice,
   driverDetails: driverDetails ?? _driverDetails,
   vehicleDetails: vehicleDetails ?? _vehicleDetails,
   otp: otp ?? _otp,
+  cancelReason: cancelReason ?? _cancelReason,
+  duration: duration ?? _duration,
+  distance: distance ?? _distance,
+  rideReview: rideReview ?? _rideReview,
 );
   String? get id => _id;
+  String? get uniqueId => _uniqueId;
   List<OriginAddress>? get originAddress => _originAddress;
   List<DestinationAddress>? get destinationAddress => _destinationAddress;
   num? get status => _status;
+  String? get requestedTime => _requestedTime;
+  String? get startTime => _startTime;
+  String? get endTime => _endTime;
   num? get estimatedPrice => _estimatedPrice;
   List<DriverDetails>? get driverDetails => _driverDetails;
   List<VehicleDetails>? get vehicleDetails => _vehicleDetails;
   num? get otp => _otp;
+  dynamic get cancelReason => _cancelReason;
+  num? get duration => _duration;
+  num? get distance => _distance;
+  List<dynamic>? get rideReview => _rideReview;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = _id;
+    map['unique_id'] = _uniqueId;
     if (_originAddress != null) {
       map['origin_address'] = _originAddress?.map((v) => v.toJson()).toList();
     }
@@ -156,6 +226,9 @@ Data copyWith({  String? id,
       map['destination_address'] = _destinationAddress?.map((v) => v.toJson()).toList();
     }
     map['status'] = _status;
+    map['requested_time'] = _requestedTime;
+    map['start_time'] = _startTime;
+    map['end_time'] = _endTime;
     map['estimated_price'] = _estimatedPrice;
     if (_driverDetails != null) {
       map['driver_details'] = _driverDetails?.map((v) => v.toJson()).toList();
@@ -164,6 +237,12 @@ Data copyWith({  String? id,
       map['vehicle_details'] = _vehicleDetails?.map((v) => v.toJson()).toList();
     }
     map['otp'] = _otp;
+    map['cancel_reason'] = _cancelReason;
+    map['duration'] = _duration;
+    map['distance'] = _distance;
+    if (_rideReview != null) {
+      map['ride_review'] = _rideReview?.map((v) => v.toJson()).toList();
+    }
     return map;
   }
 
@@ -171,8 +250,8 @@ Data copyWith({  String? id,
 
 /// make : "BMW"
 /// picture_url : "https://supergrydapi.ritikasingh.site/uploads/vehicle/bmw.png"
-/// model : "7-series"
-/// license_plate : "KL-123 456"
+/// model : "9-series"
+/// license_plate : "KL-568 258"
 
 VehicleDetails vehicleDetailsFromJson(String str) => VehicleDetails.fromJson(json.decode(str));
 String vehicleDetailsToJson(VehicleDetails data) => json.encode(data.toJson());
@@ -223,11 +302,11 @@ VehicleDetails copyWith({  String? make,
 
 }
 
-/// phone_number : "14155551214"
+/// phone_number : "14155551229"
 /// rating : 4.1
-/// picture_url : "https://supergrydapi.ritikasingh.site/uploads/drivers/driver-2.png"
-/// name : "S Kumar"
-/// sms_number : "14155551214"
+/// picture_url : "https://supergrydapi.ritikasingh.site/uploads/drivers/driver-5.png"
+/// name : "Rimpa"
+/// sms_number : "14155551229"
 
 DriverDetails driverDetailsFromJson(String str) => DriverDetails.fromJson(json.decode(str));
 String driverDetailsToJson(DriverDetails data) => json.encode(data.toJson());
@@ -290,7 +369,7 @@ DriverDetails copyWith({  String? phoneNumber,
 /// long : "76.351151"
 /// address : "Seeroo it solutions"
 /// address_id : null
-/// _id : "66827d124d8df0c05da6328d"
+/// _id : "66866d7af1a68d09bae948dc"
 
 DestinationAddress destinationAddressFromJson(String str) => DestinationAddress.fromJson(json.decode(str));
 String destinationAddressToJson(DestinationAddress data) => json.encode(data.toJson());
@@ -353,7 +432,7 @@ DestinationAddress copyWith({  String? lat,
 /// long : "76.321888"
 /// address : "Devalokam,Thevakal"
 /// address_id : null
-/// _id : "66827d124d8df0c05da6328c"
+/// _id : "66866d7af1a68d09bae948db"
 
 OriginAddress originAddressFromJson(String str) => OriginAddress.fromJson(json.decode(str));
 String originAddressToJson(OriginAddress data) => json.encode(data.toJson());
