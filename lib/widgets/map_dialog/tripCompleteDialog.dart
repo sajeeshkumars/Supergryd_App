@@ -381,16 +381,16 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
     MaterialStateProperty.all(AppColors.white),
     ),
               onPressed: () {
-                // Navigator.of(context).pop();
-                // Navigator.pushAndRemoveUntil(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => HomeView()),
-                //       (route) => false,
-                // );
-                Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            HomeView()));
+                Navigator.of(context).pop();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeView()),
+                      (route) => false,
+                );
+                // Navigator.of(context).push(
+                //     MaterialPageRoute(
+                //         builder: (context) =>
+                //             HomeView()));
 
                 CabMapController cabMapController = Get.find();
                 HomeController homeController = Get.find();
