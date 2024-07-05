@@ -381,11 +381,15 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
     MaterialStateProperty.all(AppColors.white),
     ),
               onPressed: () {
-                // Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeView()),
+                Navigator.pushAndRemoveUntil(
+                  context,  MaterialPageRoute(builder: (BuildContext context) => HomeView()),  (Route<dynamic> route) => (route is HomeView)
                 );
+                // Navigator.of(context).pop();
+                // Navigator.pushAndRemoveUntil(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => HomeView()),
+                //       (route) => ,
+                // );
                 // Navigator.of(context).push(
                 //     MaterialPageRoute(
                 //         builder: (context) =>
