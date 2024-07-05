@@ -306,11 +306,14 @@ class CabMapController extends GetxController {
             content: Text(
             value.message.toString(),
       )));
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => HomeView()),
-              (route) => false,
-        );
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        // Navigator.pushAndRemoveUntil(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => HomeView()),
+        //       (route) => false,
+        // );
 
         CabMapController cabMapController = Get.find();
         HomeController homeController = Get.find();
