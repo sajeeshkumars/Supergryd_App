@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
@@ -65,7 +66,8 @@ class _HomeViewState extends State<HomeView> {
                       ),
                       InkWell(
                         onTap: (){
-                          Navigator.pop(context);
+                          SystemNavigator.pop();
+
                         },
                         child: const Icon(
                           Icons.keyboard_arrow_down_sharp,
