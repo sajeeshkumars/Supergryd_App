@@ -174,6 +174,15 @@ class _RideDialogState extends State<RideDialog> {
                                   markerId: MarkerId('destination'),
                                   position: cabController
                                       .destinationMarker.value.position),
+                        // Marker(
+                        // markerId: MarkerId('splitPoint'),
+                        // position: LatLng(10.055348, 76.321888),
+                        // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+                        // infoWindow: InfoWindow(
+                        // title: 'Split Point',
+                        // snippet: 'This is the split point of the route',
+                        // ),
+                        // )
                             },
                             onMapCreated: (controller) {
                               log("onMap created called");

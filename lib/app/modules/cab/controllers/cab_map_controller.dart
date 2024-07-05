@@ -33,6 +33,8 @@ class CabMapController extends GetxController {
   RxString selectedCancelReasonText = ''.obs;
   RxBool isRideCompleteDataLoading = false.obs;
   bool isDelayApplied = false;
+  final Set<Marker> markers = {}; // Define the markers set here
+
 
   @override
   void onInit() {
@@ -60,6 +62,8 @@ class CabMapController extends GetxController {
     int splitIndex = _routeCoordinates.indexWhere((coord) =>
     coord.latitude == 10.055348 && coord.longitude == 76.321888);
 
+
+
     List<LatLng> firstPart = _routeCoordinates.sublist(0, splitIndex);
     List<LatLng> secondPart = _routeCoordinates.sublist(splitIndex);
 
@@ -81,8 +85,11 @@ class CabMapController extends GetxController {
         color: Colors.red,
       ),
     );
+
+
   }
-/// initial polyline
+
+  /// initial polyline
   final List<LatLng> _routeCoordinates = [
     LatLng(10.048726, 76.318781),
     LatLng(10.050847, 76.319333),
@@ -370,18 +377,18 @@ class CabMapController extends GetxController {
     });
   }
 
-  void _setPolyline() {
-    polylines.clear();
-    polylines.add(
-      Polyline(
-        polylineId: PolylineId('route'),
-        visible: true,
-        points: routeCoordinates.toList(),
-        width: 4,
-        color: Colors.black,
-      ),
-    );
-  }
+  // void _setPolyline() {
+  //   polylines.clear();
+  //   polylines.add(
+  //     Polyline(
+  //       polylineId: PolylineId('route'),
+  //       visible: true,
+  //       points: routeCoordinates.toList(),
+  //       width: 4,
+  //       color: Colors.black,
+  //     ),
+  //   );
+  // }
 
   setExitFalse() {
     canExit(false);
