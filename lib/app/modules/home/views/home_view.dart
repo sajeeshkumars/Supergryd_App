@@ -63,9 +63,14 @@ class _HomeViewState extends State<HomeView> {
                         textColor: AppColors.textLightColor,
                         text:  "Your Location",
                       ),
-                      const Icon(
-                        Icons.keyboard_arrow_down_sharp,
-                        size: 14,
+                      InkWell(
+                        onTap: (){
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          size: 14,
+                        ),
                       )
                     ],
                   ),
