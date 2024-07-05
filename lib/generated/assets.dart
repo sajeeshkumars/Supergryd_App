@@ -98,6 +98,7 @@ class Assets {
   static const String iconsSuccess = 'lib/assets/icons/success.svg';
   static const String iconsTrackPin = 'lib/assets/icons/track_pin.png';
   static const String iconsTracker = 'lib/assets/icons/tracker.png';
+  static const String iconsTracking = 'lib/assets/icons/tracking.png';
   static const String iconsVeg = 'lib/assets/icons/veg.svg';
   static const String iconsWallet = 'lib/assets/icons/wallet.svg';
   static const String imagesBanner = 'lib/assets/images/banner.jpg';

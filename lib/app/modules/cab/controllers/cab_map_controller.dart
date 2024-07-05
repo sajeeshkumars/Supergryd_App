@@ -51,7 +51,7 @@ class CabMapController extends GetxController {
   void createCustomMarkerIcon() async {
     customIcon = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(size: Size(80, 80)),
-      'packages/mynewpackage/${Assets.iconsCarTrackIcon}',
+      'packages/mynewpackage/${Assets.iconsTracking}',
     );
   }
 
