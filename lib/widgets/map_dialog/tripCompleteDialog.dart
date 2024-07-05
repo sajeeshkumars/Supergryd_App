@@ -382,10 +382,9 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
     ),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.pushAndRemoveUntil(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => HomeView()),
-                      (route) => false,
                 );
                 // Navigator.of(context).push(
                 //     MaterialPageRoute(
