@@ -349,7 +349,7 @@ class RestaurantDetails {
     _name = json['name'].toString();
     _email = json['email'].toString();
     _status = bool.parse(json['status'].toString());
-    _isDeleted = bool.parse(json['is_deleted'].toString());
+    // _isDeleted = bool.parse(json['is_deleted'].toString());
     _phoneNumber = json['phone_number'].toString();
   }
 

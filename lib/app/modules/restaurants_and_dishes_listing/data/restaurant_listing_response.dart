@@ -360,13 +360,13 @@ class RestaurantDetails {
     String? id,
     String? name,
     String? email,
-    bool? isDeleted,
+    // bool? isDeleted,
     String? phoneNumber,
     List<dynamic>? moreServiceProviderDetails,}){
     _id = id;
     _name = name;
     _email = email;
-    _isDeleted = isDeleted;
+    // _isDeleted = isDeleted;
     _phoneNumber = phoneNumber;
   }
 
@@ -374,32 +374,32 @@ class RestaurantDetails {
     _id = json['_id'];
     _name = json['name'];
     _email = json['email'];
-    _isDeleted = json['is_deleted'];
+    // _isDeleted = json['is_deleted'];
     _phoneNumber = json['phone_number'];
 
   }
   String? _id;
   String? _name;
   String? _email;
-  bool? _isDeleted;
+  // bool? _isDeleted;
   String? _phoneNumber;
   RestaurantDetails copyWith({  String? id,
     String? name,
     String? email,
     bool? status,
-    bool? isDeleted,
+    // bool? isDeleted,
     String? phoneNumber,
     List<dynamic>? moreServiceProviderDetails,
   }) => RestaurantDetails(  id: id ?? _id,
     name: name ?? _name,
     email: email ?? _email,
-    isDeleted: isDeleted ?? _isDeleted,
+    // isDeleted: isDeleted ?? _isDeleted,
     phoneNumber: phoneNumber ?? _phoneNumber,
   );
   String? get id => _id;
   String? get name => _name;
   String? get email => _email;
-  bool? get isDeleted => _isDeleted;
+  // bool? get isDeleted => _isDeleted;
   String? get phoneNumber => _phoneNumber;
 
   Map<String, dynamic> toJson() {
@@ -407,7 +407,7 @@ class RestaurantDetails {
     map['_id'] = _id;
     map['name'] = _name;
     map['email'] = _email;
-    map['is_deleted'] = _isDeleted;
+    // map['is_deleted'] = _isDeleted;
     map['phone_number'] = _phoneNumber;
 
     return map;
