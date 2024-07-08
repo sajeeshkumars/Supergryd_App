@@ -8,7 +8,6 @@ import 'package:mynewpackage/constants.dart';
 
 import '../model/refresh_token_model.dart';
 
-
 enum Method { POST, GET, PUT, DELETE, PATCH }
 
 class ApiService extends GetConnect implements GetxService {
@@ -28,14 +27,10 @@ class ApiService extends GetConnect implements GetxService {
     };
     _authenticationHeaders = {
       'Content-Type': 'application/json',
-      'x-api-key':Constants.key,
-      'x-api-signature':Constants.secrete
-
+      'x-api-key': Constants.key,
+      'x-api-signature': Constants.secrete
     };
   }
-
-
-
 
   @override
   void onInit() {
@@ -45,8 +40,8 @@ class ApiService extends GetConnect implements GetxService {
 
   Future<Response> reqst(
       {required String url,
-        Method? method = Method.POST,
-        Map<String, dynamic>? params}) async {
+      Method? method = Method.POST,
+      Map<String, dynamic>? params}) async {
     Response response;
     try {
       bool result = await InternetConnectionChecker().hasConnection;
@@ -73,19 +68,19 @@ class ApiService extends GetConnect implements GetxService {
           nullResCount++;
           return reqst(url: url, method: method, params: params);
         } else {
-          if (response.statusCode == 200 || response.statusCode == 201) {
+          if (response.statusCode == 200 ||
+              response.statusCode == 201 ||
+              response.statusCode == 400) {
             nullResCount = 0;
             return response;
           } else if (response.statusCode == 401) {
             //  throw Exception("Something Went Wrong");
             return await refreshTokenApi(url, params, method);
-          }
-          else if (response.statusCode == 403) {
+          } else if (response.statusCode == 403) {
             return await refreshTokenApi(url, params, method);
 
             throw Exception("Something Went Wrong");
-          }
-          else if (response.statusCode == 500) {
+          } else if (response.statusCode == 500) {
             throw Exception("Server Error");
           } else {
             throw Exception("Something Went Wrong");
@@ -111,8 +106,8 @@ class ApiService extends GetConnect implements GetxService {
 
   Future<Response> authenticationReqst(
       {required String url,
-        Method? method = Method.POST,
-        Map<String, dynamic>? params}) async {
+      Method? method = Method.POST,
+      Map<String, dynamic>? params}) async {
     Response response;
     try {
       bool result = await InternetConnectionChecker().hasConnection;
@@ -121,7 +116,7 @@ class ApiService extends GetConnect implements GetxService {
         if (Constants.isAuthenticated) {
           updateHeaders();
         }
-          response = await post(url, params, headers: _authenticationHeaders);
+        response = await post(url, params, headers: _authenticationHeaders);
 
         debugPrint("request url : ${baseUrl}$url");
         debugPrint("request : $params");
@@ -139,13 +134,11 @@ class ApiService extends GetConnect implements GetxService {
           } else if (response.statusCode == 401) {
             //  throw Exception("Something Went Wrong");
             return await refreshTokenApi(url, params, method);
-          }
-          else if (response.statusCode == 403) {
+          } else if (response.statusCode == 403) {
             return await refreshTokenApi(url, params, method);
 
             throw Exception("Something Went Wrong");
-          }
-          else if (response.statusCode == 500) {
+          } else if (response.statusCode == 500) {
             throw Exception("Server Error");
           } else {
             throw Exception("Something Went Wrong");
@@ -171,12 +164,12 @@ class ApiService extends GetConnect implements GetxService {
 
   updateHeaders() {
     // _headers['Authorization'] ="Bearer ${storage.getAccessToken()}";
-    _headers['Authorization'] ="Bearer ${Constants.accessToken}";
+    _headers['Authorization'] = "Bearer ${Constants.accessToken}";
   }
 
   updateAuthenticationHeaders() {
     // _headers['Authorization'] ="Bearer ${storage.getAccessToken()}";
-    _authenticationHeaders['Authorization'] ="Bearer ${Constants.accessToken}";
+    _authenticationHeaders['Authorization'] = "Bearer ${Constants.accessToken}";
   }
 
   Future<Response> refreshTokenApi(
@@ -193,11 +186,8 @@ class ApiService extends GetConnect implements GetxService {
       debugPrint('refreshTokenStatusCode :${res.statusCode}');
     } catch (e) {
       debugPrint('refreshTokenError');
-      return  Response(
-        body: {
-          'status': false,
-          'message': "Server Error"
-        },
+      return Response(
+        body: {'status': false, 'message': "Server Error"},
         statusCode: 500,
       );
     }
@@ -216,12 +206,8 @@ class ApiService extends GetConnect implements GetxService {
           res = await reqst(url: path, method: Method.GET);
           debugPrint('status code : ${res.statusCode}');
         } catch (e) {
-          return
-               Response(
-            body: {
-              'status': false,
-              'message': "Server Errorr"
-            },
+          return Response(
+            body: {'status': false, 'message': "Server Errorr"},
             statusCode: 500,
           );
         }
@@ -235,26 +221,17 @@ class ApiService extends GetConnect implements GetxService {
           );
           debugPrint('status code : ${res.statusCode}');
         } catch (e) {
-          return
-               Response(
-            body: {
-              'status': false,
-              'message': "Server Error"
-            },
+          return Response(
+            body: {'status': false, 'message': "Server Error"},
             statusCode: 500,
           );
         }
         return res;
       }
     }
-    return
-         Response(
-      body: {
-        'status': false,
-        'message': "Server Error"
-      },
+    return Response(
+      body: {'status': false, 'message': "Server Error"},
       statusCode: 500,
     );
   }
-
 }

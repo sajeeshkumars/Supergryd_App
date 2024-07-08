@@ -274,6 +274,12 @@ class CabMapController extends GetxController {
     });
   }
 
+  setRideNotFound() {
+    cabStatus(CabStates.rideNotFound);
+    canExit(true);
+    update();
+  }
+
   Future<void> rideCancelReasons() async {
     await cabRepository.rideCancelReasons().then((value) {
       if (value.data != []) {
@@ -400,6 +406,7 @@ class CabMapController extends GetxController {
 
 enum CabStates {
   initial,
+  rideNotFound,
   loading,
   rideSelection,
   searchingCab,

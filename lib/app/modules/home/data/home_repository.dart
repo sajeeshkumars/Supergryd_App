@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/home/data/home_service.dart';
@@ -32,11 +34,10 @@ class HomeRepository implements HomeService {
     RideEstimationResponse rideEstimationResponse;
     Response response = await apiService.reqst(
         url: 'ride-hail/ride-request-price-estimate', params: params);
-    debugPrint(response.statusCode.toString());
+    log("response ${response.body}", name: "GETRIDEESTIMATION");
     try {
-      rideEstimationResponse =
-          RideEstimationResponse.fromJson(response.body);
-      debugPrint('inside repo ${rideEstimationResponse.status}');
+      rideEstimationResponse = RideEstimationResponse.fromJson(response.body);
+      debugPrint('inside repo ${rideEstimationResponse.toJson()}');
       return rideEstimationResponse;
     } catch (e, s) {
       debugPrint(s.toString());
@@ -45,15 +46,13 @@ class HomeRepository implements HomeService {
   }
 
   @override
-  Future<RequestRideResponse> requestRide(
-      Map<String, dynamic>? params) async {
+  Future<RequestRideResponse> requestRide(Map<String, dynamic>? params) async {
     RequestRideResponse requestRideResponse;
-    Response response = await apiService.reqst(
-        url: 'ride-hail/ride-booking', params: params);
+    Response response =
+        await apiService.reqst(url: 'ride-hail/ride-booking', params: params);
     debugPrint(response.statusCode.toString());
     try {
-      requestRideResponse =
-          RequestRideResponse.fromJson(response.body);
+      requestRideResponse = RequestRideResponse.fromJson(response.body);
       debugPrint('inside repo ${requestRideResponse.status}');
       return requestRideResponse;
     } catch (e, s) {
