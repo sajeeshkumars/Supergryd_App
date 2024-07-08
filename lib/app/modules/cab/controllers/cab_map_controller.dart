@@ -10,7 +10,6 @@ import 'package:mynewpackage/constants.dart';
 
 import '../../../../generated/assets.dart';
 import '../../home/controllers/home_controller.dart';
-import '../../home/views/home_view.dart';
 import '../model/Ride_details_response.dart';
 import '../model/cancel_reasons_response.dart';
 
@@ -35,7 +34,6 @@ class CabMapController extends GetxController {
   bool isDelayApplied = false;
   final Set<Marker> markers = {}; // Define the markers set here
 
-
   @override
   void onInit() {
     // TODO: implement onInit
@@ -43,8 +41,6 @@ class CabMapController extends GetxController {
     createCustomMarkerIcon();
     rideCancelReasons();
   }
-
-
 
   RideDetailsResponse? rideDetailsResponse;
 
@@ -59,10 +55,8 @@ class CabMapController extends GetxController {
 
   void _setPolylines() {
     // Split _routeCoordinates based on LatLng(10.055348, 76.321888)
-    int splitIndex = _routeCoordinates.indexWhere((coord) =>
-    coord.latitude == 10.055348 && coord.longitude == 76.321888);
-
-
+    int splitIndex = _routeCoordinates.indexWhere(
+        (coord) => coord.latitude == 10.055348 && coord.longitude == 76.321888);
 
     List<LatLng> firstPart = _routeCoordinates.sublist(0, splitIndex);
     List<LatLng> secondPart = _routeCoordinates.sublist(splitIndex);
@@ -85,8 +79,6 @@ class CabMapController extends GetxController {
         color: Colors.red,
       ),
     );
-
-
   }
 
   /// initial polyline
@@ -124,7 +116,6 @@ class CabMapController extends GetxController {
     LatLng(10.064588, 76.351151),
   ];
 
-
   RxList<LatLng> routeCoordinates = <LatLng>[
     LatLng(10.048726, 76.318781),
     // Add other initial coordinates here if necessary
@@ -161,7 +152,7 @@ class CabMapController extends GetxController {
 
   resetRide() {
     cabStatus(CabStates.initial);
-     isCancelClicked = false.obs;
+    isCancelClicked = false.obs;
 
     markerIndex(0);
     canExit(true);
@@ -240,7 +231,7 @@ class CabMapController extends GetxController {
             debugPrint("otp inside ${Constants.otp}");
             getRideDetails();
           }
-          if(trackResponse?.rideStatus == 3){
+          if (trackResponse?.rideStatus == 3) {
             Future.delayed(Duration(seconds: 20));
           }
 
@@ -271,7 +262,7 @@ class CabMapController extends GetxController {
 
   Future<void> getRideDetails() async {
     isRideCompleteDataLoading(true);
-     await cabRepository
+    await cabRepository
         .rideDetails(requestId: Constants.requestId!)
         .then((value) {
       if (value.data != []) {
@@ -281,6 +272,12 @@ class CabMapController extends GetxController {
         isRideCompleteDataLoading(false);
       }
     });
+  }
+
+  setRideNotFound() {
+    cabStatus(CabStates.rideNotFound);
+    canExit(true);
+    update();
   }
 
   Future<void> rideCancelReasons() async {
@@ -293,19 +290,23 @@ class CabMapController extends GetxController {
     });
   }
 
-  Future<void> cancelRide({required BuildContext context ,required int requestId,required int reasonId,required String reason}) async {
+  Future<void> cancelRide(
+      {required BuildContext context,
+      required int requestId,
+      required int reasonId,
+      required String reason}) async {
     isRideCancelLoading(true);
     await cabRepository.cancelRide({
-      "request_id":requestId,
-      "reason_id":reasonId,
-      "reason":reason
+      "request_id": requestId,
+      "reason_id": reasonId,
+      "reason": reason
     }).then((value) {
       if (value.status == 200) {
         isRideCancelLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
-            value.message.toString(),
-      )));
+          value.message.toString(),
+        )));
         Navigator.pop(context);
         Navigator.pop(context);
         Navigator.pop(context);
@@ -324,8 +325,8 @@ class CabMapController extends GetxController {
         isRideCancelLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
-              value.message.toString(),
-            )));
+          value.message.toString(),
+        )));
       }
     });
   }
@@ -365,6 +366,7 @@ class CabMapController extends GetxController {
 
         if (!routeCoordinates.contains(newLatLng)) {
           routeCoordinates.add(newLatLng);
+
           /// for live ployline
           // _setPolyline();
           _setPolylines();
@@ -404,6 +406,7 @@ class CabMapController extends GetxController {
 
 enum CabStates {
   initial,
+  rideNotFound,
   loading,
   rideSelection,
   searchingCab,

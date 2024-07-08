@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart' as location;
 import 'package:mynewpackage/app/authentication/authentication_repo.dart';
@@ -32,23 +31,28 @@ class HomeController extends GetxController {
     Assets.iconsOffice
   ];
   List addressHeading = ["Home", "Office", "Seeroo"];
+  // List addressDescription = [
+  //   "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India",
+  //   "No. 63, 1st Floor, 14th Cross, 9th Main Road,Indiranagar, Bengaluru, Karnataka 560038, India",
+  //   "XIII/330, Santhigiri Campus, Cochin, NAD Rd, North Kalamassery, HMT Kalamassery, Kerala 683503",
+  // ];
   List addressDescription = [
-    "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India",
+    "Devalokam,Thevakal",
     "No. 63, 1st Floor, 14th Cross, 9th Main Road,Indiranagar, Bengaluru, Karnataka 560038, India",
-    "XIII/330, Santhigiri Campus, Cochin, NAD Rd, North Kalamassery, HMT Kalamassery, Kerala 683503",
+    "Seeroo it solutions",
   ];
   Map<String, dynamic> locationCoordinates = {
     "Home": {
-      "lat": 13.094478,
-      "long": 77.720049,
+      "lat": 14.055348,
+      "long": 76.321888,
     },
     "Office": {
       "lat": 12.922122741085568,
       "long": 77.61472686044922,
     },
     "Seeroo": {
-      "lat": 10.06407070929079,
-      "long": 76.35141824928344,
+      "lat": 10.064588,
+      "long": 76.351151,
     }
   };
   RxMap selectedLocationCoordinates = {
@@ -64,7 +68,9 @@ class HomeController extends GetxController {
     "long": 77.720049,
   }.obs;
   RxString address = "Select Address".obs;
-  RxString selectedPickUp = "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India".obs;
+  RxString selectedPickUp =
+      "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India"
+          .obs;
   RxString selectedDropOff = "".obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingServices = false.obs;
@@ -79,8 +85,6 @@ class HomeController extends GetxController {
   RxString rideDistance = "".obs;
   RxString seatCapacity = "".obs;
   RequestRideData? requestRideData;
-
-
 
   // AppStorage storage = AppStorage();
   AuthRepository authRepository = Get.put(AuthRepository());
@@ -310,7 +314,6 @@ class HomeController extends GetxController {
                                     isDestinationSelected.value = true;
 
                                     getEstimations();
-
                                   }
                                   Navigator.pop(context);
 
@@ -627,8 +630,8 @@ class HomeController extends GetxController {
     estimationList.clear();
     isEstimationLoading(true);
     await homeRepository.getRideEstimation({
-      "start_location": {"lat": 12.9147399, "long": 77.5972174},
-      "end_location": {"lat": 12.90, "long": 77.57}
+      "start_location": {"lat": 28.668613, "long": 77.206174},
+      "end_location": {"lat": 10.064588, "long": 76.351151}
     }).then((value) {
       if (value.data != [] && (value.status == 200)) {
         estimationList.addAll(value.data ?? []);
@@ -636,11 +639,15 @@ class HomeController extends GetxController {
         final cabController = Get.find<CabMapController>();
         debugPrint("ride selection top ${cabController.cabStatus.value}");
         cabController.onRideSelection();
-        debugPrint("ride selection after reset ${cabController.cabStatus.value}");
-
+        debugPrint(
+            "ride selection after reset ${cabController.cabStatus.value}");
       } else {
         isEstimationLoading(false);
-        getEstimations();
+
+        if (value.status == 422) {
+          cabMapController.setRideNotFound();
+        }
+        // getEstimations();
       }
     });
   }
@@ -653,7 +660,7 @@ class HomeController extends GetxController {
       'phone_number': '9878765434',
       'email': 'example@gmail.com',
       "start_location": {
-        "lat": "10.055348",
+        "lat": "10.28668613",
         "long": "76.321888",
         "address": "Devalokam,Thevakal"
       },
@@ -685,18 +692,18 @@ class HomeController extends GetxController {
     });
   }
 
-  void clearValues(){
-     selectedPickUp = "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India".obs;
-     selectedDropOff = "".obs;
-     isLoading = false.obs;
-     isEstimationLoading = false.obs;
-     isRequestRideLoading = false.obs;
-     isRequestSent = false.obs;
-     productId = "".obs;
-     fareId = "".obs;
-     price = 0.0.obs;
-     estimationList.clear();
-
+  void clearValues() {
+    selectedPickUp =
+        "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India"
+            .obs;
+    selectedDropOff = "".obs;
+    isLoading = false.obs;
+    isEstimationLoading = false.obs;
+    isRequestRideLoading = false.obs;
+    isRequestSent = false.obs;
+    productId = "".obs;
+    fareId = "".obs;
+    price = 0.0.obs;
+    estimationList.clear();
   }
 }
-

@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
+import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
+import 'package:mynewpackage/widgets/custom_button.dart';
 
 import '../../app/modules/home/views/home_view.dart';
 import '../../app_colors.dart';
@@ -192,6 +194,45 @@ class DestinationSelection extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class RideNotFoundWidget extends StatelessWidget {
+  const RideNotFoundWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      color: AppColors.white,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset("packages/mynewpackage/${Assets.iconsRideNotFound}"),
+          const CommonText(
+            text: "Ride not found",
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+          const SizedBox(height: 20),
+          const CommonText(
+            text: "Please try again in few minutes",
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: CommonButton(
+                onPressed: () {
+                  final cabController = Get.find<CabMapController>();
+                  cabController.cabStatus(CabStates.initial);
+                },
+                text: "Try Again"),
+          )
+        ],
       ),
     );
   }
