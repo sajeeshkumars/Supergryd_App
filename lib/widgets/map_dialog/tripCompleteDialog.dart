@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -12,7 +11,6 @@ import '../../app/modules/home/controllers/home_controller.dart';
 import '../../app/modules/home/views/home_view.dart';
 import '../../app/modules/trip_rating/views/trip_rating_view.dart';
 import '../../app_colors.dart';
-import '../../constants.dart';
 import '../../generated/assets.dart';
 import '../common_Image_view.dart';
 import '../common_text.dart';
@@ -375,10 +373,10 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
           alignment: Alignment.bottomCenter,
           child: ElevatedButton(
    style:  ButtonStyle(
-    backgroundColor: MaterialStateProperty.all(
+    backgroundColor: WidgetStateProperty.all(
     AppColors.primaryColor),
     foregroundColor:
-    MaterialStateProperty.all(AppColors.white),
+    WidgetStateProperty.all(AppColors.white),
     ),
               onPressed: () {
      Navigator.pop(context);

@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/authentication/model/create_user_response.dart';
 import 'package:mynewpackage/app/modules/home/controllers/font_controller.dart';
@@ -13,23 +14,24 @@ class AuthRepository implements AuthService {
 
   @override
   // Future<AuthenticationResponse> authenticate()
-  Future<AuthenticationResponse> authenticate(Map<String, dynamic>? params)
-  async {
+  Future<AuthenticationResponse> authenticate(
+      Map<String, dynamic>? params) async {
     AuthenticationResponse authenticationResponse;
-    Response response =
-        await apiService.authenticationReqst(url: 'auth/auth-verification', params: params);
-        // await apiService.authenticationReqst(url: 'auth/auth-verificationV2');
-    debugPrint(response.statusCode.toString());
+    Response response = await apiService.authenticationReqst(
+        url: 'auth/auth-verification', params: params);
+    // await apiService.authenticationReqst(url: 'auth/auth-verificationV2');
+    log("authenticate ${response.statusCode}", name: "AUTHREPOSITORY");
     try {
       authenticationResponse = AuthenticationResponse.fromJson(response.body);
-      debugPrint("inside repo ${authenticationResponse.status}");
+      log("inside repo ${authenticationResponse.status}",
+          name: "AUTHREPOSITORY");
       if (authenticationResponse.data?.themes?.firstOrNull?.font != null) {
         fontController
             .setFont(authenticationResponse.data!.themes!.firstOrNull!.font!);
       }
       return authenticationResponse;
     } catch (e, s) {
-      debugPrint(s.toString());
+      log("authenticate Exception:$e,stack:$s", name: "AUTHREPOSITORY");
       return AuthenticationResponse(message: "Server Error", status: 500);
     }
   }
@@ -39,13 +41,15 @@ class AuthRepository implements AuthService {
     CreateUserResponse createUserResponse;
     Response response =
         await apiService.reqst(url: 'sdk/create-users', params: params);
-    debugPrint(response.statusCode.toString());
+    log("createUser ${response.statusCode}", name: "AUTHREPOSITORY");
+
     try {
       createUserResponse = CreateUserResponse.fromJson(response.body);
-      debugPrint("inside repo ${createUserResponse.status}");
+      log("inside repo ${createUserResponse.status}", name: "AUTHREPOSITORY");
       return createUserResponse;
     } catch (e, s) {
-      debugPrint(s.toString());
+      log("createUser Exception:$e,stack:$s", name: "AUTHREPOSITORY");
+
       return CreateUserResponse(message: "Server Error", status: 401);
     }
   }

@@ -6,12 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as location;
 import 'package:mynewpackage/app/helper/alert_helper.dart';
-import 'package:mynewpackage/app/modules/home/controllers/color_controller.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../app/core/utility.dart';
 import 'address_selection_dialogue.dart';
 
 class AddressSelectionWidget extends StatelessWidget {
@@ -27,11 +24,9 @@ class AddressSelectionWidget extends StatelessWidget {
   final Color? borderColor;
   final location.Location locationStatus = location.Location();
 
-  ColorController colorController = Get.find();
-  HomeController homeController = Get.find();
-
   @override
   Widget build(BuildContext context) {
+    HomeController homeController = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -40,7 +35,7 @@ class AddressSelectionWidget extends StatelessWidget {
             if (Platform.isIOS) {
               await requestLocationPermission(context);
             } else {
-              await homeController.requestLocationForAndroid( context: context);
+              await homeController.requestLocationForAndroid(context: context);
             }
           },
           onLongPress: () {
@@ -101,24 +96,26 @@ class AddressSelectionWidget extends StatelessWidget {
 
   Future<void> requestLocationPermission(BuildContext context) async {
     try {
-      location.PermissionStatus permission = await locationStatus.requestPermission();
+      location.PermissionStatus permission =
+          await locationStatus.requestPermission();
       if (permission == location.PermissionStatus.granted) {
         await showDialog(
           context: context,
           builder: (BuildContext context) {
             return RideDialog(
-              onSelected: (address, lat, lng, zip, city, state, streetNumber, route, homeAddress) {},
+              onSelected: (address, lat, lng, zip, city, state, streetNumber,
+                  route, homeAddress) {},
               onDataReceived: (
-                  String address,
-                  double lat,
-                  double lng,
-                  String zip,
-                  String city,
-                  String state,
-                  String streetNumber,
-                  String route,
-                  String stateIsoCode,
-                  ) {
+                String address,
+                double lat,
+                double lng,
+                String zip,
+                String city,
+                String state,
+                String streetNumber,
+                String route,
+                String stateIsoCode,
+              ) {
                 onAddressSelect(
                   address,
                   lat,
@@ -135,10 +132,10 @@ class AddressSelectionWidget extends StatelessWidget {
           },
         );
       } else {
-             await AlertHelper.showAlert(
+        await AlertHelper.showAlert(
             title: "",
             content:
-            'Location permission is not allowed. Please allow it in Location Services -> Amagi Caregiver App',
+                'Location permission is not allowed. Please allow it in Location Services -> Amagi Caregiver App',
             hasCancel: false,
             confirmText: "OK",
             onConfirm: () {
@@ -146,22 +143,23 @@ class AddressSelectionWidget extends StatelessWidget {
               Get.close(1);
             },
             isLoading: ValueNotifier(false),
-            onCancel: () {}, context: context);
+            onCancel: () {},
+            context: context);
       }
-    } catch (e, stack) {
+    } catch (e) {
       debugPrint(e.toString());
     }
   }
+
   void openLocationServicesSettings() async {
     const String settingsUrl = 'App-Prefs:LOCATION_SERVICES';
-    if (await canLaunch(settingsUrl)) {
-      await launch(settingsUrl);
+    final uri = Uri.parse(settingsUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
       if (kDebugMode) {
         print('Could not open Location Services settings.');
       }
     }
   }
-
-
 }

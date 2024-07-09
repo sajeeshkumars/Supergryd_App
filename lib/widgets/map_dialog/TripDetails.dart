@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 
-import '../../app/modules/home/views/home_view.dart';
-import '../../app_colors.dart';
 import '../../constants.dart';
 import '../../generated/assets.dart';
 import '../common_text.dart';
@@ -17,11 +15,10 @@ class TripDetails extends StatelessWidget {
     super.key,
   });
 
-  CabMapController cabMapController = Get.find();
-  HomeController homeController = Get.find();
-
   @override
   Widget build(BuildContext context) {
+    CabMapController cabMapController = Get.find();
+    HomeController homeController = Get.find();
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
@@ -49,7 +46,8 @@ class TripDetails extends StatelessWidget {
                               ),
                               ListTile(
                                 leading: CircleAvatar(
-                                  backgroundImage: NetworkImage('${cabMapController.rideDetailsResponse?.data?.first.driverDetails?.first.pictureUrl}'),
+                                  backgroundImage: NetworkImage(
+                                      '${cabMapController.rideDetailsResponse?.data?.first.driverDetails?.first.pictureUrl}'),
                                 ),
                                 title: CommonText(
                                     text: Constants.driverName.toString(),
@@ -84,7 +82,8 @@ class TripDetails extends StatelessWidget {
                                           .01,
                                     ),
                                     CommonText(
-                                        text: "${homeController.rideDistance}km"),
+                                        text:
+                                            "${homeController.rideDistance}km"),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           .1,
@@ -97,7 +96,8 @@ class TripDetails extends StatelessWidget {
                                           .01,
                                     ),
                                     CommonText(
-                                        text: "${(homeController.rideDuration/60).toStringAsFixed(2)} min"),
+                                        text:
+                                            "${(homeController.rideDuration / 60).toStringAsFixed(2)} min"),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           .1,
@@ -109,7 +109,9 @@ class TripDetails extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width *
                                           .01,
                                     ),
-                                    CommonText(text: "₹ ${cabMapController.rideDetailsResponse?.data?.first.estimatedPrice}"),
+                                    CommonText(
+                                        text:
+                                            "₹ ${cabMapController.rideDetailsResponse?.data?.first.estimatedPrice}"),
                                   ],
                                 ),
                               ),
@@ -230,7 +232,8 @@ class TripDetails extends StatelessWidget {
                                     CommonText(text: "Total price"),
                                     Spacer(),
                                     CommonText(
-                                      text: "₹ ${cabMapController.rideDetailsResponse?.data?.first.estimatedPrice}",
+                                      text:
+                                          "₹ ${cabMapController.rideDetailsResponse?.data?.first.estimatedPrice}",
                                       fontWeight: FontWeight.w700,
                                     )
                                   ],

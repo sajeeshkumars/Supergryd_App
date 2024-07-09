@@ -6,8 +6,6 @@ import 'package:get/get.dart';
 import '../../../../model/font_response.dart';
 
 class FontService extends GetConnect {
-  final _random = Random();
-
   Future<Map<String, String>> getFont() async {
     final rand = Random();
     String url =
@@ -16,8 +14,7 @@ class FontService extends GetConnect {
     if (resp.isOk) {
       print("response is ${resp.body}");
       List list = jsonDecode(resp.body);
-      List<Map<String, dynamic>> mainList =
-          list.whereType<Map<String, dynamic>>().toList();
+
       int integ = rand.nextInt(list.length);
       Map<String, dynamic> body = list[integ];
       Map<String, String> map2 = {body["name"]: body["fontWeight"]};

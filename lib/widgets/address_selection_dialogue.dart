@@ -29,7 +29,7 @@ class RideDialog extends StatefulWidget {
     required this.onSelected,
   });
 
-  Function onSelected;
+  final Function onSelected;
   final Function(
     String address,
     double lat,

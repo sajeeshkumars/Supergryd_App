@@ -45,7 +45,7 @@ class CabMapController extends GetxController {
   RideDetailsResponse? rideDetailsResponse;
 
   void createCustomMarkerIcon() async {
-    customIcon = await BitmapDescriptor.fromAssetImage(
+    customIcon = await BitmapDescriptor.asset(
       ImageConfiguration(size: Size(80, 80)),
       'packages/mynewpackage/${Assets.iconsTracking}',
     );
@@ -235,7 +235,6 @@ class CabMapController extends GetxController {
             Future.delayed(Duration(seconds: 20));
           }
 
-
           switch (trackResponse?.rideStatus) {
             case 1:
               return cabStatus(CabStates.accepted);
@@ -253,7 +252,7 @@ class CabMapController extends GetxController {
               throw Exception("Unknown status: ");
           }
         } else {
-          if(trackResponse?.status == 'FAILURE'){
+          if (trackResponse?.status == 'FAILURE') {
             // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             //   content: Text(
             //     trackResponse!.message.toString(),
@@ -267,6 +266,7 @@ class CabMapController extends GetxController {
     } catch (e) {
       return null;
     }
+    return null;
   }
 
   Future<void> getRideDetails() async {

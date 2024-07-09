@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/Dish_listing_request.dart';
+import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/dish_listing_request.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_repo.dart';
 import 'package:mynewpackage/constants.dart';
 

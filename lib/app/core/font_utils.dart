@@ -7,7 +7,7 @@ import '../../model/font_response.dart';
 
 class FontUtils {
   static Map<DynamicFontsVariant, DynamicFontsFile>
-      convertFontResponseToDynamicFontVarient(FontResponse fontResponse) {
+      convertFontResponseToDynamicFontVariant(FontResponse fontResponse) {
     Map<DynamicFontsVariant, DynamicFontsFile> map = {};
 
     if (fontResponse.font != null && fontResponse.fontItems != null) {
@@ -19,18 +19,18 @@ class FontUtils {
               e.fontVarient != null &&
               e.fontFile?.sizeInBytes != null) {
             DynamicFontsVariant varient = DynamicFontsVariant(
-                fontWeight: convertFontVarientWeightToFontWeight(
+                fontWeight: convertFontVariantWeightToFontWeight(
                     e.fontVarient!.fontWeight!),
-                fontStyle: convertFontVarientStyleToFontStyle(
+                fontStyle: convertFontVariantStyleToFontStyle(
                     e.fontVarient!.fontStyle!));
             DynamicFontsFile fontsFile = CommonFontFile(
                 e.fontFile!.sha256!,
                 e.fontFile!.sizeInBytes!,
                 fontResponse.font!,
                 DynamicFontsVariant(
-                  fontWeight: convertFontVarientWeightToFontWeight(
+                  fontWeight: convertFontVariantWeightToFontWeight(
                       e.fontFile!.fontVarient!.fontWeight!),
-                  fontStyle: convertFontVarientStyleToFontStyle(
+                  fontStyle: convertFontVariantStyleToFontStyle(
                       e.fontFile!.fontVarient!.fontStyle!),
                 ),
                 extension: e.fontFile?.format);
@@ -47,7 +47,7 @@ class FontUtils {
   }
 }
 
-FontWeight convertFontVarientWeightToFontWeight(FontVarientWeight weight) {
+FontWeight convertFontVariantWeightToFontWeight(FontVarientWeight weight) {
   return switch (weight) {
     FontVarientWeight.w100 => FontWeight.w100,
     FontVarientWeight.w200 => FontWeight.w200,
@@ -63,7 +63,7 @@ FontWeight convertFontVarientWeightToFontWeight(FontVarientWeight weight) {
   };
 }
 
-FontStyle convertFontVarientStyleToFontStyle(FontVarientStyle style) {
+FontStyle convertFontVariantStyleToFontStyle(FontVarientStyle style) {
   return switch (style) {
     FontVarientStyle.regular => FontStyle.normal,
     FontVarientStyle.italic => FontStyle.italic,

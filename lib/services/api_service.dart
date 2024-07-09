@@ -60,25 +60,27 @@ class ApiService extends GetConnect implements GetxService {
           response = await get(url, headers: _headers);
         }
         debugPrint("\n\n");
-        debugPrint("============================================================================");
+        debugPrint(
+            "============================================================================");
         debugPrint("request url : ${baseUrl}$url");
         debugPrint("\n\n");
-        debugPrint("============================================================================");
+        debugPrint(
+            "============================================================================");
 
         debugPrint("request : $params");
         debugPrint("\n\n");
-        debugPrint("============================================================================");
-
+        debugPrint(
+            "============================================================================");
 
         debugPrint("headers : $_headers");
         debugPrint("\n\n");
-        debugPrint("============================================================================");
-
+        debugPrint(
+            "============================================================================");
 
         debugPrint("status code :${response.statusCode}  ulr : ${url}");
         debugPrint("\n\n");
-        debugPrint("============================================================================");
-
+        debugPrint(
+            "============================================================================");
 
         log("response : ${response.body}");
         if (response.body == null && nullResCount < 2) {
@@ -95,8 +97,6 @@ class ApiService extends GetConnect implements GetxService {
             return await refreshTokenApi(url, params, method);
           } else if (response.statusCode == 403) {
             return await refreshTokenApi(url, params, method);
-
-            throw Exception("Something Went Wrong");
           } else if (response.statusCode == 500) {
             throw Exception("Server Error");
           } else {
@@ -106,7 +106,7 @@ class ApiService extends GetConnect implements GetxService {
       } else {
         throw Exception("No Internet Connection");
       }
-    } on SocketException catch (e) {
+    } on SocketException {
       throw Exception("No Internet Connection");
     } on FormatException {
       throw Exception("Bad Response Format!");
@@ -153,8 +153,6 @@ class ApiService extends GetConnect implements GetxService {
             return await refreshTokenApi(url, params, method);
           } else if (response.statusCode == 403) {
             return await refreshTokenApi(url, params, method);
-
-            throw Exception("Something Went Wrong");
           } else if (response.statusCode == 500) {
             throw Exception("Server Error");
           } else {
@@ -164,7 +162,7 @@ class ApiService extends GetConnect implements GetxService {
       } else {
         throw Exception("No Internet Connection");
       }
-    } on SocketException catch (e) {
+    } on SocketException {
       throw Exception("No Internet Connection");
     } on FormatException {
       throw Exception("Bad Response Format!");

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app_colors.dart';
 
 import '../../../../constants.dart';
 import '../../../../generated/assets.dart';
 import '../../../../widgets/common_text.dart';
+import '../../../../widgets/dialogs/common_alert_dialog.dart';
 import '../controllers/add_cash_to_wallet_controller.dart';
+import '../widgets/payment_method_tile.dart';
 
 class AddCashToWalletView extends GetView<AddCashToWalletController> {
   const AddCashToWalletView({super.key});
@@ -30,7 +31,7 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
                 radius: 50,
                 child: CommonText(
                   textColor: Colors.white,
-                  text:Constants.nameFirstLetter,
+                  text: Constants.nameFirstLetter,
                 ), // Radius of the circle
               ),
             ),
@@ -52,24 +53,26 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
-                      textColor:AppColors.white ,
-
-                       text:  "Hi,${Constants.name}",
+                      textColor: AppColors.white,
+                      text: "Hi,${Constants.name}",
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     CommonText(
-                      fontSize: 18,textColor: AppColors.white,
-                         text: "Total Balance",),
+                      fontSize: 18,
+                      textColor: AppColors.white,
+                      text: "Total Balance",
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
                     CommonText(
                       textColor: AppColors.white,
-                        fontSize:28 ,
-                        fontWeight:FontWeight.bold ,
-                        text: "\$0.00",),
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      text: "\$0.00",
+                    ),
                   ],
                 ),
               ),
@@ -188,7 +191,7 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
-                                          return  CommonAlertDialog(
+                                          return CommonAlertDialog(
                                             imagePath: Assets.iconsWallet,
                                             contentOne:
                                                 "Want Exlplore Our Services?",
@@ -196,13 +199,13 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
                                                 'Add money to wallet for availing\nthe services',
                                             buttonTextOne:
                                                 'Add Money to Wallet',
-                                            buttonTextTwo: 'Skip', onButtonOneTap: (){
-                                            Navigator.of(context).pop();
-
-                                          }, onButtonTwoTap: (){
-                                            Navigator.of(context).pop();
-
-                                          },
+                                            buttonTextTwo: 'Skip',
+                                            onButtonOneTap: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            onButtonTwoTap: () {
+                                              Navigator.of(context).pop();
+                                            },
                                           );
                                         });
                                   },
@@ -222,20 +225,19 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return  CommonAlertDialog(
+                                        return CommonAlertDialog(
                                           imagePath: Assets.iconsWallet,
-                                          contentOne:
-                                          "Congratulations!",
+                                          contentOne: "Congratulations!",
                                           contentTwo:
-                                          'You added \$500 to your wallet',
-                                          buttonTextOne:
-                                          'Explore Our Services',
-                                          buttonTextTwo: 'Back to Home', onButtonOneTap: (){
+                                              'You added \$500 to your wallet',
+                                          buttonTextOne: 'Explore Our Services',
+                                          buttonTextTwo: 'Back to Home',
+                                          onButtonOneTap: () {
                                             Navigator.of(context).pop();
-                                        }, onButtonTwoTap: (){
-                                          Navigator.of(context).pop();
-
-                                        },
+                                          },
+                                          onButtonTwoTap: () {
+                                            Navigator.of(context).pop();
+                                          },
                                         );
                                       });
                                 },
@@ -253,147 +255,5 @@ class AddCashToWalletView extends GetView<AddCashToWalletController> {
         ),
       ),
     );
-  }
-}
-
-class CommonAlertDialog extends StatelessWidget {
-  const CommonAlertDialog(
-      {super.key,
-      required this.imagePath,
-      required this.contentOne,
-      required this.contentTwo,
-      required this.buttonTextOne,
-       this.buttonTextTwo,
-      required this.onButtonOneTap,
-       this.onButtonTwoTap});
-
-  final String imagePath;
-  final String contentOne;
-  final String contentTwo;
-  final String buttonTextOne;
-  final String? buttonTextTwo;
-  final  Function onButtonOneTap;
-  final  Function? onButtonTwoTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: AppColors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      content: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset("imagePathBase/$imagePath"),
-            SizedBox(height: 20),
-            // Add spacing if needed
-            Column(
-              children: [
-                const Text(
-                  "Hi Michael,",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  contentOne,
-                  style:
-                      const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-                  textAlign: TextAlign.center,
-
-
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                CommonText(
-                 text:  contentTwo,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: const BorderRadius.all(Radius.circular(10))),
-                  child: TextButton(
-                      onPressed: () {
-                        onButtonOneTap;
-                      },
-                      child: Text(
-                        buttonTextOne,
-                        style: TextStyle(color: AppColors.white),
-                      )),
-                ),
-               buttonTextTwo != "" ? const SizedBox(
-                  height: 10,
-                ):SizedBox.shrink(),
-                buttonTextTwo != "" ? TextButton(
-                    onPressed: () {
-                      onButtonOneTap;
-                    },
-                    child: Text(buttonTextTwo!)):SizedBox.shrink()
-              ],
-            ),
-            // Add more widgets as needed
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PaymentMethodTile extends StatelessWidget {
-  const PaymentMethodTile(
-      {super.key,
-      required this.controller,
-      required this.title,
-      required this.value});
-
-  final AddCashToWalletController controller;
-  final String title;
-  final int value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      return Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: ListTile(
-            leading: SizedBox(
-              height: 35,
-              width: 35,
-              child: CircleAvatar(
-                backgroundColor: Colors.grey[200],
-                radius: 50,
-                child: Text(
-                  Constants.nameFirstLetter,
-                  style: const TextStyle(color: Colors.white),
-                ), // Radius of the circle
-              ),
-            ),
-            title: Text(
-              title,
-            ),
-            trailing: SizedBox(
-              height: 10,
-              width: 10,
-              child: Radio(
-                  activeColor: AppColors.primaryColor,
-                  value: value,
-                  groupValue: controller.selectedRadio.value,
-                  onChanged: (value) {
-                    controller.selectedRadio.value = value ?? 0;
-                  }),
-            )
-        ),
-      );
-    });
   }
 }
