@@ -59,10 +59,27 @@ class ApiService extends GetConnect implements GetxService {
         } else {
           response = await get(url, headers: _headers);
         }
+        debugPrint("\n\n");
+        debugPrint("============================================================================");
         debugPrint("request url : ${baseUrl}$url");
+        debugPrint("\n\n");
+        debugPrint("============================================================================");
+
         debugPrint("request : $params");
+        debugPrint("\n\n");
+        debugPrint("============================================================================");
+
+
         debugPrint("headers : $_headers");
+        debugPrint("\n\n");
+        debugPrint("============================================================================");
+
+
         debugPrint("status code :${response.statusCode}  ulr : ${url}");
+        debugPrint("\n\n");
+        debugPrint("============================================================================");
+
+
         log("response : ${response.body}");
         if (response.body == null && nullResCount < 2) {
           nullResCount++;

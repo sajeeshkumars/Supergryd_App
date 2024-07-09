@@ -260,7 +260,7 @@ class RideTypeChoose extends StatelessWidget {
                           MaterialStateProperty.all(Size(340, 70)),
                         ),
                         onPressed: () {
-                          controller.requestRide();
+                          controller.requestRide(context);
                         },
                         child: Row(
                           children: [

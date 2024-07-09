@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,8 +9,6 @@ import 'package:mynewpackage/generated/assets.dart';
 import 'package:mynewpackage/widgets/common_Image_view.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
 
-import '../../../../generated/assets.dart';
-import '../../../../widgets/common_Image_view.dart';
 import '../../../../widgets/common_text.dart';
 import '../controllers/home_controller.dart';
 
@@ -62,12 +59,11 @@ class _HomeViewState extends State<HomeView> {
                       CommonText(
                         fontSize: 14,
                         textColor: AppColors.textLightColor,
-                        text:  "Your Location",
+                        text: "Your Location",
                       ),
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           SystemNavigator.pop();
-
                         },
                         child: const Icon(
                           Icons.keyboard_arrow_down_sharp,
@@ -171,7 +167,8 @@ class _HomeViewState extends State<HomeView> {
                                   CommonText(
                                     fontSize: 12,
                                     textAlign: TextAlign.center,
-                                    text: controller.specialOfferTitle[index].toString(),
+                                    text: controller.specialOfferTitle[index]
+                                        .toString(),
                                   )
                                 ],
                               ),
@@ -247,22 +244,41 @@ class _HomeViewState extends State<HomeView> {
                                         (BuildContext context, int index) {
                                       return InkWell(
                                         onTap: () {
-                                          controller.serviceList[index].id ==
-                                                  "6646f17c6538869d3399af45"
-                                              ? Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          RestaurantsAndDishesListingView()))
+                                          if( controller.serviceList[index].id ==
+                                              "6646f17c6538869d3399af45"){
+
+
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        RestaurantsAndDishesListingView()));
+                                          }else if( controller.serviceList[index]
+                                              .id ==
+                                              "6646f2196538869d3399af46"){
+
+
+                                            controller
+                                                .requestLocationPermission(
+                                                context);
+                                          }else{
+                                            null;
+                                          }
+                                          // controller.serviceList[index].id ==
+                                          //         "6646f17c6538869d3399af45"
+                                          //     ? Navigator.of(context).push(
+                                          //         MaterialPageRoute(
+                                          //             builder: (context) =>
+                                          //                 RestaurantsAndDishesListingView()))
 
                                               // Get.to(() =>
                                               //     RestaurantsAndDishesListingView())
-                                              : controller.serviceList[index]
-                                                          .id ==
-                                                      "6646f2196538869d3399af46"
-                                                  ? controller
-                                                      .requestLocationPermission(
-                                                          context)
-                                                  : null;
+                                              // : controller.serviceList[index]
+                                              //             .id ==
+                                              //         "6646f2196538869d3399af46"
+                                              //     ? controller
+                                              //         .requestLocationPermission(
+                                              //             context)
+                                              //     : null;
                                         },
                                         child: Card(
                                           shape: RoundedRectangleBorder(

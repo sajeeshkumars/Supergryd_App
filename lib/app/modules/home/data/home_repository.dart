@@ -57,6 +57,7 @@ class HomeRepository implements HomeService {
       return requestRideResponse;
     } catch (e, s) {
       debugPrint(s.toString());
+      debugPrint(e.toString());
       return RequestRideResponse(message: 'Server Error', status: 401);
     }
   }

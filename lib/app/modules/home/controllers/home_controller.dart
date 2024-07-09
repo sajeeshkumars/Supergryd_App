@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart' as location;
 import 'package:mynewpackage/app/authentication/authentication_repo.dart';
@@ -28,9 +30,18 @@ class HomeController extends GetxController {
   List addressTypeImage = [
     Assets.iconsHomeIcon,
     Assets.iconsOffice,
-    Assets.iconsOffice
+    Assets.iconsOffice,
+    Assets.iconsHomeIcon,
+    Assets.iconsOffice,
   ];
-  List addressHeading = ["Home", "Office", "Seeroo"];
+  List addressHeading = [
+    "Home",
+    "Office",
+    "Seeroo",
+    "Home Bengaluru",
+    "Office Bengaluru"
+  ];
+
   // List addressDescription = [
   //   "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India",
   //   "No. 63, 1st Floor, 14th Cross, 9th Main Road,Indiranagar, Bengaluru, Karnataka 560038, India",
@@ -40,21 +51,45 @@ class HomeController extends GetxController {
     "Devalokam,Thevakal",
     "No. 63, 1st Floor, 14th Cross, 9th Main Road,Indiranagar, Bengaluru, Karnataka 560038, India",
     "Seeroo it solutions",
+    "Bengaluru home",
+    "Bengaluru office",
+    // "other"
   ];
+
+
   Map<String, dynamic> locationCoordinates = {
     "Home": {
-      "lat": 14.055348,
+      "lat": 10.055348,
       "long": 76.321888,
     },
     "Office": {
-      "lat": 12.922122741085568,
-      "long": 77.61472686044922,
+      "lat": 10.064582,
+      "long": 76.351153,
     },
     "Seeroo": {
       "lat": 10.064588,
       "long": 76.351151,
-    }
+    },
+
+    /// Bengaluru address are for displaying food
+    "Home Bengaluru": {
+      "lat": 13.094478,
+      "long": 77.720049,
+    },
+    "Office Bengaluru": {
+      "lat": 12.9147399,
+      "long": 77.5972174,
+    },
+    // "Other": {
+    //   "lat": 13.094471,
+    //   "long": 77.720029,
+    // },
+
   };
+
+  RxBool isForFood = false.obs;
+
+
   RxMap selectedLocationCoordinates = {
     "lat": 13.094478,
     "long": 77.720049,
@@ -68,9 +103,7 @@ class HomeController extends GetxController {
     "long": 77.720049,
   }.obs;
   RxString address = "Select Address".obs;
-  RxString selectedPickUp =
-      "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India"
-          .obs;
+  RxString selectedPickUp = "".obs;
   RxString selectedDropOff = "".obs;
   RxBool isLoading = false.obs;
   RxBool isLoadingServices = false.obs;
@@ -94,6 +127,7 @@ class HomeController extends GetxController {
 
   RxList<RideEstimationList> estimationList =
       List<RideEstimationList>.empty(growable: true).obs;
+
 
   List specialOfferTitle = [
     "Special\nFood Menu",
@@ -153,102 +187,112 @@ class HomeController extends GetxController {
           return isLoading.value
               ? SizedBox.shrink()
               : Container(
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(25))),
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Select Your Delivery Location',
+                  style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20),
+                InkWell(
+                  onTap: () {},
+                  child: Row(
                     children: [
-                      const Text(
-                        'Select Your Delivery Location',
+                      Icon(
+                        Icons.add_circle_outline,
+                        color: colorController.primaryColor.value,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Add New Address",
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 20),
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.add_circle_outline,
-                              color: colorController.primaryColor.value,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Add New Address",
-                              style: TextStyle(
-                                  color: colorController.primaryColor.value,
-                                  fontWeight: FontWeight.w800),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Saved Address',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w800),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: addressDescription.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: InkWell(
-                                onTap: () {
-                                  controller?.restaurantList.clear();
-                                  controller?.dishList.clear();
-                                  address.value =
-                                      addressDescription[index].toString();
-                                  debugPrint('value ${address.value}');
-                                  selectedLocationCoordinates.value =
-                                      locationCoordinates[addressHeading[index]]
-                                          as Map<dynamic, dynamic>;
-                                  debugPrint("value ${address.value}");
-                                  debugPrint(
-                                      "selectedLocationCordinates $selectedLocationCoordinates");
-                                  controller?.getRestaurants(initial: true);
-                                  Navigator.pop(context);
-                                  count.value = 1;
-
-                                  // Get.back();
-                                },
-                                child: Container(
-                                  color: colorController.primaryColor.value
-                                      .withOpacity(.05),
-                                  child: ListTile(
-                                    leading: ColorFiltered(
-                                        colorFilter: ColorFilter.mode(
-                                            AppColors.accentColor,
-                                            BlendMode.modulate),
-                                        child: SvgPicture.asset(
-                                            "packages/mynewpackage/${addressTypeImage[index]}")),
-                                    title: Text(
-                                      addressHeading[index].toString(),
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    subtitle: Text(
-                                      addressDescription[index].toString(),
-                                      style: (TextStyle(
-                                          color: AppColors.textColor)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                            color: colorController.primaryColor.value,
+                            fontWeight: FontWeight.w800),
                       ),
                     ],
                   ),
-                );
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Saved Address',
+                  style: TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w800),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: addressDescription.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            selectedPickUp.value =
+                                addressDescription[index].toString();
+
+                            controller?.restaurantList.clear();
+                            controller?.dishList.clear();
+                            address.value =
+                                addressDescription[index].toString();
+                            debugPrint('value ${address.value}');
+                            selectedLocationCoordinates.value =
+                            locationCoordinates[addressHeading[index]] as Map<
+                                dynamic,
+                                dynamic>;
+                            selectedPickupCoordinates.value =
+                            locationCoordinates[addressHeading[index]]
+                            as Map<dynamic, dynamic>;
+                            debugPrint(
+                                "selected Location ${selectedLocationCoordinates
+                                    .value}");
+                            debugPrint("value ${address.value}");
+                            debugPrint(
+                                "selectedLocationCordinates $selectedLocationCoordinates");
+                            controller?.getRestaurants(initial: true);
+                            Navigator.pop(context);
+                            count.value = 1;
+
+                            // Get.back();
+                          },
+                          child: Container(
+                            color: colorController.primaryColor.value
+                                .withOpacity(.05),
+                            child: ListTile(
+                              leading: ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                      AppColors.accentColor,
+                                      BlendMode.modulate),
+                                  child: SvgPicture.asset(
+                                      "packages/mynewpackage/${addressTypeImage[index]}")),
+                              title: Text(
+                                addressHeading[index].toString(),
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              subtitle: Text(
+                                addressDescription[index].toString(),
+                                style: (TextStyle(
+                                    color: AppColors.textColor)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
         });
       },
     );
@@ -264,115 +308,118 @@ class HomeController extends GetxController {
           return isLoading.value
               ? SizedBox.shrink()
               : Container(
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // InkWell(
-                      //   onTap: () {},
-                      //   child: Row(
-                      //     children: [
-                      //       Icon(
-                      //         Icons.add_circle_outline,
-                      //         color: colorController.primaryColor.value,
-                      //       ),
-                      //       const SizedBox(
-                      //         width: 10,
-                      //       ),
-                      //       Text(
-                      //         "Add New Address",
-                      //         style: TextStyle(
-                      //             color: colorController.primaryColor.value,
-                      //             fontWeight: FontWeight.w800),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      const Text(
-                        'Saved Address',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w800),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: addressDescription.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: InkWell(
-                                onTap: () {
-                                  if (locationType == 'PickUp') {
-                                    selectedPickUp.value =
-                                        addressDescription[index].toString();
-                                  } else {
-                                    selectedDropOff.value =
-                                        addressDescription[index].toString();
-                                    isDestinationSelected.value = true;
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(25))),
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // InkWell(
+                //   onTap: () {},
+                //   child: Row(
+                //     children: [
+                //       Icon(
+                //         Icons.add_circle_outline,
+                //         color: colorController.primaryColor.value,
+                //       ),
+                //       const SizedBox(
+                //         width: 10,
+                //       ),
+                //       Text(
+                //         "Add New Address",
+                //         style: TextStyle(
+                //             color: colorController.primaryColor.value,
+                //             fontWeight: FontWeight.w800),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                const Text(
+                  'Saved Address',
+                  style: TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w800),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: addressDescription.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            if (locationType == 'PickUp') {
+                              selectedPickUp.value =
+                                  addressDescription[index].toString();
+                              selectedPickupCoordinates.value =
+                              locationCoordinates[addressHeading[index]];
+                            } else {
+                              selectedDropOff.value =
+                                  addressDescription[index].toString();
+                              isDestinationSelected.value = true;
+                              selectedDropoffCoordinates.value =
+                              locationCoordinates[addressHeading[index]];
 
-                                    getEstimations();
-                                  }
-                                  Navigator.pop(context);
+                              getEstimations();
+                            }
+                            Navigator.pop(context);
 
-                                  //
-                                  // address.value = addressDescription[index];
-                                  // debugPrint("value ${address.value}");
-                                  // selectedLocationCoordinates.value =
-                                  // locationCoordinates[
-                                  // addressHeading[index]];
-                                  // debugPrint("value ${address.value}");
-                                  // debugPrint(
-                                  //     "selectedLocationCordinates $selectedLocationCoordinates");
-                                  // Navigator.pop(context);
-                                  // count.value = 1;
+                            //
+                            // address.value = addressDescription[index];
+                            // debugPrint("value ${address.value}");
+                            // selectedLocationCoordinates.value =
+                            // locationCoordinates[
+                            // addressHeading[index]];
+                            // debugPrint("value ${address.value}");
+                            // debugPrint(
+                            //     "selectedLocationCordinates $selectedLocationCoordinates");
+                            // Navigator.pop(context);
+                            // count.value = 1;
 
-                                  // Get.back();
-                                },
-                                child: Container(
-                                  color: colorController.primaryColor.value
-                                      .withOpacity(.05),
-                                  child: ListTile(
-                                    leading: ColorFiltered(
-                                        colorFilter: ColorFilter.mode(
-                                            AppColors.accentColor,
-                                            BlendMode.modulate),
-                                        child: SvgPicture.asset(
-                                            "packages/mynewpackage/${addressTypeImage[index]}")),
-                                    title: Text(
-                                      addressHeading[index].toString(),
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    subtitle: Text(
-                                      addressDescription[index].toString(),
-                                      style: (TextStyle(
-                                          color: AppColors.textColor)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
+                            // Get.back();
                           },
+                          child: Container(
+                            color: colorController.primaryColor.value
+                                .withOpacity(.05),
+                            child: ListTile(
+                              leading: ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                      AppColors.accentColor,
+                                      BlendMode.modulate),
+                                  child: SvgPicture.asset(
+                                      "packages/mynewpackage/${addressTypeImage[index]}")),
+                              title: Text(
+                                addressHeading[index].toString(),
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              subtitle: Text(
+                                addressDescription[index].toString(),
+                                style: (TextStyle(
+                                    color: AppColors.textColor)),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                );
+                ),
+              ],
+            ),
+          );
         });
       },
     );
   }
 
-  void authenticate(
-      {required String clientId,
-      required String clientSecrete,
-      required String name,
-      required String mobile,
-      required BuildContext context}) async {
+  void authenticate({required String clientId,
+    required String clientSecrete,
+    required String name,
+    required String mobile,
+    required BuildContext context}) async {
     isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
@@ -437,10 +484,9 @@ class HomeController extends GetxController {
     }
   }
 
-  void createUser(
-      {required String mobile,
-      required String name,
-      required BuildContext context}) async {
+  void createUser({required String mobile,
+    required String name,
+    required BuildContext context}) async {
     // isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
@@ -495,7 +541,7 @@ class HomeController extends GetxController {
   Future<void> requestLocationPermission(BuildContext context) async {
     try {
       location.PermissionStatus permission =
-          await locationStatus.requestPermission();
+      await locationStatus.requestPermission();
       if (permission == location.PermissionStatus.granted) {
         await showDialog(
           context: context,
@@ -505,17 +551,15 @@ class HomeController extends GetxController {
               body: RideDialog(
                 onSelected: (address, lat, lng, zip, city, state, streetNumber,
                     route, homeAddress) {},
-                onDataReceived: (
-                  String address,
-                  double lat,
-                  double lng,
-                  String zip,
-                  String city,
-                  String state,
-                  String streetNumber,
-                  String route,
-                  String stateIsoCode,
-                ) {
+                onDataReceived: (String address,
+                    double lat,
+                    double lng,
+                    String zip,
+                    String city,
+                    String state,
+                    String streetNumber,
+                    String route,
+                    String stateIsoCode,) {
                   // onAddressSelect(
                   //   address,
                   //   lat,
@@ -605,17 +649,15 @@ class HomeController extends GetxController {
         return RideDialog(
           onSelected: (address, lat, lng, zip, city, state, streetNumber, route,
               stateIsoCode, homeAddress) {},
-          onDataReceived: (
-            String address,
-            double lat,
-            double lng,
-            String zip,
-            String city,
-            String state,
-            String streetNumber,
-            String route,
-            String stateIsoCode,
-          ) {
+          onDataReceived: (String address,
+              double lat,
+              double lng,
+              String zip,
+              String city,
+              String state,
+              String streetNumber,
+              String route,
+              String stateIsoCode,) {
             // onAddressSelect(address, lat, lng, zip, city, state, streetNumber,
             //     route, stateIsoCode
             //     // districtName, districtIsoCode
@@ -630,8 +672,16 @@ class HomeController extends GetxController {
     estimationList.clear();
     isEstimationLoading(true);
     await homeRepository.getRideEstimation({
-      "start_location": {"lat": 28.668613, "long": 77.206174},
-      "end_location": {"lat": 10.064588, "long": 76.351151}
+      // "start_location": {"lat": 28.668613, "long": 77.206174},
+      "start_location": {
+        "lat": selectedPickupCoordinates['lat'],
+        "long": selectedPickupCoordinates['long']
+      },
+      // "end_location": {"lat": 10.064588, "long": 76.351151}
+      "end_location": {
+        "lat": selectedDropoffCoordinates['lat'],
+        "long": selectedDropoffCoordinates['long']
+      }
     }).then((value) {
       if (value.data != [] && (value.status == 200)) {
         estimationList.addAll(value.data ?? []);
@@ -652,7 +702,7 @@ class HomeController extends GetxController {
     });
   }
 
-  Future<void> requestRide() async {
+  Future<void> requestRide(BuildContext context) async {
     isRequestRideLoading(true);
     await homeRepository.requestRide({
       'first_name': "first name",
@@ -660,18 +710,25 @@ class HomeController extends GetxController {
       'phone_number': '9878765434',
       'email': 'example@gmail.com',
       "start_location": {
-        "lat": "10.28668613",
-        "long": "76.321888",
-        "address": "Devalokam,Thevakal"
+        // "lat": "10.28668613",
+        "lat": selectedPickupCoordinates['lat'],
+        // "long": "76.321888",
+        "long": selectedPickupCoordinates['long'],
+        // "address": "Devalokam,Thevakal"
+        "address": selectedPickUp.value
       },
       "end_location": {
-        "lat": "10.064588",
-        "long": "76.351151",
-        "address": "Seeroo it solutions"
+        // "lat": "10.064588",
+        "lat": selectedDropoffCoordinates['lat'],
+        // "long": "76.351151",
+        "long": selectedDropoffCoordinates['long'],
+        // "address": "Seeroo it solutions"
+        "address": selectedDropOff.value
       },
       'product_id': productId.value,
       'fare_id': fareId.value,
       'user_id': "66595991f94a7ec05b88ebf9",
+      // 'user_id': Constants.userId,
       'price': price.value
     }).then((value) {
       if (value.status == 200) {
@@ -687,6 +744,13 @@ class HomeController extends GetxController {
         // estimationList.addAll(value.data ?? []);
         isRequestRideLoading(false);
       } else {
+        if (value.status == 400) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Booking Failed")));
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(value.message.toString())));
+        }
         isRequestRideLoading(false);
       }
     });
@@ -694,7 +758,7 @@ class HomeController extends GetxController {
 
   void clearValues() {
     selectedPickUp =
-        "67/8, 4th cross Road, Lavella Road,  Bengaluru,Karnataka 560001, India"
+        ""
             .obs;
     selectedDropOff = "".obs;
     isLoading = false.obs;
