@@ -243,6 +243,7 @@ class HomeController extends GetxController {
                             address.value =
                                 addressDescription[index].toString();
                             debugPrint('value ${address.value}');
+                            debugPrint('value ${selectedPickUp.value}');
                             selectedLocationCoordinates.value =
                             locationCoordinates[addressHeading[index]] as Map<
                                 dynamic,

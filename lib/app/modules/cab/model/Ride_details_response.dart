@@ -77,7 +77,8 @@ class Data {
       List<OriginAddress>? originAddress, 
       List<DestinationAddress>? destinationAddress, 
       num? status, 
-      String? requestedTime, 
+      String? requestedTime,
+    int? requestId,
       String? startTime, 
       String? endTime, 
       num? estimatedPrice, 
@@ -94,6 +95,7 @@ class Data {
     _destinationAddress = destinationAddress;
     _status = status;
     _requestedTime = requestedTime;
+    _requestId = requestId;
     _startTime = startTime;
     _endTime = endTime;
     _estimatedPrice = estimatedPrice;
@@ -123,6 +125,7 @@ class Data {
     }
     _status = json['status'];
     _requestedTime = json['requested_time'];
+    _requestId = json['requested_Id'];
     _startTime = json['start_time'];
     _endTime = json['end_time'];
     _estimatedPrice = json['estimated_price'];
@@ -155,6 +158,7 @@ class Data {
   List<DestinationAddress>? _destinationAddress;
   num? _status;
   String? _requestedTime;
+  int? _requestId;
   String? _startTime;
   String? _endTime;
   num? _estimatedPrice;
@@ -171,6 +175,7 @@ Data copyWith({  String? id,
   List<DestinationAddress>? destinationAddress,
   num? status,
   String? requestedTime,
+  int? requestId,
   String? startTime,
   String? endTime,
   num? estimatedPrice,
@@ -187,6 +192,7 @@ Data copyWith({  String? id,
   destinationAddress: destinationAddress ?? _destinationAddress,
   status: status ?? _status,
   requestedTime: requestedTime ?? _requestedTime,
+  requestId: requestId ?? _requestId,
   startTime: startTime ?? _startTime,
   endTime: endTime ?? _endTime,
   estimatedPrice: estimatedPrice ?? _estimatedPrice,
@@ -204,6 +210,7 @@ Data copyWith({  String? id,
   List<DestinationAddress>? get destinationAddress => _destinationAddress;
   num? get status => _status;
   String? get requestedTime => _requestedTime;
+  int? get requestId => _requestId;
   String? get startTime => _startTime;
   String? get endTime => _endTime;
   num? get estimatedPrice => _estimatedPrice;
@@ -227,6 +234,7 @@ Data copyWith({  String? id,
     }
     map['status'] = _status;
     map['requested_time'] = _requestedTime;
+    map['requested_Id'] = _requestId;
     map['start_time'] = _startTime;
     map['end_time'] = _endTime;
     map['estimated_price'] = _estimatedPrice;

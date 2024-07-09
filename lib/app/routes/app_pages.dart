@@ -53,7 +53,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TRIP_RATING,
-      page: () => const TripRatingView(),
+      page: () =>  TripRatingView(0),
       binding: TripRatingBinding(),
     ),
     GetPage(

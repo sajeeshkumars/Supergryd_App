@@ -292,7 +292,7 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
                                 child: InkWell(
                                   onTap: () {
                                     Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => const TripRatingView()));
+                                        builder: (context) =>  TripRatingView(cabMapController.rideDetailsResponse?.data?.first.requestId ?? 0)));
                                   },
                                   child: Container(
                                     height: 45,

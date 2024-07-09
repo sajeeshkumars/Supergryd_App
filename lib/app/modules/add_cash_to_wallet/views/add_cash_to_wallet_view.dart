@@ -292,8 +292,8 @@ class CommonAlertDialog extends StatelessWidget {
             // Add spacing if needed
             Column(
               children: [
-                const Text(
-                  "Hi Michael,",
+                 Text(
+                  "Hi ${Constants.name},",
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(
@@ -324,7 +324,7 @@ class CommonAlertDialog extends StatelessWidget {
                       borderRadius: const BorderRadius.all(Radius.circular(10))),
                   child: TextButton(
                       onPressed: () {
-                        onButtonOneTap;
+                        onButtonOneTap();
                       },
                       child: Text(
                         buttonTextOne,

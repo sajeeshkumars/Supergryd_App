@@ -42,6 +42,8 @@ class Assets {
   static const String dataRestaurantDetailsService = 'lib/app/modules/restaurants_details/data/restaurant_details_service.dart';
   static const String dataRestaurantListingRequest = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_listing_request.dart';
   static const String dataRestaurantListingResponse = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_listing_response.dart';
+  static const String dataReviewRepo = 'lib/app/modules/trip_rating/data/review_repo.dart';
+  static const String dataReviewService = 'lib/app/modules/trip_rating/data/review_service.dart';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String helperAlertHelper = 'lib/app/helper/alert_helper.dart';
   static const String iconsAddIcon = 'lib/assets/icons/add_icon.svg';
@@ -139,6 +141,7 @@ class Assets {
   static const String modelFontResponse = 'lib/model/font_response.dart';
   static const String modelGrydFeatures = 'lib/model/gryd_features.dart';
   static const String modelRefreshTokenModel = 'lib/model/refresh_token_model.dart';
+  static const String modelReviewResponse = 'lib/app/modules/trip_rating/data/model/review_response.dart';
   static const String modelRideDetailsResponse = 'lib/app/modules/cab/model/Ride_details_response.dart';
   static const String modelServiceCategoryResponse = 'lib/app/authentication/model/service_category_response.dart';
   static const String modelsCabHistoryResponse = 'lib/app/modules/history/data/models/cab_history_response.dart';

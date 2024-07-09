@@ -254,6 +254,7 @@ class CabMapController extends GetxController {
           }
         } else {
           if(trackResponse?.status == 'FAILURE'){
+            driverNotFound();
             // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             //   content: Text(
             //     trackResponse!.message.toString(),
@@ -285,6 +286,11 @@ class CabMapController extends GetxController {
 
   setRideNotFound() {
     cabStatus(CabStates.rideNotFound);
+    canExit(true);
+    update();
+  }
+  driverNotFound() {
+    cabStatus(CabStates.noDriverFound);
     canExit(true);
     update();
   }
@@ -419,6 +425,7 @@ enum CabStates {
   loading,
   rideSelection,
   searchingCab,
+  noDriverFound,
   accepted,
   arriving,
   arrived,

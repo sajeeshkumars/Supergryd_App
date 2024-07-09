@@ -16,6 +16,7 @@ import 'package:mynewpackage/widgets/map_dialog/cancel_reason.dart';
 import '../generated/assets.dart';
 import 'common_Image_view.dart';
 import 'common_text.dart';
+import 'custom_button.dart';
 import 'map_dialog/RideTypeChoose.dart';
 import 'map_dialog/TripDetails.dart';
 import 'map_dialog/destinationSelection.dart';
@@ -126,6 +127,9 @@ class _RideDialogState extends State<RideDialog> {
             case CabStates.rideNotFound:
               cabController.setExitTrue();
               homeController.clearValues();
+            case CabStates.noDriverFound:
+              cabController.setExitTrue();
+              homeController.clearValues();
           }
         },
         child: SafeArea(
@@ -211,6 +215,8 @@ class _RideDialogState extends State<RideDialog> {
                                                 CircularProgressIndicator(),
                                               // _ => Container()
                                               // TODO: Handle this case.
+                                              CabStates.noDriverFound =>
+                                                NoDriverFound(),
                                               CabStates.searchingCab =>
                                                 SearchingCab(),
                                               CabStates.accepted =>
@@ -612,6 +618,47 @@ class _RideDialogState extends State<RideDialog> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class NoDriverFound extends StatelessWidget {
+  const NoDriverFound({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      color: AppColors.white,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset("packages/mynewpackage/${Assets.iconsRideNotFound}"),
+          const CommonText(
+            text: "No Driver Found",
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+          const SizedBox(height: 20),
+          const CommonText(
+            text: "Please try again in few minutes",
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: CommonButton(
+                onPressed: () {
+                  final cabController = Get.find<CabMapController>();
+                  cabController.cabStatus(CabStates.rideSelection);
+                },
+                text: "Try Again"),
+          )
+        ],
       ),
     );
   }
