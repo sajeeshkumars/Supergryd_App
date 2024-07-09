@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 
+import '../../app/modules/cab/model/cab_states.dart';
 import '../../constants.dart';
 import '../../generated/assets.dart';
 import '../common_text.dart';

@@ -13,6 +13,7 @@ import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/widgets/custom_ride_button.dart';
 import 'package:mynewpackage/widgets/map_dialog/cancel_reason.dart';
 
+import '../app/modules/cab/model/cab_states.dart';
 import '../generated/assets.dart';
 import 'common_Image_view.dart';
 import 'common_text.dart';
@@ -69,11 +70,6 @@ class _RideDialogState extends State<RideDialog> {
     "packages/mynewpackage/${Assets.iconsEconomyCar}"
   ];
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   RxInt? selectedType = 0.obs;
 
   RxString selectedPaymentType = 'Apple Pay'.obs;
@@ -84,8 +80,7 @@ class _RideDialogState extends State<RideDialog> {
   Widget build(BuildContext context) {
     final cabController = Get.put(CabMapController());
     controller.selectedDropOff("");
-    debugPrint("cabstatus inside mapview ${cabController.cabStatus.value}");
-    debugPrint("cancel click ${cabController.isCancelClicked.value}");
+
     return Obx(() {
       return PopScope(
         canPop: cabController.canExit.value,
@@ -95,7 +90,6 @@ class _RideDialogState extends State<RideDialog> {
               cabController.setExitTrue();
               homeController.clearValues();
             case CabStates.loading:
-            // TODO: Handle this case.
             case CabStates.rideSelection:
               cabController.cabStatus(CabStates.initial);
             case CabStates.searchingCab:
@@ -209,8 +203,6 @@ class _RideDialogState extends State<RideDialog> {
                                                 ),
                                               CabStates.loading =>
                                                 CircularProgressIndicator(),
-                                              // _ => Container()
-                                              // TODO: Handle this case.
                                               CabStates.searchingCab =>
                                                 SearchingCab(),
                                               CabStates.accepted =>
