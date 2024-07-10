@@ -95,10 +95,10 @@ class _MainPageState extends State<MainPage> {
       final signature = hmacSha256.convert(keyBytes);
       return base64.encode(signature.bytes);
     }
+
     var now = DateTime.now().millisecondsSinceEpoch;
     var utz = (now / 1000 / 300).floor();
     var key = '$utz:$apiSecret';
-
 
     var signature = generateSignature(apiSecret, key);
 
@@ -122,12 +122,12 @@ class _MainPageState extends State<MainPage> {
     Constants.nameFirstLetter = getFirstLetter(widget.name).toUpperCase();
     debugPrint("name letter ${Constants.nameFirstLetter}");
 
-      homeController.authenticate(
-          clientId: widget.clientId,
-          clientSecrete: widget.clientSecrete,
-          name: widget.name,
-          mobile: widget.mobile,
-          context: context);
+    homeController.authenticate(
+        clientId: widget.clientId,
+        clientSecrete: widget.clientSecrete,
+        name: widget.name,
+        mobile: widget.mobile,
+        context: context);
     debugPrint("primary color ${AppColors.primaryColor}");
     debugPrint("clientid ${widget.clientId}");
     Get.lazyPut(() => RestaurantsAndDishesListingController());

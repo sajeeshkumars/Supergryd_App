@@ -1,37 +1,39 @@
-import 'dart:developer';
+import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mynewpackage/model/gryd_features.dart';
+import 'package:mynewpackage/model/super_gryd_exception.dart';
 
 import '../app/modules/home/controllers/font_controller.dart';
 
-class SuperGrydApp extends StatelessWidget {
-  final Function(BuildContext context, GrydFeatures grydFeatures) builder;
+class SuperGrydApp {
+  SuperGrydApp._(); // Private constructor
 
-  const SuperGrydApp({super.key, required this.builder});
+  static final SuperGrydApp _instance = SuperGrydApp._();
 
-  static initialize() {
+  static SuperGrydApp get instance => _instance;
+
+  static initialize({String? clientId, String? clientSecret}) {
     final controller = Get.put(FontController());
     controller.registerFontsFromWeb();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final controller = Get.find<FontController>();
-    return Obx(() {
-      log("rebuilded font in material ${controller.fontText.value}");
-      return Builder(
-        builder: (
-          context,
-        ) {
-          return builder(
-              context,
-              GrydFeatures(
-                  textTheme: controller.font.value,
-                  fontFamily: controller.fontText.value));
-        },
-      );
-    });
+  final _errorStreamController = StreamController<SuperGrydException>();
+
+  Stream<SuperGrydException> get onError => _errorStreamController.stream;
+
+  void errorCallback(Exception exception, {StackTrace? stack}) {
+    _errorStreamController.sink.add(SuperGrydException(exception, stack));
+  }
+}
+
+class ExceptionHandler {
+  ExceptionHandler._(); // Private constructor
+
+  static final ExceptionHandler _instance = ExceptionHandler._();
+
+  static ExceptionHandler get instance => _instance;
+
+  throwException(Exception exception, {StackTrace? stack}) {
+    SuperGrydApp.instance.errorCallback(exception, stack: stack);
   }
 }

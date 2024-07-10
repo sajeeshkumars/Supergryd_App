@@ -1,9 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mynewpackage/mynewpackage.dart';
 import 'package:mynewpackage/widgets/super_gryd_app.dart';
 
 void main() {
   SuperGrydApp.initialize();
+  SuperGrydApp.instance.onError.listen((e) {
+    log("Exception captured in host ${e.exception},stack ${e.stackTrace}");
+  });
   runApp(const MyApp());
 }
 
