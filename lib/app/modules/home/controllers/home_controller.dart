@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart' as location;
@@ -118,6 +119,7 @@ class HomeController extends GetxController {
   RxString rideDistance = "".obs;
   RxString seatCapacity = "".obs;
   RequestRideData? requestRideData;
+  RxBool isIncrementClicked = false.obs;
 
   // AppStorage storage = AppStorage();
   AuthRepository authRepository = Get.put(AuthRepository());

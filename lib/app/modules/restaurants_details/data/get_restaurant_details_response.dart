@@ -143,6 +143,7 @@ class Restaurant {
     String? productCategoryId,
     num? isVeg,
     List<RestaurantDetails>? restaurantDetails,
+    int? storeId
   }) {
     _id = id;
     _productId = productId;
@@ -161,6 +162,7 @@ class Restaurant {
     _productCategoryId = productCategoryId;
     _isVeg = isVeg;
     _restaurantDetails = restaurantDetails;
+    _storeId = storeId;
   }
 
   Restaurant.fromJson(dynamic json) {
@@ -182,6 +184,7 @@ class Restaurant {
     _serviceProviderLocationId = json['service_provider_location_id'].toString();
     _productCategoryId = json['product_category_id'].toString();
     _isVeg = int.parse(json['is_veg'].toString());
+    _storeId = json['store_id'];
     if (json['restaurantDetails'] != null) {
       _restaurantDetails = [];
       json['restaurantDetails'].forEach((v) {
@@ -206,6 +209,7 @@ class Restaurant {
   String? _serviceProviderLocationId;
   String? _productCategoryId;
   num? _isVeg;
+  int? _storeId;
   List<RestaurantDetails>? _restaurantDetails;
 
   Restaurant copyWith({
@@ -225,6 +229,7 @@ class Restaurant {
     String? serviceProviderLocationId,
     String? productCategoryId,
     num? isVeg,
+    int? storeId,
     List<RestaurantDetails>? restaurantDetails,
   }) =>
       Restaurant(
@@ -246,6 +251,7 @@ class Restaurant {
         productCategoryId: productCategoryId ?? _productCategoryId,
         isVeg: isVeg ?? _isVeg,
         restaurantDetails: restaurantDetails ?? _restaurantDetails,
+        storeId : storeId ?? _storeId
       );
 
   String? get id => _id;
@@ -282,6 +288,8 @@ class Restaurant {
 
   List<RestaurantDetails>? get restaurantDetails => _restaurantDetails;
 
+  int? get storeId => _storeId;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = _id;
@@ -304,6 +312,7 @@ class Restaurant {
     map['service_provider_location_id'] = _serviceProviderLocationId;
     map['product_category_id'] = _productCategoryId;
     map['is_veg'] = _isVeg;
+    map['store_id'] = _storeId;
     if (_restaurantDetails != null) {
       map['restaurantDetails'] =
           _restaurantDetails?.map((v) => v.toJson()).toList();
@@ -333,6 +342,7 @@ class RestaurantDetails {
     String? email,
     bool? status,
     bool? isDeleted,
+    int? storeId,
     String? phoneNumber,
     List<dynamic>? moreServiceProviderDetails,
   }) {
@@ -341,6 +351,7 @@ class RestaurantDetails {
     _email = email;
     _status = status;
     _isDeleted = isDeleted;
+    _storeId = storeId;
     _phoneNumber = phoneNumber;
   }
 
@@ -349,6 +360,7 @@ class RestaurantDetails {
     _name = json['name'].toString();
     _email = json['email'].toString();
     _status = bool.parse(json['status'].toString());
+    _storeId = json['store_id'];
     // _isDeleted = bool.parse(json['is_deleted'].toString());
     _phoneNumber = json['phone_number'].toString();
   }
@@ -358,6 +370,7 @@ class RestaurantDetails {
   String? _email;
   bool? _status;
   bool? _isDeleted;
+  int? _storeId;
   String? _phoneNumber;
 
   RestaurantDetails copyWith({
@@ -366,6 +379,7 @@ class RestaurantDetails {
     String? email,
     bool? status,
     bool? isDeleted,
+    int? storeId,
     String? phoneNumber,
     List<dynamic>? moreServiceProviderDetails,
   }) =>
@@ -375,6 +389,7 @@ class RestaurantDetails {
         email: email ?? _email,
         status: status ?? _status,
         isDeleted: isDeleted ?? _isDeleted,
+        storeId: storeId ?? _storeId,
         phoneNumber: phoneNumber ?? _phoneNumber,
       );
 
@@ -388,6 +403,8 @@ class RestaurantDetails {
 
   bool? get isDeleted => _isDeleted;
 
+  int? get storeId => _storeId;
+
   String? get phoneNumber => _phoneNumber;
 
   Map<String, dynamic> toJson() {
@@ -397,6 +414,7 @@ class RestaurantDetails {
     map['email'] = _email;
     map['status'] = _status;
     map['is_deleted'] = _isDeleted;
+    map['store_id'] = _storeId;
     map['phone_number'] = _phoneNumber;
     return map;
   }

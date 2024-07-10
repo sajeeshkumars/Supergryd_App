@@ -6,6 +6,7 @@ class Assets {
   static const String authenticationAuthenticationRepo = 'lib/app/authentication/authentication_repo.dart';
   static const String authenticationAuthenticationService = 'lib/app/authentication/authentication_service.dart';
   static const String bindingsAddCashToWalletBinding = 'lib/app/modules/add_cash_to_wallet/bindings/add_cash_to_wallet_binding.dart';
+  static const String bindingsCartBinding = 'lib/app/modules/cart/bindings/cart_binding.dart';
   static const String bindingsHistoryBinding = 'lib/app/modules/history/bindings/history_binding.dart';
   static const String bindingsHomeBinding = 'lib/app/modules/home/bindings/home_binding.dart';
   static const String bindingsPromoCodeListingBinding = 'lib/app/modules/promo_code_listing/bindings/promo_code_listing_binding.dart';
@@ -17,6 +18,7 @@ class Assets {
   static const String cabRideTrackResponse = 'lib/app/modules/cab/ride_track_response.dart';
   static const String controllersAddCashToWalletController = 'lib/app/modules/add_cash_to_wallet/controllers/add_cash_to_wallet_controller.dart';
   static const String controllersCabMapController = 'lib/app/modules/cab/controllers/cab_map_controller.dart';
+  static const String controllersCartController = 'lib/app/modules/cart/controllers/cart_controller.dart';
   static const String controllersColorController = 'lib/app/modules/home/controllers/color_controller.dart';
   static const String controllersFontController = 'lib/app/modules/home/controllers/font_controller.dart';
   static const String controllersHistoryController = 'lib/app/modules/history/controllers/history_controller.dart';
@@ -28,6 +30,8 @@ class Assets {
   static const String coreFontUtils = 'lib/app/core/font_utils.dart';
   static const String coreThemeExtension = 'lib/app/core/theme_extension.dart';
   static const String coreUtility = 'lib/app/core/utility.dart';
+  static const String dataCartRepo = 'lib/app/modules/cart/data/cart_repo.dart';
+  static const String dataCartService = 'lib/app/modules/cart/data/cart_service.dart';
   static const String dataDishListingRequest = 'lib/app/modules/restaurants_and_dishes_listing/data/dish_listing_request.dart';
   static const String dataDishListingResponse = 'lib/app/modules/restaurants_and_dishes_listing/data/dish_listing_response.dart';
   static const String dataFontService = 'lib/app/modules/home/data/font_service.dart';
@@ -144,6 +148,8 @@ class Assets {
   static const String modelReviewResponse = 'lib/app/modules/trip_rating/data/model/review_response.dart';
   static const String modelRideDetailsResponse = 'lib/app/modules/cab/model/Ride_details_response.dart';
   static const String modelServiceCategoryResponse = 'lib/app/authentication/model/service_category_response.dart';
+  static const String modelsAddToCartRequest = 'lib/app/modules/cart/data/models/add_to_cart_request.dart';
+  static const String modelsAddToCartResponse = 'lib/app/modules/cart/data/models/add_to_cart_response.dart';
   static const String modelsCabHistoryResponse = 'lib/app/modules/history/data/models/cab_history_response.dart';
   static const String modelsRequestRideResponse = 'lib/app/modules/home/data/models/request_ride_response.dart';
   static const String modelsRideEstimationRequest = 'lib/app/modules/home/data/models/ride_estimation_request.dart';
@@ -155,6 +161,7 @@ class Assets {
   static const String servicesApiServiceExternal = 'lib/services/api_service_external.dart';
   static const String servicesConfig = 'lib/services/config.dart';
   static const String viewsAddCashToWalletView = 'lib/app/modules/add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
+  static const String viewsCartView = 'lib/app/modules/cart/views/cart_view.dart';
   static const String viewsHistoryView = 'lib/app/modules/history/views/history_view.dart';
   static const String viewsHomeView = 'lib/app/modules/home/views/home_view.dart';
   static const String viewsPromoCodeListingView = 'lib/app/modules/promo_code_listing/views/promo_code_listing_view.dart';

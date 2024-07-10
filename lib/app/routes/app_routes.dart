@@ -12,6 +12,7 @@ abstract class Routes {
   static const PROMO_CODE_LISTING = _Paths.PROMO_CODE_LISTING;
   static const TRIP_RATING = _Paths.TRIP_RATING;
   static const HISTORY = _Paths.HISTORY;
+  static const CART = _Paths.CART;
 }
 
 abstract class _Paths {
@@ -25,4 +26,5 @@ abstract class _Paths {
   static const PROMO_CODE_LISTING = '/promo-code-listing';
   static const TRIP_RATING = '/trip-rating';
   static const HISTORY = '/history';
+  static const CART = '/cart';
 }

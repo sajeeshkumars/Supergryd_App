@@ -11,6 +11,7 @@ import 'package:mynewpackage/services/config.dart';
 
 import 'app/authentication/authentication_repo.dart';
 import 'app/authentication/authentication_service.dart';
+import 'app/modules/cart/controllers/cart_controller.dart';
 import 'app/modules/home/controllers/home_controller.dart';
 import 'app/modules/promo_code_listing/controllers/promo_code_listing_controller.dart';
 import 'app/modules/trip_rating/controllers/trip_rating_controller.dart';
@@ -29,6 +30,7 @@ class DependencyCreator {
     Get.lazyPut<HomeController>(
           () => HomeController(),fenix: true
     );
+    Get.lazyPut<CartController>(() => CartController(),fenix: true);
 
     Get.lazyPut<TripRatingController>(() => TripRatingController(),fenix: true);
 

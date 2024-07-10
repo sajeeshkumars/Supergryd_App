@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 
+import 'package:mynewpackage/app/modules/cart/bindings/cart_binding.dart';
+import 'package:mynewpackage/app/modules/cart/views/cart_view.dart';
+
 import '../modules/add_cash_to_wallet/bindings/add_cash_to_wallet_binding.dart';
 import '../modules/add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
 import '../modules/history/bindings/history_binding.dart';
@@ -53,13 +56,18 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TRIP_RATING,
-      page: () =>  TripRatingView(0),
+      page: () => TripRatingView(0),
       binding: TripRatingBinding(),
     ),
     GetPage(
       name: _Paths.HISTORY,
       page: () => const HistoryView(),
       binding: HistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.CART,
+      page: () => CartView(),
+      binding: CartBinding(),
     ),
   ];
 }

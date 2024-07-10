@@ -36,6 +36,8 @@ class RestaurantsDetailsController extends GetxController {
   Get.put(RestaurantDetailsRepository());
   RxList<Restaurant> restaurantDishList = <Restaurant>[].obs;
   RxList<Restaurant> restaurantDishListForApi = <Restaurant>[].obs;
+  GetRestaurantDetailsResponse? restaurantDetailsResponse;
+  int? restaurantId;
 
   Future<bool> getRestaurantDetails(
       {required String restaurantId, required bool initial,BuildContext? context}) async {

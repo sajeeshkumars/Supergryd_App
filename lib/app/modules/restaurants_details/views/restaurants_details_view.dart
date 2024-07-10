@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
+import 'package:mynewpackage/app/modules/cart/controllers/cart_controller.dart';
+import 'package:mynewpackage/app/modules/cart/views/cart_view.dart';
+import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/restaurant_listing_response.dart'
     as restaurant_list;
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
 import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/widgets/common_Image_view.dart';
+import 'package:mynewpackage/widgets/custom_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -37,6 +42,9 @@ class RestaurantsDetailsView extends StatefulWidget {
 class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
   RestaurantsDetailsController restaurantsDetailsController =
       Get.put(RestaurantsDetailsController());
+  HomeController homeController = Get.find();
+  CartController cartController = Get.find();
+
 
   @override
   void initState() {
@@ -48,6 +56,7 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -66,89 +75,140 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
               initial: true,
               context: context);
         },
-        child: SingleChildScrollView(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BannerAndRatingWidget(
-                    restaurantData: widget.restaurantData,
-                    distance: widget.distance,
-                    controller: restaurantsDetailsController,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+
+                 Padding(
+                  // padding: homeController.isIncrementClicked.value ? EdgeInsets.only(bottom: 120) : EdgeInsets.zero,
+                  padding:  EdgeInsets.only(bottom: 120) ,
+                  child: SingleChildScrollView(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            BannerAndRatingWidget(
+                              restaurantData: widget.restaurantData,
+                              distance: widget.distance,
+                              controller: restaurantsDetailsController,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SearchWidget(
+                                controller: restaurantsDetailsController,
+                                restaurantData: widget.restaurantData),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ChipWidget(
+                                controller: restaurantsDetailsController,
+                                restaurantId: widget.restaurantId),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Obx(() {
+                              return restaurantsDetailsController.isLoading.value
+                                  ? const Center(child: SizedBox.shrink())
+                                  : restaurantsDetailsController
+                                          .restaurantDishList.isNotEmpty
+                                      ? Column(
+                                        children: [
+                                          ListView.separated(
+                                              shrinkWrap: true,
+                                              physics: const NeverScrollableScrollPhysics(),
+                                              itemBuilder: (context, index) {
+                                                final dish =restaurantsDetailsController
+                                                    .restaurantDishList[index];
+                                                var _count = cartController.cartItems.firstWhereOrNull((item) => item.productId == dish.id)?.quantity ?? 0;
+
+                                                return DishCard(
+                                                  count:_count,
+                                                  restaurantsDetailsController:
+                                                      restaurantsDetailsController,
+                                                  restaurant: restaurantsDetailsController
+                                                      .restaurantDishList[index],
+                                                  index: index,
+                                                  isDishes: false,
+                                                );
+                                              },
+                                              separatorBuilder: (context, index) {
+                                                return const SizedBox(
+                                                  height: 10,
+                                                );
+                                              },
+                                              itemCount: restaurantsDetailsController
+                                                  .restaurantDishList.length,
+                                            ),
+
+
+
+                                        ],
+                                      )
+                                      : Center(
+                                          child: Column(
+                                          children: [
+                                            ColorFiltered(
+                                              colorFilter: ColorFilter.mode(
+                                                  AppColors.primaryColor,
+                                                  BlendMode.modulate),
+                                              child: Image.asset(
+                                                height: 120,
+                                                width: 120,
+                                                'packages/mynewpackage/${Assets.iconsNoFood6}',
+                                                //  height: 100,
+                                                //  width: 100,
+                                                //  color: Colors.red,
+                                                // imagePath: :
+                                              ),
+                                            ),
+                                            CommonText(
+                                              text:
+                                                  "We're currently out of ${restaurantsDetailsController.selectedFilter.value == 0 ? "Veg" : "Non Veg"} items, but our ${restaurantsDetailsController.selectedFilter.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
+                                              textAlign: TextAlign.center,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                          ],
+                                        ));
+                            })
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SearchWidget(
-                      controller: restaurantsDetailsController,
-                      restaurantData: widget.restaurantData),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ChipWidget(
-                      controller: restaurantsDetailsController,
-                      restaurantId: widget.restaurantId),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Obx(() {
-                    return restaurantsDetailsController.isLoading.value
-                        ? const Center(child: SizedBox.shrink())
-                        : restaurantsDetailsController
-                                .restaurantDishList.isNotEmpty
-                            ? ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return DishCard(
-                                    restaurantsDetailsController:
-                                        restaurantsDetailsController,
-                                    restaurant: restaurantsDetailsController
-                                        .restaurantDishList[index],
-                                    index: index,
-                                    isDishes: false,
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return const SizedBox(
-                                    height: 10,
-                                  );
-                                },
-                                itemCount: restaurantsDetailsController
-                                    .restaurantDishList.length,
-                              )
-                            : Center(
-                                child: Column(
-                                children: [
-                                  ColorFiltered(
-                                    colorFilter: ColorFilter.mode(
-                                        AppColors.primaryColor,
-                                        BlendMode.modulate),
-                                    child: Image.asset(
-                                      height: 120,
-                                      width: 120,
-                                      'packages/mynewpackage/${Assets.iconsNoFood6}',
-                                      //  height: 100,
-                                      //  width: 100,
-                                      //  color: Colors.red,
-                                      // imagePath: :
-                                    ),
-                                  ),
-                                  CommonText(
-                                    text:
-                                        "We're currently out of ${restaurantsDetailsController.selectedFilter.value == 0 ? "Veg" : "Non Veg"} items, but our ${restaurantsDetailsController.selectedFilter.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
-                                    textAlign: TextAlign.center,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ],
-                              ));
-                  })
-                ],
-              ),
-            ),
-          ),
+                ),
+
+                  Container(
+                  height: 100,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 1.0), //(x,y)
+                            blurRadius: 2.0,
+                          ),
+                        ],
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25))
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(child: CommonText(text: 'Total')),
+                          Expanded(child: CommonButton(onPressed: () {
+                            debugPrint("button press ${restaurantsDetailsController.restaurantDishList.first.storeId}");
+                            cartController.addToCart(context: context, storeId:restaurantsDetailsController.restaurantDishList.first.storeId!);
+
+                          }, text: 'Add To Cart',)),
+                        ],
+                      ),
+                    ),
+                  )
+
+          ],
         ),
       ),
     );
