@@ -5,7 +5,12 @@ import 'package:mynewpackage/mynewpackage.dart';
 import 'package:mynewpackage/widgets/super_gryd_app.dart';
 
 void main() {
-  SuperGrydApp.initialize();
+  SuperGrydApp.initialize(
+    clientId: 'SGD_test_55be429e-485b-45c2-b281-3f818d32769a',
+    clientSecret: 'SGD_test_8a680b2b-f8d0-491a-8346-63f3a2cace04',
+    name: '',
+    mobile: '',
+  );
   SuperGrydApp.instance.onError.listen((e) {
     log("Exception captured in host ${e.exception},stack ${e.stackTrace}");
   });
@@ -51,11 +56,11 @@ class MyApp extends StatelessWidget {
         fontFamily: "Mullish",
       ),
       home: const MyPackage(
-        clientId: 'SGD_test_55be429e-485b-45c2-b281-3f818d32769a',
-        clientSecrete: 'SGD_test_8a680b2b-f8d0-491a-8346-63f3a2cace04',
-        name: '',
-        mobile: '',
-      ),
+          // clientId: 'SGD_test_55be429e-485b-45c2-b281-3f818d32769a',
+          // clientSecrete: 'SGD_test_8a680b2b-f8d0-491a-8346-63f3a2cace04',
+          // name: '',
+          // mobile: '',
+          ),
     );
   }
 }

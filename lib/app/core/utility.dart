@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
 
 class Utility {
@@ -15,13 +18,26 @@ class Utility {
     }
   }
 
-  static dateAndTime(String date){
-
+  static dateAndTime(String date) {
     DateTime dateTime = DateTime.parse(date);
 
-    String formattedDateTime = DateFormat('dd MMM yyyy hh:mm a').format(dateTime.toLocal());
+    String formattedDateTime =
+        DateFormat('dd MMM yyyy hh:mm a').format(dateTime.toLocal());
 
     return formattedDateTime;
+  }
+
+  static String generateSignature(String apiSecret, String key) {
+    // Convert secret and key to bytes
+    final secretBytes = utf8.encode(apiSecret);
+    final keyBytes = utf8.encode(key);
+
+    // Create HMAC-SHA256 signer using the secret
+    final hmacSha256 = Hmac(sha256, secretBytes);
+
+    // Get the signature and encode in Base64
+    final signature = hmacSha256.convert(keyBytes);
+    return base64.encode(signature.bytes);
   }
 
   // static takeLocalDateFrom(String date) {
@@ -40,4 +56,4 @@ class Utility {
   //
   //   return formattedDate;
   // }
-  }
+}

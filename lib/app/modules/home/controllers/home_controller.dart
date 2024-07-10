@@ -11,6 +11,7 @@ import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart
 import 'package:mynewpackage/app/modules/home/data/home_repository.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
 import 'package:mynewpackage/constants.dart';
+import 'package:mynewpackage/services/exception_handler.dart';
 import 'package:mynewpackage/widgets/address_selection_dialogue.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,7 +24,11 @@ import '../data/models/service_category_response.dart';
 import 'color_controller.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  RxString _clientId = "".obs;
+  RxString _clientSecret = "".obs;
+  RxString _name = "".obs;
+  RxString _mobile = "".obs;
+  RxBool isAuthenticated = false.obs;
 
   List addressTypeImage = [
     Assets.iconsHomeIcon,
@@ -167,6 +172,58 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  setInitVariablesAndAuthenticate({
+    required String clientId,
+    required String clientSecret,
+    required String name,
+    required String mobile,
+  }) async {
+    _clientId(clientId);
+    _clientSecret(clientSecret);
+    _name(name);
+    _mobile(mobile);
+    AuthenticationRequestModel requestModel = AuthenticationRequestModel(
+        clientId: clientId, clientSecrete: clientSecret);
+
+    var result = await InternetConnectionChecker().hasConnection;
+    if (result == true) {
+      await authRepository.authenticate(requestModel.toJson()).then((value) {
+        // await authRepository.authenticate().then((value) {
+        if (value.status == 200) {
+          debugPrint("after success${isLoading.value}");
+          isAuthenticated(true);
+          debugPrint("authenticated");
+          debugPrint("${value.message}");
+          debugPrint("token${value.data?.refreshToken}");
+          Constants.accessToken = value.data?.accessToken ?? "";
+          // storage.writeAccessToken(value.data?.accessToken ?? "");
+          //   debugPrint("access token ${storage.getAccessToken()}");
+          // storage.writeRefreshToken(value.data?.refreshToken ?? "");
+          Constants.refreshToken = value.data?.refreshToken ?? "";
+          Constants.isAuthenticated = true;
+          AppColors.primaryColor =
+              fromHex(value.data!.themes!.first.primaryColor.toString());
+          AppColors.accentColor =
+              fromHex(value.data!.themes!.first.accentColor.toString());
+          debugPrint("color ${AppColors.primaryColor}");
+          colorController.updateColors(
+            value.data!.themes!.first.primaryColor.toString(),
+            value.data!.themes!.first.accentColor.toString(),
+          );
+
+          //   storage.writeIsAuthenticated(true);
+          createUser(mobile: mobile, name: name, context: null);
+          getServices();
+        } else {
+          ExceptionHandler.instance
+              .throwException(Exception("Unauthorized please check Your Key"));
+        }
+      });
+    } else {
+      ExceptionHandler.instance.throwException(Exception("No Internet"));
+    }
   }
 
   void showAddressSelectionBottomSheet({
@@ -409,80 +466,78 @@ class HomeController extends GetxController {
     );
   }
 
-  void authenticate(
-      {required String clientId,
-      required String clientSecrete,
-      required String name,
-      required String mobile,
-      required BuildContext context}) async {
-    isLoading(true);
-    debugPrint("before api call${isLoading.value}");
+  void authenticate({required BuildContext context}) async {
+    if (isAuthenticated.isFalse) {
+      isLoading(true);
+      debugPrint("before api call${isLoading.value}");
 
-    AuthenticationRequestModel requestModel = AuthenticationRequestModel(
-        clientId: clientId, clientSecrete: clientSecrete);
+      AuthenticationRequestModel requestModel = AuthenticationRequestModel(
+          clientId: _clientId.value, clientSecrete: _clientSecret.value);
 
-    var result = await InternetConnectionChecker().hasConnection;
+      var result = await InternetConnectionChecker().hasConnection;
 
-    if (result == true) {
-      await authRepository.authenticate(requestModel.toJson()).then((value) {
-        // await authRepository.authenticate().then((value) {
-        if (value.status == 200) {
-          debugPrint("after success${isLoading.value}");
+      if (result == true) {
+        await authRepository.authenticate(requestModel.toJson()).then((value) {
+          // await authRepository.authenticate().then((value) {
+          if (value.status == 200) {
+            debugPrint("after success${isLoading.value}");
 
-          debugPrint("authenticated");
-          debugPrint("${value.message}");
-          debugPrint("token${value.data?.refreshToken}");
-          Constants.accessToken = value.data?.accessToken ?? "";
-          // storage.writeAccessToken(value.data?.accessToken ?? "");
-          //   debugPrint("access token ${storage.getAccessToken()}");
-          // storage.writeRefreshToken(value.data?.refreshToken ?? "");
-          Constants.refreshToken = value.data?.refreshToken ?? "";
-          Constants.isAuthenticated = true;
-          AppColors.primaryColor =
-              fromHex(value.data!.themes!.first.primaryColor.toString());
-          AppColors.accentColor =
-              fromHex(value.data!.themes!.first.accentColor.toString());
-          debugPrint("color ${AppColors.primaryColor}");
-          colorController.updateColors(
-            value.data!.themes!.first.primaryColor.toString(),
-            value.data!.themes!.first.accentColor.toString(),
-          );
+            debugPrint("authenticated");
+            debugPrint("${value.message}");
+            debugPrint("token${value.data?.refreshToken}");
+            Constants.accessToken = value.data?.accessToken ?? "";
+            // storage.writeAccessToken(value.data?.accessToken ?? "");
+            //   debugPrint("access token ${storage.getAccessToken()}");
+            // storage.writeRefreshToken(value.data?.refreshToken ?? "");
+            Constants.refreshToken = value.data?.refreshToken ?? "";
+            Constants.isAuthenticated = true;
+            AppColors.primaryColor =
+                fromHex(value.data!.themes!.first.primaryColor.toString());
+            AppColors.accentColor =
+                fromHex(value.data!.themes!.first.accentColor.toString());
+            debugPrint("color ${AppColors.primaryColor}");
+            colorController.updateColors(
+              value.data!.themes!.first.primaryColor.toString(),
+              value.data!.themes!.first.accentColor.toString(),
+            );
 
-          //   storage.writeIsAuthenticated(true);
-          createUser(mobile: mobile, name: name, context: context);
-          getServices();
-          isLoading(false);
-        } else {
-          isLoading(false);
-          debugPrint("after failure${value.message}");
-          Navigator.pop(context);
+            //   storage.writeIsAuthenticated(true);
+            createUser(
+                mobile: _mobile.value, name: _name.value, context: context);
+            getServices();
+            isLoading(false);
+          } else {
+            isLoading(false);
+            debugPrint("after failure${value.message}");
+            Navigator.pop(context);
 
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text(
-                "Unauthorized please check Your Key",
-              ),
-              backgroundColor: Colors.red,
-              duration: Duration(minutes: 5)));
-          // Navigator.of(context, rootNavigator: true).pop();
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text(
+                  "Unauthorized please check Your Key",
+                ),
+                backgroundColor: Colors.red,
+                duration: Duration(minutes: 5)));
+            // Navigator.of(context, rootNavigator: true).pop();
 
-          // Navigator.pop(context);
-        }
-      });
-    } else {
-      isLoading(false);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-          "No Internet",
-        ),
-        backgroundColor: Colors.red,
-      ));
+            // Navigator.pop(context);
+          }
+        });
+      } else {
+        isLoading(false);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+            "No Internet",
+          ),
+          backgroundColor: Colors.red,
+        ));
+      }
     }
   }
 
   void createUser(
       {required String mobile,
       required String name,
-      required BuildContext context}) async {
+      required BuildContext? context}) async {
     // isLoading(true);
     debugPrint("before api call${isLoading.value}");
 
@@ -499,15 +554,18 @@ class HomeController extends GetxController {
         debugPrint("${value.message}");
         // storage.writeUserId(value.data?.id ?? "");
         Constants.userId = value.data?.id ?? "";
+        isAuthenticated(true);
       } else {
         debugPrint("after failure${value.message}");
-
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            value.message ?? "",
-          ),
-          backgroundColor: Colors.red,
-        ));
+        isAuthenticated(false);
+        if (context != null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              value.message ?? "",
+            ),
+            backgroundColor: Colors.red,
+          ));
+        }
       }
     });
   }
