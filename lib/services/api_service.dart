@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mynewpackage/constants.dart';
-import 'package:mynewpackage/widgets/super_gryd_app.dart';
 
 import '../model/refresh_token_model.dart';
+import 'exception_handler.dart';
 
 enum Method { POST, GET, PUT, DELETE, PATCH }
 

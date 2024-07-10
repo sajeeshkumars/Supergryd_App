@@ -1,5 +1,6 @@
 library mynewpackage;
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -12,6 +13,7 @@ import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/re
 import 'package:mynewpackage/app/routes/app_pages.dart';
 import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/constants.dart';
+import 'package:mynewpackage/services/exception_handler.dart';
 
 import 'app/modules/home/controllers/home_controller.dart';
 import 'app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
@@ -115,6 +117,10 @@ class _MainPageState extends State<MainPage> {
 
     debugPrint("api key ${Constants.key}");
     debugPrint("api secrete ${Constants.secrete}");
+    Timer.periodic(Duration(seconds: 3), (tick) {
+      ExceptionHandler.instance
+          .throwException(Exception("Test Exception occurred ${tick.tick}"));
+    });
 
     DependencyCreator.init();
     HomeController homeController = Get.put(HomeController());
