@@ -11,25 +11,71 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Flutter version:
+```yaml
+3.22.2
+```
+Dart constraints:
+```yaml
+'>=3.3.4 <4.0.0'
+```
 
-## Usage
+### Add to project
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
+Add package as dependency
+```yaml
+mynewpackage: ^[version]
+```
+### Import package
 ```dart
-const like = 'sample';
+import 'package:mynewpackage/mynewpackage.dart';
+```
+
+### Initialize
+
+ Initialize the package in your main method.
+```dart
+void main() {
+  SuperGrydApp.initialize(
+    clientId: '--------CLIENT_ID-----------',
+    clientSecret: '----------------CLIENT_SECRET-----------',
+    name: '',
+    mobile: '',
+  );
+  runApp(const MyApp());
+}
+```
+### Usage
+Call the package wherever you want.
+```dart
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+        fontFamily: "Mullish",
+      ),
+      home: const MyPackage(),
+    );
+  }
+}
+```
+
+### Handling errors
+```dart
+SuperGrydApp.instance.onError.listen((e) {
+    //Write your logic to handle exceptions here
+    log("Exception captured in host ${e.exception},stack ${e.stackTrace}");
+  });
 ```
 
 ## Additional information
