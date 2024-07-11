@@ -80,8 +80,8 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
           children: [
 
                  Padding(
-                  // padding: homeController.isIncrementClicked.value ? EdgeInsets.only(bottom: 120) : EdgeInsets.zero,
-                  padding:  EdgeInsets.only(bottom: 120) ,
+                  padding: cartController.cartItems.isNotEmpty ?  EdgeInsets.only(bottom: 100):EdgeInsets.zero ,
+                  // padding: EdgeInsets.only(bottom: 100) ,
                   child: SingleChildScrollView(
                     child: Center(
                       child: Padding(
@@ -122,17 +122,17 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
                                               itemBuilder: (context, index) {
                                                 final dish =restaurantsDetailsController
                                                     .restaurantDishList[index];
-                                                var _count = cartController.cartItems.firstWhereOrNull((item) => item.productId == dish.id)?.quantity ?? 0;
+                                                int _count = cartController.cartItems.firstWhereOrNull((item) => item.productId == dish.id)?.quantity?.toInt() ?? 0;
 
-                                                return DishCard(
-                                                  count:_count,
-                                                  restaurantsDetailsController:
-                                                      restaurantsDetailsController,
-                                                  restaurant: restaurantsDetailsController
-                                                      .restaurantDishList[index],
-                                                  index: index,
-                                                  isDishes: false,
-                                                );
+                                                    return DishCard(
+                                                      count:_count.obs,
+                                                      restaurantsDetailsController:
+                                                          restaurantsDetailsController,
+                                                      restaurant: restaurantsDetailsController
+                                                          .restaurantDishList[index],
+                                                      index: index,
+                                                      isDishes: false, storeId: restaurantsDetailsController.restaurantDishList[index].storeId!.toInt()
+                                                    );
                                               },
                                               separatorBuilder: (context, index) {
                                                 return const SizedBox(
@@ -180,33 +180,47 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
                   ),
                 ),
 
-                  Container(
-                  height: 100,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0.0, 1.0), //(x,y)
-                            blurRadius: 2.0,
-                          ),
-                        ],
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25))
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Expanded(child: CommonText(text: 'Total')),
-                          Expanded(child: CommonButton(onPressed: () {
-                            debugPrint("button press ${restaurantsDetailsController.restaurantDishList.first.storeId}");
-                            cartController.addToCart(context: context, storeId:restaurantsDetailsController.restaurantDishList.first.storeId!);
+                  Obx(
+                  () {
+                    return cartController.cartItems.isEmpty ? SizedBox.shrink(): Container(
+                      height: 100,
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(0.0, 1.0), //(x,y)
+                                blurRadius: 2.0,
+                              ),
+                            ],
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25))
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Expanded(child: Obx(
+                                 () {
+                                  return cartController.isAddToCartLoading.value ? Center(child: CircularProgressIndicator()): CommonText(text: 'Total ₹${cartController.addToCartResponse?.data?.cartMeta?.cartTotal}',fontWeight: FontWeight.w700,);
+                                }
+                              )),
+                              Expanded(child:
+                                   CommonButton(
+                                    onPressed: () {
+                                     cartController. viewCart(context: context);
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CartView()));
 
-                          }, text: 'Add To Cart',)),
-                        ],
-                      ),
-                    ),
-                  )
+                                  }, text: 'View Cart',))
+
+                            ],
+                          ),
+                        ),
+                      );
+                  }
+                )
 
           ],
         ),

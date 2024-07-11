@@ -1,12 +1,12 @@
 import 'dart:convert';
 /// status : 200
 /// message : "Success."
-/// data : {"statusCode":1,"statusMessage":"CART_UPDATED_SUCCESSFULLY","device_id":"00b71b8ae744fe9f72627fdd7b511c34","store_id":2,"cartItmes":[{"productId":71,"in_stock":1,"is_error":false,"allowed_quantity":6,"quantity":1,"name":"Veggie Supreme","is_veg":1,"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/veggie-supreme.jpg","final_price":99.99,"effective_item_price":123.99,"packing_charge":19,"item_taxes":{"service_tax":0,"vat":0,"service_charges":0,"GST":5},"subtotal":99.99,"total":118.99,"added_by_user_id":-1,"added_by_user_name":"","addons":[],"addons_price":null,"subtotal_coupon_discount":0}],"cartMeta":{"GST_details":{"cart_CGST":2.98,"cart_SGST":2.98,"cart_IGST":0,"external_GST":0,"item_CGST":2.5,"item_SGST":2.5,"item_IGST":0,"packaging_CGST":0.48,"packaging_SGST":0.48,"packaging_IGST":0,"service_charge_CGST":0,"service_charge_IGST":0,"service_charge_SGST":0},"cart_subtotal":118.99,"cart_subtotal_without_packing":99.99,"cart_total":124.95,"cart_total_count":1,"delivery_charges":50,"cartId":2790213019}}
+/// data : {"statusCode":1,"statusMessage":"DATA_FETCHED_SUCCESSFULLY","device_id":"1ed9144468af9f78db936fa506058f47","store_id":2,"cartItmes":[{"productId":71,"in_stock":1,"is_error":false,"allowed_quantity":6,"quantity":2,"name":"Veggie Supreme","is_veg":1,"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/veggie-supreme.jpg","final_price":199.98,"effective_item_price":247.98,"packing_charge":38,"item_taxes":{"service_tax":0,"vat":0,"service_charges":0,"GST":10},"subtotal":199.98,"total":237.98,"added_by_user_id":-1,"added_by_user_name":"","addons":[],"addons_price":null,"subtotal_coupon_discount":0}],"cartMeta":{"GST_details":{"cart_CGST":5.95,"cart_SGST":5.95,"cart_IGST":0,"external_GST":0,"item_CGST":5,"item_SGST":5,"item_IGST":0,"packaging_CGST":0.95,"packaging_SGST":0.95,"packaging_IGST":0,"service_charge_CGST":0,"service_charge_IGST":0,"service_charge_SGST":0},"cart_subtotal":237.98,"cart_subtotal_without_packing":199.98,"cart_total":249.88,"cart_total_count":2,"delivery_charges":50,"cartId":6959911870}}
 
-AddToCartResponse addToCartResponseFromJson(String str) => AddToCartResponse.fromJson(json.decode(str));
-String addToCartResponseToJson(AddToCartResponse data) => json.encode(data.toJson());
-class AddToCartResponse {
-  AddToCartResponse({
+ViewCartResponse viewCartResponseFromJson(String str) => ViewCartResponse.fromJson(json.decode(str));
+String viewCartResponseToJson(ViewCartResponse data) => json.encode(data.toJson());
+class ViewCartResponse {
+  ViewCartResponse({
       num? status, 
       String? message, 
       Data? data,}){
@@ -15,7 +15,7 @@ class AddToCartResponse {
     _data = data;
 }
 
-  AddToCartResponse.fromJson(dynamic json) {
+  ViewCartResponse.fromJson(dynamic json) {
     _status = json['status'];
     _message = json['message'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -23,10 +23,10 @@ class AddToCartResponse {
   num? _status;
   String? _message;
   Data? _data;
-AddToCartResponse copyWith({  num? status,
+ViewCartResponse copyWith({  num? status,
   String? message,
   Data? data,
-}) => AddToCartResponse(  status: status ?? _status,
+}) => ViewCartResponse(  status: status ?? _status,
   message: message ?? _message,
   data: data ?? _data,
 );
@@ -47,11 +47,11 @@ AddToCartResponse copyWith({  num? status,
 }
 
 /// statusCode : 1
-/// statusMessage : "CART_UPDATED_SUCCESSFULLY"
-/// device_id : "00b71b8ae744fe9f72627fdd7b511c34"
+/// statusMessage : "DATA_FETCHED_SUCCESSFULLY"
+/// device_id : "1ed9144468af9f78db936fa506058f47"
 /// store_id : 2
-/// cartItmes : [{"productId":71,"in_stock":1,"is_error":false,"allowed_quantity":6,"quantity":1,"name":"Veggie Supreme","is_veg":1,"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/veggie-supreme.jpg","final_price":99.99,"effective_item_price":123.99,"packing_charge":19,"item_taxes":{"service_tax":0,"vat":0,"service_charges":0,"GST":5},"subtotal":99.99,"total":118.99,"added_by_user_id":-1,"added_by_user_name":"","addons":[],"addons_price":null,"subtotal_coupon_discount":0}]
-/// cartMeta : {"GST_details":{"cart_CGST":2.98,"cart_SGST":2.98,"cart_IGST":0,"external_GST":0,"item_CGST":2.5,"item_SGST":2.5,"item_IGST":0,"packaging_CGST":0.48,"packaging_SGST":0.48,"packaging_IGST":0,"service_charge_CGST":0,"service_charge_IGST":0,"service_charge_SGST":0},"cart_subtotal":118.99,"cart_subtotal_without_packing":99.99,"cart_total":124.95,"cart_total_count":1,"delivery_charges":50,"cartId":2790213019}
+/// cartItmes : [{"productId":71,"in_stock":1,"is_error":false,"allowed_quantity":6,"quantity":2,"name":"Veggie Supreme","is_veg":1,"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/veggie-supreme.jpg","final_price":199.98,"effective_item_price":247.98,"packing_charge":38,"item_taxes":{"service_tax":0,"vat":0,"service_charges":0,"GST":10},"subtotal":199.98,"total":237.98,"added_by_user_id":-1,"added_by_user_name":"","addons":[],"addons_price":null,"subtotal_coupon_discount":0}]
+/// cartMeta : {"GST_details":{"cart_CGST":5.95,"cart_SGST":5.95,"cart_IGST":0,"external_GST":0,"item_CGST":5,"item_SGST":5,"item_IGST":0,"packaging_CGST":0.95,"packaging_SGST":0.95,"packaging_IGST":0,"service_charge_CGST":0,"service_charge_IGST":0,"service_charge_SGST":0},"cart_subtotal":237.98,"cart_subtotal_without_packing":199.98,"cart_total":249.88,"cart_total_count":2,"delivery_charges":50,"cartId":6959911870}
 
 Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
@@ -127,13 +127,13 @@ Data copyWith({  num? statusCode,
 
 }
 
-/// GST_details : {"cart_CGST":2.98,"cart_SGST":2.98,"cart_IGST":0,"external_GST":0,"item_CGST":2.5,"item_SGST":2.5,"item_IGST":0,"packaging_CGST":0.48,"packaging_SGST":0.48,"packaging_IGST":0,"service_charge_CGST":0,"service_charge_IGST":0,"service_charge_SGST":0}
-/// cart_subtotal : 118.99
-/// cart_subtotal_without_packing : 99.99
-/// cart_total : 124.95
-/// cart_total_count : 1
+/// GST_details : {"cart_CGST":5.95,"cart_SGST":5.95,"cart_IGST":0,"external_GST":0,"item_CGST":5,"item_SGST":5,"item_IGST":0,"packaging_CGST":0.95,"packaging_SGST":0.95,"packaging_IGST":0,"service_charge_CGST":0,"service_charge_IGST":0,"service_charge_SGST":0}
+/// cart_subtotal : 237.98
+/// cart_subtotal_without_packing : 199.98
+/// cart_total : 249.88
+/// cart_total_count : 2
 /// delivery_charges : 50
-/// cartId : 2790213019
+/// cartId : 6959911870
 
 CartMeta cartMetaFromJson(String str) => CartMeta.fromJson(json.decode(str));
 String cartMetaToJson(CartMeta data) => json.encode(data.toJson());
@@ -210,15 +210,15 @@ CartMeta copyWith({  GstDetails? gSTDetails,
 
 }
 
-/// cart_CGST : 2.98
-/// cart_SGST : 2.98
+/// cart_CGST : 5.95
+/// cart_SGST : 5.95
 /// cart_IGST : 0
 /// external_GST : 0
-/// item_CGST : 2.5
-/// item_SGST : 2.5
+/// item_CGST : 5
+/// item_SGST : 5
 /// item_IGST : 0
-/// packaging_CGST : 0.48
-/// packaging_SGST : 0.48
+/// packaging_CGST : 0.95
+/// packaging_SGST : 0.95
 /// packaging_IGST : 0
 /// service_charge_CGST : 0
 /// service_charge_IGST : 0
@@ -349,16 +349,16 @@ GstDetails copyWith({  num? cartCGST,
 /// in_stock : 1
 /// is_error : false
 /// allowed_quantity : 6
-/// quantity : 1
+/// quantity : 2
 /// name : "Veggie Supreme"
 /// is_veg : 1
 /// product_imageUrl : "https://supergrydapi.ritikasingh.site/uploads/dish/veggie-supreme.jpg"
-/// final_price : 99.99
-/// effective_item_price : 123.99
-/// packing_charge : 19
-/// item_taxes : {"service_tax":0,"vat":0,"service_charges":0,"GST":5}
-/// subtotal : 99.99
-/// total : 118.99
+/// final_price : 199.98
+/// effective_item_price : 247.98
+/// packing_charge : 38
+/// item_taxes : {"service_tax":0,"vat":0,"service_charges":0,"GST":10}
+/// subtotal : 199.98
+/// total : 237.98
 /// added_by_user_id : -1
 /// added_by_user_name : ""
 /// addons : []
@@ -546,7 +546,7 @@ CartItmes copyWith({  num? productId,
 /// service_tax : 0
 /// vat : 0
 /// service_charges : 0
-/// GST : 5
+/// GST : 10
 
 ItemTaxes itemTaxesFromJson(String str) => ItemTaxes.fromJson(json.decode(str));
 String itemTaxesToJson(ItemTaxes data) => json.encode(data.toJson());

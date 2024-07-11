@@ -63,6 +63,7 @@ class RestaurantsAndDishesListingController extends GetxController {
     super.onClose();
   }
 
+
   Future<void> getRestaurants(
       {required bool initial, BuildContext? context}) async {
     debugPrint("userId ${Constants.userId}");

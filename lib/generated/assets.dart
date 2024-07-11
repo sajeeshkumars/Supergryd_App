@@ -155,6 +155,7 @@ class Assets {
   static const String modelsRideEstimationRequest = 'lib/app/modules/home/data/models/ride_estimation_request.dart';
   static const String modelsRideEstimationResponse = 'lib/app/modules/home/data/models/ride_estimation_response.dart';
   static const String modelsServiceCategoryResponse = 'lib/app/modules/home/data/models/service_category_response.dart';
+  static const String modelsViewCartResponse = 'lib/app/modules/cart/data/models/view_cart_response.dart';
   static const String routesAppPages = 'lib/app/routes/app_pages.dart';
   static const String routesAppRoutes = 'lib/app/routes/app_routes.dart';
   static const String servicesApiService = 'lib/services/api_service.dart';

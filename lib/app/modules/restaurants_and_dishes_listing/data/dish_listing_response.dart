@@ -123,12 +123,14 @@ String dishesToJson(Dishes data) => json.encode(data.toJson());
 class Dishes {
   Dishes({
     String? id,
+    int? storeId,
     String? branchName,
     String? storeAddress,
     StoreProducts? storeProducts,
     List<RestaurantDetails>? restaurantDetails,
   }) {
     _id = id;
+    _storeId = storeId;
     _branchName = branchName;
     _storeAddress = storeAddress;
     _storeProducts = storeProducts;
@@ -137,6 +139,7 @@ class Dishes {
 
   Dishes.fromJson(dynamic json) {
     _id = json['_id'].toString();
+    _storeId = json['store_id'];
     _branchName = json['branch_name'].toString();
     _storeAddress = json['store_address'].toString();
     _storeProducts = json['storeProducts'] != null
@@ -151,6 +154,7 @@ class Dishes {
   }
 
   String? _id;
+  int? _storeId;
   String? _branchName;
   String? _storeAddress;
   StoreProducts? _storeProducts;
@@ -158,6 +162,7 @@ class Dishes {
 
   Dishes copyWith({
     String? id,
+    int? storeId,
     String? branchName,
     String? storeAddress,
     StoreProducts? storeProducts,
@@ -165,6 +170,7 @@ class Dishes {
   }) =>
       Dishes(
         id: id ?? _id,
+        storeId: storeId ?? _storeId,
         branchName: branchName ?? _branchName,
         storeAddress: storeAddress ?? _storeAddress,
         storeProducts: storeProducts ?? _storeProducts,
@@ -172,6 +178,8 @@ class Dishes {
       );
 
   String? get id => _id;
+
+  int? get storeId => _storeId;
 
   String? get branchName => _branchName;
 
@@ -184,6 +192,7 @@ class Dishes {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = _id;
+    map['store_id'] = _storeId;
     map['branch_name'] = _branchName;
     map['store_address'] = _storeAddress;
     if (_storeProducts != null) {
