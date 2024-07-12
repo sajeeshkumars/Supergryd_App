@@ -500,15 +500,44 @@ class _DishCardState extends State<DishCard> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: CommonText(
-                text: 'Items from different shops , cart will be cleared'),
+                text: 'Items from different shop , cart will be discard'),
             actions: [
-              CommonButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  cartController.cartItems.clear();
-                  // Close the dialog
-                },
-                text: 'Ok',
+              Row(
+                children: [
+                  Expanded(
+                    child: CommonButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        // Close the dialog
+                      },
+                      text: 'No',
+                    ),
+                  ),
+                  SizedBox(width: 5,),
+                  Expanded(
+                    child: CommonButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        if(cartController.addToCartResponse?.data?.statusCode == 1){
+                          cartController.cartItems.clear();
+
+                          widget.count.value = 1;
+
+                          if (!widget.isDishes) {
+                            cartController.addProductToCart(widget.restaurant!);
+                          } else {
+                            cartController
+                                .addProductToCartFromListing(widget.dish!);
+                          }
+
+                          cartController.addToCart(
+                              context: context, storeId: widget.storeId);
+                        }
+                      },
+                      text: 'Replace',
+                    ),
+                  ),
+                ],
               ),
             ],
           );
@@ -517,20 +546,24 @@ class _DishCardState extends State<DishCard> {
       return;
     }
 
-    // Proceed with incrementing count and updating cart
-    widget.count.value++;
+    debugPrint(
+        "status code inside increment ${cartController.addToCartResponse?.data?.statusCode}");
+    debugPrint("cartItems print ${cartController.cartItems}");
+
+
+        widget.count.value++;
+
 
     if (!widget.isDishes) {
       cartController.addProductToCart(widget.restaurant!);
     } else {
-     cartController.addProductToCartFromListing(widget.dish!);
+      cartController.addProductToCartFromListing(widget.dish!);
     }
 
     cartController.addToCart(context: context, storeId: widget.storeId);
   }
 
   void _decrementCount() {
-    // setState(() {
 
     if (!widget.isDishes) {
       cartController.removeFromCart(cartController.cartItems.firstWhere(
@@ -544,7 +577,6 @@ class _DishCardState extends State<DishCard> {
 
     cartController.addToCart(context: context, storeId: widget.storeId);
 
-    // });
   }
 
   @override

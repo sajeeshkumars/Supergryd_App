@@ -151,6 +151,9 @@ class Assets {
   static const String modelsAddToCartRequest = 'lib/app/modules/cart/data/models/add_to_cart_request.dart';
   static const String modelsAddToCartResponse = 'lib/app/modules/cart/data/models/add_to_cart_response.dart';
   static const String modelsCabHistoryResponse = 'lib/app/modules/history/data/models/cab_history_response.dart';
+  static const String modelsConfirmOrderResponse = 'lib/app/modules/cart/data/models/confirm_order_response.dart';
+  static const String modelsCreateOrderRequest = 'lib/app/modules/cart/data/models/create_order_request.dart';
+  static const String modelsCreateOrderResponse = 'lib/app/modules/cart/data/models/create_order_response.dart';
   static const String modelsRequestRideResponse = 'lib/app/modules/home/data/models/request_ride_response.dart';
   static const String modelsRideEstimationRequest = 'lib/app/modules/home/data/models/ride_estimation_request.dart';
   static const String modelsRideEstimationResponse = 'lib/app/modules/home/data/models/ride_estimation_response.dart';

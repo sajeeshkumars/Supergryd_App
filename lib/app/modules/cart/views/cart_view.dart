@@ -70,7 +70,7 @@ class CartView extends GetView<CartController> {
         ),
         body: Obx(
           () {
-            return controller.isViewCartLoading.value ? CircularProgressIndicator():  Stack(
+            return controller.isViewCartLoading.value ? Center(child: CircularProgressIndicator()):  Stack(
               alignment: Alignment.bottomCenter,
               children: [
                 Padding(
@@ -180,9 +180,7 @@ class CartView extends GetView<CartController> {
                                                                     .viewCartResponse
                                                                     ?.data!
                                                                     .cartItmes?[
-                                                                        index]
-                                                                    .effectiveItemPrice
-                                                                    .toString()
+                                                                        index].finalPrice
                                                               } '),
                                                 )
                                               ],
@@ -229,10 +227,10 @@ class CartView extends GetView<CartController> {
                             padding: const EdgeInsets.all(20.0),
                             child: Column(
                               children: [
-                                BillItems(title: 'Item Total', price: '₹ ${controller.viewCartResponse?.data?.cartMeta?.cartSubtotal}',),
+                                BillItems(title: 'Item Total', price: '₹ ${controller.viewCartResponse?.data?.cartMeta?.cartSubtotalWithoutPacking}',),
                                 BillItems(title: 'Delivery Fee', price: '₹ ${controller.viewCartResponse?.data?.cartMeta?.deliveryCharges}',),
                                 BillItems(title: 'GST & Restaurant Changes', price: '₹ ${controller.viewCartResponse?.data?.cartMeta?.gSTDetails?.cartCGST?.toStringAsFixed(2)}',),
-                                BillItems(title: 'Platform Fee', price: '₹ ${controller.viewCartResponse?.data?.cartMeta?.gSTDetails?.serviceChargeCGST}',),
+                                BillItems(title: 'Platform Fee', price: '₹ 0',),
                                 Divider(),
                                 Row(
                                   children: [
@@ -277,12 +275,16 @@ class CartView extends GetView<CartController> {
                       children: [
                         Expanded(child: CommonText(text: 'Pay Using \nCash',fontWeight: FontWeight.w600,)),
                         // Expanded(child: CommonText(text: 'Total 121')),
-                        Expanded(child: CommonButton(onPressed: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      CartView()));
-                        }, text: 'Place Order',)),
+                        Expanded(child: Obx(
+                           () {
+                            return CommonButton(
+                              isLoading: controller.isCreateOrderLoading.value,
+                              onPressed: () {
+                              controller.createOrder(context: context);
+
+                            }, text: 'Place Order',);
+                          }
+                        )),
                       ],
                     ),
                   ),

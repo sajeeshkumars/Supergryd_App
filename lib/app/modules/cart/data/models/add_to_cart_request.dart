@@ -20,7 +20,7 @@ class AddToCartRequest {
       String? userId,
     String? deviceId,
       String? providerCode, 
-      Location? location,}){
+      DeliveryLocation? location,}){
     _storeId = storeId;
     _cartItems = cartItems;
     _addressId = addressId;
@@ -42,7 +42,7 @@ class AddToCartRequest {
     _userId = json['user_id'];
     _deviceId = json['device_id'];
     _providerCode = json['provider_code'];
-    _location = json['location'] != null ? Location.fromJson(json['location']) : null;
+    _location = json['location'] != null ? DeliveryLocation.fromJson(json['location']) : null;
   }
   num? _storeId;
   List<CartItems>? _cartItems;
@@ -50,14 +50,14 @@ class AddToCartRequest {
   String? _userId;
   String? _deviceId;
   String? _providerCode;
-  Location? _location;
+  DeliveryLocation? _location;
 AddToCartRequest copyWith({  num? storeId,
   List<CartItems>? cartItems,
   dynamic addressId,
   String? userId,
   String? deviceId,
   String? providerCode,
-  Location? location,
+  DeliveryLocation? location,
 }) => AddToCartRequest(  storeId: storeId ?? _storeId,
   cartItems: cartItems ?? _cartItems,
   addressId: addressId ?? _addressId,
@@ -72,7 +72,7 @@ AddToCartRequest copyWith({  num? storeId,
   String? get userId => _userId;
   String? get deviceId => _deviceId;
   String? get providerCode => _providerCode;
-  Location? get location => _location;
+  DeliveryLocation? get location => _location;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -95,25 +95,25 @@ AddToCartRequest copyWith({  num? storeId,
 /// lat : 12.912922
 /// long : 77.290929
 
-Location locationFromJson(String str) => Location.fromJson(json.decode(str));
-String locationToJson(Location data) => json.encode(data.toJson());
-class Location {
-  Location({
+DeliveryLocation locationFromJson(String str) => DeliveryLocation.fromJson(json.decode(str));
+String locationToJson(DeliveryLocation data) => json.encode(data.toJson());
+class DeliveryLocation {
+  DeliveryLocation({
       num? lat, 
       num? long,}){
     _lat = lat;
     _long = long;
 }
 
-  Location.fromJson(dynamic json) {
+  DeliveryLocation.fromJson(dynamic json) {
     _lat = json['lat'];
     _long = json['long'];
   }
   num? _lat;
   num? _long;
-Location copyWith({  num? lat,
+DeliveryLocation copyWith({  num? lat,
   num? long,
-}) => Location(  lat: lat ?? _lat,
+}) => DeliveryLocation(  lat: lat ?? _lat,
   long: long ?? _long,
 );
   num? get lat => _lat;

@@ -409,6 +409,8 @@ class CartItmes {
     _subtotalCouponDiscount = subtotalCouponDiscount;
 }
 
+
+
   CartItmes.fromJson(dynamic json) {
     _productId = json['productId'];
     _inStock = json['in_stock'];
