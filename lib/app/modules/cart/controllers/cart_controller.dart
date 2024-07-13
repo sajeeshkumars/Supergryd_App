@@ -57,14 +57,7 @@ class CartController extends GetxController {
   void onClose() {}
   void increment() => count.value++;
 
-  void addProductToCart(Restaurant dish) {
-    final existingItem = cartItems.firstWhereOrNull((item) => item.productId == dish.productId);
-    if (existingItem != null ) {
-      existingItem.incrementQuantity();
-    } else {
-      cartItems.add(CartItems.fromDish(dish));
-    }
-  }
+
 
   void addProductToCartFromListing(Dishes dish) {
     final existingItem = cartItems.firstWhereOrNull((item) => item.productId == dish.storeProducts?.productId);
