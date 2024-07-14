@@ -8,7 +8,6 @@ import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_request.da
 import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_response.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/create_order_request.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/create_order_response.dart';
-import 'package:mynewpackage/app/modules/cart/data/models/view_cart_response.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/dish_listing_response.dart';
 import 'package:mynewpackage/constants.dart';
@@ -16,6 +15,7 @@ import 'package:mynewpackage/widgets/common_text.dart';
 
 import '../../../../widgets/custom_button.dart';
 import '../../restaurants_details/data/get_restaurant_details_response.dart';
+import '../data/models/view_cart_response.dart';
 import '../views/cart_view.dart';
 
 class CartController extends GetxController {
@@ -55,7 +55,25 @@ class CartController extends GetxController {
 
   @override
   void onClose() {}
-  void increment() => count.value++;
+
+
+  void addProductToCart(Restaurant dish) {
+    final existingItem = cartItems.firstWhereOrNull((item) => item.productId == dish.productId);
+    if (existingItem != null) {
+      existingItem.incrementQuantity();
+    } else {
+      cartItems.add(CartItems.fromDish(dish));
+    }
+  }
+
+  void addProductToCartFromCart(ViewCartItems dish) {
+    final existingItem = cartItems.firstWhereOrNull((item) => item.productId == dish.productId);
+    if (existingItem != null) {
+      existingItem.incrementQuantity();
+    } else {
+      cartItems.add(CartItems.fromCart(dish));
+    }
+  }
 
 
 
@@ -104,6 +122,7 @@ class CartController extends GetxController {
         addToCartResponse = value;
           ScaffoldMessenger.of(context!).showSnackBar(
               SnackBar(content: Text(value.data!.statusMessage.toString())));
+          viewCart(context: context);
          // viewCart(context: context);
         // Navigator.of(context).push(
         //     MaterialPageRoute(
@@ -144,6 +163,7 @@ class CartController extends GetxController {
       if (value.status == 200) {
         isViewCartLoading(false);
         viewCartResponse = value;
+
 
 
 
@@ -228,9 +248,31 @@ class CartController extends GetxController {
                             return CommonButton(
                               isLoading: isConfirmOrderLoading.value,
                               onPressed: () {
-                                confirmOrder(context: context);
+                                confirmOrder(context: context, onSuccess: (){
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: CommonText(text: 'Order Placed Successfully'),
+                                        actions: [
+                                          CommonButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                              // Close the dialog
+                                            },
+                                            text: 'Back to Services',
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                });
 
-                                Navigator.pop(context);
+                                // Navigator.pop(context);
 
                               },
                               text: 'Confirm',
@@ -258,7 +300,7 @@ class CartController extends GetxController {
   }
 
 
-  Future<void> confirmOrder({required BuildContext context}) async {
+  Future<void> confirmOrder({required BuildContext context,required Function onSuccess}) async {
 
 
     isConfirmOrderLoading(true);
@@ -275,30 +317,13 @@ class CartController extends GetxController {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: CommonText(text: value.data!.statusMessage.toString())));
 
         isConfirmOrderLoading(false);
-        // if(value.data?.statusCode == 1){
-        //   {
-        //     showDialog(
-        //       context: context,
-        //       builder: (BuildContext context) {
-        //         return AlertDialog(
-        //           title: CommonText(text: 'Order Placed'),
-        //           actions: [
-        //             CommonButton(
-        //               onPressed: () {
-        //                 Navigator.pop(context);
-        //                 Navigator.pop(context);
-        //                 Navigator.pop(context);
-        //                 Navigator.pop(context);
-        //                 // Close the dialog
-        //               },
-        //               text: 'Back to Services',
-        //             ),
-        //           ],
-        //         );
-        //       },
-        //     );
-        //   }
-        // }
+        cartItems.clear();
+        if(value.data?.statusCode == 1){
+          {
+            onSuccess();
+
+          }
+        }
 
 
 

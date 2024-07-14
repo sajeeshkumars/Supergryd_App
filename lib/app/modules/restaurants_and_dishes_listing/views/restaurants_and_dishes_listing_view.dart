@@ -506,7 +506,7 @@ class _DishCardState extends State<DishCard> {
                 children: [
                   Expanded(
                     child: CommonButton(
-                      onPressed: () {
+                      onPressed: () async{
                         Navigator.pop(context);
                         // Close the dialog
                       },
@@ -518,7 +518,6 @@ class _DishCardState extends State<DishCard> {
                     child: CommonButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        if(cartController.addToCartResponse?.data?.statusCode == 1){
                           cartController.cartItems.clear();
 
                           widget.count.value = 1;
@@ -532,7 +531,6 @@ class _DishCardState extends State<DishCard> {
 
                           cartController.addToCart(
                               context: context, storeId: widget.storeId);
-                        }
                       },
                       text: 'Replace',
                     ),

@@ -61,7 +61,7 @@ class Data {
       String? statusMessage, 
       String? deviceId, 
       num? storeId, 
-      List<CartItmes>? cartItmes, 
+      List<ViewCartItems>? cartItmes,
       CartMeta? cartMeta,}){
     _statusCode = statusCode;
     _statusMessage = statusMessage;
@@ -79,7 +79,7 @@ class Data {
     if (json['cartItmes'] != null) {
       _cartItmes = [];
       json['cartItmes'].forEach((v) {
-        _cartItmes?.add(CartItmes.fromJson(v));
+        _cartItmes?.add(ViewCartItems.fromJson(v));
       });
     }
     _cartMeta = json['cartMeta'] != null ? CartMeta.fromJson(json['cartMeta']) : null;
@@ -88,13 +88,13 @@ class Data {
   String? _statusMessage;
   String? _deviceId;
   num? _storeId;
-  List<CartItmes>? _cartItmes;
+  List<ViewCartItems>? _cartItmes;
   CartMeta? _cartMeta;
 Data copyWith({  num? statusCode,
   String? statusMessage,
   String? deviceId,
   num? storeId,
-  List<CartItmes>? cartItmes,
+  List<ViewCartItems>? cartItmes,
   CartMeta? cartMeta,
 }) => Data(  statusCode: statusCode ?? _statusCode,
   statusMessage: statusMessage ?? _statusMessage,
@@ -107,7 +107,7 @@ Data copyWith({  num? statusCode,
   String? get statusMessage => _statusMessage;
   String? get deviceId => _deviceId;
   num? get storeId => _storeId;
-  List<CartItmes>? get cartItmes => _cartItmes;
+  List<ViewCartItems>? get cartItmes => _cartItmes;
   CartMeta? get cartMeta => _cartMeta;
 
   Map<String, dynamic> toJson() {
@@ -365,10 +365,10 @@ GstDetails copyWith({  num? cartCGST,
 /// addons_price : null
 /// subtotal_coupon_discount : 0
 
-CartItmes cartItmesFromJson(String str) => CartItmes.fromJson(json.decode(str));
-String cartItmesToJson(CartItmes data) => json.encode(data.toJson());
-class CartItmes {
-  CartItmes({
+ViewCartItems cartItmesFromJson(String str) => ViewCartItems.fromJson(json.decode(str));
+String cartItmesToJson(ViewCartItems data) => json.encode(data.toJson());
+class ViewCartItems {
+  ViewCartItems({
       num? productId, 
       num? inStock, 
       bool? isError, 
@@ -411,7 +411,7 @@ class CartItmes {
 
 
 
-  CartItmes.fromJson(dynamic json) {
+  ViewCartItems.fromJson(dynamic json) {
     _productId = json['productId'];
     _inStock = json['in_stock'];
     _isError = json['is_error'];
@@ -456,7 +456,7 @@ class CartItmes {
   List<dynamic>? _addons;
   dynamic _addonsPrice;
   num? _subtotalCouponDiscount;
-CartItmes copyWith({  num? productId,
+ViewCartItems copyWith({  num? productId,
   num? inStock,
   bool? isError,
   num? allowedQuantity,
@@ -475,7 +475,7 @@ CartItmes copyWith({  num? productId,
   List<dynamic>? addons,
   dynamic addonsPrice,
   num? subtotalCouponDiscount,
-}) => CartItmes(  productId: productId ?? _productId,
+}) => ViewCartItems(  productId: productId ?? _productId,
   inStock: inStock ?? _inStock,
   isError: isError ?? _isError,
   allowedQuantity: allowedQuantity ?? _allowedQuantity,

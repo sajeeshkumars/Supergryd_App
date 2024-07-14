@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:mynewpackage/app/modules/cart/data/models/view_cart_response.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/data/get_restaurant_details_response.dart';
 
 import '../../../restaurants_and_dishes_listing/data/dish_listing_response.dart';
+import 'add_to_cart_response.dart';
 /// store_id : 1
 /// cartItems : [{"product_id":11,"quantity":2,"addons":[],"variants":[]},{"product_id":15,"quantity":2,"addons":[],"variants":[]}]
 /// address_id : null
@@ -233,6 +235,16 @@ CartItems copyWith({  num? productId,
       productId: dish.storeProducts?.productId,
       quantity: 1,
         storeId: dish.storeId
+
+      // addons: dish.addons,
+      // variants: dish.variants,
+    );
+  }
+
+  factory CartItems.fromCart(ViewCartItems dish) {
+    return CartItems(
+        productId: dish.productId,
+        quantity: 1,
 
       // addons: dish.addons,
       // variants: dish.variants,

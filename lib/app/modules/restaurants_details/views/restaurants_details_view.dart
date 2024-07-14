@@ -208,10 +208,11 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
                                    CommonButton(
                                     onPressed: () {
                                      cartController. viewCart(context: context);
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CartView()));
+                                     Navigator.of(context).push(
+                                         MaterialPageRoute(
+                                             builder: (context) =>
+                                                 CartView()));
+
 
                                   }, text: 'View Cart',))
 
