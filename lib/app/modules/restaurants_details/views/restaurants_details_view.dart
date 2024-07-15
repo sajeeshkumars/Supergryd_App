@@ -79,110 +79,118 @@ class _RestaurantsDetailsViewState extends State<RestaurantsDetailsView> {
           alignment: Alignment.bottomCenter,
           children: [
 
-                 Padding(
-                  padding: cartController.cartItems.isNotEmpty ?  EdgeInsets.only(bottom: 100):EdgeInsets.zero ,
-                  // padding: EdgeInsets.only(bottom: 100) ,
-                  child: SingleChildScrollView(
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            BannerAndRatingWidget(
-                              restaurantData: widget.restaurantData,
-                              distance: widget.distance,
-                              controller: restaurantsDetailsController,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            SearchWidget(
-                                controller: restaurantsDetailsController,
-                                restaurantData: widget.restaurantData),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            ChipWidget(
-                                controller: restaurantsDetailsController,
-                                restaurantId: widget.restaurantId),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Obx(() {
-                              return restaurantsDetailsController.isLoading.value
-                                  ? const Center(child: SizedBox.shrink())
-                                  : restaurantsDetailsController
-                                          .restaurantDishList.isNotEmpty
-                                      ? Column(
-                                        children: [
-                                          ListView.separated(
-                                              shrinkWrap: true,
-                                              physics: const NeverScrollableScrollPhysics(),
-                                              itemBuilder: (context, index) {
-                                                final dish =restaurantsDetailsController
-                                                    .restaurantDishList[index];
-                                                int _count = cartController.cartItems.firstWhereOrNull((item) => item.productId == dish.id)?.quantity?.toInt() ?? 0;
 
-                                                    return DishCard(
-                                                      count:_count.obs,
-                                                      restaurantsDetailsController:
-                                                          restaurantsDetailsController,
-                                                      restaurant: restaurantsDetailsController
-                                                          .restaurantDishList[index],
-                                                      index: index,
-                                                      isDishes: false, storeId: restaurantsDetailsController.restaurantDishList[index].storeId!.toInt()
+            Padding(
+                      padding: cartController.finalCartItems.isNotEmpty ?  EdgeInsets.only(bottom: 100):EdgeInsets.zero ,
+                      // padding: EdgeInsets.only(bottom: 100) ,
+                      child: SingleChildScrollView(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                BannerAndRatingWidget(
+                                  restaurantData: widget.restaurantData,
+                                  distance: widget.distance,
+                                  controller: restaurantsDetailsController,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                SearchWidget(
+                                    controller: restaurantsDetailsController,
+                                    restaurantData: widget.restaurantData),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                ChipWidget(
+                                    controller: restaurantsDetailsController,
+                                    restaurantId: widget.restaurantId),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Obx(() {
+                                  return restaurantsDetailsController.isLoading.value
+                                      ? const Center(child: SizedBox.shrink())
+                                      : restaurantsDetailsController
+                                              .restaurantDishList.isNotEmpty
+                                          ? Column(
+                                            children: [
+                                              ListView.separated(
+                                                  shrinkWrap: true,
+                                                  physics: const NeverScrollableScrollPhysics(),
+                                                  itemBuilder: (context, index) {
+                                                    // final dish =restaurantsDetailsController
+                                                    //     .restaurantDishList[index];
+                                                    // var _count = cartController
+                                                    //     .productQuantities[dish
+                                                    //     .productId] ??
+                                                    //     0.obs;
+
+                                                    final dish =restaurantsDetailsController
+                                                        .restaurantDishList[index];
+                                                    int _count = cartController.cartItems.firstWhereOrNull((item) => item.productId == dish.id)?.quantity?.toInt() ?? 0;
+
+                                                        return DishCard(
+                                                          count:_count.obs,
+                                                          restaurantsDetailsController:
+                                                              restaurantsDetailsController,
+                                                          restaurant: restaurantsDetailsController
+                                                              .restaurantDishList[index],
+                                                          index: index,
+                                                          isDishes: false, storeId: restaurantsDetailsController.restaurantDishList[index].storeId!.toInt()
+                                                        );
+                                                  },
+                                                  separatorBuilder: (context, index) {
+                                                    return const SizedBox(
+                                                      height: 10,
                                                     );
-                                              },
-                                              separatorBuilder: (context, index) {
-                                                return const SizedBox(
-                                                  height: 10,
-                                                );
-                                              },
-                                              itemCount: restaurantsDetailsController
-                                                  .restaurantDishList.length,
-                                            ),
+                                                  },
+                                                  itemCount: restaurantsDetailsController
+                                                      .restaurantDishList.length,
+                                                ),
 
 
 
-                                        ],
-                                      )
-                                      : Center(
-                                          child: Column(
-                                          children: [
-                                            ColorFiltered(
-                                              colorFilter: ColorFilter.mode(
-                                                  AppColors.primaryColor,
-                                                  BlendMode.modulate),
-                                              child: Image.asset(
-                                                height: 120,
-                                                width: 120,
-                                                'packages/mynewpackage/${Assets.iconsNoFood6}',
-                                                //  height: 100,
-                                                //  width: 100,
-                                                //  color: Colors.red,
-                                                // imagePath: :
-                                              ),
-                                            ),
-                                            CommonText(
-                                              text:
-                                                  "We're currently out of ${restaurantsDetailsController.selectedFilter.value == 0 ? "Veg" : "Non Veg"} items, but our ${restaurantsDetailsController.selectedFilter.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
-                                              textAlign: TextAlign.center,
-                                              fontWeight: FontWeight.w800,
-                                            ),
-                                          ],
-                                        ));
-                            })
-                          ],
+                                            ],
+                                          )
+                                          : Center(
+                                              child: Column(
+                                              children: [
+                                                ColorFiltered(
+                                                  colorFilter: ColorFilter.mode(
+                                                      AppColors.primaryColor,
+                                                      BlendMode.modulate),
+                                                  child: Image.asset(
+                                                    height: 120,
+                                                    width: 120,
+                                                    'packages/mynewpackage/${Assets.iconsNoFood6}',
+                                                    //  height: 100,
+                                                    //  width: 100,
+                                                    //  color: Colors.red,
+                                                    // imagePath: :
+                                                  ),
+                                                ),
+                                                CommonText(
+                                                  text:
+                                                      "We're currently out of ${restaurantsDetailsController.selectedFilter.value == 0 ? "Veg" : "Non Veg"} items, but our ${restaurantsDetailsController.selectedFilter.value == 1 ? "Veg" : "Non Veg"} selection is sizzling! Take a look!",
+                                                  textAlign: TextAlign.center,
+                                                  fontWeight: FontWeight.w800,
+                                                ),
+                                              ],
+                                            ));
+                                })
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
+                                     ),
 
                   Obx(
                   () {
-                    return cartController.cartItems.isEmpty ? SizedBox.shrink(): Container(
+                    return cartController.finalCartItems.isEmpty ? SizedBox.shrink(): Container(
                       height: 100,
                         decoration: BoxDecoration(
                             boxShadow: [

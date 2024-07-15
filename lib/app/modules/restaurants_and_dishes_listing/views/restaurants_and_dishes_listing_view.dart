@@ -314,7 +314,6 @@ class _RestaurantsAndDishesListingViewState
                                                           (context, index) {
                                                         final dish = controller
                                                             .dishList[index];
-                                                        // int _count = cartController.cartItems.firstWhereOrNull((item) => item.productId == dish.id)?.quantity?.toInt() ?? 0;
 
                                                         int _count = cartController
                                                                 .cartItems
@@ -408,7 +407,7 @@ class _RestaurantsAndDishesListingViewState
           ),
         ),
         Obx(() {
-          return cartController.cartItems.isEmpty
+          return cartController.finalCartItems.isEmpty
               ? SizedBox.shrink()
               : Container(
                   height: 100,
@@ -460,23 +459,23 @@ class _RestaurantsAndDishesListingViewState
 class DishCard extends StatefulWidget {
   final int index;
 
-  DishCard(
-      {super.key,
-      required this.index,
-      this.dish,
-      this.restaurant,
-      required this.isDishes,
-      this.restaurantsAndDishesListingController,
-      this.restaurantsDetailsController,
-      required this.count,
-      required this.storeId});
+  DishCard({
+    super.key,
+    required this.index,
+    this.dish,
+    this.restaurant,
+    required this.isDishes,
+    this.restaurantsAndDishesListingController,
+    this.restaurantsDetailsController,
+    required this.count,
+    required this.storeId,
+  });
 
   final Dishes? dish;
   RxInt count;
   final Restaurant? restaurant;
   final bool isDishes;
-  final RestaurantsAndDishesListingController?
-      restaurantsAndDishesListingController;
+  final RestaurantsAndDishesListingController? restaurantsAndDishesListingController;
   final RestaurantsDetailsController? restaurantsDetailsController;
   int storeId;
   CartController cartController = Get.find();
@@ -486,51 +485,47 @@ class DishCard extends StatefulWidget {
 }
 
 class _DishCardState extends State<DishCard> {
-  // int _count = 0;
   HomeController homeController = Get.find();
   CartController cartController = Get.find();
 
   void _incrementCount() {
-    bool isSameShop = cartController.cartItems.isEmpty ||
-        cartController.cartItems.first.storeId == widget.storeId;
+    bool isSameShop = cartController.cartItems.isEmpty || cartController.cartItems.first.storeId == widget.storeId;
 
     if (!isSameShop) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: CommonText(
-                text: 'Items from different shop , cart will be discard'),
+            title: CommonText(text: 'Items from different shop, cart will be discarded'),
             actions: [
               Row(
                 children: [
                   Expanded(
                     child: CommonButton(
-                      onPressed: () async{
+                      onPressed: () async {
                         Navigator.pop(context);
-                        // Close the dialog
                       },
                       text: 'No',
                     ),
                   ),
-                  SizedBox(width: 5,),
+                  SizedBox(width: 5),
                   Expanded(
                     child: CommonButton(
                       onPressed: () {
                         Navigator.pop(context);
-                          cartController.cartItems.clear();
+                        cartController.cartItems.clear();
 
-                          widget.count.value = 1;
-
-                          if (!widget.isDishes) {
-                            cartController.addProductToCart(widget.restaurant!);
-                          } else {
-                            cartController
-                                .addProductToCartFromListing(widget.dish!);
+                        cartController.addToCart(context: context, storeId: widget.storeId).then((_) {
+                          if (cartController.addToCartResponse?.data?.statusCode == 1) {
+                            widget.count.value = 1;
                           }
+                        });
 
-                          cartController.addToCart(
-                              context: context, storeId: widget.storeId);
+                        if (!widget.isDishes) {
+                          cartController.addProductToCart(widget.restaurant!);
+                        } else {
+                          cartController.addProductToCartFromListing(widget.dish!);
+                        }
                       },
                       text: 'Replace',
                     ),
@@ -544,37 +539,46 @@ class _DishCardState extends State<DishCard> {
       return;
     }
 
-    debugPrint(
-        "status code inside increment ${cartController.addToCartResponse?.data?.statusCode}");
-    debugPrint("cartItems print ${cartController.cartItems}");
-
-
-        widget.count.value++;
-
-
     if (!widget.isDishes) {
       cartController.addProductToCart(widget.restaurant!);
     } else {
       cartController.addProductToCartFromListing(widget.dish!);
     }
 
-    cartController.addToCart(context: context, storeId: widget.storeId);
+    cartController.addToCart(context: context, storeId: widget.storeId).then((_) {
+      if (cartController.addToCartResponse?.data?.statusCode == 1) {
+        widget.count.value++;
+      }
+    });
   }
 
   void _decrementCount() {
-
-    if (!widget.isDishes) {
-      cartController.removeFromCart(cartController.cartItems.firstWhere(
-          (item) => item.productId == widget.restaurant?.productId));
+    debugPrint("count in decrement${widget.count.value}");
+    if (widget.count.value <= 0) {
+      // cartController.cartItems.clear();
+      cartController.finalCartItems.clear();
+      debugPrint("final cart count ${cartController.finalCartItems.length}");
     } else {
-      cartController.removeFromCart(cartController.cartItems.firstWhere(
-          (item) => item.productId == widget.dish?.storeProducts?.productId));
+      if (!widget.isDishes) {
+        cartController.removeFromCart(
+          cartController.finalCartItems.firstWhere((item) => item.productId == widget.restaurant?.productId),
+        );
+      } else {
+        cartController.removeFromCart(
+          cartController.finalCartItems.firstWhere((item) => item.productId == widget.dish?.storeProducts?.productId),
+        );
+      }
+
+
+      cartController.addToCart(context: context, storeId: widget.storeId).then((value) {
+        if (cartController.addToCartResponse?.data?.statusCode == 1) {
+          widget.count.value--;
+        }if(cartController.addToCartResponse?.data?.statusCode == 3){
+          widget.count.value--;
+          cartController.finalCartItems.clear();
+        }
+      });
     }
-
-    if (widget.count > 0) widget.count.value--;
-
-    cartController.addToCart(context: context, storeId: widget.storeId);
-
   }
 
   @override
@@ -594,15 +598,11 @@ class _DishCardState extends State<DishCard> {
                   bottomLeft: Radius.circular(10),
                 ),
                 child: CommonImageView(
-                  cacheKey: widget.isDishes
-                      ? widget.dish?.storeProducts?.id
-                      : widget.restaurant?.id,
+                  cacheKey: widget.isDishes ? widget.dish?.storeProducts?.id : widget.restaurant?.id,
                   height: widget.isDishes ? 178 : 198,
                   width: 150,
                   fit: BoxFit.cover,
-                  url: widget.isDishes
-                      ? widget.dish?.storeProducts?.images?.productImageUrl
-                      : widget.restaurant?.images?.imageMobile,
+                  url: widget.isDishes ? widget.dish?.storeProducts?.images?.productImageUrl : widget.restaurant?.images?.imageMobile,
                 ),
               ),
               Expanded(
@@ -611,37 +611,26 @@ class _DishCardState extends State<DishCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Name at the top
-
                       CommonText(
-                        text: (widget.isDishes
-                                ? widget.dish?.storeProducts?.name
-                                : widget.restaurant?.name) ??
-                            "",
+                        text: (widget.isDishes ? widget.dish?.storeProducts?.name : widget.restaurant?.name) ?? "",
                         maxLines: widget.isDishes ? 2 : 3,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         textOverflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 8),
-                      // Price
                       CommonText(
-                        text:
-                            '₹ ${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.price)}',
+                        text: '₹ ${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.price)}',
                         fontWeight: FontWeight.w500,
                       ),
                       const SizedBox(height: 8),
-                      // Rating
                       Chip(
                         label: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SvgPicture.asset(
-                              "packages/mynewpackage/${Assets.iconsStar}",
-                            ),
+                            SvgPicture.asset("packages/mynewpackage/${Assets.iconsStar}"),
                             CommonText(
-                              text:
-                                  '${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating?.toInt() ?? 0 : widget.restaurant?.productDetails?.countOfRating?.toInt() ?? 0)})',
+                              text: '${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating?.toInt() ?? 0 : widget.restaurant?.productDetails?.countOfRating?.toInt() ?? 0)})',
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),
@@ -650,39 +639,33 @@ class _DishCardState extends State<DishCard> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
-                        side: BorderSide(
-                          color: AppColors.borderColor,
-                        ),
+                        side: BorderSide(color: AppColors.borderColor),
                       ),
                       Spacer(),
-                      // Add icon at the bottom
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           if (widget.isDishes)
                             ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                  AppColors.accentColor, BlendMode.modulate),
-                              child: SvgPicture.asset(
-                                "packages/mynewpackage/${Assets.iconsShopIcon}",
-                              ),
+                              colorFilter: ColorFilter.mode(AppColors.accentColor, BlendMode.modulate),
+                              child: SvgPicture.asset("packages/mynewpackage/${Assets.iconsShopIcon}"),
                             ),
                           const SizedBox(width: 5),
                           if (widget.isDishes)
                             Expanded(
                               child: CommonText(
-                                  text:
-                                      "${widget.dish?.restaurantDetails?.first.name}",
-                                  textOverflow: TextOverflow.ellipsis,
-                                  textColor: AppColors.textLightColor),
+                                text: "${widget.dish?.restaurantDetails?.first.name}",
+                                textOverflow: TextOverflow.ellipsis,
+                                textColor: AppColors.textLightColor,
+                              ),
                             ),
                           const SizedBox(width: 3),
                           Obx(() {
                             return Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                if (widget.count.value == 0)
+                                if (widget.count.value == 0 )
                                   InkWell(
                                     onTap: _incrementCount,
                                     child: SvgPicture.asset(
@@ -697,31 +680,26 @@ class _DishCardState extends State<DishCard> {
                                       color: AppColors.primaryColor,
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 15,
-                                      ),
+                                      padding: const EdgeInsets.symmetric(horizontal: 15),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           InkWell(
                                             onTap: _decrementCount,
-                                            child: const Icon(
-                                                size: 30,
-                                                Icons.remove,
-                                                color: Colors.white),
+                                            child: const Icon(size: 30, Icons.remove, color: Colors.white),
                                           ),
                                           const SizedBox(width: 8),
-                                          CommonText(
+                                          Obx(() {
+                                            return CommonText(
                                               fontSize: 14,
                                               text: '${widget.count.value}',
-                                              textColor: Colors.white),
+                                              textColor: Colors.white,
+                                            );
+                                          }),
                                           const SizedBox(width: 8),
                                           InkWell(
                                             onTap: _incrementCount,
-                                            child: const Icon(
-                                                size: 30,
-                                                Icons.add,
-                                                color: Colors.white),
+                                            child: const Icon(size: 30, Icons.add, color: Colors.white),
                                           ),
                                         ],
                                       ),
@@ -744,6 +722,8 @@ class _DishCardState extends State<DishCard> {
     );
   }
 }
+
+
 
 class RestaurantList extends StatelessWidget {
   const RestaurantList({

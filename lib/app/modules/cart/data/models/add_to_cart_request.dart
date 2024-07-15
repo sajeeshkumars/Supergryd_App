@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/view_cart_response.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/data/get_restaurant_details_response.dart';
 
@@ -212,12 +213,16 @@ CartItems copyWith({  num? productId,
 
   void incrementQuantity() {
     _quantity = (_quantity ?? 0) + 1;
+    debugPrint("quantity in increment ${quantity}");
+
   }
 
   void decrementQuantity() {
     if (_quantity != null && _quantity! > 0) {
       _quantity = _quantity! - 1;
     }
+    debugPrint("quantity in decreeeeement ${quantity}");
+
   }
 
   factory CartItems.fromDish(Restaurant dish) {
