@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
-import 'package:mynewpackage/app/modules/home/views/home_view.dart';
 import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/widgets/custom_ride_button.dart';
@@ -79,7 +78,7 @@ class _RideDialogState extends State<RideDialog> {
   @override
   Widget build(BuildContext context) {
     final cabController = Get.put(CabMapController());
-    controller.selectedDropOff("");
+    homeController.selectedDropOff("");
 
     return Obx(() {
       return PopScope(

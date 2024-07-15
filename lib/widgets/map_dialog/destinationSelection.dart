@@ -6,7 +6,7 @@ import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart
 import 'package:mynewpackage/widgets/custom_button.dart';
 
 import '../../app/modules/cab/model/cab_states.dart';
-import '../../app/modules/home/views/home_view.dart';
+import '../../app/modules/home/controllers/home_controller.dart';
 import '../../app_colors.dart';
 import '../../generated/assets.dart';
 import '../common_text.dart';
@@ -18,6 +18,8 @@ class DestinationSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<HomeController>();
+
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Card(

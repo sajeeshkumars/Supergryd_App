@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart' as location;
 import 'package:mynewpackage/app/authentication/authentication_repo.dart';
+import 'package:mynewpackage/app/authentication/controller/base_controller.dart';
 import 'package:mynewpackage/app/authentication/model/authentication_request_model.dart';
 import 'package:mynewpackage/app/authentication/model/create_user_request_model.dart';
 import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
@@ -24,11 +25,22 @@ import '../data/models/service_category_response.dart';
 import 'color_controller.dart';
 
 class HomeController extends GetxController {
-  RxString _clientId = "".obs;
-  RxString _clientSecret = "".obs;
   RxString _name = "".obs;
   RxString _mobile = "".obs;
   RxBool isAuthenticated = false.obs;
+  late BaseController baseController;
+  final AuthRepository authRepository = Get.find();
+  RxInt _retryCount = 0.obs;
+
+  @override
+  void onInit() {
+    baseController = Get.find<BaseController>();
+    baseController.isAuthenticated.listen((val) {
+      isAuthenticated(val);
+      update();
+    });
+    super.onInit();
+  }
 
   List addressTypeImage = [
     Assets.iconsHomeIcon,
@@ -120,7 +132,6 @@ class HomeController extends GetxController {
   RequestRideData? requestRideData;
 
   // AppStorage storage = AppStorage();
-  AuthRepository authRepository = Get.put(AuthRepository());
   HomeRepository homeRepository = Get.put(HomeRepository());
   RxList<ServiceCategories> serviceList =
       List<ServiceCategories>.empty(growable: true).obs;
@@ -160,70 +171,9 @@ class HomeController extends GetxController {
   CabMapController cabMapController = Get.put(CabMapController());
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
   void onReady() {
+    getServices();
     super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  setInitVariablesAndAuthenticate({
-    required String clientId,
-    required String clientSecret,
-    required String name,
-    required String mobile,
-  }) async {
-    _clientId(clientId);
-    _clientSecret(clientSecret);
-    _name(name);
-    _mobile(mobile);
-    AuthenticationRequestModel requestModel = AuthenticationRequestModel(
-        clientId: clientId, clientSecrete: clientSecret);
-
-    var result = await InternetConnectionChecker().hasConnection;
-    if (result == true) {
-      await authRepository.authenticate(requestModel.toJson()).then((value) {
-        // await authRepository.authenticate().then((value) {
-        if (value.status == 200) {
-          debugPrint("after success${isLoading.value}");
-          isAuthenticated(true);
-          debugPrint("authenticated");
-          debugPrint("${value.message}");
-          debugPrint("token${value.data?.refreshToken}");
-          Constants.accessToken = value.data?.accessToken ?? "";
-          // storage.writeAccessToken(value.data?.accessToken ?? "");
-          //   debugPrint("access token ${storage.getAccessToken()}");
-          // storage.writeRefreshToken(value.data?.refreshToken ?? "");
-          Constants.refreshToken = value.data?.refreshToken ?? "";
-          Constants.isAuthenticated = true;
-          AppColors.primaryColor =
-              fromHex(value.data!.themes!.first.primaryColor.toString());
-          AppColors.accentColor =
-              fromHex(value.data!.themes!.first.accentColor.toString());
-          debugPrint("color ${AppColors.primaryColor}");
-          colorController.updateColors(
-            value.data!.themes!.first.primaryColor.toString(),
-            value.data!.themes!.first.accentColor.toString(),
-          );
-
-          //   storage.writeIsAuthenticated(true);
-          createUser(mobile: mobile, name: name, context: null);
-          getServices();
-        } else {
-          ExceptionHandler.instance
-              .throwException(Exception("Unauthorized please check Your Key"));
-        }
-      });
-    } else {
-      ExceptionHandler.instance.throwException(Exception("No Internet"));
-    }
   }
 
   void showAddressSelectionBottomSheet({
@@ -300,11 +250,6 @@ class HomeController extends GetxController {
                                   selectedPickupCoordinates.value =
                                       locationCoordinates[addressHeading[index]]
                                           as Map<dynamic, dynamic>;
-                                  debugPrint(
-                                      "selected Location ${selectedLocationCoordinates.value}");
-                                  debugPrint("value ${address.value}");
-                                  debugPrint(
-                                      "selectedLocationCordinates $selectedLocationCoordinates");
                                   controller?.getRestaurants(initial: true);
                                   Navigator.pop(context);
                                   count.value = 1;
@@ -472,7 +417,8 @@ class HomeController extends GetxController {
       debugPrint("before api call${isLoading.value}");
 
       AuthenticationRequestModel requestModel = AuthenticationRequestModel(
-          clientId: _clientId.value, clientSecrete: _clientSecret.value);
+          clientId: baseController.clientID,
+          clientSecrete: baseController.clientSecret);
 
       var result = await InternetConnectionChecker().hasConnection;
 
@@ -540,34 +486,50 @@ class HomeController extends GetxController {
       required BuildContext? context}) async {
     // isLoading(true);
     debugPrint("before api call${isLoading.value}");
+    if (isAuthenticated.isTrue) {
+      CreateUserRequestModel requestModel = CreateUserRequestModel(
+          phoneNumber: mobile, phoneCode: "+91", name: name);
 
-    CreateUserRequestModel requestModel = CreateUserRequestModel(
-        phoneNumber: mobile, phoneCode: "+91", name: name);
+      await authRepository.createUser(requestModel.toJson()).then((value) {
+        if (value.status == 200) {
+          // isLoading(false);
 
-    await authRepository.createUser(requestModel.toJson()).then((value) {
-      if (value.status == 200) {
-        // isLoading(false);
+          debugPrint("after success${isLoading.value}");
 
-        debugPrint("after success${isLoading.value}");
-
-        debugPrint("authenticated");
-        debugPrint("${value.message}");
-        // storage.writeUserId(value.data?.id ?? "");
-        Constants.userId = value.data?.id ?? "";
-        isAuthenticated(true);
-      } else {
-        debugPrint("after failure${value.message}");
-        isAuthenticated(false);
-        if (context != null) {
+          debugPrint("authenticated");
+          debugPrint("${value.message}");
+          // storage.writeUserId(value.data?.id ?? "");
+          Constants.userId = value.data?.id ?? "";
+          isAuthenticated(true);
+        } else {
+          debugPrint("after failure${value.message}");
+          isAuthenticated(false);
+          if (context != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(
+                  value.message ?? "",
+                ),
+                backgroundColor: Colors.red,
+              ));
+            });
+          }
+        }
+      });
+    } else {
+      ExceptionHandler.instance
+          .throwException(Exception("Unauthorized please check Your Key"));
+      if (context != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
-              value.message ?? "",
+              "Unauthorized please check Your Key",
             ),
             backgroundColor: Colors.red,
           ));
-        }
+        });
       }
-    });
+    }
   }
 
   Future<void> getServices() async {
@@ -580,7 +542,12 @@ class HomeController extends GetxController {
         isLoadingServices(false);
       } else {
         isLoadingServices(false);
-        getServices();
+        _retryCount++;
+        if (_retryCount.value < 5) {
+          getServices();
+        } else {
+          _retryCount(0);
+        }
       }
     });
   }
