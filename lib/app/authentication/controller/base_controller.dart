@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -15,6 +17,7 @@ class BaseController extends GetxController {
   RxString _clientId = "".obs;
   RxString _clientSecret = "".obs;
   RxBool isAuthenticated = false.obs;
+  RxBool authenticationLoading = false.obs;
   String get clientID => _clientId.value;
   String get clientSecret => _clientSecret.value;
   final AuthRepository authRepository = Get.put(AuthRepository());
@@ -37,10 +40,13 @@ class BaseController extends GetxController {
 
     AuthenticationRequestModel requestModel = AuthenticationRequestModel(
         clientId: clientId, clientSecrete: clientSecret);
-
+    authenticationLoading(true);
     var result = await InternetConnectionChecker().hasConnection;
-    if (result == true) {
+    if (result == true && isAuthenticated.isFalse) {
+      log("authenticated called from base_controller");
+
       await authRepository.authenticate(requestModel.toJson()).then((value) {
+        authenticationLoading(false);
         // await authRepository.authenticate().then((value) {
         if (value.status == 200) {
           isAuthenticated(true);
@@ -65,6 +71,7 @@ class BaseController extends GetxController {
         }
       });
     } else {
+      authenticationLoading(false);
       ExceptionHandler.instance.throwException(Exception("No Internet"));
     }
   }

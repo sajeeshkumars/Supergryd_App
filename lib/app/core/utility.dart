@@ -27,33 +27,34 @@ class Utility {
     return formattedDateTime;
   }
 
-  static String generateSignature(String apiSecret, String key) {
-    // Convert secret and key to bytes
-    final secretBytes = utf8.encode(apiSecret);
-    final keyBytes = utf8.encode(key);
-
-    // Create HMAC-SHA256 signer using the secret
-    final hmacSha256 = Hmac(sha256, secretBytes);
-
-    // Get the signature and encode in Base64
-    final signature = hmacSha256.convert(keyBytes);
-    return base64.encode(signature.bytes);
+  static (String apiKey, String signature) generateSignature(
+      String apiSecret, String key) {
+    final String apiKey = key;
+    final String secret = apiSecret;
+    final encodeSecret = utf8.encode(secret);
+    int utz = ((DateTime.now().millisecondsSinceEpoch / 1000).floor()) ~/ 300;
+    final mainKey = "${utz}:${apiSecret}";
+    final encodedMainKey = utf8.encode(mainKey);
+    final hMac256 = Hmac(sha256, encodedMainKey);
+    final signature = hMac256.convert(encodeSecret);
+    final finalSignature = base64.encode(signature.bytes);
+    return (apiKey, finalSignature);
   }
 
-  // static takeLocalDateFrom(String date) {
-  //   DateTime dateTime = DateTime.parse(date);
-  //
-  //   String formattedTime = DateFormat('hh:mm a').format(dateTime.toLocal());
-  //
-  //   return formattedTime;
-  // }
-  //
-  // static takeDateOnly(String date){
-  //
-  //   DateTime dateTime = DateTime.parse(date);
-  //
-  //   String formattedDate = DateFormat('dd MMM yyy').format(dateTime.toLocal());
-  //
-  //   return formattedDate;
-  // }
+// static takeLocalDateFrom(String date) {
+//   DateTime dateTime = DateTime.parse(date);
+//
+//   String formattedTime = DateFormat('hh:mm a').format(dateTime.toLocal());
+//
+//   return formattedTime;
+// }
+//
+// static takeDateOnly(String date){
+//
+//   DateTime dateTime = DateTime.parse(date);
+//
+//   String formattedDate = DateFormat('dd MMM yyy').format(dateTime.toLocal());
+//
+//   return formattedDate;
+// }
 }

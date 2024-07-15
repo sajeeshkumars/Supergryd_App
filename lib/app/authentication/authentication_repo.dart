@@ -17,12 +17,15 @@ class AuthRepository implements AuthService {
   Future<AuthenticationResponse> authenticate(
       Map<String, dynamic>? params) async {
     AuthenticationResponse authenticationResponse;
-    Response response = await apiService.authenticationReqst(
-        url: 'auth/auth-verification', params: params);
-    // await apiService.authenticationReqst(url: 'auth/auth-verificationV2');
-    log("authenticate ${response.statusCode}", name: "AUTHREPOSITORY");
+    // Response response = await apiService.authenticationReqst(
+    //     url: 'auth/auth-verification', params: params);
+    Response response2 = await apiService.authenticationReqst(
+        url: 'auth/auth-verificationV2', params: params);
+    // log("authenticate ${response.statusCode}", name: "AUTHREPOSITORY");
+    log("authenticate2 ${response2.statusCode} ${response2.body}",
+        name: "AUTHREPOSITORY");
     try {
-      authenticationResponse = AuthenticationResponse.fromJson(response.body);
+      authenticationResponse = AuthenticationResponse.fromJson(response2.body);
       log("inside repo ${authenticationResponse.status}",
           name: "AUTHREPOSITORY");
       if (authenticationResponse.data?.themes?.firstOrNull?.font != null) {

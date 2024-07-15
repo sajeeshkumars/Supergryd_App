@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -174,6 +176,13 @@ class HomeController extends GetxController {
   void onReady() {
     getServices();
     super.onReady();
+  }
+
+  setNameAndMobileAndCallCreateUser(
+      {required String name, required String mobile, BuildContext? context}) {
+    _name(name);
+    _mobile(mobile);
+    createUser(mobile: mobile, name: name, context: context);
   }
 
   void showAddressSelectionBottomSheet({
@@ -422,7 +431,9 @@ class HomeController extends GetxController {
 
       var result = await InternetConnectionChecker().hasConnection;
 
-      if (result == true) {
+      if (result == true && isAuthenticated.isFalse) {
+        log("authenticated called from home_controller");
+
         await authRepository.authenticate(requestModel.toJson()).then((value) {
           // await authRepository.authenticate().then((value) {
           if (value.status == 200) {
@@ -535,21 +546,23 @@ class HomeController extends GetxController {
   Future<void> getServices() async {
     serviceList.clear();
     isLoadingServices(true);
-    await homeRepository.getServiceList().then((value) {
-      if (value.data?.serviceCategories != [] && (value.status == 200)) {
-        serviceList.addAll(value.data?.serviceCategories ?? []);
-        // debugPrint("list service ${serviceList.first.categoryName}");
-        isLoadingServices(false);
-      } else {
-        isLoadingServices(false);
-        _retryCount++;
-        if (_retryCount.value < 5) {
-          getServices();
+    if (baseController.isAuthenticated.isTrue) {
+      await homeRepository.getServiceList().then((value) {
+        if (value.data?.serviceCategories != [] && (value.status == 200)) {
+          serviceList.addAll(value.data?.serviceCategories ?? []);
+          // debugPrint("list service ${serviceList.first.categoryName}");
+          isLoadingServices(false);
         } else {
-          _retryCount(0);
+          isLoadingServices(false);
+          _retryCount++;
+          if (_retryCount.value < 5) {
+            getServices();
+          } else {
+            _retryCount(0);
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   static Color fromHex(String hexString) {

@@ -45,12 +45,10 @@ class SuperGrydApp {
     var apiKey = clientId;
     var apiSecret = clientSecret;
     log("initial secret $apiSecret", name: "SUPERGRYDAPP");
-    var now = DateTime.now().millisecondsSinceEpoch;
-    var utz = (now / 1000 / 300).floor();
-    var key = '$utz:$apiSecret';
-    var signature = Utility.generateSignature(apiSecret, key);
+
+    (apiKey, apiSecret) = Utility.generateSignature(apiSecret, apiKey);
     Constants.key = apiKey;
-    Constants.secrete = signature;
+    Constants.secrete = apiSecret;
     log("api key ${Constants.key}", name: "SUPERGRYDAPP");
     log("api secret ${Constants.secrete}", name: "SUPERGRYDAPP");
     Get.lazyPut<ApiService>(() => ApiService(

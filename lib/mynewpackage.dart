@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mynewpackage/app/authentication/controller/base_controller.dart';
 import 'package:mynewpackage/app/modules/home/controllers/font_controller.dart';
 import 'package:mynewpackage/app/modules/home/views/home_view.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
@@ -52,8 +53,14 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     HomeController homeController = Get.find<HomeController>();
+    BaseController baseController = Get.find();
 
-    homeController.authenticate(context: context);
+    if (baseController.isAuthenticated.isFalse &&
+        baseController.authenticationLoading.isFalse) {
+      homeController.authenticate(context: context);
+    } else {
+      homeController.createUser(mobile: "", name: "", context: context);
+    }
     Get.lazyPut(() => RestaurantsAndDishesListingController());
     super.initState();
   }
