@@ -1,8 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+import 'dart:core';
+import 'dart:core';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:mynewpackage/app/modules/cart/data/cart_repo.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_request.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_response.dart';
@@ -10,13 +12,15 @@ import 'package:mynewpackage/app/modules/cart/data/models/create_order_request.d
 import 'package:mynewpackage/app/modules/cart/data/models/create_order_response.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/dish_listing_response.dart';
+import 'package:mynewpackage/app/modules/track_order/views/track_order_view.dart';
 import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/widgets/common_text.dart';
 
 import '../../../../widgets/custom_button.dart';
 import '../../restaurants_details/data/get_restaurant_details_response.dart';
+import '../../track_order/data/models/order_track_response.dart';
+import '../../track_order/data/order_track_repo.dart';
 import '../data/models/view_cart_response.dart';
-import '../views/cart_view.dart';
 
 class CartController extends GetxController {
   // TODO: Implement CartController
@@ -33,8 +37,10 @@ class CartController extends GetxController {
   RxBool isCreateOrderLoading = false.obs;
   RxBool isConfirmOrderLoading = false.obs;
   CreateOrderResponse? createOrderResponse;
-  var productQuantities = <int, RxInt>{}.obs;
-
+  RxMap<int, int> productQuantities = <int, int>{}.obs;
+  OrderTrackResponse? orderTrackResponse;
+  OrderTrackRepository orderTrackRepository = OrderTrackRepository();
+  RxBool isTrackOrderLoading = false.obs;
 
   int count = 0;
 
@@ -57,7 +63,8 @@ class CartController extends GetxController {
   void onClose() {}
 
   void addProductToCart(Restaurant dish) {
-    final existingItem = cartItems.firstWhereOrNull((item) => item.productId == dish.productId);
+    final existingItem =
+        cartItems.firstWhereOrNull((item) => item.productId == dish.productId);
     if (existingItem != null) {
       existingItem.incrementQuantity();
     } else {
@@ -66,7 +73,8 @@ class CartController extends GetxController {
   }
 
   void addProductToCartFromCart(ViewCartItems dish) {
-    final existingItem = cartItems.firstWhereOrNull((item) => item.productId == dish.productId);
+    final existingItem =
+        cartItems.firstWhereOrNull((item) => item.productId == dish.productId);
     if (existingItem != null) {
       existingItem.incrementQuantity();
     } else {
@@ -75,7 +83,8 @@ class CartController extends GetxController {
   }
 
   void addProductToCartFromListing(Dishes dish) {
-    final existingItem = cartItems.firstWhereOrNull((item) => item.productId == dish.storeProducts?.productId);
+    final existingItem = cartItems.firstWhereOrNull(
+        (item) => item.productId == dish.storeProducts?.productId);
     if (existingItem != null) {
       existingItem.incrementQuantity();
     } else {
@@ -96,7 +105,7 @@ class CartController extends GetxController {
 
     AddToCartRequest request = AddToCartRequest(
       storeId: storeId,
-      cartItems:cartItems,
+      cartItems: cartItems,
       addressId: null,
       providerCode: "BHZ",
       userId: Constants.userId,
@@ -131,7 +140,7 @@ class CartController extends GetxController {
   }
 
   void removeFromCart(CartItems item) {
-    if (item.quantity! > 0) {
+    if (item.quantity! >= 0) {
       item.decrementQuantity();
     } else {
       cartItems.remove(item);
@@ -149,11 +158,11 @@ class CartController extends GetxController {
         isViewCartLoading(false);
         viewCartResponse = value;
         value.data?.cartItmes?.forEach((item) {
-          productQuantities[item.productId!.toInt()] = RxInt(item.quantity!.toInt());
+          productQuantities[item.productId!.toInt()] = (item.quantity!.toInt());
         });
-        debugPrint("asasasasa ${productQuantities.keys}");
+        productQuantities.refresh();
+        debugPrint("asasasasa ${productQuantities.values}");
         // viewCartResponse?.data?.cartItmes?.firstWhereOrNull((item) => item.productId == dish.id)?.quantity?.toInt();
-
       } else {
         isViewCartLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(
@@ -165,7 +174,6 @@ class CartController extends GetxController {
       return null;
     });
   }
-
 
   Future<void> createOrder({required BuildContext context}) async {
     isCreateOrderLoading(true);
@@ -204,7 +212,8 @@ class CartController extends GetxController {
         createOrderResponse = value;
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: CommonText(text: value.data!.statusMessage.toString())),
+          SnackBar(
+              content: CommonText(text: value.data!.statusMessage.toString())),
         );
 
         if (value.data?.statusCode == 1) {
@@ -213,7 +222,8 @@ class CartController extends GetxController {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: CommonText(
-                  text: 'Confirm Order of ₹ ${viewCartResponse?.data?.cartMeta?.cartTotal}',
+                  text:
+                      'Confirm Order of ₹ ${viewCartResponse?.data?.cartMeta?.cartTotal}',
                 ),
                 actions: [
                   Row(
@@ -229,32 +239,58 @@ class CartController extends GetxController {
                       SizedBox(width: 5),
                       Expanded(
                         child: Obx(
-                              () {
+                          () {
                             return CommonButton(
                               isLoading: isConfirmOrderLoading.value,
                               onPressed: () {
-                                confirmOrder(context: context, onSuccess: () {
-                                  showDialog(
+                                confirmOrder(
                                     context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: CommonText(text: 'Order Placed Successfully'),
-                                        actions: [
-                                          CommonButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                            },
-                                            text: 'Back to Services',
-                                          ),
-                                        ],
+                                    onSuccess: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: CommonText(
+                                                text:
+                                                    'Order Placed Successfully'),
+                                            actions: [
+                                              Row(
+                                                children: [
+                                                  Flexible(
+                                                    flex: 2,
+                                                    child: CommonButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        TrackOrderView()));
+                                                      },
+                                                      text: 'Track Order',
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Flexible(
+                                                    flex: 2,
+                                                    child: CommonButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
+                                                      },
+                                                      text: 'Services',
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        },
                                       );
-                                    },
-                                  );
-                                });
+                                    });
                               },
                               text: 'Confirm',
                             );
@@ -274,7 +310,8 @@ class CartController extends GetxController {
     });
   }
 
-  Future<void> confirmOrder({required BuildContext context, required Function onSuccess}) async {
+  Future<void> confirmOrder(
+      {required BuildContext context, required Function onSuccess}) async {
     isConfirmOrderLoading(true);
 
     await cartRepository.confirmOrder({
@@ -284,23 +321,50 @@ class CartController extends GetxController {
     }).then((value) {
       if (value.status == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: CommonText(text: value.data!.statusMessage.toString())),
+          SnackBar(
+              content: CommonText(text: value.data!.statusMessage.toString())),
         );
 
         isConfirmOrderLoading(false);
         cartItems.clear();
         finalCartItems.clear();
+        productQuantities.clear();
         if (value.data?.statusCode == 1) {
           onSuccess();
+          Timer.periodic(Duration(seconds: 5), (timer) async {
+            trackOrder(
+                orderId: createOrderResponse!
+                    .data!.orderReferance!.first.orderId!
+                    .toInt(),
+                deviceId: viewCartResponse!.data!.deviceId.toString());
+          });
         }
       } else {
         isCreateOrderLoading(false);
       }
     });
   }
+
+  Future trackOrder({required int orderId, required String deviceId}) async {
+    if (orderTrackResponse?.status != 11) {
+      try {
+        isTrackOrderLoading(false);
+        // if (!isCancelClicked.value) {
+        orderTrackResponse = await orderTrackRepository.trackOrder(
+            orderId: orderId, deviceId: deviceId);
+
+        if (orderTrackResponse?.orderId != null) {
+          isTrackOrderLoading(true);
+
+        } else {
+          return null;
+        }
+        // }
+      } catch (e) {
+        return null;
+      }
+      isTrackOrderLoading(false);
+
+    }
+  }
 }
-
-
-
-
-

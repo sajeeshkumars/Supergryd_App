@@ -13,6 +13,7 @@ abstract class Routes {
   static const TRIP_RATING = _Paths.TRIP_RATING;
   static const HISTORY = _Paths.HISTORY;
   static const CART = _Paths.CART;
+  static const TRACK_ORDER = _Paths.TRACK_ORDER;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const TRIP_RATING = '/trip-rating';
   static const HISTORY = '/history';
   static const CART = '/cart';
+  static const TRACK_ORDER = '/track-order';
 }

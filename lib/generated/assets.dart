@@ -12,6 +12,7 @@ class Assets {
   static const String bindingsPromoCodeListingBinding = 'lib/app/modules/promo_code_listing/bindings/promo_code_listing_binding.dart';
   static const String bindingsRestaurantsAndDishesListingBinding = 'lib/app/modules/restaurants_and_dishes_listing/bindings/restaurants_and_dishes_listing_binding.dart';
   static const String bindingsRestaurantsDetailsBinding = 'lib/app/modules/restaurants_details/bindings/restaurants_details_binding.dart';
+  static const String bindingsTrackOrderBinding = 'lib/app/modules/track_order/bindings/track_order_binding.dart';
   static const String bindingsTripRatingBinding = 'lib/app/modules/trip_rating/bindings/trip_rating_binding.dart';
   static const String cabCabRepository = 'lib/app/modules/cab/cab_repository.dart';
   static const String cabCabService = 'lib/app/modules/cab/cab_service.dart';
@@ -26,9 +27,11 @@ class Assets {
   static const String controllersPromoCodeListingController = 'lib/app/modules/promo_code_listing/controllers/promo_code_listing_controller.dart';
   static const String controllersRestaurantsAndDishesListingController = 'lib/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
   static const String controllersRestaurantsDetailsController = 'lib/app/modules/restaurants_details/controllers/restaurants_details_controller.dart';
+  static const String controllersTrackOrderController = 'lib/app/modules/track_order/controllers/track_order_controller.dart';
   static const String controllersTripRatingController = 'lib/app/modules/trip_rating/controllers/trip_rating_controller.dart';
   static const String coreFontUtils = 'lib/app/core/font_utils.dart';
   static const String coreThemeExtension = 'lib/app/core/theme_extension.dart';
+  static const String coreUrlEnum = 'lib/app/core/url_enum.dart';
   static const String coreUtility = 'lib/app/core/utility.dart';
   static const String dataCartRepo = 'lib/app/modules/cart/data/cart_repo.dart';
   static const String dataCartService = 'lib/app/modules/cart/data/cart_service.dart';
@@ -40,6 +43,8 @@ class Assets {
   static const String dataHistoryService = 'lib/app/modules/history/data/history_service.dart';
   static const String dataHomeRepository = 'lib/app/modules/home/data/home_repository.dart';
   static const String dataHomeService = 'lib/app/modules/home/data/home_service.dart';
+  static const String dataOrderTrackRepo = 'lib/app/modules/track_order/data/order_track_repo.dart';
+  static const String dataOrderTrackService = 'lib/app/modules/track_order/data/order_track_service.dart';
   static const String dataRestaurantAndDishListingRepo = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_repo.dart';
   static const String dataRestaurantAndDishListingService = 'lib/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_service.dart';
   static const String dataRestaurantDetailsRepository = 'lib/app/modules/restaurants_details/data/restaurant_details_repository.dart';
@@ -154,6 +159,7 @@ class Assets {
   static const String modelsConfirmOrderResponse = 'lib/app/modules/cart/data/models/confirm_order_response.dart';
   static const String modelsCreateOrderRequest = 'lib/app/modules/cart/data/models/create_order_request.dart';
   static const String modelsCreateOrderResponse = 'lib/app/modules/cart/data/models/create_order_response.dart';
+  static const String modelsOrderTrackResponse = 'lib/app/modules/track_order/data/models/order_track_response.dart';
   static const String modelsRequestRideResponse = 'lib/app/modules/home/data/models/request_ride_response.dart';
   static const String modelsRideEstimationRequest = 'lib/app/modules/home/data/models/ride_estimation_request.dart';
   static const String modelsRideEstimationResponse = 'lib/app/modules/home/data/models/ride_estimation_response.dart';
@@ -171,6 +177,7 @@ class Assets {
   static const String viewsPromoCodeListingView = 'lib/app/modules/promo_code_listing/views/promo_code_listing_view.dart';
   static const String viewsRestaurantsAndDishesListingView = 'lib/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
   static const String viewsRestaurantsDetailsView = 'lib/app/modules/restaurants_details/views/restaurants_details_view.dart';
+  static const String viewsTrackOrderView = 'lib/app/modules/track_order/views/track_order_view.dart';
   static const String viewsTripRatingView = 'lib/app/modules/trip_rating/views/trip_rating_view.dart';
   static const String widgetsAddressSelectionDialogue = 'lib/widgets/address_selection_dialogue.dart';
   static const String widgetsAddressSelectionWidget = 'lib/widgets/address_selection_widget.dart';

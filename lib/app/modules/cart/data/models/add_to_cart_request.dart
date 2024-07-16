@@ -218,7 +218,7 @@ CartItems copyWith({  num? productId,
   }
 
   void decrementQuantity() {
-    if (_quantity != null && _quantity! > 0) {
+    if (_quantity != null && _quantity! >= 0) {
       _quantity = _quantity! - 1;
     }
     debugPrint("quantity in decreeeeement ${quantity}");

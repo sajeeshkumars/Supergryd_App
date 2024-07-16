@@ -96,7 +96,8 @@ class CartView extends GetView<CartController> {
                                   shrinkWrap: true,
                                   itemCount: controller.viewCartResponse?.data?.cartItmes?.length ?? 0,
                                   itemBuilder: (context, index) {
-                                    var _count = controller.viewCartResponse?.data!.cartItmes?[index].quantity ?? 1;
+                                    // var _count = controller.viewCartResponse?.data!.cartItmes?[index].quantity ?? 1;
+                                    var _count = controller.productQuantities[controller.viewCartResponse?.data!.cartItmes?[index].productId];
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 20),
                                       child: Column(
@@ -124,7 +125,7 @@ class CartView extends GetView<CartController> {
                                                     color: AppColors.primaryColor,
                                                   ),
                                                 ),
-                                              if (_count > 0) ...[
+                                              if (_count! > 0) ...[
                                                 Flexible(
                                                   flex: 3,
                                                   child: Container(
@@ -148,11 +149,12 @@ class CartView extends GetView<CartController> {
                                                                     storeId: controller.viewCartResponse?.data!.storeId?.toInt() ?? 0
                                                                 ).then((value) {
                                                                   if (controller.addToCartResponse?.data?.statusCode == 1) {
-                                                                    _count--;
+                                                                    _count-1;
                                                                   }
                                                                   if (controller.addToCartResponse?.data?.statusCode == 3) {
-                                                                    _count--;
+                                                                    _count-1;
                                                                     controller.finalCartItems.clear();
+                                                                    controller.productQuantities.clear();
                                                                   }
                                                                 });
                                                               }
@@ -172,7 +174,7 @@ class CartView extends GetView<CartController> {
                                                                   storeId: controller.viewCartResponse?.data!.storeId?.toInt() ?? 0
                                                               ).then((_) {
                                                                 if (controller.addToCartResponse?.data?.statusCode == 1) {
-                                                                  _count++;
+                                                                  _count+1;
                                                                 }
                                                               });
                                                             },
@@ -187,7 +189,7 @@ class CartView extends GetView<CartController> {
                                               SizedBox(width: 10),
                                               Flexible(
                                                 flex: 2,
-                                                child: CommonText(text: '₹ ${controller.viewCartResponse?.data!.cartItmes?[index].finalPrice}'),
+                                                child: CommonText(text: '₹ ${controller.viewCartResponse?.data!.cartItmes?[index].finalPrice?.toStringAsFixed(2)}'),
                                               ),
                                             ],
                                           ),

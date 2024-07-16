@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import 'package:mynewpackage/app/modules/cart/bindings/cart_binding.dart';
 import 'package:mynewpackage/app/modules/cart/views/cart_view.dart';
+import 'package:mynewpackage/app/modules/track_order/bindings/track_order_binding.dart';
+import 'package:mynewpackage/app/modules/track_order/views/track_order_view.dart';
 
 import '../modules/add_cash_to_wallet/bindings/add_cash_to_wallet_binding.dart';
 import '../modules/add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
@@ -68,6 +70,11 @@ class AppPages {
       name: _Paths.CART,
       page: () => CartView(),
       binding: CartBinding(),
+    ),
+    GetPage(
+      name: _Paths.TRACK_ORDER,
+      page: () => TrackOrderView(),
+      binding: TrackOrderBinding(),
     ),
   ];
 }

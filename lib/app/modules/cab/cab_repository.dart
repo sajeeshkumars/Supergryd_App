@@ -18,7 +18,7 @@ class CabRepository implements CabService {
       {required int requestId, int? otp}) async {
     RideTrackResponse rideTrackResponse;
     Response response = await apiServiceExternal.reqst(
-        url: '/booking/track-ride?request_id=$requestId&otp=$otp',
+        url: 'uber/v1/booking/track-ride?request_id=$requestId&otp=$otp',
         method: externalApi.Method.GET);
     debugPrint(response.statusCode.toString());
     try {
@@ -52,7 +52,7 @@ class CabRepository implements CabService {
   Future<CancelReasonsResponse> rideCancelReasons() async {
     CancelReasonsResponse cancelReasonsResponse;
     Response response = await apiServiceExternal.reqst(
-        url: '/booking/cancel/reasons/rider', method: externalApi.Method.GET);
+        url: 'uber/v1/booking/cancel/reasons/rider', method: externalApi.Method.GET);
     debugPrint(response.statusCode.toString());
     try {
       debugPrint("response at try ${response.body}");

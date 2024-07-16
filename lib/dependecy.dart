@@ -20,8 +20,10 @@ class DependencyCreator {
   static init() {
     Get.lazyPut<ApiService>(
           () => ApiService(
-          baseUrl:( ConfigEnvironments.getEnvironments()['url'] ).toString(),
-    ));
+            baseUrl:( ConfigEnvironments.getEnvironments()['url'] ).toString(),
+
+
+          ));
     Get.lazyPut<ApiServiceExternal>(
             () => ApiServiceExternal(
           baseUrl:( ConfigEnvironments.getEnvironments()['externalUrl'] ).toString(),

@@ -12,6 +12,7 @@ enum Method { POST, GET, PUT, DELETE, PATCH }
 
 class ApiService extends GetConnect implements GetxService {
   final String baseUrl;
+
   late Map<String, String> _headers;
   late Map<String, String> _authenticationHeaders;
 
@@ -20,7 +21,8 @@ class ApiService extends GetConnect implements GetxService {
   bool showingExpiryDialog = false;
   String key = Constants.key;
 
-  ApiService({required this.baseUrl}) {
+  ApiService({    required this.baseUrl
+  }) {
     debugPrint("constant value ${key}");
     _headers = {
       'Content-Type': 'application/json',
@@ -39,7 +41,8 @@ class ApiService extends GetConnect implements GetxService {
   }
 
   Future<Response> reqst(
-      {required String url,
+      {
+        required String url,
       Method? method = Method.POST,
       Map<String, dynamic>? params}) async {
     Response response;
