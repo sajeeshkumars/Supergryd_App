@@ -38,13 +38,18 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     controller = Get.find<HomeController>();
-
+    getServices();
     super.initState();
+  }
+
+  getServices() async {
+    await controller.getServices();
   }
 
   @override
   Widget build(BuildContext context) {
-    controller.createUser(mobile: "", name: "", context: context);
+    // controller.createUser(
+    //     mobile: "9537212345", name: "Michael", context: context);
     return LoadingView(
       isAsyncCall: controller.isLoading,
       showBackGroundData: false,

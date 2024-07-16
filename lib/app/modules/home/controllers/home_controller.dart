@@ -39,6 +39,7 @@ class HomeController extends GetxController {
     baseController = Get.find<BaseController>();
     baseController.isAuthenticated.listen((val) {
       isAuthenticated(val);
+      setNameAndMobileAndCallCreateUser(mobile: "9537212345", name: "Michael");
       update();
     });
     super.onInit();
@@ -174,7 +175,11 @@ class HomeController extends GetxController {
 
   @override
   void onReady() {
-    getServices();
+    isAuthenticated.listen((val) {
+      if (val) {
+        getServices();
+      }
+    });
     super.onReady();
   }
 
@@ -182,7 +187,6 @@ class HomeController extends GetxController {
       {required String name, required String mobile, BuildContext? context}) {
     _name(name);
     _mobile(mobile);
-    createUser(mobile: mobile, name: name, context: context);
   }
 
   void showAddressSelectionBottomSheet({
@@ -496,7 +500,7 @@ class HomeController extends GetxController {
       required String name,
       required BuildContext? context}) async {
     // isLoading(true);
-    debugPrint("before api call${isLoading.value}");
+
     if (isAuthenticated.isTrue) {
       CreateUserRequestModel requestModel = CreateUserRequestModel(
           phoneNumber: mobile, phoneCode: "+91", name: name);
@@ -504,16 +508,10 @@ class HomeController extends GetxController {
       await authRepository.createUser(requestModel.toJson()).then((value) {
         if (value.status == 200) {
           // isLoading(false);
-
-          debugPrint("after success${isLoading.value}");
-
-          debugPrint("authenticated");
-          debugPrint("${value.message}");
           // storage.writeUserId(value.data?.id ?? "");
           Constants.userId = value.data?.id ?? "";
           isAuthenticated(true);
         } else {
-          debugPrint("after failure${value.message}");
           isAuthenticated(false);
           if (context != null) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -528,8 +526,8 @@ class HomeController extends GetxController {
         }
       });
     } else {
-      ExceptionHandler.instance
-          .throwException(Exception("Unauthorized please check Your Key"));
+      ExceptionHandler.instance.throwException(
+          Exception("CreateUser:Unauthorized please check Your Key"));
       if (context != null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -546,23 +544,21 @@ class HomeController extends GetxController {
   Future<void> getServices() async {
     serviceList.clear();
     isLoadingServices(true);
-    if (baseController.isAuthenticated.isTrue) {
-      await homeRepository.getServiceList().then((value) {
-        if (value.data?.serviceCategories != [] && (value.status == 200)) {
-          serviceList.addAll(value.data?.serviceCategories ?? []);
-          // debugPrint("list service ${serviceList.first.categoryName}");
-          isLoadingServices(false);
+    await homeRepository.getServiceList().then((value) {
+      if (value.data?.serviceCategories != [] && (value.status == 200)) {
+        serviceList.addAll(value.data?.serviceCategories ?? []);
+        // debugPrint("list service ${serviceList.first.categoryName}");
+        isLoadingServices(false);
+      } else {
+        isLoadingServices(false);
+        _retryCount++;
+        if (_retryCount.value < 5) {
+          getServices();
         } else {
-          isLoadingServices(false);
-          _retryCount++;
-          if (_retryCount.value < 5) {
-            getServices();
-          } else {
-            _retryCount(0);
-          }
+          _retryCount(0);
         }
-      });
-    }
+      }
+    });
   }
 
   static Color fromHex(String hexString) {

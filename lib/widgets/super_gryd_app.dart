@@ -6,8 +6,6 @@ import 'package:mynewpackage/app/authentication/controller/base_controller.dart'
 import 'package:mynewpackage/model/super_gryd_exception.dart';
 
 import '../app/core/utility.dart';
-import '../app/modules/home/controllers/font_controller.dart';
-import '../app/modules/home/controllers/home_controller.dart';
 import '../constants.dart';
 import '../services/api_service.dart';
 import '../services/api_service_external.dart';
@@ -58,11 +56,9 @@ class SuperGrydApp {
           baseUrl:
               (ConfigEnvironments.getEnvironments()['externalUrl']).toString(),
         ));
-    final fontcontroller = Get.put(FontController());
+
     final controller = Get.put(BaseController());
-    final homeController = Get.put(
-      HomeController(),
-    );
+
     controller.setInitVariablesAndAuthenticate(
       clientId: clientId,
       clientSecret: clientSecret,

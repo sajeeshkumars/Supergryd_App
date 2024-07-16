@@ -9,14 +9,15 @@ import 'package:mynewpackage/app/modules/home/controllers/font_controller.dart';
 import 'package:mynewpackage/app/modules/home/views/home_view.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/views/restaurants_and_dishes_listing_view.dart';
 import 'package:mynewpackage/app/routes/app_pages.dart';
+import 'package:mynewpackage/app/routes/super_gryd_routes.dart';
 
 import 'app/modules/home/controllers/home_controller.dart';
-import 'app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
 
 export 'package:mynewpackage/app/routes/app_pages.dart';
 
 class MyPackage extends StatelessWidget {
-  final String? route;
+  ///[route] provide route to directly access the page.
+  final SuperGrydRoutes? route;
   const MyPackage({
     super.key,
     this.route,
@@ -24,15 +25,38 @@ class MyPackage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<FontController>();
+    final baseController = Get.find<BaseController>();
+    var authenticationResponse2 = baseController.authenticationResponse;
     return Obx(() {
-      log("rebuilded with newFont ${controller.fontText.value} called",
-          name: "MYNEWPACKAGE");
-      return Theme(
-          data: ThemeData(
-              fontFamily: controller.fontText.value,
-              textTheme: controller.font.value),
-          child: MainPage());
+      if (baseController.isAuthenticated.isTrue) {
+        final controller = Get.find<FontController>();
+        if (authenticationResponse2 != null) {
+          if (authenticationResponse2.data?.themes?.firstOrNull?.font != null) {
+            controller.setFont(
+                authenticationResponse2.data!.themes!.firstOrNull!.font!);
+          }
+        }
+        return Obx(() {
+          return Theme(
+              data: ThemeData(
+                  fontFamily: controller.fontText.value,
+                  textTheme: controller.font.value),
+              child: MainPage(
+                  route: switch (route) {
+                SuperGrydRoutes.cab => Routes.TRIP_RATING,
+                null => null,
+                SuperGrydRoutes.home => null,
+                SuperGrydRoutes.restaurants =>
+                  Routes.RESTAURANTS_AND_DISHES_LISTING,
+              }));
+        });
+      } else {
+        return Scaffold(
+          body: Container(
+            child: Center(child: Text("Unauthenticated")),
+          ),
+        );
+      }
     });
   }
 }
@@ -59,14 +83,16 @@ class _MainPageState extends State<MainPage> {
         baseController.authenticationLoading.isFalse) {
       homeController.authenticate(context: context);
     } else {
-      homeController.createUser(mobile: "", name: "", context: context);
+      // homeController.createUser(
+      //     mobile: "9537212345", name: "Michael", context: context);
     }
-    Get.lazyPut(() => RestaurantsAndDishesListingController());
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    log("widget route is ${widget.route}");
     return switch (widget.route) {
       Routes.RESTAURANTS_AND_DISHES_LISTING =>
         const RestaurantsAndDishesListingView(),

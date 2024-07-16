@@ -77,8 +77,9 @@ class _RideDialogState extends State<RideDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final cabController = Get.put(CabMapController());
+    final cabController = Get.find<CabMapController>();
     homeController.selectedDropOff("");
+    cabController.fetchRideCancelReasons();
 
     return Obx(() {
       return PopScope(

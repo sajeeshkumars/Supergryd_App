@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/authentication/model/create_user_response.dart';
-import 'package:mynewpackage/app/modules/home/controllers/font_controller.dart';
 
 import '../../services/api_service.dart';
 import 'authentication_service.dart';
@@ -10,7 +9,6 @@ import 'model/authentication_response.dart';
 
 class AuthRepository implements AuthService {
   ApiService apiService = Get.find();
-  final fontController = Get.find<FontController>();
 
   @override
   // Future<AuthenticationResponse> authenticate()
@@ -28,10 +26,7 @@ class AuthRepository implements AuthService {
       authenticationResponse = AuthenticationResponse.fromJson(response2.body);
       log("inside repo ${authenticationResponse.status}",
           name: "AUTHREPOSITORY");
-      if (authenticationResponse.data?.themes?.firstOrNull?.font != null) {
-        fontController
-            .setFont(authenticationResponse.data!.themes!.firstOrNull!.font!);
-      }
+
       return authenticationResponse;
     } catch (e, s) {
       log("authenticate Exception:$e,stack:$s", name: "AUTHREPOSITORY");

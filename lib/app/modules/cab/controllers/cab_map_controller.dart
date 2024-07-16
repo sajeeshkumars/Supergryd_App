@@ -38,8 +38,9 @@ class CabMapController extends GetxController {
   void onInit() {
     super.onInit();
     _createCustomMarkerIcon();
-    _rideCancelReasons();
   }
+
+  fetchRideCancelReasons() async => await _rideCancelReasons();
 
   RideDetailsResponse? rideDetailsResponse;
 

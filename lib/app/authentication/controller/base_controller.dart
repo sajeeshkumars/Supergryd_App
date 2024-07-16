@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:mynewpackage/app/authentication/model/authentication_response.dart';
 
 import '../../../app_colors.dart';
 import '../../../constants.dart';
 import '../../../dependecy.dart';
 import '../../../services/exception_handler.dart';
 import '../../modules/home/controllers/color_controller.dart';
-import '../../modules/home/controllers/font_controller.dart';
 import '../authentication_repo.dart';
 import '../model/authentication_request_model.dart';
 
@@ -22,13 +22,15 @@ class BaseController extends GetxController {
   String get clientSecret => _clientSecret.value;
   final AuthRepository authRepository = Get.put(AuthRepository());
   final ColorController colorController = Get.put(ColorController());
+  AuthenticationResponse? authenticationResponse;
 
   @override
   void onReady() {
-    final controller = Get.put(FontController());
-
-    DependencyCreator.init();
-    controller.registerFontsFromWeb();
+    isAuthenticated.listen((val) {
+      if (val) {
+        DependencyCreator.init();
+      }
+    });
   }
 
   setInitVariablesAndAuthenticate({
@@ -49,6 +51,7 @@ class BaseController extends GetxController {
         authenticationLoading(false);
         // await authRepository.authenticate().then((value) {
         if (value.status == 200) {
+          authenticationResponse = value;
           isAuthenticated(true);
           debugPrint("authenticated");
           debugPrint("${value.message}");
