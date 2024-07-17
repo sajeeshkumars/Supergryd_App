@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:core';
-import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +7,7 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:mynewpackage/app/modules/cart/data/cart_repo.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_request.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_response.dart';
+import 'package:mynewpackage/app/modules/cart/data/models/cancel_order_response.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/create_order_request.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/create_order_response.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
@@ -17,6 +17,7 @@ import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/widgets/common_text.dart';
 
 import '../../../../widgets/custom_button.dart';
+import '../../cab/model/cancel_reasons_response.dart';
 import '../../restaurants_details/data/get_restaurant_details_response.dart';
 import '../../track_order/data/models/order_track_response.dart';
 import '../../track_order/data/order_track_repo.dart';
@@ -40,7 +41,14 @@ class CartController extends GetxController {
   RxMap<int, int> productQuantities = <int, int>{}.obs;
   OrderTrackResponse? orderTrackResponse;
   OrderTrackRepository orderTrackRepository = OrderTrackRepository();
-  RxBool isTrackOrderLoading = false.obs;
+  RxBool isTrackOrderLoading = true.obs;
+  RxInt selectedCancelReason = 0.obs;
+  List<CancelReasons>? cancelReasons;
+  RxInt selectedReasonId = 0.obs;
+  RxString selectedCancelReasonText = ''.obs;
+  RxBool isOrderCancelLoading = false.obs;
+  CancelOrderResponse? cancelOrderResponse;
+  RxBool canceled = false.obs;
 
   int count = 0;
 
@@ -125,8 +133,9 @@ class CartController extends GetxController {
           SnackBar(content: Text(value.data!.statusMessage.toString())),
         );
 
+        /// 1 - Successfully added to cart 3- empty cart
+
         if (value.data?.statusCode == 1 || value.data?.statusCode == 3) {
-          // Add cart items to finalCartItems when API statusCode is 1
           finalCartItems.addAll(cartItems);
           viewCart(context: context);
         }
@@ -218,6 +227,7 @@ class CartController extends GetxController {
 
         if (value.data?.statusCode == 1) {
           showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
@@ -247,6 +257,8 @@ class CartController extends GetxController {
                                     context: context,
                                     onSuccess: () {
                                       showDialog(
+                                        barrierDismissible: false,
+
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
@@ -260,11 +272,14 @@ class CartController extends GetxController {
                                                     flex: 2,
                                                     child: CommonButton(
                                                       onPressed: () {
+                                                        debugPrint("clicked");
                                                         Navigator.of(context).push(
                                                             MaterialPageRoute(
                                                                 builder:
                                                                     (context) =>
-                                                                        TrackOrderView()));
+                                                                        TrackOrderView(
+
+                                                                        )));
                                                       },
                                                       text: 'Track Order',
                                                     ),
@@ -346,25 +361,80 @@ class CartController extends GetxController {
   }
 
   Future trackOrder({required int orderId, required String deviceId}) async {
-    if (orderTrackResponse?.status != 11) {
-      try {
-        isTrackOrderLoading(false);
-        // if (!isCancelClicked.value) {
-        orderTrackResponse = await orderTrackRepository.trackOrder(
-            orderId: orderId, deviceId: deviceId);
+    isTrackOrderLoading(true);
 
-        if (orderTrackResponse?.orderId != null) {
+    /// status 11 is delivered and 1 is order cancelled
+        if(!canceled.value){
+      if (orderTrackResponse?.status != 11) {
+        try {
           isTrackOrderLoading(true);
+          // if (!isCancelClicked.value) {
+          orderTrackResponse = await orderTrackRepository.trackOrder(
+              orderId: orderId, deviceId: deviceId);
 
-        } else {
+          if (orderTrackResponse?.orderId != null) {
+            isTrackOrderLoading(false);
+          } else {
+            isTrackOrderLoading(false);
+
+            return null;
+          }
+          // }
+        } catch (e) {
+          isTrackOrderLoading(false);
+
           return null;
         }
-        // }
-      } catch (e) {
-        return null;
       }
-      isTrackOrderLoading(false);
-
     }
+    isTrackOrderLoading(false);
+  }
+
+  Future<void> orderCancelReasons() async {
+    await cartRepository.orderCancelReasons().then((value) {
+      if (value.data != []) {
+        cancelReasons = value.data;
+        selectedCancelReasonText.value = cancelReasons?.first.reason ?? "";
+        selectedReasonId.value = cancelReasons?.first.reasonId?.toInt() ?? 1;
+      } else {}
+    });
+  }
+
+  Future<void> cancelOrder({
+    required BuildContext context,
+  }) async {
+    isOrderCancelLoading(true);
+    await cartRepository.cancelOrder({
+      "order_id": createOrderResponse?.data?.orderReferance?.first.orderId,
+      "device_id": viewCartResponse?.data?.deviceId,
+      "cancel_reason_id": selectedReasonId.value
+    }).then((value) {
+      if (value.status == 200) {
+        cancelOrderResponse = value;
+
+        isOrderCancelLoading(false);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+          value.message.toString(),
+        )));
+        if(value.data?.statusCode == 1){
+          canceled.value = true;
+        }
+
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      } else {
+        isOrderCancelLoading(false);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+          value.message.toString(),
+        )));
+      }
+    });
   }
 }

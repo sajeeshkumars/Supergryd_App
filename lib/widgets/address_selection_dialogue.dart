@@ -322,7 +322,7 @@ class _RideDialogState extends State<RideDialog> {
                                                                             context)
                                                                         .push(MaterialPageRoute(
                                                                             builder: (context) =>
-                                                                                CancelReason()));
+                                                                                CancelReason(isFromOrderTrack: false.obs,)));
                                                                   },
                                                                 )
                                                                     // CommonButton(onPressed: (){
