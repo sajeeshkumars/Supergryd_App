@@ -12,6 +12,7 @@ void main() {
   SuperGrydApp.instance.onError.listen((e) {
     log("Exception captured in host ${e.exception},stack ${e.stackTrace}");
   });
+  SuperGrydApp.createUser(mobile: "9537212345", username: "Michael");
   runApp(const MyApp());
 }
 
@@ -53,13 +54,31 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: "Mullish",
       ),
-      home: const MyPackage(
+      home: const MyHomePage(),
+    );
+  }
+}
 
-          // clientId: 'SGD_test_55be429e-485b-45c2-b281-3f818d32769a',
-          // clientSecrete: 'SGD_test_8a680b2b-f8d0-491a-8346-63f3a2cace04',
-          // name: '',
-          // mobile: '',
-          ),
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const MyPackage(
+
+                      // clientId: 'SGD_test_55be429e-485b-45c2-b281-3f818d32769a',
+                      // clientSecrete: 'SGD_test_8a680b2b-f8d0-491a-8346-63f3a2cace04',
+                      // name: '',
+                      // mobile: '',
+                      )));
+            },
+            child: const Text("Go to myPackage")),
+      ),
     );
   }
 }

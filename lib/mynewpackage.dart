@@ -36,21 +36,26 @@ class MyPackage extends StatelessWidget {
                 authenticationResponse2.data!.themes!.firstOrNull!.font!);
           }
         }
-        return Obx(() {
-          return Theme(
-              data: ThemeData(
-                  fontFamily: controller.fontText.value,
-                  textTheme: controller.font.value),
-              child: MainPage(
-                  route: switch (route) {
-                SuperGrydRoutes.cab => Routes.TRIP_RATING,
-                null => null,
-                SuperGrydRoutes.home => null,
-                SuperGrydRoutes.restaurants =>
-                  Routes.RESTAURANTS_AND_DISHES_LISTING,
-              }));
-        });
+        return Theme(
+            data: ThemeData(
+                fontFamily: controller.fontText.value,
+                textTheme: controller.font.value),
+            child: MainPage(
+                route: switch (route) {
+              SuperGrydRoutes.cab => Routes.TRIP_RATING,
+              null => null,
+              SuperGrydRoutes.home => null,
+              SuperGrydRoutes.restaurants =>
+                Routes.RESTAURANTS_AND_DISHES_LISTING,
+            }));
       } else {
+        WidgetsBinding.instance.addPostFrameCallback((c) {
+          log("myPackage called");
+
+          if (Navigator.canPop(context)) {
+            Navigator.of(context).pop();
+          }
+        });
         return Scaffold(
           body: Container(
             child: Center(child: Text("Unauthenticated")),

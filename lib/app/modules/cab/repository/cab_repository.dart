@@ -4,22 +4,25 @@ import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/cab/model/cancel_response.dart';
 import 'package:mynewpackage/app/modules/cab/model/ride_track_response.dart';
 import 'package:mynewpackage/services/api_service.dart';
-import 'package:mynewpackage/services/api_service_external.dart' as externalApi;
+import 'package:mynewpackage/services/config.dart';
+
+// import 'package:mynewpackage/services/api_service_external.dart' as externalApi;
 
 import '../model/Ride_details_response.dart';
 import '../model/cancel_reasons_response.dart';
 import '../service/cab_service.dart';
 
 class CabRepository implements CabService {
-  externalApi.ApiServiceExternal apiServiceExternal = Get.find();
+  // externalApi.ApiServiceExternal apiServiceExternal = Get.find();
   ApiService apiService = Get.find();
 
   Future<RideTrackResponse> trackRide(
       {required int requestId, int? otp}) async {
     RideTrackResponse rideTrackResponse;
-    Response response = await apiServiceExternal.reqst(
+    Response response = await apiService.reqst(
+        urlType: UrlType.cab,
         url: '/booking/track-ride?request_id=$requestId&otp=$otp',
-        method: externalApi.Method.GET);
+        method: Method.GET);
     log("trackRide ${response.statusCode}", name: "CABREPOSITORY");
 
     try {
@@ -51,8 +54,10 @@ class CabRepository implements CabService {
 
   Future<CancelReasonsResponse> rideCancelReasons() async {
     CancelReasonsResponse cancelReasonsResponse;
-    Response response = await apiServiceExternal.reqst(
-        url: '/booking/cancel/reasons/rider', method: externalApi.Method.GET);
+    Response response = await apiService.reqst(
+        urlType: UrlType.cab,
+        url: '/booking/cancel/reasons/rider',
+        method: Method.GET);
     log("rideCancelReasons ${response.statusCode}", name: "CABREPOSITORY");
 
     try {

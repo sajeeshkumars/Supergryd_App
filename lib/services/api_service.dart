@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mynewpackage/constants.dart';
+import 'package:mynewpackage/services/config.dart';
 
 import '../model/refresh_token_model.dart';
 import 'exception_handler.dart';
@@ -12,7 +13,6 @@ import 'exception_handler.dart';
 enum Method { POST, GET, PUT, DELETE, PATCH }
 
 class ApiService extends GetConnect implements GetxService {
-  final String baseUrl;
   late Map<String, String> _headers;
   late Map<String, String> _authenticationHeaders;
 
@@ -21,7 +21,7 @@ class ApiService extends GetConnect implements GetxService {
   bool showingExpiryDialog = false;
   String key = Constants.key;
 
-  ApiService({required this.baseUrl}) {
+  ApiService() {
     debugPrint("constant value ${key}");
     _headers = {
       'Content-Type': 'application/json',
@@ -40,11 +40,16 @@ class ApiService extends GetConnect implements GetxService {
   }
 
   Future<Response> reqst(
-      {required String url,
+      {UrlType? urlType,
+      required String url,
       Method? method = Method.POST,
       Map<String, dynamic>? params}) async {
     Response response;
     try {
+      baseUrl = fetchBaseUrl(urlType);
+
+      log("url is $baseUrl");
+
       bool result = await InternetConnectionChecker().hasConnection;
       if (result == true) {
         // if (storage.isAuthenticated()) {
@@ -122,6 +127,15 @@ class ApiService extends GetConnect implements GetxService {
     }
   }
 
+  String fetchBaseUrl(UrlType? urlType) {
+    return switch (urlType) {
+      null => 'http://52.66.208.144/api/v1/',
+      UrlType.base => 'http://52.66.208.144/api/v1/',
+      UrlType.cab => "https://supergrydapi.ritikasingh.site/uber/v1",
+      UrlType.food => 'http://52.66.208.144/api/v1/',
+    };
+  }
+
   Future<Response> authenticationReqst(
       {required String url,
       Method? method = Method.POST,
@@ -129,6 +143,8 @@ class ApiService extends GetConnect implements GetxService {
     Response response;
     try {
       bool result = await InternetConnectionChecker().hasConnection;
+      baseUrl = fetchBaseUrl(UrlType.base);
+
       if (result == true) {
         // if (storage.isAuthenticated()) {
         if (Constants.isAuthenticated) {

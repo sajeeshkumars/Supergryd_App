@@ -3,13 +3,13 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/authentication/controller/base_controller.dart';
+import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
 import 'package:mynewpackage/model/super_gryd_exception.dart';
+import 'package:mynewpackage/services/exception_handler.dart';
 
 import '../app/core/utility.dart';
 import '../constants.dart';
 import '../services/api_service.dart';
-import '../services/api_service_external.dart';
-import '../services/config.dart';
 
 class SuperGrydApp {
   SuperGrydApp._(); // Private constructor
@@ -49,13 +49,11 @@ class SuperGrydApp {
     Constants.secrete = apiSecret;
     log("api key ${Constants.key}", name: "SUPERGRYDAPP");
     log("api secret ${Constants.secrete}", name: "SUPERGRYDAPP");
-    Get.lazyPut<ApiService>(() => ApiService(
-          baseUrl: (ConfigEnvironments.getEnvironments()['url']).toString(),
-        ));
-    Get.lazyPut<ApiServiceExternal>(() => ApiServiceExternal(
-          baseUrl:
-              (ConfigEnvironments.getEnvironments()['externalUrl']).toString(),
-        ));
+    Get.lazyPut<ApiService>(() => ApiService());
+    // Get.lazyPut<ApiServiceExternal>(() => ApiServiceExternal(
+    //       baseUrl:
+    //           (ConfigEnvironments.getEnvironments()['externalUrl']).toString(),
+    //     ));
 
     final controller = Get.put(BaseController());
 
@@ -63,5 +61,28 @@ class SuperGrydApp {
       clientId: clientId,
       clientSecret: clientSecret,
     );
+  }
+
+  static createUser({required String username, required String mobile}) {
+    try {
+      if (Get.isRegistered<BaseController>()) {
+        final controller = Get.find<BaseController>();
+        if (controller.authenticationResponse != null) {
+          if (controller.isAuthenticated.isTrue) {
+            final homeController = Get.find<HomeController>();
+            homeController.createUser(
+                mobile: mobile, name: username, context: null);
+          } else {
+            ExceptionHandler.instance
+                .throwException(Exception("Authentication failed"));
+          }
+        } else {}
+      } else {
+        ExceptionHandler.instance.throwException(
+            Exception("create user called before initializing"));
+      }
+    } catch (e) {
+      ExceptionHandler.instance.throwException(e as Exception);
+    }
   }
 }

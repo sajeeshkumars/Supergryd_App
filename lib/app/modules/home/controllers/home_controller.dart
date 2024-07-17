@@ -39,7 +39,6 @@ class HomeController extends GetxController {
     baseController = Get.find<BaseController>();
     baseController.isAuthenticated.listen((val) {
       isAuthenticated(val);
-      setNameAndMobileAndCallCreateUser(mobile: "9537212345", name: "Michael");
       update();
     });
     super.onInit();
@@ -181,12 +180,6 @@ class HomeController extends GetxController {
       }
     });
     super.onReady();
-  }
-
-  setNameAndMobileAndCallCreateUser(
-      {required String name, required String mobile, BuildContext? context}) {
-    _name(name);
-    _mobile(mobile);
   }
 
   void showAddressSelectionBottomSheet({
@@ -500,7 +493,8 @@ class HomeController extends GetxController {
       required String name,
       required BuildContext? context}) async {
     // isLoading(true);
-
+    _name(name);
+    _mobile(mobile);
     if (isAuthenticated.isTrue) {
       CreateUserRequestModel requestModel = CreateUserRequestModel(
           phoneNumber: mobile, phoneCode: "+91", name: name);
