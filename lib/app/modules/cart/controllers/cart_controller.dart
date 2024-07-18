@@ -49,8 +49,9 @@ class CartController extends GetxController {
   RxBool isOrderCancelLoading = false.obs;
   CancelOrderResponse? cancelOrderResponse;
   RxBool canceled = false.obs;
+  String? formattedTotal;
 
-  int count = 0;
+  int count = 1;
 
   @override
   void onInit() {
@@ -129,15 +130,17 @@ class CartController extends GetxController {
       if (value.status == 200) {
         isAddToCartLoading(false);
         addToCartResponse = value;
-        ScaffoldMessenger.of(context!).showSnackBar(
-          SnackBar(content: Text(value.data!.statusMessage.toString())),
-        );
+
 
         /// 1 - Successfully added to cart 3- empty cart
 
         if (value.data?.statusCode == 1 || value.data?.statusCode == 3) {
           finalCartItems.addAll(cartItems);
-          viewCart(context: context);
+          viewCart(context: context!);
+        }else{
+          ScaffoldMessenger.of(context!).showSnackBar(
+            SnackBar(content: Text(value.data!.statusMessage.toString())),
+          );
         }
       } else {
         isAddToCartLoading(false);
@@ -166,6 +169,13 @@ class CartController extends GetxController {
       if (value.status == 200) {
         isViewCartLoading(false);
         viewCartResponse = value;
+        num cartCGST = viewCartResponse?.data?.cartMeta?.gSTDetails?.cartCGST ?? 0;
+        num cartSGST = viewCartResponse?.data?.cartMeta?.gSTDetails?.cartSGST ?? 0;
+        num packingCharge = viewCartResponse?.data?.cartMeta?.restaurantPackingCharge ?? 0;
+
+        num total = cartCGST + cartSGST + packingCharge;
+
+        formattedTotal = total.toStringAsFixed(2);
         value.data?.cartItmes?.forEach((item) {
           productQuantities[item.productId!.toInt()] = (item.quantity!.toInt());
         });
@@ -220,10 +230,6 @@ class CartController extends GetxController {
         isCreateOrderLoading(false);
         createOrderResponse = value;
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: CommonText(text: value.data!.statusMessage.toString())),
-        );
 
         if (value.data?.statusCode == 1) {
           showDialog(
@@ -295,6 +301,7 @@ class CartController extends GetxController {
                                                         Navigator.pop(context);
                                                         Navigator.pop(context);
                                                         Navigator.pop(context);
+                                                        Navigator.pop(context);
                                                       },
                                                       text: 'Services',
                                                     ),
@@ -318,9 +325,14 @@ class CartController extends GetxController {
               );
             },
           );
+        }else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content:
+                CommonText(text: value.data!.statusMessage.toString())),
+          );
+          isCreateOrderLoading(false);
         }
-      } else {
-        isCreateOrderLoading(false);
       }
     });
   }
@@ -335,10 +347,7 @@ class CartController extends GetxController {
       "payment_method": "CASH",
     }).then((value) {
       if (value.status == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: CommonText(text: value.data!.statusMessage.toString())),
-        );
+
 
         isConfirmOrderLoading(false);
         cartItems.clear();
@@ -353,6 +362,11 @@ class CartController extends GetxController {
                     .toInt(),
                 deviceId: viewCartResponse!.data!.deviceId.toString());
           });
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: CommonText(text: value.data!.statusMessage.toString())),
+          );
         }
       } else {
         isCreateOrderLoading(false);
@@ -366,6 +380,8 @@ class CartController extends GetxController {
     /// status 11 is delivered and 1 is order cancelled
         if(!canceled.value){
       if (orderTrackResponse?.status != 11) {
+        count++;
+
         try {
           isTrackOrderLoading(true);
           // if (!isCancelClicked.value) {

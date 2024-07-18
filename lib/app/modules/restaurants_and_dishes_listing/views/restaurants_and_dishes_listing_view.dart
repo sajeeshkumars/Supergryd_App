@@ -526,27 +526,43 @@ class _DishCardState extends State<DishCard> {
                       onPressed: () {
                         Navigator.pop(context);
                         cartController.cartItems.clear();
+                        cartController.productQuantities.clear();
+                        cartController.finalCartItems.clear();
 
-                        cartController.addToCart(context: context, storeId: widget.storeId).then((_) {
-                          if (cartController.addToCartResponse?.data?.statusCode == 1) {
-                            // if(cartController.productQuantities.containsKey(widget.restaurant?.productId) == true){
-                            // int qty =  cartController.productQuantities[widget.restaurant?.productId] ?? 1;
-                            // cartController.productQuantities[widget.restaurant!.productId!.toInt()] = qty + 1;
-                            //
-                            // }else{
-                            //   cartController.productQuantities[widget.restaurant!.productId!.toInt()] =  1;
-                            // }
-                            // widget.count.value = 1;
-                            cartController.productQuantities.clear();
-                            cartController.productQuantities[!widget.isDishes ? widget.restaurant!.productId!.toInt():widget.dish!.storeProducts!.productId!.toInt()] = 1;
+
+
+                        WidgetsBinding.instance.addPostFrameCallback((_) async {
+                         await cartController
+                              .addToCart(
+                                  context: context, storeId: widget.storeId)
+                              .then((_) {
+                            if (cartController
+                                    .addToCartResponse?.data?.statusCode ==
+                                1) {
+                              // if(cartController.productQuantities.containsKey(widget.restaurant?.productId) == true){
+                              // int qty =  cartController.productQuantities[widget.restaurant?.productId] ?? 1;
+                              // cartController.productQuantities[widget.restaurant!.productId!.toInt()] = qty + 1;
+                              //
+                              // }else{
+                              //   cartController.productQuantities[widget.restaurant!.productId!.toInt()] =  1;
+                              // }
+                              // widget.count.value = 1;
+                              debugPrint(
+                                  "product quantities ${cartController.productQuantities}");
+                              cartController.productQuantities[!widget.isDishes
+                                  ? widget.restaurant!.productId!.toInt()
+                                  : widget.dish!.storeProducts!.productId!
+                                      .toInt()] = 1;
+                            }
+                          });
+
+                          if (!widget.isDishes) {
+                            cartController.addProductToCart(widget.restaurant!);
+                          } else {
+                            cartController
+                                .addProductToCartFromListing(widget.dish!);
                           }
-                        });
-
-                        if (!widget.isDishes) {
-                          cartController.addProductToCart(widget.restaurant!);
-                        } else {
-                          cartController.addProductToCartFromListing(widget.dish!);
-                        }
+                          });
                       },
                       text: 'Replace',
                     ),
@@ -579,15 +595,16 @@ class _DishCardState extends State<DishCard> {
     if (cartController.productQuantities[widget.isDishes ? widget.dish?.storeProducts?.productId : widget.restaurant?.productId]! <= 0) {
       // cartController.cartItems.clear();
       cartController.finalCartItems.clear();
+      cartController.cartItems.clear();
       debugPrint("final cart count ${cartController.finalCartItems.length}");
     } else {
       if (!widget.isDishes) {
         cartController.removeFromCart(
-          cartController.finalCartItems.firstWhere((item) => item.productId == widget.restaurant?.productId),
+          cartController.cartItems.firstWhere((item) => item.productId == widget.restaurant?.productId),
         );
       } else {
         cartController.removeFromCart(
-          cartController.finalCartItems.firstWhere((item) => item.productId == widget.dish?.storeProducts?.productId),
+          cartController.cartItems.firstWhere((item) => item.productId == widget.dish?.storeProducts?.productId),
         );
       }
 

@@ -144,7 +144,9 @@ class CartMeta {
       num? cartSubtotalWithoutPacking, 
       num? cartTotal, 
       num? cartTotalCount, 
-      num? deliveryCharges, 
+      num? deliveryCharges,
+    num? restaurantPackingCharge,
+
       num? cartId,}){
     _gSTDetails = gSTDetails;
     _cartSubtotal = cartSubtotal;
@@ -153,6 +155,7 @@ class CartMeta {
     _cartTotalCount = cartTotalCount;
     _deliveryCharges = deliveryCharges;
     _cartId = cartId;
+    _restaurantPackingCharge = restaurantPackingCharge;
 }
 
   CartMeta.fromJson(dynamic json) {
@@ -163,6 +166,7 @@ class CartMeta {
     _cartTotalCount = json['cart_total_count'];
     _deliveryCharges = json['delivery_charges'];
     _cartId = json['cartId'];
+    _restaurantPackingCharge= json['restaurant_packing_charges'];
   }
   GstDetails? _gSTDetails;
   num? _cartSubtotal;
@@ -171,6 +175,7 @@ class CartMeta {
   num? _cartTotalCount;
   num? _deliveryCharges;
   num? _cartId;
+  num? _restaurantPackingCharge;
 CartMeta copyWith({  GstDetails? gSTDetails,
   num? cartSubtotal,
   num? cartSubtotalWithoutPacking,
@@ -178,6 +183,7 @@ CartMeta copyWith({  GstDetails? gSTDetails,
   num? cartTotalCount,
   num? deliveryCharges,
   num? cartId,
+  num? restaurantPackingCharge,
 }) => CartMeta(  gSTDetails: gSTDetails ?? _gSTDetails,
   cartSubtotal: cartSubtotal ?? _cartSubtotal,
   cartSubtotalWithoutPacking: cartSubtotalWithoutPacking ?? _cartSubtotalWithoutPacking,
@@ -185,6 +191,7 @@ CartMeta copyWith({  GstDetails? gSTDetails,
   cartTotalCount: cartTotalCount ?? _cartTotalCount,
   deliveryCharges: deliveryCharges ?? _deliveryCharges,
   cartId: cartId ?? _cartId,
+  restaurantPackingCharge: restaurantPackingCharge ?? _restaurantPackingCharge
 );
   GstDetails? get gSTDetails => _gSTDetails;
   num? get cartSubtotal => _cartSubtotal;
@@ -193,6 +200,7 @@ CartMeta copyWith({  GstDetails? gSTDetails,
   num? get cartTotalCount => _cartTotalCount;
   num? get deliveryCharges => _deliveryCharges;
   num? get cartId => _cartId;
+  num? get restaurantPackingCharge => _restaurantPackingCharge;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -205,6 +213,7 @@ CartMeta copyWith({  GstDetails? gSTDetails,
     map['cart_total_count'] = _cartTotalCount;
     map['delivery_charges'] = _deliveryCharges;
     map['cartId'] = _cartId;
+    map['restaurant_packing_charges'] = _restaurantPackingCharge;
     return map;
   }
 
