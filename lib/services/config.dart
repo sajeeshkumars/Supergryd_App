@@ -11,7 +11,7 @@ class ConfigEnvironments {
     {
       'env': Environments.LOCAL,
       'url': 'http://52.66.208.144/api/v1/',
-      'externalUrl': "https://supergrydapi.ritikasingh.site/uber/v1"
+      'cabUrl': "https://supergrydapi.ritikasingh.site/uber/v1"
     },
     {
       'env': Environments.DEV,

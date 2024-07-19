@@ -129,10 +129,11 @@ class ApiService extends GetConnect implements GetxService {
 
   String fetchBaseUrl(UrlType? urlType) {
     return switch (urlType) {
-      null => 'http://52.66.208.144/api/v1/',
-      UrlType.base => 'http://52.66.208.144/api/v1/',
-      UrlType.cab => "https://supergrydapi.ritikasingh.site/uber/v1",
-      UrlType.food => 'http://52.66.208.144/api/v1/',
+      null => (ConfigEnvironments.getEnvironments()['url']).toString(),
+      UrlType.base => (ConfigEnvironments.getEnvironments()['url']).toString(),
+      UrlType.cab =>
+        (ConfigEnvironments.getEnvironments()['cabUrl']).toString(),
+      UrlType.food => (ConfigEnvironments.getEnvironments()['url']).toString(),
     };
   }
 
