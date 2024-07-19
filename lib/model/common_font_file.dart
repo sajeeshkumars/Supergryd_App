@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:dynamic_fonts/dynamic_fonts.dart';
 
-
 class CommonFontFile extends DynamicFontsFile {
   CommonFontFile(
       super.expectedFileHash, super.expectedLength, this.fontName, this.variant,
@@ -19,7 +18,6 @@ class CommonFontFile extends DynamicFontsFile {
       case FontStyle.italic:
         return 'Italic';
     }
-    throw Exception('Unknown style: ${variant.fontStyle}');
   }
 
   @override

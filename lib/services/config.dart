@@ -11,7 +11,7 @@ class ConfigEnvironments {
     {
       'env': Environments.LOCAL,
       'url': 'http://52.66.208.144/api/v1/',
-      'externalUrl':"https://supergrydapi.ritikasingh.site/",
+      'externalUrl': "https://supergrydapi.ritikasingh.site/",
       // 'cab':'https://supergrydapi.ritikasingh.site/behrouzbiryani/v1'
     },
     {
@@ -34,3 +34,5 @@ class ConfigEnvironments {
     );
   }
 }
+
+enum UrlType { base, cab, food }

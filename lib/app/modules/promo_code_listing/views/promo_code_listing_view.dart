@@ -110,10 +110,10 @@ class PromoCodeListingView extends GetView<PromoCodeListingController> {
                                 fontSize: 12,
                               ),
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
+                                backgroundColor: WidgetStateProperty.all(
                                     AppColors.primaryColor),
                                 foregroundColor:
-                                    MaterialStateProperty.all(AppColors.white),
+                                    WidgetStateProperty.all(AppColors.white),
                               )
                           ),
                         ),

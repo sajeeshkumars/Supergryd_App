@@ -19,9 +19,8 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-HomeController controller = Get.find();
-
 class _HomeViewState extends State<HomeView> {
+  late HomeController controller;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -37,7 +36,20 @@ class _HomeViewState extends State<HomeView> {
   }
 
   @override
+  void initState() {
+    controller = Get.find<HomeController>();
+    getServices();
+    super.initState();
+  }
+
+  getServices() async {
+    await controller.getServices();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // controller.createUser(
+    //     mobile: "9537212345", name: "Michael", context: context);
     return LoadingView(
       isAsyncCall: controller.isLoading,
       showBackGroundData: false,
@@ -244,23 +256,20 @@ class _HomeViewState extends State<HomeView> {
                                         (BuildContext context, int index) {
                                       return InkWell(
                                         onTap: () {
-                                          if( controller.serviceList[index].id ==
-                                              "6646f17c6538869d3399af45"){
-
-
+                                          if (controller
+                                                  .serviceList[index].id ==
+                                              "6646f17c6538869d3399af45") {
                                             Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         RestaurantsAndDishesListingView()));
-                                          }else if( controller.serviceList[index]
-                                              .id ==
-                                              "6646f2196538869d3399af46"){
-
-
+                                          } else if (controller
+                                                  .serviceList[index].id ==
+                                              "6646f2196538869d3399af46") {
                                             controller
                                                 .requestLocationPermission(
-                                                context);
-                                          }else{
+                                                    context);
+                                          } else {
                                             null;
                                           }
                                           // controller.serviceList[index].id ==
@@ -270,15 +279,15 @@ class _HomeViewState extends State<HomeView> {
                                           //             builder: (context) =>
                                           //                 RestaurantsAndDishesListingView()))
 
-                                              // Get.to(() =>
-                                              //     RestaurantsAndDishesListingView())
-                                              // : controller.serviceList[index]
-                                              //             .id ==
-                                              //         "6646f2196538869d3399af46"
-                                              //     ? controller
-                                              //         .requestLocationPermission(
-                                              //             context)
-                                              //     : null;
+                                          // Get.to(() =>
+                                          //     RestaurantsAndDishesListingView())
+                                          // : controller.serviceList[index]
+                                          //             .id ==
+                                          //         "6646f2196538869d3399af46"
+                                          //     ? controller
+                                          //         .requestLocationPermission(
+                                          //             context)
+                                          //     : null;
                                         },
                                         child: Card(
                                           shape: RoundedRectangleBorder(

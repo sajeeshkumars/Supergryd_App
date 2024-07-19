@@ -4,13 +4,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mynewpackage/app/modules/cab/cab_repository.dart';
-import 'package:mynewpackage/app/modules/cab/ride_track_response.dart';
+import 'package:mynewpackage/app/modules/cab/model/ride_track_response.dart';
+import 'package:mynewpackage/app/modules/cab/repository/cab_repository.dart';
 import 'package:mynewpackage/constants.dart';
 
 import '../../../../generated/assets.dart';
 import '../../home/controllers/home_controller.dart';
 import '../model/Ride_details_response.dart';
+import '../model/cab_states.dart';
 import '../model/cancel_reasons_response.dart';
 
 class CabMapController extends GetxController {
@@ -36,24 +37,23 @@ class CabMapController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
-    createCustomMarkerIcon();
-    rideCancelReasons();
+    _createCustomMarkerIcon();
   }
+
+  fetchRideCancelReasons() async => await _rideCancelReasons();
 
   RideDetailsResponse? rideDetailsResponse;
 
-  void createCustomMarkerIcon() async {
-    customIcon = await BitmapDescriptor.fromAssetImage(
+  void _createCustomMarkerIcon() async {
+    customIcon = await BitmapDescriptor.asset(
       ImageConfiguration(size: Size(80, 80)),
       'packages/mynewpackage/${Assets.iconsTracking}',
     );
   }
 
   ///for drawing polyline initially
-
-  void _setPolylines() {
+  void _setPolyLines() {
     // Split _routeCoordinates based on LatLng(10.055348, 76.321888)
     int splitIndex = _routeCoordinates.indexWhere(
         (coord) => coord.latitude == 10.055348 && coord.longitude == 76.321888);
@@ -144,7 +144,7 @@ class CabMapController extends GetxController {
     super.dispose();
   }
 
-  void moveCamera(LatLng position) {
+  void _moveCamera(LatLng position) {
     mapController?.animateCamera(
       CameraUpdate.newLatLng(position),
     );
@@ -235,7 +235,6 @@ class CabMapController extends GetxController {
             Future.delayed(Duration(seconds: 20));
           }
 
-
           switch (trackResponse?.rideStatus) {
             case 1:
               return cabStatus(CabStates.accepted);
@@ -268,6 +267,7 @@ class CabMapController extends GetxController {
     } catch (e) {
       return null;
     }
+    return null;
   }
 
   Future<void> getRideDetails() async {
@@ -295,7 +295,7 @@ class CabMapController extends GetxController {
     update();
   }
 
-  Future<void> rideCancelReasons() async {
+  Future<void> _rideCancelReasons() async {
     await cabRepository.rideCancelReasons().then((value) {
       if (value.data != []) {
         cancelReasons = value.data;
@@ -351,7 +351,6 @@ class CabMapController extends GetxController {
     if (rideCompleted.value) {
       return;
     }
-    log("startMoving called");
 
     Timer.periodic(Duration(seconds: 5), (timer) async {
       if (rideCompleted.value) {
@@ -362,14 +361,10 @@ class CabMapController extends GetxController {
         timer.cancel();
         return;
       }
-      debugPrint("before api call");
 
       var response = await trackRide();
-      debugPrint("after api call");
 
       if (response != null) {
-        debugPrint("cab status ${cabStatus.value}");
-
         markerIndex(markerIndex.value + 1);
         LatLng newLatLng = LatLng(
             double.parse(trackResponse!.driverLat.toString()),
@@ -381,13 +376,10 @@ class CabMapController extends GetxController {
 
         if (!routeCoordinates.contains(newLatLng)) {
           routeCoordinates.add(newLatLng);
-
-          /// for live ployline
-          // _setPolyline();
-          _setPolylines();
+          _setPolyLines();
         }
 
-        moveCamera(newLatLng); // Move the camera to the new marker position
+        _moveCamera(newLatLng); // Move the camera to the new marker position
 
         if (cabStatus.value == CabStates.completed) {
           timer.cancel();
@@ -397,40 +389,13 @@ class CabMapController extends GetxController {
     });
   }
 
-  // void _setPolyline() {
-  //   polylines.clear();
-  //   polylines.add(
-  //     Polyline(
-  //       polylineId: PolylineId('route'),
-  //       visible: true,
-  //       points: routeCoordinates.toList(),
-  //       width: 4,
-  //       color: Colors.black,
-  //     ),
-  //   );
-  // }
-
   setExitFalse() {
     canExit(false);
+    update();
   }
 
   setExitTrue() {
     canExit(true);
+    update();
   }
-}
-
-enum CabStates {
-  initial,
-  rideNotFound,
-  loading,
-  rideSelection,
-  searchingCab,
-  noDriverFound,
-  accepted,
-  arriving,
-  arrived,
-  otpVerified,
-  inProgress,
-  completed,
-  canceled
 }

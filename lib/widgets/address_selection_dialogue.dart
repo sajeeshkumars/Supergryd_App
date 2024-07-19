@@ -7,12 +7,12 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
 import 'package:mynewpackage/app/modules/home/controllers/home_controller.dart';
-import 'package:mynewpackage/app/modules/home/views/home_view.dart';
 import 'package:mynewpackage/app_colors.dart';
 import 'package:mynewpackage/constants.dart';
 import 'package:mynewpackage/widgets/custom_ride_button.dart';
 import 'package:mynewpackage/widgets/map_dialog/cancel_reason.dart';
 
+import '../app/modules/cab/model/cab_states.dart';
 import '../generated/assets.dart';
 import 'common_Image_view.dart';
 import 'common_text.dart';
@@ -30,7 +30,7 @@ class RideDialog extends StatefulWidget {
     required this.onSelected,
   });
 
-  Function onSelected;
+  final Function onSelected;
   final Function(
     String address,
     double lat,
@@ -70,11 +70,6 @@ class _RideDialogState extends State<RideDialog> {
     "packages/mynewpackage/${Assets.iconsEconomyCar}"
   ];
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   RxInt? selectedType = 0.obs;
 
   RxString selectedPaymentType = 'Apple Pay'.obs;
@@ -83,10 +78,10 @@ class _RideDialogState extends State<RideDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final cabController = Get.put(CabMapController());
-    controller.selectedDropOff("");
-    debugPrint("cabstatus inside mapview ${cabController.cabStatus.value}");
-    debugPrint("cancel click ${cabController.isCancelClicked.value}");
+    final cabController = Get.find<CabMapController>();
+    homeController.selectedDropOff("");
+    cabController.fetchRideCancelReasons();
+
     return Obx(() {
       return PopScope(
         canPop: cabController.canExit.value,
@@ -96,7 +91,6 @@ class _RideDialogState extends State<RideDialog> {
               cabController.setExitTrue();
               homeController.clearValues();
             case CabStates.loading:
-            // TODO: Handle this case.
             case CabStates.rideSelection:
               cabController.cabStatus(CabStates.initial);
             case CabStates.searchingCab:

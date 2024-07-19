@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:mynewpackage/app/modules/restaurants_details/data/restaurant_details_repository.dart';
 
 import '../data/get_restaurant_details_response.dart';

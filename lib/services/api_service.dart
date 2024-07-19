@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mynewpackage/constants.dart';
+import 'package:mynewpackage/services/config.dart';
 
 import '../model/refresh_token_model.dart';
+import 'exception_handler.dart';
 
 enum Method { POST, GET, PUT, DELETE, PATCH }
 
 class ApiService extends GetConnect implements GetxService {
-  final String baseUrl;
-
   late Map<String, String> _headers;
   late Map<String, String> _authenticationHeaders;
 
@@ -21,8 +21,7 @@ class ApiService extends GetConnect implements GetxService {
   bool showingExpiryDialog = false;
   String key = Constants.key;
 
-  ApiService({    required this.baseUrl
-  }) {
+  ApiService() {
     debugPrint("constant value ${key}");
     _headers = {
       'Content-Type': 'application/json',
@@ -41,12 +40,16 @@ class ApiService extends GetConnect implements GetxService {
   }
 
   Future<Response> reqst(
-      {
-        required String url,
+      {UrlType? urlType,
+      required String url,
       Method? method = Method.POST,
       Map<String, dynamic>? params}) async {
     Response response;
     try {
+      baseUrl = fetchBaseUrl(urlType);
+
+      log("url is $baseUrl");
+
       bool result = await InternetConnectionChecker().hasConnection;
       if (result == true) {
         // if (storage.isAuthenticated()) {
@@ -63,25 +66,27 @@ class ApiService extends GetConnect implements GetxService {
           response = await get(url, headers: _headers);
         }
         debugPrint("\n\n");
-        debugPrint("============================================================================");
+        debugPrint(
+            "============================================================================");
         debugPrint("request url : ${baseUrl}$url");
         debugPrint("\n\n");
-        debugPrint("============================================================================");
+        debugPrint(
+            "============================================================================");
 
         debugPrint("request : $params");
         debugPrint("\n\n");
-        debugPrint("============================================================================");
-
+        debugPrint(
+            "============================================================================");
 
         debugPrint("headers : $_headers");
         debugPrint("\n\n");
-        debugPrint("============================================================================");
-
+        debugPrint(
+            "============================================================================");
 
         debugPrint("status code :${response.statusCode}  ulr : ${url}");
         debugPrint("\n\n");
-        debugPrint("============================================================================");
-
+        debugPrint(
+            "============================================================================");
 
         log("response : ${response.body}");
         if (response.body == null && nullResCount < 2) {
@@ -98,8 +103,6 @@ class ApiService extends GetConnect implements GetxService {
             return await refreshTokenApi(url, params, method);
           } else if (response.statusCode == 403) {
             return await refreshTokenApi(url, params, method);
-
-            throw Exception("Something Went Wrong");
           } else if (response.statusCode == 500) {
             throw Exception("Server Error");
           } else {
@@ -109,7 +112,7 @@ class ApiService extends GetConnect implements GetxService {
       } else {
         throw Exception("No Internet Connection");
       }
-    } on SocketException catch (e) {
+    } on SocketException {
       throw Exception("No Internet Connection");
     } on FormatException {
       throw Exception("Bad Response Format!");
@@ -124,6 +127,16 @@ class ApiService extends GetConnect implements GetxService {
     }
   }
 
+  String fetchBaseUrl(UrlType? urlType) {
+    return switch (urlType) {
+      null => (ConfigEnvironments.getEnvironments()['url']).toString(),
+      UrlType.base => (ConfigEnvironments.getEnvironments()['url']).toString(),
+      UrlType.cab =>
+        (ConfigEnvironments.getEnvironments()['cabUrl']).toString(),
+      UrlType.food => (ConfigEnvironments.getEnvironments()['url']).toString(),
+    };
+  }
+
   Future<Response> authenticationReqst(
       {required String url,
       Method? method = Method.POST,
@@ -131,6 +144,8 @@ class ApiService extends GetConnect implements GetxService {
     Response response;
     try {
       bool result = await InternetConnectionChecker().hasConnection;
+      baseUrl = fetchBaseUrl(UrlType.base);
+
       if (result == true) {
         // if (storage.isAuthenticated()) {
         if (Constants.isAuthenticated) {
@@ -156,8 +171,6 @@ class ApiService extends GetConnect implements GetxService {
             return await refreshTokenApi(url, params, method);
           } else if (response.statusCode == 403) {
             return await refreshTokenApi(url, params, method);
-
-            throw Exception("Something Went Wrong");
           } else if (response.statusCode == 500) {
             throw Exception("Server Error");
           } else {
@@ -167,11 +180,12 @@ class ApiService extends GetConnect implements GetxService {
       } else {
         throw Exception("No Internet Connection");
       }
-    } on SocketException catch (e) {
+    } on SocketException {
       throw Exception("No Internet Connection");
     } on FormatException {
       throw Exception("Bad Response Format!");
-    } catch (e) {
+    } catch (e, s) {
+      ExceptionHandler.instance.throwException(Exception(e), stack: s);
       return Response(
         body: {
           'status': false,

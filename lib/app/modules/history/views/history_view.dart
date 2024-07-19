@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/core/utility.dart';
 import 'package:mynewpackage/widgets/common_text.dart';
-import 'package:mynewpackage/widgets/custom_button.dart';
 
 import '../../../../app_colors.dart';
 import '../../../../generated/assets.dart';
