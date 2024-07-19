@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:mynewpackage/app/modules/cart/data/cart_repo.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_request.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_response.dart';
@@ -50,11 +51,13 @@ class CartController extends GetxController {
   CancelOrderResponse? cancelOrderResponse;
   RxBool canceled = false.obs;
   String? formattedTotal;
+  RxBool isOrderCancelReasonsLoading = false.obs;
 
   int count = 1;
 
   @override
   void onInit() {
+    orderCancelReasons();
     super.onInit();
   }
 
@@ -355,13 +358,19 @@ class CartController extends GetxController {
         productQuantities.clear();
         if (value.data?.statusCode == 1) {
           onSuccess();
-          Timer.periodic(Duration(seconds: 5), (timer) async {
-            trackOrder(
-                orderId: createOrderResponse!
-                    .data!.orderReferance!.first.orderId!
-                    .toInt(),
-                deviceId: viewCartResponse!.data!.deviceId.toString());
-          });
+          if(orderTrackResponse?.status != 11 ){
+            Timer.periodic(Duration(seconds: 5), (timer) async {
+              await trackOrder(
+                  orderId: createOrderResponse!
+                      .data!.orderReferance!.first.orderId!
+                      .toInt(),
+                  deviceId: viewCartResponse!.data!.deviceId.toString());
+            });
+          }else if (orderTrackResponse?.status == 11){
+            debugPrint("stoping on top");
+            orderTrackResponse = null;
+            count = 1;
+          }
         }else{
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -377,7 +386,8 @@ class CartController extends GetxController {
   Future trackOrder({required int orderId, required String deviceId}) async {
     isTrackOrderLoading(true);
 
-    /// status 11 is delivered and 1 is order cancelled
+
+    /// status 11 is delivered
         if(!canceled.value){
       if (orderTrackResponse?.status != 11) {
         count++;
@@ -407,12 +417,17 @@ class CartController extends GetxController {
   }
 
   Future<void> orderCancelReasons() async {
+    isOrderCancelReasonsLoading(true);
     await cartRepository.orderCancelReasons().then((value) {
       if (value.data != []) {
+        isOrderCancelReasonsLoading(false);
         cancelReasons = value.data;
         selectedCancelReasonText.value = cancelReasons?.first.reason ?? "";
         selectedReasonId.value = cancelReasons?.first.reasonId?.toInt() ?? 1;
-      } else {}
+      } else {
+        isOrderCancelReasonsLoading(false);
+
+      }
     });
   }
 
