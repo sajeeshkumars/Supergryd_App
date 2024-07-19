@@ -315,8 +315,9 @@ class _RideDialogState extends State<RideDialog> {
                                                                     Navigator.of(
                                                                             context)
                                                                         .push(MaterialPageRoute(
-                                                                            builder: (context) =>
-                                                                                CancelReason(isFromOrderTrack: false.obs,)));
+                                                                            builder: (context) => CancelReason(
+                                                                                  isFromOrderTrack: false.obs,
+                                                                                )));
                                                                   },
                                                                 )
                                                                     // CommonButton(onPressed: (){

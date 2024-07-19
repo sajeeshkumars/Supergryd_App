@@ -27,15 +27,12 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
   @override
   void initState() {
     cabMapController.getRideDetails();
-
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<HomeController>();
-
+    HomeController controller = Get.find();
     return Stack(
       children: [
         Dialog(
@@ -328,7 +325,12 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const TripRatingView()));
+                                                    TripRatingView(cabMapController
+                                                            .rideDetailsResponse
+                                                            ?.data
+                                                            ?.first
+                                                            .requestId ??
+                                                        0)));
                                       },
                                       child: Container(
                                         height: 45,
@@ -414,8 +416,8 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
           child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateProperty.all(AppColors.primaryColor),
-                foregroundColor: WidgetStateProperty.all(AppColors.white),
+                    MaterialStateProperty.all(AppColors.primaryColor),
+                foregroundColor: MaterialStateProperty.all(AppColors.white),
               ),
               onPressed: () {
                 Navigator.pop(context);

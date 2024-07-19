@@ -11,8 +11,6 @@ import '../data/restaurant_listing_request.dart' as restaurant_request;
 import '../data/restaurant_listing_response.dart';
 
 class RestaurantsAndDishesListingController extends GetxController {
-  //TODO: Implement RestaurantsAndDishesListingController
-
   List filters = ["Veg", "Non Veg"];
   List filterImages = [
     Assets.iconsVeg,
@@ -62,7 +60,6 @@ class RestaurantsAndDishesListingController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
 
   Future<void> getRestaurants(
       {required bool initial, BuildContext? context}) async {

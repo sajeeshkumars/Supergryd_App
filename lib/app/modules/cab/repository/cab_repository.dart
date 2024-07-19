@@ -64,8 +64,7 @@ class CabRepository implements CabService {
       cancelReasonsResponse = CancelReasonsResponse.fromJson(response.body);
       return cancelReasonsResponse;
     } catch (e, s) {
-      debugPrint(s.toString());
-      debugPrint(e.toString());
+      log("rideCancelReasons exception occurred:$e,$s", name: "CABREPOSITORY");
       return CancelReasonsResponse();
     }
   }
@@ -77,7 +76,6 @@ class CabRepository implements CabService {
     log("cancelRide ${response.statusCode}", name: "CABREPOSITORY");
 
     try {
-      debugPrint("response at try ${response.body}");
       cancelResponse = CancelResponse.fromJson(response.body);
       return cancelResponse;
     } catch (e, s) {

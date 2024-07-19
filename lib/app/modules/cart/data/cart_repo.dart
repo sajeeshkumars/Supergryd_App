@@ -4,18 +4,14 @@ import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_response.d
 import 'package:mynewpackage/app/modules/cart/data/models/confirm_order_response.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/create_order_response.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/view_cart_response.dart';
-import 'package:mynewpackage/services/api_service_external.dart' as ExternalApi;
-
 
 import '../../../../services/api_service.dart';
 import '../../cab/model/cancel_reasons_response.dart';
-import '../../cab/model/cancel_response.dart';
 import 'cart_service.dart';
 import 'models/cancel_order_response.dart';
 
 class CartRepository implements CartService {
   ApiService apiService = Get.find();
-  ExternalApi.ApiServiceExternal apiServiceExternal = Get.find();
 
   @override
   Future<AddToCartResponse> addToCart(Map<String, dynamic>? params) async {
@@ -81,9 +77,8 @@ class CartRepository implements CartService {
 
   Future<CancelReasonsResponse> orderCancelReasons() async {
     CancelReasonsResponse cancelReasonsResponse;
-    Response response = await apiServiceExternal.reqst(
-        url: 'behrouzbiryani/v1/api/cancel/reasons/user',
-        method: ExternalApi.Method.GET);
+    Response response = await apiService.reqst(
+        url: 'behrouzbiryani/v1/api/cancel/reasons/user', method: Method.GET);
     debugPrint(response.statusCode.toString());
     try {
       cancelReasonsResponse = CancelReasonsResponse.fromJson(response.body);
@@ -97,8 +92,8 @@ class CartRepository implements CartService {
 
   Future<CancelOrderResponse> cancelOrder(Map<String, dynamic>? params) async {
     CancelOrderResponse cancelResponse;
-    Response response = await apiService.reqst(
-        url: 'food/cancel-food-order',params: params);
+    Response response =
+        await apiService.reqst(url: 'food/cancel-food-order', params: params);
     try {
       cancelResponse = CancelOrderResponse.fromJson(response.body);
       return cancelResponse;
@@ -108,5 +103,4 @@ class CartRepository implements CartService {
       return CancelOrderResponse();
     }
   }
-
 }

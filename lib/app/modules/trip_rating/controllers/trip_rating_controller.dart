@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/trip_rating/data/review_repo.dart';
 
 import '../../../../generated/assets.dart';
-import '../../add_cash_to_wallet/views/add_cash_to_wallet_view.dart';
+import '../../../../widgets/dialogs/common_alert_dialog.dart';
 import '../../cab/controllers/cab_map_controller.dart';
 import '../../home/controllers/home_controller.dart';
 
@@ -32,7 +31,8 @@ class TripRatingController extends GetxController {
     super.onClose();
   }
 
-  Future<void> postReview({required BuildContext context,required int requestId}) async {
+  Future<void> postReview(
+      {required BuildContext context, required int requestId}) async {
     isReviewPosted(true);
 
     await reviewRepo.postReview({
@@ -47,10 +47,8 @@ class TripRatingController extends GetxController {
             builder: (BuildContext context) {
               return CommonAlertDialog(
                 imagePath: Assets.iconsSuccess,
-                contentOne:
-                    "Your Review Submitted\nSuccessfully",
-                contentTwo:
-                    'It help to improve our services',
+                contentOne: "Your Review Submitted\nSuccessfully",
+                contentTwo: 'It help to improve our services',
                 buttonTextOne: 'Explore Our Services',
                 buttonTextTwo: '',
                 onButtonOneTap: () {
@@ -73,14 +71,12 @@ class TripRatingController extends GetxController {
         //     content: Text(
         //       value.message.toString(),
         //     )));
-
-
       } else {
         isReviewPosted(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
-              value.message.toString(),
-            )));
+          value.message.toString(),
+        )));
       }
     });
   }

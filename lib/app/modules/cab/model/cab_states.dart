@@ -1,6 +1,7 @@
 enum CabStates {
   initial,
   rideNotFound,
+  noDriverFound,
   loading,
   rideSelection,
   searchingCab,

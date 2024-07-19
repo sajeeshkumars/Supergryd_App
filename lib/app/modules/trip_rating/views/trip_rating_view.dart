@@ -88,22 +88,24 @@ class TripRatingView extends GetView<TripRatingController> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(20.0),
-                            child: Obx(
-                              () {
-                                return CommonButton(
+                            child: Obx(() {
+                              return CommonButton(
                                   isLoading: controller.isReviewPosted.value,
-                                    onPressed: () {
-                                      if(controller.givenStar >= 1){
+                                  onPressed: () {
+                                    if (controller.givenStar >= 1) {
                                       controller.postReview(
                                           context: context,
                                           requestId: requestId);
-                                    }else{
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: CommonText(text: 'Minimum one start is required',)));
-                                      }
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: CommonText(
+                                        text: 'Minimum one start is required',
+                                      )));
+                                    }
                                   },
-                                    text: "Submit Review");
-                              }
-                            ),
+                                  text: "Submit Review");
+                            }),
                           )
                         ],
                       ),

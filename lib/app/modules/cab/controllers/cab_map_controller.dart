@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -252,7 +251,7 @@ class CabMapController extends GetxController {
               throw Exception("Unknown status: ");
           }
         } else {
-          if(trackResponse?.status == 'FAILURE'){
+          if (trackResponse?.status == 'FAILURE') {
             driverNotFound();
             // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             //   content: Text(
@@ -289,6 +288,7 @@ class CabMapController extends GetxController {
     canExit(true);
     update();
   }
+
   driverNotFound() {
     cabStatus(CabStates.noDriverFound);
     canExit(true);
