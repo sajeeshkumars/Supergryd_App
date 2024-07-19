@@ -128,7 +128,7 @@ class FontController extends GetxController {
     List<FontResponse> list = await apiService.getFontForRegistration();
     for (var e in list) {
       Map<DynamicFontsVariant, DynamicFontsFile> map =
-          FontUtils.convertFontResponseToDynamicFontVarient(e);
+          FontUtils.convertFontResponseToDynamicFontVariant(e);
       print("getFontForRegistrationCalled ${map}");
       if (map.isNotEmpty && e.font != null) {
         supportedFonts.add(e.font!);

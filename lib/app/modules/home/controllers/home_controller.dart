@@ -1,19 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:location/location.dart' as location;
 import 'package:mynewpackage/app/authentication/authentication_repo.dart';
+import 'package:mynewpackage/app/authentication/controller/base_controller.dart';
 import 'package:mynewpackage/app/authentication/model/authentication_request_model.dart';
 import 'package:mynewpackage/app/authentication/model/create_user_request_model.dart';
 import 'package:mynewpackage/app/modules/cab/controllers/cab_map_controller.dart';
 import 'package:mynewpackage/app/modules/home/data/home_repository.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/controllers/restaurants_and_dishes_listing_controller.dart';
 import 'package:mynewpackage/constants.dart';
+import 'package:mynewpackage/services/exception_handler.dart';
 import 'package:mynewpackage/widgets/address_selection_dialogue.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,7 +27,22 @@ import '../data/models/service_category_response.dart';
 import 'color_controller.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  RxString _name = "".obs;
+  RxString _mobile = "".obs;
+  RxBool isAuthenticated = false.obs;
+  late BaseController baseController;
+  final AuthRepository authRepository = Get.find();
+  RxInt _retryCount = 0.obs;
+
+  @override
+  void onInit() {
+    baseController = Get.find<BaseController>();
+    baseController.isAuthenticated.listen((val) {
+      isAuthenticated(val);
+      update();
+    });
+    super.onInit();
+  }
 
   List addressTypeImage = [
     Assets.iconsHomeIcon,
@@ -57,7 +73,6 @@ class HomeController extends GetxController {
     // "other"
   ];
 
-
   Map<String, dynamic> locationCoordinates = {
     "Home": {
       "lat": 10.055348,
@@ -85,11 +100,9 @@ class HomeController extends GetxController {
     //   "lat": 13.094471,
     //   "long": 77.720029,
     // },
-
   };
 
   RxBool isForFood = false.obs;
-
 
   RxMap selectedLocationCoordinates = {
     "lat": 13.094478,
@@ -122,14 +135,12 @@ class HomeController extends GetxController {
   RxBool isIncrementClicked = false.obs;
 
   // AppStorage storage = AppStorage();
-  AuthRepository authRepository = Get.put(AuthRepository());
   HomeRepository homeRepository = Get.put(HomeRepository());
   RxList<ServiceCategories> serviceList =
       List<ServiceCategories>.empty(growable: true).obs;
 
   RxList<RideEstimationList> estimationList =
       List<RideEstimationList>.empty(growable: true).obs;
-
 
   List specialOfferTitle = [
     "Special\nFood Menu",
@@ -163,18 +174,13 @@ class HomeController extends GetxController {
   CabMapController cabMapController = Get.put(CabMapController());
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
   void onReady() {
+    isAuthenticated.listen((val) {
+      if (val) {
+        getServices();
+      }
+    });
     super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   void showAddressSelectionBottomSheet({
@@ -189,113 +195,105 @@ class HomeController extends GetxController {
           return isLoading.value
               ? SizedBox.shrink()
               : Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(25))),
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'Select Your Delivery Location',
-                  style: TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 20),
-                InkWell(
-                  onTap: () {},
-                  child: Row(
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.add_circle_outline,
-                        color: colorController.primaryColor.value,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Add New Address",
+                      const Text(
+                        'Select Your Delivery Location',
                         style: TextStyle(
-                            color: colorController.primaryColor.value,
-                            fontWeight: FontWeight.w800),
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20),
+                      InkWell(
+                        onTap: () {},
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.add_circle_outline,
+                              color: colorController.primaryColor.value,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "Add New Address",
+                              style: TextStyle(
+                                  color: colorController.primaryColor.value,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Saved Address',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w800),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: addressDescription.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                onTap: () {
+                                  selectedPickUp.value =
+                                      addressDescription[index].toString();
+
+                                  controller?.restaurantList.clear();
+                                  controller?.dishList.clear();
+                                  address.value =
+                                      addressDescription[index].toString();
+                                  debugPrint('value ${address.value}');
+                                  selectedLocationCoordinates.value =
+                                      locationCoordinates[addressHeading[index]]
+                                          as Map<dynamic, dynamic>;
+                                  selectedPickupCoordinates.value =
+                                      locationCoordinates[addressHeading[index]]
+                                          as Map<dynamic, dynamic>;
+                                  controller?.getRestaurants(initial: true);
+                                  Navigator.pop(context);
+                                  count.value = 1;
+
+                                  // Get.back();
+                                },
+                                child: Container(
+                                  color: colorController.primaryColor.value
+                                      .withOpacity(.05),
+                                  child: ListTile(
+                                    leading: ColorFiltered(
+                                        colorFilter: ColorFilter.mode(
+                                            AppColors.accentColor,
+                                            BlendMode.modulate),
+                                        child: SvgPicture.asset(
+                                            "packages/mynewpackage/${addressTypeImage[index]}")),
+                                    title: Text(
+                                      addressHeading[index].toString(),
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    subtitle: Text(
+                                      addressDescription[index].toString(),
+                                      style: (TextStyle(
+                                          color: AppColors.textColor)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Saved Address',
-                  style: TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w800),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: addressDescription.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            selectedPickUp.value =
-                                addressDescription[index].toString();
-
-                            controller?.restaurantList.clear();
-                            controller?.dishList.clear();
-                            address.value =
-                                addressDescription[index].toString();
-                            debugPrint('value ${address.value}');
-                            debugPrint('value ${selectedPickUp.value}');
-                            selectedLocationCoordinates.value =
-                            locationCoordinates[addressHeading[index]] as Map<
-                                dynamic,
-                                dynamic>;
-                            selectedPickupCoordinates.value =
-                            locationCoordinates[addressHeading[index]]
-                            as Map<dynamic, dynamic>;
-                            debugPrint(
-                                "selected Location ${selectedLocationCoordinates
-                                    .value}");
-                            debugPrint("value ${address.value}");
-                            debugPrint(
-                                "selectedLocationCordinates $selectedLocationCoordinates");
-                            controller?.getRestaurants(initial: true);
-                            Navigator.pop(context);
-                            count.value = 1;
-
-                            // Get.back();
-                          },
-                          child: Container(
-                            color: colorController.primaryColor.value
-                                .withOpacity(.05),
-                            child: ListTile(
-                              leading: ColorFiltered(
-                                  colorFilter: ColorFilter.mode(
-                                      AppColors.accentColor,
-                                      BlendMode.modulate),
-                                  child: SvgPicture.asset(
-                                      "packages/mynewpackage/${addressTypeImage[index]}")),
-                              title: Text(
-                                addressHeading[index].toString(),
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              subtitle: Text(
-                                addressDescription[index].toString(),
-                                style: (TextStyle(
-                                    color: AppColors.textColor)),
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          );
+                );
         });
       },
     );
@@ -311,212 +309,231 @@ class HomeController extends GetxController {
           return isLoading.value
               ? SizedBox.shrink()
               : Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(25))),
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // InkWell(
-                //   onTap: () {},
-                //   child: Row(
-                //     children: [
-                //       Icon(
-                //         Icons.add_circle_outline,
-                //         color: colorController.primaryColor.value,
-                //       ),
-                //       const SizedBox(
-                //         width: 10,
-                //       ),
-                //       Text(
-                //         "Add New Address",
-                //         style: TextStyle(
-                //             color: colorController.primaryColor.value,
-                //             fontWeight: FontWeight.w800),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                const Text(
-                  'Saved Address',
-                  style: TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w800),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: addressDescription.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            if (locationType == 'PickUp') {
-                              selectedPickUp.value =
-                                  addressDescription[index].toString();
-                              selectedPickupCoordinates.value =
-                              locationCoordinates[addressHeading[index]];
-                            } else {
-                              selectedDropOff.value =
-                                  addressDescription[index].toString();
-                              isDestinationSelected.value = true;
-                              selectedDropoffCoordinates.value =
-                              locationCoordinates[addressHeading[index]];
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // InkWell(
+                      //   onTap: () {},
+                      //   child: Row(
+                      //     children: [
+                      //       Icon(
+                      //         Icons.add_circle_outline,
+                      //         color: colorController.primaryColor.value,
+                      //       ),
+                      //       const SizedBox(
+                      //         width: 10,
+                      //       ),
+                      //       Text(
+                      //         "Add New Address",
+                      //         style: TextStyle(
+                      //             color: colorController.primaryColor.value,
+                      //             fontWeight: FontWeight.w800),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      const Text(
+                        'Saved Address',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w800),
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: addressDescription.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                onTap: () {
+                                  if (locationType == 'PickUp') {
+                                    selectedPickUp.value =
+                                        addressDescription[index].toString();
+                                    selectedPickupCoordinates.value =
+                                        locationCoordinates[
+                                            addressHeading[index]];
+                                  } else {
+                                    selectedDropOff.value =
+                                        addressDescription[index].toString();
+                                    isDestinationSelected.value = true;
+                                    selectedDropoffCoordinates.value =
+                                        locationCoordinates[
+                                            addressHeading[index]];
 
-                              getEstimations();
-                            }
-                            Navigator.pop(context);
+                                    getEstimations();
+                                  }
+                                  Navigator.pop(context);
 
-                            //
-                            // address.value = addressDescription[index];
-                            // debugPrint("value ${address.value}");
-                            // selectedLocationCoordinates.value =
-                            // locationCoordinates[
-                            // addressHeading[index]];
-                            // debugPrint("value ${address.value}");
-                            // debugPrint(
-                            //     "selectedLocationCordinates $selectedLocationCoordinates");
-                            // Navigator.pop(context);
-                            // count.value = 1;
+                                  //
+                                  // address.value = addressDescription[index];
+                                  // debugPrint("value ${address.value}");
+                                  // selectedLocationCoordinates.value =
+                                  // locationCoordinates[
+                                  // addressHeading[index]];
+                                  // debugPrint("value ${address.value}");
+                                  // debugPrint(
+                                  //     "selectedLocationCordinates $selectedLocationCoordinates");
+                                  // Navigator.pop(context);
+                                  // count.value = 1;
 
-                            // Get.back();
+                                  // Get.back();
+                                },
+                                child: Container(
+                                  color: colorController.primaryColor.value
+                                      .withOpacity(.05),
+                                  child: ListTile(
+                                    leading: ColorFiltered(
+                                        colorFilter: ColorFilter.mode(
+                                            AppColors.accentColor,
+                                            BlendMode.modulate),
+                                        child: SvgPicture.asset(
+                                            "packages/mynewpackage/${addressTypeImage[index]}")),
+                                    title: Text(
+                                      addressHeading[index].toString(),
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    subtitle: Text(
+                                      addressDescription[index].toString(),
+                                      style: (TextStyle(
+                                          color: AppColors.textColor)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
                           },
-                          child: Container(
-                            color: colorController.primaryColor.value
-                                .withOpacity(.05),
-                            child: ListTile(
-                              leading: ColorFiltered(
-                                  colorFilter: ColorFilter.mode(
-                                      AppColors.accentColor,
-                                      BlendMode.modulate),
-                                  child: SvgPicture.asset(
-                                      "packages/mynewpackage/${addressTypeImage[index]}")),
-                              title: Text(
-                                addressHeading[index].toString(),
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              subtitle: Text(
-                                addressDescription[index].toString(),
-                                style: (TextStyle(
-                                    color: AppColors.textColor)),
-                              ),
-                            ),
-                          ),
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          );
+                );
         });
       },
     );
   }
 
-  void authenticate({required String clientId,
-    required String clientSecrete,
-    required String name,
-    required String mobile,
-    required BuildContext context}) async {
-    isLoading(true);
-    debugPrint("before api call${isLoading.value}");
+  void authenticate({required BuildContext context}) async {
+    if (isAuthenticated.isFalse) {
+      isLoading(true);
+      debugPrint("before api call${isLoading.value}");
 
-    AuthenticationRequestModel requestModel = AuthenticationRequestModel(
-        clientId: clientId, clientSecrete: clientSecrete);
+      AuthenticationRequestModel requestModel = AuthenticationRequestModel(
+          clientId: baseController.clientID,
+          clientSecrete: baseController.clientSecret);
 
-    var result = await InternetConnectionChecker().hasConnection;
+      var result = await InternetConnectionChecker().hasConnection;
 
-    if (result == true) {
-      await authRepository.authenticate(requestModel.toJson()).then((value) {
-        // await authRepository.authenticate().then((value) {
-        if (value.status == 200) {
-          debugPrint("after success${isLoading.value}");
+      if (result == true && isAuthenticated.isFalse) {
+        log("authenticated called from home_controller");
 
-          debugPrint("authenticated");
-          debugPrint("${value.message}");
-          debugPrint("token${value.data?.refreshToken}");
-          Constants.accessToken = value.data?.accessToken ?? "";
-          // storage.writeAccessToken(value.data?.accessToken ?? "");
-          //   debugPrint("access token ${storage.getAccessToken()}");
-          // storage.writeRefreshToken(value.data?.refreshToken ?? "");
-          Constants.refreshToken = value.data?.refreshToken ?? "";
-          Constants.isAuthenticated = true;
-          AppColors.primaryColor =
-              fromHex(value.data!.themes!.first.primaryColor.toString());
-          AppColors.accentColor =
-              fromHex(value.data!.themes!.first.accentColor.toString());
-          debugPrint("color ${AppColors.primaryColor}");
-          colorController.updateColors(
-            value.data!.themes!.first.primaryColor.toString(),
-            value.data!.themes!.first.accentColor.toString(),
-          );
+        await authRepository.authenticate(requestModel.toJson()).then((value) {
+          // await authRepository.authenticate().then((value) {
+          if (value.status == 200) {
+            debugPrint("after success${isLoading.value}");
 
-          //   storage.writeIsAuthenticated(true);
-          createUser(mobile: mobile, name: name, context: context);
-          getServices();
-          isLoading(false);
-        } else {
-          isLoading(false);
-          debugPrint("after failure${value.message}");
-          Navigator.pop(context);
+            debugPrint("authenticated");
+            debugPrint("${value.message}");
+            debugPrint("token${value.data?.refreshToken}");
+            Constants.accessToken = value.data?.accessToken ?? "";
+            // storage.writeAccessToken(value.data?.accessToken ?? "");
+            //   debugPrint("access token ${storage.getAccessToken()}");
+            // storage.writeRefreshToken(value.data?.refreshToken ?? "");
+            Constants.refreshToken = value.data?.refreshToken ?? "";
+            Constants.isAuthenticated = true;
+            AppColors.primaryColor =
+                fromHex(value.data!.themes!.first.primaryColor.toString());
+            AppColors.accentColor =
+                fromHex(value.data!.themes!.first.accentColor.toString());
+            debugPrint("color ${AppColors.primaryColor}");
+            colorController.updateColors(
+              value.data!.themes!.first.primaryColor.toString(),
+              value.data!.themes!.first.accentColor.toString(),
+            );
 
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text(
-                "Unauthorized please check Your Key",
-              ),
-              backgroundColor: Colors.red,
-              duration: Duration(minutes: 5)));
-          // Navigator.of(context, rootNavigator: true).pop();
+            //   storage.writeIsAuthenticated(true);
+            createUser(
+                mobile: _mobile.value, name: _name.value, context: context);
+            getServices();
+            isLoading(false);
+          } else {
+            isLoading(false);
+            debugPrint("after failure${value.message}");
+            Navigator.pop(context);
 
-          // Navigator.pop(context);
-        }
-      });
-    } else {
-      isLoading(false);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text(
-          "No Internet",
-        ),
-        backgroundColor: Colors.red,
-      ));
-    }
-  }
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text(
+                  "Unauthorized please check Your Key",
+                ),
+                backgroundColor: Colors.red,
+                duration: Duration(minutes: 5)));
+            // Navigator.of(context, rootNavigator: true).pop();
 
-  void createUser({required String mobile,
-    required String name,
-    required BuildContext context}) async {
-    // isLoading(true);
-    debugPrint("before api call${isLoading.value}");
-
-    CreateUserRequestModel requestModel = CreateUserRequestModel(
-        phoneNumber: mobile, phoneCode: "+91", name: name);
-
-    await authRepository.createUser(requestModel.toJson()).then((value) {
-      if (value.status == 200) {
-        // isLoading(false);
-
-        debugPrint("after success${isLoading.value}");
-
-        debugPrint("authenticated");
-        debugPrint("${value.message}");
-        // storage.writeUserId(value.data?.id ?? "");
-        Constants.userId = value.data?.id ?? "";
+            // Navigator.pop(context);
+          }
+        });
       } else {
-        debugPrint("after failure${value.message}");
-
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        isLoading(false);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
-            value.message.toString() ?? "",
+            "No Internet",
           ),
           backgroundColor: Colors.red,
         ));
       }
-    });
+    }
+  }
+
+  void createUser(
+      {required String mobile,
+      required String name,
+      required BuildContext? context}) async {
+    // isLoading(true);
+    _name(name);
+    _mobile(mobile);
+    if (isAuthenticated.isTrue) {
+      CreateUserRequestModel requestModel = CreateUserRequestModel(
+          phoneNumber: mobile, phoneCode: "+91", name: name);
+
+      await authRepository.createUser(requestModel.toJson()).then((value) {
+        if (value.status == 200) {
+          // isLoading(false);
+          // storage.writeUserId(value.data?.id ?? "");
+          Constants.userId = value.data?.id ?? "";
+          isAuthenticated(true);
+        } else {
+          isAuthenticated(false);
+          if (context != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(
+                  value.message ?? "",
+                ),
+                backgroundColor: Colors.red,
+              ));
+            });
+          }
+        }
+      });
+    } else {
+      ExceptionHandler.instance.throwException(
+          Exception("CreateUser:Unauthorized please check Your Key"));
+      if (context != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "Unauthorized please check Your Key",
+            ),
+            backgroundColor: Colors.red,
+          ));
+        });
+      }
+    }
   }
 
   Future<void> getServices() async {
@@ -529,7 +546,12 @@ class HomeController extends GetxController {
         isLoadingServices(false);
       } else {
         isLoadingServices(false);
-        getServices();
+        _retryCount++;
+        if (_retryCount.value < 5) {
+          getServices();
+        } else {
+          _retryCount(0);
+        }
       }
     });
   }
@@ -544,7 +566,7 @@ class HomeController extends GetxController {
   Future<void> requestLocationPermission(BuildContext context) async {
     try {
       location.PermissionStatus permission =
-      await locationStatus.requestPermission();
+          await locationStatus.requestPermission();
       if (permission == location.PermissionStatus.granted) {
         await showDialog(
           context: context,
@@ -554,15 +576,17 @@ class HomeController extends GetxController {
               body: RideDialog(
                 onSelected: (address, lat, lng, zip, city, state, streetNumber,
                     route, homeAddress) {},
-                onDataReceived: (String address,
-                    double lat,
-                    double lng,
-                    String zip,
-                    String city,
-                    String state,
-                    String streetNumber,
-                    String route,
-                    String stateIsoCode,) {
+                onDataReceived: (
+                  String address,
+                  double lat,
+                  double lng,
+                  String zip,
+                  String city,
+                  String state,
+                  String streetNumber,
+                  String route,
+                  String stateIsoCode,
+                ) {
                   // onAddressSelect(
                   //   address,
                   //   lat,
@@ -600,15 +624,16 @@ class HomeController extends GetxController {
           },
         );
       }
-    } catch (e, stack) {
+    } catch (e) {
       debugPrint(e.toString());
     }
   }
 
   void openLocationServicesSettings() async {
     const String settingsUrl = 'App-Prefs:LOCATION_SERVICES';
-    if (await canLaunch(settingsUrl)) {
-      await launch(settingsUrl);
+    final uri = Uri.parse(settingsUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
       if (kDebugMode) {
         print('Could not open Location Services settings.');
@@ -640,7 +665,7 @@ class HomeController extends GetxController {
           }
         }
       }
-    } catch (e, stack) {
+    } catch (e) {
       debugPrint(e.toString());
     }
   }
@@ -652,15 +677,17 @@ class HomeController extends GetxController {
         return RideDialog(
           onSelected: (address, lat, lng, zip, city, state, streetNumber, route,
               stateIsoCode, homeAddress) {},
-          onDataReceived: (String address,
-              double lat,
-              double lng,
-              String zip,
-              String city,
-              String state,
-              String streetNumber,
-              String route,
-              String stateIsoCode,) {
+          onDataReceived: (
+            String address,
+            double lat,
+            double lng,
+            String zip,
+            String city,
+            String state,
+            String streetNumber,
+            String route,
+            String stateIsoCode,
+          ) {
             // onAddressSelect(address, lat, lng, zip, city, state, streetNumber,
             //     route, stateIsoCode
             //     // districtName, districtIsoCode
@@ -760,9 +787,7 @@ class HomeController extends GetxController {
   }
 
   void clearValues() {
-    selectedPickUp =
-        ""
-            .obs;
+    selectedPickUp = "".obs;
     selectedDropOff = "".obs;
     isLoading = false.obs;
     isEstimationLoading = false.obs;

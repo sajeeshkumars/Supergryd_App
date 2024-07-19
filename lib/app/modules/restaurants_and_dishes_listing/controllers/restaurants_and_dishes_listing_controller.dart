@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/Dish_listing_request.dart';
+import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/dish_listing_request.dart';
 import 'package:mynewpackage/app/modules/restaurants_and_dishes_listing/data/restaurant_and_dish_listing_repo.dart';
 import 'package:mynewpackage/constants.dart';
 
@@ -11,8 +11,6 @@ import '../data/restaurant_listing_request.dart' as restaurant_request;
 import '../data/restaurant_listing_response.dart';
 
 class RestaurantsAndDishesListingController extends GetxController {
-  //TODO: Implement RestaurantsAndDishesListingController
-
   List filters = ["Veg", "Non Veg"];
   List filterImages = [
     Assets.iconsVeg,
@@ -62,7 +60,6 @@ class RestaurantsAndDishesListingController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
 
   Future<void> getRestaurants(
       {required bool initial, BuildContext? context}) async {

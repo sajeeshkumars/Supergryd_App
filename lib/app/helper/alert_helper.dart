@@ -20,10 +20,8 @@ class AlertHelper {
       context: context,
       barrierDismissible: barrierDismissible ?? true,
       builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async {
-            return willPop ?? true;
-          },
+        return PopScope(
+          canPop: willPop ?? true,
           child: Dialog(
             backgroundColor: Colors.transparent,
             child: Center(
@@ -94,10 +92,10 @@ class AlertHelper {
                                           },
                                           child: value
                                               ? CircularProgressIndicator(
-                                            valueColor:
-                                            AlwaysStoppedAnimation<
-                                                Color>(Colors.white),
-                                          )
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(Colors.white),
+                                                )
                                               : Text(confirmText ?? 'Confirm'),
                                         );
                                       },

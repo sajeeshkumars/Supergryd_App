@@ -1,35 +1,43 @@
 import 'dart:convert';
+
 /// status : 200
 /// message : "Data retrieve successfully."
 /// data : {"_id":"664705340820502ae399d9b8","ServiceCategories":[{"_id":"6646f17c6538869d3399af45","category_name":"Food","category_code":"FD","status":1,"images":[{"primary":"https://icons8.com/icon/5w3XGkaXrcaV/edible"}]},{"_id":"6646f2196538869d3399af46","category_name":"Cabs","category_code":"BR","status":1,"images":[{"primary":"https://icons8.com/icon/111270/car"}]},{"_id":"6646f22b6538869d3399af47","category_name":"Salon Services","category_code":"SS","status":1,"images":[{"primary":"https://icons8.com/icon/pwpz1tqVnCQy/ticket"}]},{"_id":"6646f24e6538869d3399af48","category_name":"Home Services","category_code":"BS","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]},{"_id":"664c67f8f56c737334730ff3","category_name":"Gifts","category_code":"GS","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]},{"_id":"664c680ef56c737334730ff4","category_name":"Furniture","category_code":"FE","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]},{"_id":"664c683ef56c737334730ff6","category_name":"Grocery","category_code":"GY","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]}]}
 
-ServiceCategoryResponse serviceCategoryResponseFromJson(String str) => ServiceCategoryResponse.fromJson(json.decode(str));
-String serviceCategoryResponseToJson(ServiceCategoryResponse data) => json.encode(data.toJson());
+ServiceCategoryResponse serviceCategoryResponseFromJson(String str) =>
+    ServiceCategoryResponse.fromJson(json.decode(str));
+String serviceCategoryResponseToJson(ServiceCategoryResponse data) =>
+    json.encode(data.toJson());
+
 class ServiceCategoryResponse {
   ServiceCategoryResponse({
     num? status,
     String? message,
-    Data? data,}){
+    Data? data,
+  }) {
     _status = status;
     _message = message;
     _data = data;
   }
 
   ServiceCategoryResponse.fromJson(dynamic json) {
-    _status = int.parse(json['status'].toString());
+    _status = int.tryParse(json['status'].toString());
     _message = json['message'].toString();
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   num? _status;
   String? _message;
   Data? _data;
-  ServiceCategoryResponse copyWith({  num? status,
+  ServiceCategoryResponse copyWith({
+    num? status,
     String? message,
     Data? data,
-  }) => ServiceCategoryResponse(  status: status ?? _status,
-    message: message ?? _message,
-    data: data ?? _data,
-  );
+  }) =>
+      ServiceCategoryResponse(
+        status: status ?? _status,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
   num? get status => _status;
   String? get message => _message;
   Data? get data => _data;
@@ -43,7 +51,6 @@ class ServiceCategoryResponse {
     }
     return map;
   }
-
 }
 
 /// _id : "664705340820502ae399d9b8"
@@ -51,10 +58,12 @@ class ServiceCategoryResponse {
 
 Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
+
 class Data {
   Data({
     String? id,
-    List<ServiceCategories>? serviceCategories,}){
+    List<ServiceCategories>? serviceCategories,
+  }) {
     _id = id;
     _serviceCategories = serviceCategories;
   }
@@ -70,11 +79,14 @@ class Data {
   }
   String? _id;
   List<ServiceCategories>? _serviceCategories;
-  Data copyWith({  String? id,
+  Data copyWith({
+    String? id,
     List<ServiceCategories>? serviceCategories,
-  }) => Data(  id: id ?? _id,
-    serviceCategories: serviceCategories ?? _serviceCategories,
-  );
+  }) =>
+      Data(
+        id: id ?? _id,
+        serviceCategories: serviceCategories ?? _serviceCategories,
+      );
   String? get id => _id;
   List<ServiceCategories>? get serviceCategories => _serviceCategories;
 
@@ -82,11 +94,11 @@ class Data {
     final map = <String, dynamic>{};
     map['_id'] = _id;
     if (_serviceCategories != null) {
-      map['ServiceCategories'] = _serviceCategories?.map((v) => v.toJson()).toList();
+      map['ServiceCategories'] =
+          _serviceCategories?.map((v) => v.toJson()).toList();
     }
     return map;
   }
-
 }
 
 /// _id : "6646f17c6538869d3399af45"
@@ -95,15 +107,19 @@ class Data {
 /// status : 1
 /// images : [{"primary":"https://icons8.com/icon/5w3XGkaXrcaV/edible"}]
 
-ServiceCategories serviceCategoriesFromJson(String str) => ServiceCategories.fromJson(json.decode(str));
-String serviceCategoriesToJson(ServiceCategories data) => json.encode(data.toJson());
+ServiceCategories serviceCategoriesFromJson(String str) =>
+    ServiceCategories.fromJson(json.decode(str));
+String serviceCategoriesToJson(ServiceCategories data) =>
+    json.encode(data.toJson());
+
 class ServiceCategories {
   ServiceCategories({
     String? id,
     String? categoryName,
     String? categoryCode,
     num? status,
-    List<Images>? images,}){
+    List<Images>? images,
+  }) {
     _id = id;
     _categoryName = categoryName;
     _categoryCode = categoryCode;
@@ -128,17 +144,20 @@ class ServiceCategories {
   String? _categoryCode;
   num? _status;
   List<Images>? _images;
-  ServiceCategories copyWith({  String? id,
+  ServiceCategories copyWith({
+    String? id,
     String? categoryName,
     String? categoryCode,
     num? status,
     List<Images>? images,
-  }) => ServiceCategories(  id: id ?? _id,
-    categoryName: categoryName ?? _categoryName,
-    categoryCode: categoryCode ?? _categoryCode,
-    status: status ?? _status,
-    images: images ?? _images,
-  );
+  }) =>
+      ServiceCategories(
+        id: id ?? _id,
+        categoryName: categoryName ?? _categoryName,
+        categoryCode: categoryCode ?? _categoryCode,
+        status: status ?? _status,
+        images: images ?? _images,
+      );
   String? get id => _id;
   String? get categoryName => _categoryName;
   String? get categoryCode => _categoryCode;
@@ -156,16 +175,17 @@ class ServiceCategories {
     }
     return map;
   }
-
 }
 
 /// primary : "https://icons8.com/icon/5w3XGkaXrcaV/edible"
 
 Images imagesFromJson(String str) => Images.fromJson(json.decode(str));
 String imagesToJson(Images data) => json.encode(data.toJson());
+
 class Images {
   Images({
-    String? primary,}){
+    String? primary,
+  }) {
     _primary = primary;
   }
 
@@ -173,9 +193,12 @@ class Images {
     _primary = json['primary'].toString();
   }
   String? _primary;
-  Images copyWith({  String? primary,
-  }) => Images(  primary: primary ?? _primary,
-  );
+  Images copyWith({
+    String? primary,
+  }) =>
+      Images(
+        primary: primary ?? _primary,
+      );
   String? get primary => _primary;
 
   Map<String, dynamic> toJson() {
@@ -183,5 +206,4 @@ class Images {
     map['primary'] = _primary;
     return map;
   }
-
 }

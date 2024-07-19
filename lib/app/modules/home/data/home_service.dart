@@ -1,6 +1,5 @@
 
 
-import 'package:mynewpackage/app/authentication/model/create_user_response.dart';
 import 'package:mynewpackage/app/modules/home/data/models/ride_estimation_response.dart';
 
 import 'models/request_ride_response.dart';

@@ -3,8 +3,6 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:mynewpackage/app/modules/cart/data/cart_repo.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_request.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_response.dart';
