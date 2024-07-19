@@ -5,7 +5,7 @@ import 'package:mynewpackage/app/modules/cart/data/models/view_cart_response.dar
 import 'package:mynewpackage/app/modules/restaurants_details/data/get_restaurant_details_response.dart';
 
 import '../../../restaurants_and_dishes_listing/data/dish_listing_response.dart';
-import 'add_to_cart_response.dart';
+
 /// store_id : 1
 /// cartItems : [{"product_id":11,"quantity":2,"addons":[],"variants":[]},{"product_id":15,"quantity":2,"addons":[],"variants":[]}]
 /// address_id : null
@@ -13,17 +13,21 @@ import 'add_to_cart_response.dart';
 /// provider_code : "BHZ"
 /// location : {"lat":12.912922,"long":77.290929}
 
-AddToCartRequest addToCartRequestFromJson(String str) => AddToCartRequest.fromJson(json.decode(str));
-String addToCartRequestToJson(AddToCartRequest data) => json.encode(data.toJson());
+AddToCartRequest addToCartRequestFromJson(String str) =>
+    AddToCartRequest.fromJson(json.decode(str));
+String addToCartRequestToJson(AddToCartRequest data) =>
+    json.encode(data.toJson());
+
 class AddToCartRequest {
   AddToCartRequest({
-      num? storeId, 
-      List<CartItems>? cartItems, 
-      dynamic addressId, 
-      String? userId,
+    num? storeId,
+    List<CartItems>? cartItems,
+    dynamic addressId,
+    String? userId,
     String? deviceId,
-      String? providerCode, 
-      DeliveryLocation? location,}){
+    String? providerCode,
+    DeliveryLocation? location,
+  }) {
     _storeId = storeId;
     _cartItems = cartItems;
     _addressId = addressId;
@@ -31,7 +35,7 @@ class AddToCartRequest {
     _deviceId = deviceId;
     _providerCode = providerCode;
     _location = location;
-}
+  }
 
   AddToCartRequest.fromJson(dynamic json) {
     _storeId = json['store_id'];
@@ -45,7 +49,9 @@ class AddToCartRequest {
     _userId = json['user_id'];
     _deviceId = json['device_id'];
     _providerCode = json['provider_code'];
-    _location = json['location'] != null ? DeliveryLocation.fromJson(json['location']) : null;
+    _location = json['location'] != null
+        ? DeliveryLocation.fromJson(json['location'])
+        : null;
   }
   num? _storeId;
   List<CartItems>? _cartItems;
@@ -54,21 +60,24 @@ class AddToCartRequest {
   String? _deviceId;
   String? _providerCode;
   DeliveryLocation? _location;
-AddToCartRequest copyWith({  num? storeId,
-  List<CartItems>? cartItems,
-  dynamic addressId,
-  String? userId,
-  String? deviceId,
-  String? providerCode,
-  DeliveryLocation? location,
-}) => AddToCartRequest(  storeId: storeId ?? _storeId,
-  cartItems: cartItems ?? _cartItems,
-  addressId: addressId ?? _addressId,
-  userId: userId ?? _userId,
-  deviceId: deviceId ?? _deviceId,
-  providerCode: providerCode ?? _providerCode,
-  location: location ?? _location,
-);
+  AddToCartRequest copyWith({
+    num? storeId,
+    List<CartItems>? cartItems,
+    dynamic addressId,
+    String? userId,
+    String? deviceId,
+    String? providerCode,
+    DeliveryLocation? location,
+  }) =>
+      AddToCartRequest(
+        storeId: storeId ?? _storeId,
+        cartItems: cartItems ?? _cartItems,
+        addressId: addressId ?? _addressId,
+        userId: userId ?? _userId,
+        deviceId: deviceId ?? _deviceId,
+        providerCode: providerCode ?? _providerCode,
+        location: location ?? _location,
+      );
   num? get storeId => _storeId;
   List<CartItems>? get cartItems => _cartItems;
   dynamic get addressId => _addressId;
@@ -92,21 +101,23 @@ AddToCartRequest copyWith({  num? storeId,
     }
     return map;
   }
-
 }
 
 /// lat : 12.912922
 /// long : 77.290929
 
-DeliveryLocation locationFromJson(String str) => DeliveryLocation.fromJson(json.decode(str));
+DeliveryLocation locationFromJson(String str) =>
+    DeliveryLocation.fromJson(json.decode(str));
 String locationToJson(DeliveryLocation data) => json.encode(data.toJson());
+
 class DeliveryLocation {
   DeliveryLocation({
-      num? lat, 
-      num? long,}){
+    num? lat,
+    num? long,
+  }) {
     _lat = lat;
     _long = long;
-}
+  }
 
   DeliveryLocation.fromJson(dynamic json) {
     _lat = json['lat'];
@@ -114,11 +125,14 @@ class DeliveryLocation {
   }
   num? _lat;
   num? _long;
-DeliveryLocation copyWith({  num? lat,
-  num? long,
-}) => DeliveryLocation(  lat: lat ?? _lat,
-  long: long ?? _long,
-);
+  DeliveryLocation copyWith({
+    num? lat,
+    num? long,
+  }) =>
+      DeliveryLocation(
+        lat: lat ?? _lat,
+        long: long ?? _long,
+      );
   num? get lat => _lat;
   num? get long => _long;
 
@@ -128,7 +142,6 @@ DeliveryLocation copyWith({  num? lat,
     map['long'] = _long;
     return map;
   }
-
 }
 
 /// product_id : 11
@@ -138,19 +151,21 @@ DeliveryLocation copyWith({  num? lat,
 
 CartItems cartItemsFromJson(String str) => CartItems.fromJson(json.decode(str));
 String cartItemsToJson(CartItems data) => json.encode(data.toJson());
+
 class CartItems {
   CartItems({
-      num? productId, 
-      num? quantity,
+    num? productId,
+    num? quantity,
     int? storeId,
-      List<dynamic>? addons, 
-      List<dynamic>? variants,}){
+    List<dynamic>? addons,
+    List<dynamic>? variants,
+  }) {
     _productId = productId;
     _quantity = quantity;
     _addons = addons;
     _variants = variants;
     _storeId = storeId;
-}
+  }
 
   CartItems.fromJson(dynamic json) {
     _productId = json['product_id'];
@@ -174,17 +189,20 @@ class CartItems {
   int? _storeId;
   List<dynamic>? _addons;
   List<dynamic>? _variants;
-CartItems copyWith({  num? productId,
-  num? quantity,
-  int? storeId,
-  List<dynamic>? addons,
-  List<dynamic>? variants,
-}) => CartItems(  productId: productId ?? _productId,
-  quantity: quantity ?? _quantity,
-  storeId: storeId ?? _storeId,
-  addons: addons ?? _addons,
-  variants: variants ?? _variants,
-);
+  CartItems copyWith({
+    num? productId,
+    num? quantity,
+    int? storeId,
+    List<dynamic>? addons,
+    List<dynamic>? variants,
+  }) =>
+      CartItems(
+        productId: productId ?? _productId,
+        quantity: quantity ?? _quantity,
+        storeId: storeId ?? _storeId,
+        addons: addons ?? _addons,
+        variants: variants ?? _variants,
+      );
   num? get productId => _productId;
   num? get quantity => _quantity;
   int? get storeId => _storeId;
@@ -214,7 +232,6 @@ CartItems copyWith({  num? productId,
   void incrementQuantity() {
     _quantity = (_quantity ?? 0) + 1;
     debugPrint("quantity in increment ${quantity}");
-
   }
 
   void decrementQuantity() {
@@ -222,38 +239,34 @@ CartItems copyWith({  num? productId,
       _quantity = _quantity! - 1;
     }
     debugPrint("quantity in decreeeeement ${quantity}");
-
   }
 
   factory CartItems.fromDish(Restaurant dish) {
     return CartItems(
-      productId: dish.productId,
-      quantity: 1,
-      storeId: dish.storeId
-      // addons: dish.addons,
-      // variants: dish.variants,
-    );
+        productId: dish.productId, quantity: 1, storeId: dish.storeId
+        // addons: dish.addons,
+        // variants: dish.variants,
+        );
   }
 
   factory CartItems.fromDishList(Dishes dish) {
     return CartItems(
-      productId: dish.storeProducts?.productId,
-      quantity: 1,
+        productId: dish.storeProducts?.productId,
+        quantity: 1,
         storeId: dish.storeId
 
-      // addons: dish.addons,
-      // variants: dish.variants,
-    );
+        // addons: dish.addons,
+        // variants: dish.variants,
+        );
   }
 
   factory CartItems.fromCart(ViewCartItems dish) {
     return CartItems(
-        productId: dish.productId,
-        quantity: 1,
+      productId: dish.productId,
+      quantity: 1,
 
       // addons: dish.addons,
       // variants: dish.variants,
     );
   }
-
 }

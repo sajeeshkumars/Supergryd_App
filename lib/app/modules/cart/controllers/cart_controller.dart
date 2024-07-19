@@ -132,13 +132,12 @@ class CartController extends GetxController {
         isAddToCartLoading(false);
         addToCartResponse = value;
 
-
         /// 1 - Successfully added to cart 3- empty cart
 
         if (value.data?.statusCode == 1 || value.data?.statusCode == 3) {
           finalCartItems.addAll(cartItems);
           viewCart(context: context!);
-        }else{
+        } else {
           ScaffoldMessenger.of(context!).showSnackBar(
             SnackBar(content: Text(value.data!.statusMessage.toString())),
           );
@@ -170,9 +169,12 @@ class CartController extends GetxController {
       if (value.status == 200) {
         isViewCartLoading(false);
         viewCartResponse = value;
-        num cartCGST = viewCartResponse?.data?.cartMeta?.gSTDetails?.cartCGST ?? 0;
-        num cartSGST = viewCartResponse?.data?.cartMeta?.gSTDetails?.cartSGST ?? 0;
-        num packingCharge = viewCartResponse?.data?.cartMeta?.restaurantPackingCharge ?? 0;
+        num cartCGST =
+            viewCartResponse?.data?.cartMeta?.gSTDetails?.cartCGST ?? 0;
+        num cartSGST =
+            viewCartResponse?.data?.cartMeta?.gSTDetails?.cartSGST ?? 0;
+        num packingCharge =
+            viewCartResponse?.data?.cartMeta?.restaurantPackingCharge ?? 0;
 
         num total = cartCGST + cartSGST + packingCharge;
 
@@ -231,7 +233,6 @@ class CartController extends GetxController {
         isCreateOrderLoading(false);
         createOrderResponse = value;
 
-
         if (value.data?.statusCode == 1) {
           showDialog(
             barrierDismissible: false,
@@ -265,7 +266,6 @@ class CartController extends GetxController {
                                     onSuccess: () {
                                       showDialog(
                                         barrierDismissible: false,
-
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
@@ -284,9 +284,7 @@ class CartController extends GetxController {
                                                             MaterialPageRoute(
                                                                 builder:
                                                                     (context) =>
-                                                                        TrackOrderView(
-
-                                                                        )));
+                                                                        TrackOrderView()));
                                                       },
                                                       text: 'Track Order',
                                                     ),
@@ -326,11 +324,11 @@ class CartController extends GetxController {
               );
             },
           );
-        }else {
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content:
-                CommonText(text: value.data!.statusMessage.toString())),
+                    CommonText(text: value.data!.statusMessage.toString())),
           );
           isCreateOrderLoading(false);
         }
@@ -348,15 +346,13 @@ class CartController extends GetxController {
       "payment_method": "CASH",
     }).then((value) {
       if (value.status == 200) {
-
-
         isConfirmOrderLoading(false);
         cartItems.clear();
         finalCartItems.clear();
         productQuantities.clear();
         if (value.data?.statusCode == 1) {
           onSuccess();
-          if(orderTrackResponse?.status != 11 ){
+          if (orderTrackResponse?.status != 11) {
             Timer.periodic(Duration(seconds: 5), (timer) async {
               await trackOrder(
                   orderId: createOrderResponse!
@@ -364,15 +360,16 @@ class CartController extends GetxController {
                       .toInt(),
                   deviceId: viewCartResponse!.data!.deviceId.toString());
             });
-          }else if (orderTrackResponse?.status == 11){
+          } else if (orderTrackResponse?.status == 11) {
             debugPrint("stoping on top");
             orderTrackResponse = null;
             count = 1;
           }
-        }else{
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: CommonText(text: value.data!.statusMessage.toString())),
+                content:
+                    CommonText(text: value.data!.statusMessage.toString())),
           );
         }
       } else {
@@ -384,9 +381,8 @@ class CartController extends GetxController {
   Future trackOrder({required int orderId, required String deviceId}) async {
     isTrackOrderLoading(true);
 
-
     /// status 11 is delivered
-        if(!canceled.value){
+    if (!canceled.value) {
       if (orderTrackResponse?.status != 11) {
         count++;
 
@@ -424,7 +420,6 @@ class CartController extends GetxController {
         selectedReasonId.value = cancelReasons?.first.reasonId?.toInt() ?? 1;
       } else {
         isOrderCancelReasonsLoading(false);
-
       }
     });
   }
@@ -446,7 +441,7 @@ class CartController extends GetxController {
             content: Text(
           value.message.toString(),
         )));
-        if(value.data?.statusCode == 1){
+        if (value.data?.statusCode == 1) {
           canceled.value = true;
         }
 
