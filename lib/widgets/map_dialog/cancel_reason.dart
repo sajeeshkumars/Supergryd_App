@@ -115,12 +115,11 @@ class CancelReason extends StatelessWidget {
                                 Flexible(
                                     child: CommonText(
                                   text: isFromOrderTrack.value
-                                      ? cartController
-                                          .cancelReasons![index].reason
-                                          .toString()
-                                      : cabMapController
-                                          .cancelReasons![index].reason
-                                          .toString(),
+                                      ? (cartController
+                                          .cancelReasons?[index].reason
+                                          .toString() ?? "")
+                                      : (cabMapController
+                                          .cancelReasons?[index].reason ?? ""),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                 ))

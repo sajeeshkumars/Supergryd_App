@@ -21,7 +21,7 @@ class CabRepository implements CabService {
     RideTrackResponse rideTrackResponse;
     Response response = await apiService.reqst(
         urlType: UrlType.cab,
-        url: '/booking/track-ride?request_id=$requestId&otp=$otp',
+        url: 'booking/track-ride?request_id=$requestId&otp=$otp',
         method: Method.GET);
     log("trackRide ${response.statusCode}", name: "CABREPOSITORY");
 
@@ -56,7 +56,7 @@ class CabRepository implements CabService {
     CancelReasonsResponse cancelReasonsResponse;
     Response response = await apiService.reqst(
         urlType: UrlType.cab,
-        url: 'uber/v1/booking/cancel/reasons/rider',
+        url: 'booking/cancel/reasons/rider',
         method: Method.GET);
     log("rideCancelReasons ${response.statusCode}", name: "CABREPOSITORY");
 
@@ -72,7 +72,8 @@ class CabRepository implements CabService {
   Future<CancelResponse> cancelRide(Map<String, dynamic>? params) async {
     CancelResponse cancelResponse;
     Response response =
-        await apiService.reqst(url: 'ride-hail/ride-cancel', params: params);
+        await apiService.reqst(url: 'ride-hail/ride-cancel', params: params,
+        );
     log("cancelRide ${response.statusCode}", name: "CABREPOSITORY");
 
     try {

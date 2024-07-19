@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/track_order/data/models/order_track_response.dart';
 
 import '../../../../services/api_service.dart';
+import '../../../../services/config.dart';
 import 'order_track_service.dart';
 
 class OrderTrackRepository implements OrderTrackService {
@@ -12,8 +13,9 @@ class OrderTrackRepository implements OrderTrackService {
       {required int orderId, required String deviceId}) async {
     OrderTrackResponse orderTrackResponse;
     Response response = await apiServiceExternal.reqst(
+        urlType: UrlType.food,
         url:
-            'behrouzbiryani/v1/api/order-status-update?order_id=$orderId&device_id=$deviceId',
+            'api/order-status-update?order_id=$orderId&device_id=$deviceId',
         method: Method.GET);
     try {
       orderTrackResponse = OrderTrackResponse.fromJson(response.body);

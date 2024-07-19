@@ -6,6 +6,7 @@ import 'package:mynewpackage/app/modules/cart/data/models/create_order_response.
 import 'package:mynewpackage/app/modules/cart/data/models/view_cart_response.dart';
 
 import '../../../../services/api_service.dart';
+import '../../../../services/config.dart';
 import '../../cab/model/cancel_reasons_response.dart';
 import 'cart_service.dart';
 import 'models/cancel_order_response.dart';
@@ -78,7 +79,8 @@ class CartRepository implements CartService {
   Future<CancelReasonsResponse> orderCancelReasons() async {
     CancelReasonsResponse cancelReasonsResponse;
     Response response = await apiService.reqst(
-        url: 'behrouzbiryani/v1/api/cancel/reasons/user', method: Method.GET);
+        urlType: UrlType.food,
+        url: 'api/cancel/reasons/user', method: Method.GET);
     debugPrint(response.statusCode.toString());
     try {
       cancelReasonsResponse = CancelReasonsResponse.fromJson(response.body);

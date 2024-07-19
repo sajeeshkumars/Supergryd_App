@@ -133,7 +133,7 @@ class ApiService extends GetConnect implements GetxService {
       UrlType.base => (ConfigEnvironments.getEnvironments()['url']).toString(),
       UrlType.cab =>
         (ConfigEnvironments.getEnvironments()['cabUrl']).toString(),
-      UrlType.food => (ConfigEnvironments.getEnvironments()['url']).toString(),
+      UrlType.food => (ConfigEnvironments.getEnvironments()['foodUrl']).toString(),
     };
   }
 
