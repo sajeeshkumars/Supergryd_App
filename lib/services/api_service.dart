@@ -46,7 +46,7 @@ class ApiService extends GetConnect implements GetxService {
       Map<String, dynamic>? params}) async {
     Response response;
     try {
-      baseUrl = fetchBaseUrl(urlType);
+      url = fetchBaseUrl(urlType) + url;
 
       log("url is $baseUrl");
 
@@ -68,7 +68,7 @@ class ApiService extends GetConnect implements GetxService {
         debugPrint("\n\n");
         debugPrint(
             "============================================================================");
-        debugPrint("request url : ${baseUrl}$url");
+        debugPrint("request url : $url");
         debugPrint("\n\n");
         debugPrint(
             "============================================================================");
@@ -133,7 +133,8 @@ class ApiService extends GetConnect implements GetxService {
       UrlType.base => (ConfigEnvironments.getEnvironments()['url']).toString(),
       UrlType.cab =>
         (ConfigEnvironments.getEnvironments()['cabUrl']).toString(),
-      UrlType.food => (ConfigEnvironments.getEnvironments()['foodUrl']).toString(),
+      UrlType.food =>
+        (ConfigEnvironments.getEnvironments()['foodUrl']).toString(),
     };
   }
 
@@ -144,7 +145,7 @@ class ApiService extends GetConnect implements GetxService {
     Response response;
     try {
       bool result = await InternetConnectionChecker().hasConnection;
-      baseUrl = fetchBaseUrl(UrlType.base);
+      url = fetchBaseUrl(UrlType.base) + url;
 
       if (result == true) {
         // if (storage.isAuthenticated()) {
@@ -153,7 +154,7 @@ class ApiService extends GetConnect implements GetxService {
         }
         response = await post(url, params, headers: _authenticationHeaders);
 
-        debugPrint("request url : ${baseUrl}$url");
+        debugPrint("request url : $url");
         debugPrint("request : $params");
         debugPrint("headers : $_authenticationHeaders");
         debugPrint("headers : ${Constants.secrete}");
