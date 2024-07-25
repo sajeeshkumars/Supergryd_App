@@ -69,26 +69,46 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          StoryWidget(storyData: [
-            SuperGrydStory(
-                storyData: [
-                  SuperGrydStoryData(
-                      imageUrl:
-                          "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?cs=srgb&dl=pexels-chloekalaartist-1043471.jpg&fm=jpg&w=640&h=960",
-                      title: "Story 1")
-                ],
-                thumbUrl:
-                    "https://images.pexels.com/photos/16715674/pexels-photo-16715674.jpeg?cs=srgb&dl=pexels-stephen-noulton-421904730-16715674.jpg&fm=jpg&w=640&h=640"),
-            SuperGrydStory(
-                storyData: [
-                  SuperGrydStoryData(
-                      imageUrl:
-                          "https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?cs=srgb&dl=pexels-jack-winbow-460463-1559486.jpg&fm=jpg&w=640&h=960",
-                      title: "Story 2")
-                ],
-                thumbUrl:
-                    "https://images.pexels.com/photos/10311994/pexels-photo-10311994.jpeg?cs=srgb&dl=pexels-nurlantortbayev-10311994.jpg&fm=jpg&w=640&h=640"),
-          ]),
+          StoryWidget(
+            storyData: [
+              // SuperGrydStory(
+              //     storyData: [
+              //       SuperGrydStoryData(
+              //           imageUrl:
+              //               "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?cs=srgb&dl=pexels-chloekalaartist-1043471.jpg&fm=jpg&w=640&h=960",
+              //           title: "Story 1")
+              //     ],
+              //     thumbUrl:
+              //         "https://images.pexels.com/photos/16715674/pexels-photo-16715674.jpeg?cs=srgb&dl=pexels-stephen-noulton-421904730-16715674.jpg&fm=jpg&w=640&h=640"),
+              // SuperGrydStory(
+              //     storyData: [
+              //       SuperGrydStoryData(
+              //           imageUrl:
+              //               "https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?cs=srgb&dl=pexels-jack-winbow-460463-1559486.jpg&fm=jpg&w=640&h=960",
+              //           title: "Story 2")
+              //     ],
+              //     thumbUrl:
+              //         "https://images.pexels.com/photos/10311994/pexels-photo-10311994.jpeg?cs=srgb&dl=pexels-nurlantortbayev-10311994.jpg&fm=jpg&w=640&h=640"),
+              SuperGrydStory(
+                  storyData: [
+                    SuperGrydStoryData(
+                        imageUrl:
+                            "https://images.pexels.com/photos/16715674/pexels-photo-16715674.jpeg?cs=srgb&dl=pexels-stephen-noulton-421904730-16715674.jpg&fm=jpg&w=640&h=640",
+                        title: "Story 1")
+                  ],
+                  thumbUrl:
+                      "https://images.pexels.com/photos/16715674/pexels-photo-16715674.jpeg?cs=srgb&dl=pexels-stephen-noulton-421904730-16715674.jpg&fm=jpg&w=640&h=640"),
+              SuperGrydStory(
+                  storyData: [
+                    SuperGrydStoryData(
+                        imageUrl:
+                            "https://images.pexels.com/photos/10311994/pexels-photo-10311994.jpeg?cs=srgb&dl=pexels-nurlantortbayev-10311994.jpg&fm=jpg&w=640&h=640",
+                        title: "Story 2")
+                  ],
+                  thumbUrl:
+                      "https://images.pexels.com/photos/10311994/pexels-photo-10311994.jpeg?cs=srgb&dl=pexels-nurlantortbayev-10311994.jpg&fm=jpg&w=640&h=640"),
+            ],
+          ),
           Center(
             child: ElevatedButton(
                 onPressed: () {
