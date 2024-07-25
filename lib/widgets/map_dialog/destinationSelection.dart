@@ -181,14 +181,15 @@ class DestinationSelection extends StatelessWidget {
                 SizedBox(
                   height: 150,
                   child: ListView.builder(
-                    itemCount: 2,
+                    itemCount: controller.addressHeading.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return const ListTile(
+                      return  ListTile(
                         leading: Icon(Icons.location_on_outlined),
                         title: CommonText(
-                          text: "Heckenackerstraße 18, 75365 Berlin, Germany",
+                          text: controller.addressHeading[index],
+                          fontWeight: FontWeight.w600,
                         ),
-                        subtitle: CommonText(text: "dummy text"),
+                        subtitle: CommonText(text: controller.addressDescription[index]),
                       );
                     },
                   ),

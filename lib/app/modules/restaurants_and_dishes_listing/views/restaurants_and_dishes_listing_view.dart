@@ -500,80 +500,86 @@ class _DishCardState extends State<DishCard> {
 
 
   void _incrementCount() {
+    if(cartController.viewCartResponse?.data?.statusCode != 3){
+      RxBool isSameShop = (cartController.cartItems.isEmpty ||
+          cartController.cartItems.first.storeId == widget.storeId).obs;
 
-    bool isSameShop = cartController.cartItems.isEmpty || cartController.cartItems.first.storeId == widget.storeId;
+      debugPrint("same shop ${isSameShop}");
 
-    if (!isSameShop) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: CommonText(text: 'Items from different shop, cart will be discarded'),
-            actions: [
-              Row(
-                children: [
-                  Expanded(
-                    child: CommonButton(
-                      onPressed: () async {
-                        Navigator.pop(context);
-                      },
-                      text: 'No',
+      if (!isSameShop.value) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: CommonText(
+                  text: 'Items from different shop, cart will be discarded'),
+              actions: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: CommonButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                        },
+                        text: 'No',
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 5),
-                  Expanded(
-                    child: CommonButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        cartController.cartItems.clear();
-                        cartController.productQuantities.clear();
-                        cartController.finalCartItems.clear();
+                    SizedBox(width: 5),
+                    Expanded(
+                      child: CommonButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          cartController.cartItems.clear();
+                          cartController.productQuantities.clear();
+                          cartController.finalCartItems.clear();
 
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((_) async {
+                            await cartController
+                                .addToCart(
+                                    context: context, storeId: widget.storeId)
+                                .then((_) {
+                              if (cartController
+                                      .addToCartResponse?.data?.statusCode ==
+                                  1) {
+                                // if(cartController.productQuantities.containsKey(widget.restaurant?.productId) == true){
+                                // int qty =  cartController.productQuantities[widget.restaurant?.productId] ?? 1;
+                                // cartController.productQuantities[widget.restaurant!.productId!.toInt()] = qty + 1;
+                                //
+                                // }else{
+                                //   cartController.productQuantities[widget.restaurant!.productId!.toInt()] =  1;
+                                // }
+                                // widget.count.value = 1;
+                                debugPrint(
+                                    "product quantities ${cartController.productQuantities}");
+                                cartController.productQuantities[
+                                    !widget.isDishes
+                                        ? widget.restaurant!.productId!.toInt()
+                                        : widget.dish!.storeProducts!.productId!
+                                            .toInt()] = 1;
+                              }
+                            });
 
-
-                        WidgetsBinding.instance.addPostFrameCallback((_) async {
-                         await cartController
-                              .addToCart(
-                                  context: context, storeId: widget.storeId)
-                              .then((_) {
-                            if (cartController
-                                    .addToCartResponse?.data?.statusCode ==
-                                1) {
-                              // if(cartController.productQuantities.containsKey(widget.restaurant?.productId) == true){
-                              // int qty =  cartController.productQuantities[widget.restaurant?.productId] ?? 1;
-                              // cartController.productQuantities[widget.restaurant!.productId!.toInt()] = qty + 1;
-                              //
-                              // }else{
-                              //   cartController.productQuantities[widget.restaurant!.productId!.toInt()] =  1;
-                              // }
-                              // widget.count.value = 1;
-                              debugPrint(
-                                  "product quantities ${cartController.productQuantities}");
-                              cartController.productQuantities[!widget.isDishes
-                                  ? widget.restaurant!.productId!.toInt()
-                                  : widget.dish!.storeProducts!.productId!
-                                      .toInt()] = 1;
+                            if (!widget.isDishes) {
+                              cartController
+                                  .addProductToCart(widget.restaurant!);
+                            } else {
+                              cartController
+                                  .addProductToCartFromListing(widget.dish!);
                             }
                           });
-
-                          if (!widget.isDishes) {
-                            cartController.addProductToCart(widget.restaurant!);
-                          } else {
-                            cartController
-                                .addProductToCartFromListing(widget.dish!);
-                          }
-                          });
-                      },
-                      text: 'Replace',
+                        },
+                        text: 'Yes',
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
-      );
-      return;
+                  ],
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
     }
 
     if (!widget.isDishes) {
@@ -585,7 +591,7 @@ class _DishCardState extends State<DishCard> {
     cartController.addToCart(context: context, storeId: widget.storeId).then((_) {
       if (cartController.addToCartResponse?.data?.statusCode == 1) {
         // widget.count.value++;
-        cartController.productQuantities[int.tryParse((widget.isDishes ? widget.dish?.storeProducts?.productId ?? 0: widget.restaurant?.productId ?? 0).toString()) ?? 0]!+1;
+        (cartController.productQuantities[int.tryParse((widget.isDishes ? widget.dish?.storeProducts?.productId ?? 0: widget.restaurant?.productId ?? 0).toString()) ?? 0]) ?? 0 +1;
       }
     });
   }

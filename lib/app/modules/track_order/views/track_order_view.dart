@@ -21,10 +21,13 @@ class TrackOrderView extends GetView<TrackOrderController> {
 
     debugPrint("cart count in track order ${cartController.viewCartResponse?.data?.cartItmes?.length}");
     return PopScope(
+      canPop: false,
       child: Scaffold(
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(150.0), // here the desired height
             child: AppBar(
+              automaticallyImplyLeading: false,
+
               foregroundColor: AppColors.white,
               backgroundColor: AppColors.primaryColor,
               flexibleSpace: Obx(
@@ -152,7 +155,21 @@ class TrackOrderView extends GetView<TrackOrderController> {
                                       (context) =>
                                           CancelReason(isFromOrderTrack: true.obs,)));
                           }, text: 'Cancel Order',),
-                        ):SizedBox.shrink()
+                        ):SizedBox.shrink(),
+                        SizedBox(height: 5,),
+
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CommonButton(onPressed: (){
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+
+                          }, text: 'Back to Service',),
+                        ),
 
 
                       ],

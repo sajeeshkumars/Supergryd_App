@@ -18,7 +18,7 @@ class CabMapController extends GetxController {
 
   Rx<int> markerIndex = 0.obs;
   final Set<Polyline> polylines = {};
-  RxBool canExit = true.obs;
+  RxBool canExit = false.obs;
   CabRepository cabRepository = CabRepository();
   RideTrackResponse? trackResponse;
   RxBool rideCompleted = false.obs;
@@ -320,7 +320,7 @@ class CabMapController extends GetxController {
         isRideCancelLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
-          value.message.toString(),
+          value.message == 'Success.'?'Ride has been cancelled':"",
         )));
         Navigator.pop(context);
         Navigator.pop(context);

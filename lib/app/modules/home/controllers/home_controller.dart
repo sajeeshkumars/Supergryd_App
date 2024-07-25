@@ -243,12 +243,13 @@ class HomeController extends GetxController {
                               padding: const EdgeInsets.all(8.0),
                               child: InkWell(
                                 onTap: () {
-                                  selectedPickUp.value =
-                                      addressDescription[index].toString();
+
 
                                   controller?.restaurantList.clear();
                                   controller?.dishList.clear();
                                   address.value =
+                                      addressDescription[index].toString();
+                                  selectedPickUp.value =
                                       addressDescription[index].toString();
                                   debugPrint('value ${address.value}');
                                   selectedLocationCoordinates.value =
@@ -356,6 +357,9 @@ class HomeController extends GetxController {
                                     selectedPickupCoordinates.value =
                                         locationCoordinates[
                                             addressHeading[index]];
+                                    if(isDestinationSelected.value == true){
+                                      getEstimations();
+                                    }
                                   } else {
                                     selectedDropOff.value =
                                         addressDescription[index].toString();
@@ -745,7 +749,7 @@ class HomeController extends GetxController {
         // "long": "76.321888",
         "long": selectedPickupCoordinates['long'],
         // "address": "Devalokam,Thevakal"
-        "address": selectedPickUp.value
+        "address": address.value
       },
       "end_location": {
         // "lat": "10.064588",
@@ -776,7 +780,7 @@ class HomeController extends GetxController {
       } else {
         if (value.status == 400) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Booking Failed")));
+              .showSnackBar(SnackBar(content: Text(value.message.toString())));
         } else {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(value.message.toString())));
@@ -797,5 +801,6 @@ class HomeController extends GetxController {
     fareId = "".obs;
     price = 0.0.obs;
     estimationList.clear();
+    isDestinationSelected = false.obs;
   }
 }
