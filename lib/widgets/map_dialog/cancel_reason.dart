@@ -11,12 +11,12 @@ import '../common_text.dart';
 class CancelReason extends StatelessWidget {
   CancelReason({super.key, required this.isFromOrderTrack});
 
-  CabMapController cabMapController = Get.find();
-  CartController cartController = Get.find();
   RxBool isFromOrderTrack = false.obs;
 
   @override
   Widget build(BuildContext context) {
+    CabMapController cabMapController = Get.find();
+    CartController cartController = Get.find();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -116,10 +116,12 @@ class CancelReason extends StatelessWidget {
                                     child: CommonText(
                                   text: isFromOrderTrack.value
                                       ? (cartController
-                                          .cancelReasons?[index].reason
-                                          .toString() ?? "")
+                                              .cancelReasons?[index].reason
+                                              .toString() ??
+                                          "")
                                       : (cabMapController
-                                          .cancelReasons?[index].reason ?? ""),
+                                              .cancelReasons?[index].reason ??
+                                          ""),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                 ))
