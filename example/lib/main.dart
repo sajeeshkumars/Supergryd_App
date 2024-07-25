@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:mynewpackage/model/super_gryd_story.dart';
 import 'package:mynewpackage/mynewpackage.dart';
+import 'package:mynewpackage/widgets/story_widget.dart';
 import 'package:mynewpackage/widgets/super_gryd_app.dart';
 
 void main() {
@@ -65,19 +67,43 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const MyPackage(
+      body: Column(
+        children: [
+          StoryWidget(storyData: [
+            SuperGrydStory(
+                storyData: [
+                  SuperGrydStoryData(
+                      imageUrl:
+                          "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?cs=srgb&dl=pexels-chloekalaartist-1043471.jpg&fm=jpg&w=640&h=960",
+                      title: "Story 1")
+                ],
+                thumbUrl:
+                    "https://images.pexels.com/photos/16715674/pexels-photo-16715674.jpeg?cs=srgb&dl=pexels-stephen-noulton-421904730-16715674.jpg&fm=jpg&w=640&h=640"),
+            SuperGrydStory(
+                storyData: [
+                  SuperGrydStoryData(
+                      imageUrl:
+                          "https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?cs=srgb&dl=pexels-jack-winbow-460463-1559486.jpg&fm=jpg&w=640&h=960",
+                      title: "Story 2")
+                ],
+                thumbUrl:
+                    "https://images.pexels.com/photos/10311994/pexels-photo-10311994.jpeg?cs=srgb&dl=pexels-nurlantortbayev-10311994.jpg&fm=jpg&w=640&h=640"),
+          ]),
+          Center(
+            child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const MyPackage(
 
-                      // clientId: 'SGD_test_55be429e-485b-45c2-b281-3f818d32769a',
-                      // clientSecrete: 'SGD_test_8a680b2b-f8d0-491a-8346-63f3a2cace04',
-                      // name: '',
-                      // mobile: '',
-                      )));
-            },
-            child: const Text("Go to myPackage")),
+                          // clientId: 'SGD_test_55be429e-485b-45c2-b281-3f818d32769a',
+                          // clientSecrete: 'SGD_test_8a680b2b-f8d0-491a-8346-63f3a2cace04',
+                          // name: '',
+                          // mobile: '',
+                          )));
+                },
+                child: const Text("Go to myPackage")),
+          ),
+        ],
       ),
     );
   }

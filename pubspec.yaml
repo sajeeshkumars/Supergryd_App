@@ -38,7 +38,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   crypto: ^3.0.1
   pointycastle: ^3.3.0
-
+  story: ^1.1.0
 
 dev_dependencies:
   flutter_test:
