@@ -243,8 +243,6 @@ class HomeController extends GetxController {
                               padding: const EdgeInsets.all(8.0),
                               child: InkWell(
                                 onTap: () {
-
-
                                   controller?.restaurantList.clear();
                                   controller?.dishList.clear();
                                   address.value =
@@ -357,7 +355,7 @@ class HomeController extends GetxController {
                                     selectedPickupCoordinates.value =
                                         locationCoordinates[
                                             addressHeading[index]];
-                                    if(isDestinationSelected.value == true){
+                                    if (isDestinationSelected.value == true) {
                                       getEstimations();
                                     }
                                   } else {
@@ -545,6 +543,15 @@ class HomeController extends GetxController {
     isLoadingServices(true);
     await homeRepository.getServiceList().then((value) {
       if (value.data?.serviceCategories != [] && (value.status == 200)) {
+        AppColors.primaryColor =
+            fromHex(value.data!.themes!.first.primaryColor.toString());
+        AppColors.accentColor =
+            fromHex(value.data!.themes!.first.accentColor.toString());
+        debugPrint("color ${AppColors.primaryColor}");
+        colorController.updateColors(
+          value.data!.themes!.first.primaryColor.toString(),
+          value.data!.themes!.first.accentColor.toString(),
+        );
         serviceList.addAll(value.data?.serviceCategories ?? []);
         // debugPrint("list service ${serviceList.first.categoryName}");
         isLoadingServices(false);

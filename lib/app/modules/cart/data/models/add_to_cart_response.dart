@@ -1,49 +1,64 @@
 import 'dart:convert';
+
 /// status : 200
 /// message : "Success."
 /// data : {"statusCode":1,"statusMessage":"CART_UPDATED_SUCCESSFULLY","device_id":"00b71b8ae744fe9f72627fdd7b511c34","store_id":2,"cartItmes":[{"productId":71,"in_stock":1,"is_error":false,"allowed_quantity":6,"quantity":1,"name":"Veggie Supreme","is_veg":1,"product_imageUrl":"https://supergrydapi.ritikasingh.site/uploads/dish/veggie-supreme.jpg","final_price":99.99,"effective_item_price":123.99,"packing_charge":19,"item_taxes":{"service_tax":0,"vat":0,"service_charges":0,"GST":5},"subtotal":99.99,"total":118.99,"added_by_user_id":-1,"added_by_user_name":"","addons":[],"addons_price":null,"subtotal_coupon_discount":0}],"cartMeta":{"GST_details":{"cart_CGST":2.98,"cart_SGST":2.98,"cart_IGST":0,"external_GST":0,"item_CGST":2.5,"item_SGST":2.5,"item_IGST":0,"packaging_CGST":0.48,"packaging_SGST":0.48,"packaging_IGST":0,"service_charge_CGST":0,"service_charge_IGST":0,"service_charge_SGST":0},"cart_subtotal":118.99,"cart_subtotal_without_packing":99.99,"cart_total":124.95,"cart_total_count":1,"delivery_charges":50,"cartId":2790213019}}
 
-AddToCartResponse addToCartResponseFromJson(String str) => AddToCartResponse.fromJson(json.decode(str));
-String addToCartResponseToJson(AddToCartResponse data) => json.encode(data.toJson());
+AddToCartResponse addToCartResponseFromJson(String str) =>
+    AddToCartResponse.fromJson(json.decode(str));
+String addToCartResponseToJson(AddToCartResponse data) =>
+    json.encode(data.toJson());
+
 class AddToCartResponse {
   AddToCartResponse({
-      num? status, 
-      String? message, 
-      Data? data,}){
+    num? status,
+    String? message,
+    String? messages,
+    Data? data,
+  }) {
     _status = status;
     _message = message;
+    _messages = messages;
     _data = data;
-}
+  }
 
   AddToCartResponse.fromJson(dynamic json) {
     _status = json['status'];
     _message = json['message'];
+    _messages = json['messages'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   num? _status;
   String? _message;
+  String? _messages;
   Data? _data;
-AddToCartResponse copyWith({  num? status,
-  String? message,
-  Data? data,
-}) => AddToCartResponse(  status: status ?? _status,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+  AddToCartResponse copyWith({
+    num? status,
+    String? message,
+    String? messages,
+    Data? data,
+  }) =>
+      AddToCartResponse(
+        status: status ?? _status,
+        message: message ?? _message,
+        messages: messages ?? _messages,
+        data: data ?? _data,
+      );
   num? get status => _status;
   String? get message => _message;
+  String? get messages => _messages;
   Data? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = _status;
     map['message'] = _message;
+    map['messages'] = _messages;
     if (_data != null) {
       map['data'] = _data?.toJson();
     }
     return map;
   }
-
 }
 
 /// statusCode : 1
@@ -55,21 +70,23 @@ AddToCartResponse copyWith({  num? status,
 
 Data dataFromJson(String str) => Data.fromJson(json.decode(str));
 String dataToJson(Data data) => json.encode(data.toJson());
+
 class Data {
   Data({
-      num? statusCode, 
-      String? statusMessage, 
-      String? deviceId, 
-      num? storeId, 
-      List<CartItmes>? cartItmes, 
-      CartMeta? cartMeta,}){
+    num? statusCode,
+    String? statusMessage,
+    String? deviceId,
+    num? storeId,
+    List<CartItmes>? cartItmes,
+    CartMeta? cartMeta,
+  }) {
     _statusCode = statusCode;
     _statusMessage = statusMessage;
     _deviceId = deviceId;
     _storeId = storeId;
     _cartItmes = cartItmes;
     _cartMeta = cartMeta;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _statusCode = json['statusCode'];
@@ -82,7 +99,8 @@ class Data {
         _cartItmes?.add(CartItmes.fromJson(v));
       });
     }
-    _cartMeta = json['cartMeta'] != null ? CartMeta.fromJson(json['cartMeta']) : null;
+    _cartMeta =
+        json['cartMeta'] != null ? CartMeta.fromJson(json['cartMeta']) : null;
   }
   num? _statusCode;
   String? _statusMessage;
@@ -90,19 +108,22 @@ class Data {
   num? _storeId;
   List<CartItmes>? _cartItmes;
   CartMeta? _cartMeta;
-Data copyWith({  num? statusCode,
-  String? statusMessage,
-  String? deviceId,
-  num? storeId,
-  List<CartItmes>? cartItmes,
-  CartMeta? cartMeta,
-}) => Data(  statusCode: statusCode ?? _statusCode,
-  statusMessage: statusMessage ?? _statusMessage,
-  deviceId: deviceId ?? _deviceId,
-  storeId: storeId ?? _storeId,
-  cartItmes: cartItmes ?? _cartItmes,
-  cartMeta: cartMeta ?? _cartMeta,
-);
+  Data copyWith({
+    num? statusCode,
+    String? statusMessage,
+    String? deviceId,
+    num? storeId,
+    List<CartItmes>? cartItmes,
+    CartMeta? cartMeta,
+  }) =>
+      Data(
+        statusCode: statusCode ?? _statusCode,
+        statusMessage: statusMessage ?? _statusMessage,
+        deviceId: deviceId ?? _deviceId,
+        storeId: storeId ?? _storeId,
+        cartItmes: cartItmes ?? _cartItmes,
+        cartMeta: cartMeta ?? _cartMeta,
+      );
   num? get statusCode => _statusCode;
   String? get statusMessage => _statusMessage;
   String? get deviceId => _deviceId;
@@ -124,7 +145,6 @@ Data copyWith({  num? statusCode,
     }
     return map;
   }
-
 }
 
 /// GST_details : {"cart_CGST":2.98,"cart_SGST":2.98,"cart_IGST":0,"external_GST":0,"item_CGST":2.5,"item_SGST":2.5,"item_IGST":0,"packaging_CGST":0.48,"packaging_SGST":0.48,"packaging_IGST":0,"service_charge_CGST":0,"service_charge_IGST":0,"service_charge_SGST":0}
@@ -137,15 +157,17 @@ Data copyWith({  num? statusCode,
 
 CartMeta cartMetaFromJson(String str) => CartMeta.fromJson(json.decode(str));
 String cartMetaToJson(CartMeta data) => json.encode(data.toJson());
+
 class CartMeta {
   CartMeta({
-      GstDetails? gSTDetails, 
-      num? cartSubtotal, 
-      num? cartSubtotalWithoutPacking, 
-      num? cartTotal, 
-      num? cartTotalCount, 
-      num? deliveryCharges, 
-      num? cartId,}){
+    GstDetails? gSTDetails,
+    num? cartSubtotal,
+    num? cartSubtotalWithoutPacking,
+    num? cartTotal,
+    num? cartTotalCount,
+    num? deliveryCharges,
+    num? cartId,
+  }) {
     _gSTDetails = gSTDetails;
     _cartSubtotal = cartSubtotal;
     _cartSubtotalWithoutPacking = cartSubtotalWithoutPacking;
@@ -153,10 +175,12 @@ class CartMeta {
     _cartTotalCount = cartTotalCount;
     _deliveryCharges = deliveryCharges;
     _cartId = cartId;
-}
+  }
 
   CartMeta.fromJson(dynamic json) {
-    _gSTDetails = json['GST_details'] != null ? GstDetails.fromJson(json['GST_details']) : null;
+    _gSTDetails = json['GST_details'] != null
+        ? GstDetails.fromJson(json['GST_details'])
+        : null;
     _cartSubtotal = json['cart_subtotal'];
     _cartSubtotalWithoutPacking = json['cart_subtotal_without_packing'];
     _cartTotal = json['cart_total'];
@@ -171,21 +195,25 @@ class CartMeta {
   num? _cartTotalCount;
   num? _deliveryCharges;
   num? _cartId;
-CartMeta copyWith({  GstDetails? gSTDetails,
-  num? cartSubtotal,
-  num? cartSubtotalWithoutPacking,
-  num? cartTotal,
-  num? cartTotalCount,
-  num? deliveryCharges,
-  num? cartId,
-}) => CartMeta(  gSTDetails: gSTDetails ?? _gSTDetails,
-  cartSubtotal: cartSubtotal ?? _cartSubtotal,
-  cartSubtotalWithoutPacking: cartSubtotalWithoutPacking ?? _cartSubtotalWithoutPacking,
-  cartTotal: cartTotal ?? _cartTotal,
-  cartTotalCount: cartTotalCount ?? _cartTotalCount,
-  deliveryCharges: deliveryCharges ?? _deliveryCharges,
-  cartId: cartId ?? _cartId,
-);
+  CartMeta copyWith({
+    GstDetails? gSTDetails,
+    num? cartSubtotal,
+    num? cartSubtotalWithoutPacking,
+    num? cartTotal,
+    num? cartTotalCount,
+    num? deliveryCharges,
+    num? cartId,
+  }) =>
+      CartMeta(
+        gSTDetails: gSTDetails ?? _gSTDetails,
+        cartSubtotal: cartSubtotal ?? _cartSubtotal,
+        cartSubtotalWithoutPacking:
+            cartSubtotalWithoutPacking ?? _cartSubtotalWithoutPacking,
+        cartTotal: cartTotal ?? _cartTotal,
+        cartTotalCount: cartTotalCount ?? _cartTotalCount,
+        deliveryCharges: deliveryCharges ?? _deliveryCharges,
+        cartId: cartId ?? _cartId,
+      );
   GstDetails? get gSTDetails => _gSTDetails;
   num? get cartSubtotal => _cartSubtotal;
   num? get cartSubtotalWithoutPacking => _cartSubtotalWithoutPacking;
@@ -207,7 +235,6 @@ CartMeta copyWith({  GstDetails? gSTDetails,
     map['cartId'] = _cartId;
     return map;
   }
-
 }
 
 /// cart_CGST : 2.98
@@ -224,23 +251,26 @@ CartMeta copyWith({  GstDetails? gSTDetails,
 /// service_charge_IGST : 0
 /// service_charge_SGST : 0
 
-GstDetails gstDetailsFromJson(String str) => GstDetails.fromJson(json.decode(str));
+GstDetails gstDetailsFromJson(String str) =>
+    GstDetails.fromJson(json.decode(str));
 String gstDetailsToJson(GstDetails data) => json.encode(data.toJson());
+
 class GstDetails {
   GstDetails({
-      num? cartCGST, 
-      num? cartSGST, 
-      num? cartIGST, 
-      num? externalGST, 
-      num? itemCGST, 
-      num? itemSGST, 
-      num? itemIGST, 
-      num? packagingCGST, 
-      num? packagingSGST, 
-      num? packagingIGST, 
-      num? serviceChargeCGST, 
-      num? serviceChargeIGST, 
-      num? serviceChargeSGST,}){
+    num? cartCGST,
+    num? cartSGST,
+    num? cartIGST,
+    num? externalGST,
+    num? itemCGST,
+    num? itemSGST,
+    num? itemIGST,
+    num? packagingCGST,
+    num? packagingSGST,
+    num? packagingIGST,
+    num? serviceChargeCGST,
+    num? serviceChargeIGST,
+    num? serviceChargeSGST,
+  }) {
     _cartCGST = cartCGST;
     _cartSGST = cartSGST;
     _cartIGST = cartIGST;
@@ -254,7 +284,7 @@ class GstDetails {
     _serviceChargeCGST = serviceChargeCGST;
     _serviceChargeIGST = serviceChargeIGST;
     _serviceChargeSGST = serviceChargeSGST;
-}
+  }
 
   GstDetails.fromJson(dynamic json) {
     _cartCGST = json['cart_CGST'];
@@ -284,33 +314,36 @@ class GstDetails {
   num? _serviceChargeCGST;
   num? _serviceChargeIGST;
   num? _serviceChargeSGST;
-GstDetails copyWith({  num? cartCGST,
-  num? cartSGST,
-  num? cartIGST,
-  num? externalGST,
-  num? itemCGST,
-  num? itemSGST,
-  num? itemIGST,
-  num? packagingCGST,
-  num? packagingSGST,
-  num? packagingIGST,
-  num? serviceChargeCGST,
-  num? serviceChargeIGST,
-  num? serviceChargeSGST,
-}) => GstDetails(  cartCGST: cartCGST ?? _cartCGST,
-  cartSGST: cartSGST ?? _cartSGST,
-  cartIGST: cartIGST ?? _cartIGST,
-  externalGST: externalGST ?? _externalGST,
-  itemCGST: itemCGST ?? _itemCGST,
-  itemSGST: itemSGST ?? _itemSGST,
-  itemIGST: itemIGST ?? _itemIGST,
-  packagingCGST: packagingCGST ?? _packagingCGST,
-  packagingSGST: packagingSGST ?? _packagingSGST,
-  packagingIGST: packagingIGST ?? _packagingIGST,
-  serviceChargeCGST: serviceChargeCGST ?? _serviceChargeCGST,
-  serviceChargeIGST: serviceChargeIGST ?? _serviceChargeIGST,
-  serviceChargeSGST: serviceChargeSGST ?? _serviceChargeSGST,
-);
+  GstDetails copyWith({
+    num? cartCGST,
+    num? cartSGST,
+    num? cartIGST,
+    num? externalGST,
+    num? itemCGST,
+    num? itemSGST,
+    num? itemIGST,
+    num? packagingCGST,
+    num? packagingSGST,
+    num? packagingIGST,
+    num? serviceChargeCGST,
+    num? serviceChargeIGST,
+    num? serviceChargeSGST,
+  }) =>
+      GstDetails(
+        cartCGST: cartCGST ?? _cartCGST,
+        cartSGST: cartSGST ?? _cartSGST,
+        cartIGST: cartIGST ?? _cartIGST,
+        externalGST: externalGST ?? _externalGST,
+        itemCGST: itemCGST ?? _itemCGST,
+        itemSGST: itemSGST ?? _itemSGST,
+        itemIGST: itemIGST ?? _itemIGST,
+        packagingCGST: packagingCGST ?? _packagingCGST,
+        packagingSGST: packagingSGST ?? _packagingSGST,
+        packagingIGST: packagingIGST ?? _packagingIGST,
+        serviceChargeCGST: serviceChargeCGST ?? _serviceChargeCGST,
+        serviceChargeIGST: serviceChargeIGST ?? _serviceChargeIGST,
+        serviceChargeSGST: serviceChargeSGST ?? _serviceChargeSGST,
+      );
   num? get cartCGST => _cartCGST;
   num? get cartSGST => _cartSGST;
   num? get cartIGST => _cartIGST;
@@ -342,7 +375,6 @@ GstDetails copyWith({  num? cartCGST,
     map['service_charge_SGST'] = _serviceChargeSGST;
     return map;
   }
-
 }
 
 /// productId : 71
@@ -367,27 +399,29 @@ GstDetails copyWith({  num? cartCGST,
 
 CartItmes cartItmesFromJson(String str) => CartItmes.fromJson(json.decode(str));
 String cartItmesToJson(CartItmes data) => json.encode(data.toJson());
+
 class CartItmes {
   CartItmes({
-      num? productId, 
-      num? inStock, 
-      bool? isError, 
-      num? allowedQuantity, 
-      num? quantity, 
-      String? name, 
-      num? isVeg, 
-      String? productImageUrl, 
-      num? finalPrice, 
-      num? effectiveItemPrice, 
-      num? packingCharge, 
-      ItemTaxes? itemTaxes, 
-      num? subtotal, 
-      num? total, 
-      num? addedByUserId, 
-      String? addedByUserName, 
-      List<dynamic>? addons, 
-      dynamic addonsPrice, 
-      num? subtotalCouponDiscount,}){
+    num? productId,
+    num? inStock,
+    bool? isError,
+    num? allowedQuantity,
+    num? quantity,
+    String? name,
+    num? isVeg,
+    String? productImageUrl,
+    num? finalPrice,
+    num? effectiveItemPrice,
+    num? packingCharge,
+    ItemTaxes? itemTaxes,
+    num? subtotal,
+    num? total,
+    num? addedByUserId,
+    String? addedByUserName,
+    List<dynamic>? addons,
+    dynamic addonsPrice,
+    num? subtotalCouponDiscount,
+  }) {
     _productId = productId;
     _inStock = inStock;
     _isError = isError;
@@ -407,7 +441,7 @@ class CartItmes {
     _addons = addons;
     _addonsPrice = addonsPrice;
     _subtotalCouponDiscount = subtotalCouponDiscount;
-}
+  }
 
   CartItmes.fromJson(dynamic json) {
     _productId = json['productId'];
@@ -421,7 +455,9 @@ class CartItmes {
     _finalPrice = json['final_price'];
     _effectiveItemPrice = json['effective_item_price'];
     _packingCharge = json['packing_charge'];
-    _itemTaxes = json['item_taxes'] != null ? ItemTaxes.fromJson(json['item_taxes']) : null;
+    _itemTaxes = json['item_taxes'] != null
+        ? ItemTaxes.fromJson(json['item_taxes'])
+        : null;
     _subtotal = json['subtotal'];
     _total = json['total'];
     _addedByUserId = json['added_by_user_id'];
@@ -454,45 +490,49 @@ class CartItmes {
   List<dynamic>? _addons;
   dynamic _addonsPrice;
   num? _subtotalCouponDiscount;
-CartItmes copyWith({  num? productId,
-  num? inStock,
-  bool? isError,
-  num? allowedQuantity,
-  num? quantity,
-  String? name,
-  num? isVeg,
-  String? productImageUrl,
-  num? finalPrice,
-  num? effectiveItemPrice,
-  num? packingCharge,
-  ItemTaxes? itemTaxes,
-  num? subtotal,
-  num? total,
-  num? addedByUserId,
-  String? addedByUserName,
-  List<dynamic>? addons,
-  dynamic addonsPrice,
-  num? subtotalCouponDiscount,
-}) => CartItmes(  productId: productId ?? _productId,
-  inStock: inStock ?? _inStock,
-  isError: isError ?? _isError,
-  allowedQuantity: allowedQuantity ?? _allowedQuantity,
-  quantity: quantity ?? _quantity,
-  name: name ?? _name,
-  isVeg: isVeg ?? _isVeg,
-  productImageUrl: productImageUrl ?? _productImageUrl,
-  finalPrice: finalPrice ?? _finalPrice,
-  effectiveItemPrice: effectiveItemPrice ?? _effectiveItemPrice,
-  packingCharge: packingCharge ?? _packingCharge,
-  itemTaxes: itemTaxes ?? _itemTaxes,
-  subtotal: subtotal ?? _subtotal,
-  total: total ?? _total,
-  addedByUserId: addedByUserId ?? _addedByUserId,
-  addedByUserName: addedByUserName ?? _addedByUserName,
-  addons: addons ?? _addons,
-  addonsPrice: addonsPrice ?? _addonsPrice,
-  subtotalCouponDiscount: subtotalCouponDiscount ?? _subtotalCouponDiscount,
-);
+  CartItmes copyWith({
+    num? productId,
+    num? inStock,
+    bool? isError,
+    num? allowedQuantity,
+    num? quantity,
+    String? name,
+    num? isVeg,
+    String? productImageUrl,
+    num? finalPrice,
+    num? effectiveItemPrice,
+    num? packingCharge,
+    ItemTaxes? itemTaxes,
+    num? subtotal,
+    num? total,
+    num? addedByUserId,
+    String? addedByUserName,
+    List<dynamic>? addons,
+    dynamic addonsPrice,
+    num? subtotalCouponDiscount,
+  }) =>
+      CartItmes(
+        productId: productId ?? _productId,
+        inStock: inStock ?? _inStock,
+        isError: isError ?? _isError,
+        allowedQuantity: allowedQuantity ?? _allowedQuantity,
+        quantity: quantity ?? _quantity,
+        name: name ?? _name,
+        isVeg: isVeg ?? _isVeg,
+        productImageUrl: productImageUrl ?? _productImageUrl,
+        finalPrice: finalPrice ?? _finalPrice,
+        effectiveItemPrice: effectiveItemPrice ?? _effectiveItemPrice,
+        packingCharge: packingCharge ?? _packingCharge,
+        itemTaxes: itemTaxes ?? _itemTaxes,
+        subtotal: subtotal ?? _subtotal,
+        total: total ?? _total,
+        addedByUserId: addedByUserId ?? _addedByUserId,
+        addedByUserName: addedByUserName ?? _addedByUserName,
+        addons: addons ?? _addons,
+        addonsPrice: addonsPrice ?? _addonsPrice,
+        subtotalCouponDiscount:
+            subtotalCouponDiscount ?? _subtotalCouponDiscount,
+      );
   num? get productId => _productId;
   num? get inStock => _inStock;
   bool? get isError => _isError;
@@ -540,7 +580,6 @@ CartItmes copyWith({  num? productId,
     map['subtotal_coupon_discount'] = _subtotalCouponDiscount;
     return map;
   }
-
 }
 
 /// service_tax : 0
@@ -550,17 +589,19 @@ CartItmes copyWith({  num? productId,
 
 ItemTaxes itemTaxesFromJson(String str) => ItemTaxes.fromJson(json.decode(str));
 String itemTaxesToJson(ItemTaxes data) => json.encode(data.toJson());
+
 class ItemTaxes {
   ItemTaxes({
-      num? serviceTax, 
-      num? vat, 
-      num? serviceCharges, 
-      num? gst,}){
+    num? serviceTax,
+    num? vat,
+    num? serviceCharges,
+    num? gst,
+  }) {
     _serviceTax = serviceTax;
     _vat = vat;
     _serviceCharges = serviceCharges;
     _gst = gst;
-}
+  }
 
   ItemTaxes.fromJson(dynamic json) {
     _serviceTax = json['service_tax'];
@@ -572,15 +613,18 @@ class ItemTaxes {
   num? _vat;
   num? _serviceCharges;
   num? _gst;
-ItemTaxes copyWith({  num? serviceTax,
-  num? vat,
-  num? serviceCharges,
-  num? gst,
-}) => ItemTaxes(  serviceTax: serviceTax ?? _serviceTax,
-  vat: vat ?? _vat,
-  serviceCharges: serviceCharges ?? _serviceCharges,
-  gst: gst ?? _gst,
-);
+  ItemTaxes copyWith({
+    num? serviceTax,
+    num? vat,
+    num? serviceCharges,
+    num? gst,
+  }) =>
+      ItemTaxes(
+        serviceTax: serviceTax ?? _serviceTax,
+        vat: vat ?? _vat,
+        serviceCharges: serviceCharges ?? _serviceCharges,
+        gst: gst ?? _gst,
+      );
   num? get serviceTax => _serviceTax;
   num? get vat => _vat;
   num? get serviceCharges => _serviceCharges;
@@ -594,5 +638,4 @@ ItemTaxes copyWith({  num? serviceTax,
     map['GST'] = _gst;
     return map;
   }
-
 }

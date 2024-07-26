@@ -182,7 +182,8 @@ class CommonImageView extends StatelessWidget {
 
   ///a [CommonNetworkImageView] it can be used for showing any network images
   /// it will shows the placeholder image if image is not found on network
-  CommonImageView({super.key,
+  CommonImageView({
+    super.key,
     this.url,
     this.imagePath,
     this.svgPath,
@@ -192,7 +193,8 @@ class CommonImageView extends StatelessWidget {
     this.color,
     this.fit = BoxFit.contain,
     this.placeHolder = "packages/mynewpackage/${Assets.imagesImageNotFound}",
-    this.isCircleImage = false, this.cacheKey,
+    this.isCircleImage = false,
+    this.cacheKey,
   });
 
   @override
@@ -209,9 +211,14 @@ class CommonImageView extends StatelessWidget {
           placeholderBuilder: (context) => SizedBox(
             height: 30,
             width: 30,
-            child: LinearProgressIndicator(
+            // child: LinearProgressIndicator(
+            //   color: Colors.grey.shade200,
+            //   backgroundColor: Colors.grey.shade100,
+            // ),
+            child: CircularProgressIndicator(
               color: Colors.grey.shade200,
               backgroundColor: Colors.grey.shade100,
+              strokeWidth: 1,
             ),
           ),
           svgPath!,
@@ -240,12 +247,13 @@ class CommonImageView extends StatelessWidget {
             height: height,
             width: width,
             fit: fit,
-            imageUrl: url!,cacheKey: cacheKey,
+            imageUrl: url!,
+            cacheKey: cacheKey,
             imageBuilder: (context, imageProvioder) {
               return Container(
                 decoration: BoxDecoration(
                   image:
-                  DecorationImage(image: imageProvioder, fit: BoxFit.cover),
+                      DecorationImage(image: imageProvioder, fit: BoxFit.cover),
                 ),
               );
             },
@@ -257,19 +265,20 @@ class CommonImageView extends StatelessWidget {
                 backgroundColor: Colors.grey.shade100,
               ),
             ),
-            errorWidget: (context, url, error) =>     placeHolder == "packages/mynewpackage/${Assets.imagesImageNotFound}"
+            errorWidget: (context, url, error) => placeHolder ==
+                    "packages/mynewpackage/${Assets.imagesImageNotFound}"
                 ? Image.asset(
-              placeHolder,
-              height: height,
-              width: width,
-              fit: fit,
-            )
+                    placeHolder,
+                    height: height,
+                    width: width,
+                    fit: fit,
+                  )
                 : SvgPicture.asset(
-              placeHolder,
-              height: 10,
-              width: 10,
-              fit: BoxFit.contain,
-            ),
+                    placeHolder,
+                    height: 10,
+                    width: 10,
+                    fit: BoxFit.contain,
+                  ),
           ),
         );
       }
@@ -282,8 +291,7 @@ class CommonImageView extends StatelessWidget {
         imageBuilder: (context, imageProvioder) {
           return Container(
             decoration: BoxDecoration(
-              image:
-              DecorationImage(image: imageProvioder, fit: BoxFit.cover),
+              image: DecorationImage(image: imageProvioder, fit: BoxFit.cover),
             ),
           );
         },
@@ -295,19 +303,20 @@ class CommonImageView extends StatelessWidget {
             backgroundColor: Colors.grey.shade100,
           ),
         ),
-        errorWidget: (context, url, error) =>     placeHolder == "packages/mynewpackage/${Assets.imagesImageNotFound}"
-            ? Image.asset(
-          placeHolder,
-          height: height,
-          width: width,
-          fit: fit,
-        )
-            : SvgPicture.asset(
-          placeHolder,
-          height: 10,
-          width: 10,
-          fit: BoxFit.contain,
-        ),
+        errorWidget: (context, url, error) =>
+            placeHolder == "packages/mynewpackage/${Assets.imagesImageNotFound}"
+                ? Image.asset(
+                    placeHolder,
+                    height: height,
+                    width: width,
+                    fit: fit,
+                  )
+                : SvgPicture.asset(
+                    placeHolder,
+                    height: 10,
+                    width: 10,
+                    fit: BoxFit.contain,
+                  ),
       );
     } else if (imagePath != null && imagePath!.isNotEmpty) {
       return Image.asset(
