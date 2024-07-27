@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -508,7 +509,8 @@ class _DishCardState extends State<DishCard> {
       RxBool isSameShop = (cartController.cartItems.isEmpty ||
               cartController.cartItems.first.storeId == widget.storeId)
           .obs;
-
+      log("widgetStoreid:${widget.storeId},\ncartStoreId:${cartController.cartItems.firstOrNull?.storeId}",
+          name: "RESTAURENTANDDISHES");
       debugPrint("same shop ${isSameShop}");
 
       if (!isSameShop.value) {
@@ -648,16 +650,36 @@ class _DishCardState extends State<DishCard> {
       cartController.cartItems.clear();
       debugPrint("final cart count ${cartController.finalCartItems.length}");
     } else {
-      if (!widget.isDishes) {
-        cartController.removeFromCart(
-          cartController.cartItems.firstWhere(
-              (item) => item.productId == widget.restaurant?.productId),
-        );
-      } else {
-        cartController.removeFromCart(
-          cartController.cartItems.firstWhere((item) =>
-              item.productId == widget.dish?.storeProducts?.productId),
-        );
+      if (cartController.productQuantities.containsKey(widget.isDishes
+          ? widget.dish?.storeProducts?.productId
+          : widget.restaurant?.productId)) {
+        int q = cartController.productQuantities[widget.isDishes
+            ? widget.dish?.storeProducts?.productId
+            : widget.restaurant?.productId]!;
+        if (q > 1) {
+          cartController.productQuantities[(widget.isDishes
+                  ? widget.dish?.storeProducts?.productId
+                  : widget.restaurant?.productId)!
+              .toInt()] = q - 1;
+        } else {
+          cartController.productQuantities.remove((widget.isDishes
+                  ? widget.dish?.storeProducts?.productId
+                  : widget.restaurant?.productId)!
+              .toInt());
+        }
+      }
+      if (cartController.cartItems.isNotEmpty) {
+        if (!widget.isDishes) {
+          cartController.removeFromCart(
+            cartController.cartItems.firstWhere(
+                (item) => item.productId == widget.restaurant?.productId),
+          );
+        } else {
+          cartController.removeFromCart(
+            cartController.cartItems.firstWhere((item) =>
+                item.productId == widget.dish?.storeProducts?.productId),
+          );
+        }
       }
 
       cartController
@@ -690,6 +712,8 @@ class _DishCardState extends State<DishCard> {
 
   @override
   Widget build(BuildContext context) {
+    log("${widget.isDishes},${widget.dish?.storeProducts?.productId},${widget.restaurant?.productId}",
+        name: "RESTAURENTANDDISHES");
     return Container(
       color: AppColors.backgroundColor,
       child: Card(
