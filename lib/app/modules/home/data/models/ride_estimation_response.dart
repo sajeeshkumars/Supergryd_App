@@ -13,16 +13,19 @@ class RideEstimationResponse {
   RideEstimationResponse({
     int? status,
     String? message,
+    String? messages,
     List<RideEstimationList>? data,
   }) {
     _status = status;
     _message = message;
+    _messages = messages;
     _data = data;
   }
 
   RideEstimationResponse.fromJson(dynamic json) {
     _status = int.tryParse(json['status'].toString());
     _message = json['message'].toString();
+    _messages = json["messages"].toString();
     if (json['data'] != null) {
       _data = [];
       json['data'].forEach((v) {
@@ -33,19 +36,23 @@ class RideEstimationResponse {
   int? _status;
   String? _message;
   List<RideEstimationList>? _data;
+  String? _messages;
   RideEstimationResponse copyWith({
     int? status,
     String? message,
     List<RideEstimationList>? data,
+    String? messages,
   }) =>
       RideEstimationResponse(
         status: status ?? _status,
         message: message ?? _message,
+        messages: messages ?? _messages,
         data: data ?? _data,
       );
   int? get status => _status;
   String? get message => _message;
   List<RideEstimationList>? get data => _data;
+  String? get messages => _messages;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -54,6 +61,7 @@ class RideEstimationResponse {
     if (_data != null) {
       map['data'] = _data?.map((v) => v.toJson()).toList();
     }
+    map["messages"] = _messages;
     return map;
   }
 }

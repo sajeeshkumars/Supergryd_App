@@ -339,7 +339,12 @@ class _RideDialogState extends State<RideDialog> {
                                                   ),
                                                 ),
                                               CabStates.rideNotFound =>
-                                                RideNotFoundWidget(),
+                                                RideNotFoundWidget(
+                                                  message: cabController
+                                                      .rideEstimationResponse
+                                                      .value
+                                                      .messages,
+                                                ),
                                             };
                                           });
                                         });
@@ -358,7 +363,7 @@ class _RideDialogState extends State<RideDialog> {
                               if (cabController.cabStatus.value ==
                                   CabStates.initial) {
                                 Navigator.pop(context);
-                                // Navigator.pop(context);
+                                Navigator.pop(context);
                               } else if (cabController.cabStatus.value ==
                                   CabStates.rideSelection) {
                                 cabController.setExitFalse();

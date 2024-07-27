@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mynewpackage/app/modules/cab/model/ride_track_response.dart';
 import 'package:mynewpackage/app/modules/cab/repository/cab_repository.dart';
+import 'package:mynewpackage/app/modules/home/data/models/ride_estimation_response.dart';
 import 'package:mynewpackage/constants.dart';
 
 import '../../../../generated/assets.dart';
@@ -15,7 +16,8 @@ import '../model/cancel_reasons_response.dart';
 
 class CabMapController extends GetxController {
   Rx<CabStates> cabStatus = CabStates.initial.obs;
-
+  Rx<RideEstimationResponse> rideEstimationResponse =
+      RideEstimationResponse().obs;
   Rx<int> markerIndex = 0.obs;
   final Set<Polyline> polylines = {};
   RxBool canExit = false.obs;
@@ -320,7 +322,7 @@ class CabMapController extends GetxController {
         isRideCancelLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
-          value.message == 'Success.'?'Ride has been cancelled':"",
+          value.message == 'Success.' ? 'Ride has been cancelled' : "",
         )));
         Navigator.pop(context);
         Navigator.pop(context);

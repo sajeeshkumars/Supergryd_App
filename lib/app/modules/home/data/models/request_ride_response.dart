@@ -1,49 +1,63 @@
 import 'dart:convert';
+
 /// status : 200
 /// message : "Success."
 /// data : {"unique_id":"SGRD-RIDEBK-1002-2024","user_id":"66595991f94a7ec05b88ebf9","service_category_id":"6646f2196538869d3399af46","origin_address":[{"lat":"12.9147399","long":"77.5972174","address":"Kochi","address_id":null,"_id":"667ab2081a333f86b41462df"}],"destination_address":[{"lat":"12.90","long":"77.57","address":"Kochi airport","address_id":null,"_id":"667ab2081a333f86b41462e0"}],"status":1,"requested_time":"2024-06-25T12:03:20.402Z","requested_Id":7,"start_time":null,"end_time":null,"estimated_price":245.7,"driver_id":null,"driver_details":[],"vehicle_details":[],"service_provider_id":"6667ee14f4ef66615afa1186","otp":null,"host_id":"664705340820502ae399d9b8","cancel_reason":null,"_id":"667ab2081a333f86b41462de","ride_review":[],"__v":0}
 
-RequestRideResponse requestRideResponseFromJson(String str) => RequestRideResponse.fromJson(json.decode(str));
-String requestRideResponseToJson(RequestRideResponse data) => json.encode(data.toJson());
+RequestRideResponse requestRideResponseFromJson(String str) =>
+    RequestRideResponse.fromJson(json.decode(str));
+String requestRideResponseToJson(RequestRideResponse data) =>
+    json.encode(data.toJson());
+
 class RequestRideResponse {
   RequestRideResponse({
-      num? status, 
-      String? message, 
-      RequestRideData? data,}){
+    num? status,
+    String? message,
+    String? messages,
+    RequestRideData? data,
+  }) {
     _status = status;
     _message = message;
     _data = data;
-}
+  }
 
   RequestRideResponse.fromJson(dynamic json) {
-    _status =int.parse( json['status'].toString());
+    _status = int.parse(json['status'].toString());
     _message = json['message'].toString();
-    _data = json['data'] != null ? RequestRideData.fromJson(json['data']) : null;
+    _messages = json['messages'].toString();
+    _data =
+        json['data'] != null ? RequestRideData.fromJson(json['data']) : null;
   }
   num? _status;
   String? _message;
+  String? _messages;
   RequestRideData? _data;
-RequestRideResponse copyWith({  num? status,
-  String? message,
-  RequestRideData? data,
-}) => RequestRideResponse(  status: status ?? _status,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+  RequestRideResponse copyWith(
+          {num? status,
+          String? message,
+          RequestRideData? data,
+          String? messages}) =>
+      RequestRideResponse(
+        status: status ?? _status,
+        message: message ?? _message,
+        messages: messages ?? _messages,
+        data: data ?? _data,
+      );
   num? get status => _status;
   String? get message => _message;
+  String? get messages => _messages;
   RequestRideData? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['status'] = _status;
     map['message'] = _message;
+    map['messages'] = _messages;
     if (_data != null) {
       map['data'] = _data?.toJson();
     }
     return map;
   }
-
 }
 
 /// unique_id : "SGRD-RIDEBK-1002-2024"
@@ -68,31 +82,34 @@ RequestRideResponse copyWith({  num? status,
 /// ride_review : []
 /// __v : 0
 
-RequestRideData dataFromJson(String str) => RequestRideData.fromJson(json.decode(str));
+RequestRideData dataFromJson(String str) =>
+    RequestRideData.fromJson(json.decode(str));
 String dataToJson(RequestRideData data) => json.encode(data.toJson());
+
 class RequestRideData {
   RequestRideData({
-      String? uniqueId, 
-      String? userId, 
-      String? serviceCategoryId, 
-      List<OriginAddress>? originAddress, 
-      List<DestinationAddress>? destinationAddress, 
-      num? status, 
-      String? requestedTime, 
-      num? requestedId, 
-      dynamic startTime, 
-      dynamic endTime, 
-      num? estimatedPrice, 
-      dynamic driverId, 
-      List<dynamic>? driverDetails, 
-      List<dynamic>? vehicleDetails, 
-      String? serviceProviderId, 
-      dynamic otp, 
-      String? hostId, 
-      dynamic cancelReason, 
-      String? id, 
-      List<dynamic>? rideReview, 
-      num? v,}){
+    String? uniqueId,
+    String? userId,
+    String? serviceCategoryId,
+    List<OriginAddress>? originAddress,
+    List<DestinationAddress>? destinationAddress,
+    num? status,
+    String? requestedTime,
+    num? requestedId,
+    dynamic startTime,
+    dynamic endTime,
+    num? estimatedPrice,
+    dynamic driverId,
+    List<dynamic>? driverDetails,
+    List<dynamic>? vehicleDetails,
+    String? serviceProviderId,
+    dynamic otp,
+    String? hostId,
+    dynamic cancelReason,
+    String? id,
+    List<dynamic>? rideReview,
+    num? v,
+  }) {
     _uniqueId = uniqueId;
     _userId = userId;
     _serviceCategoryId = serviceCategoryId;
@@ -114,7 +131,7 @@ class RequestRideData {
     _id = id;
     _rideReview = rideReview;
     _v = v;
-}
+  }
 
   RequestRideData.fromJson(dynamic json) {
     _uniqueId = json['unique_id'].toString();
@@ -185,49 +202,52 @@ class RequestRideData {
   String? _id;
   List<dynamic>? _rideReview;
   num? _v;
-RequestRideData copyWith({  String? uniqueId,
-  String? userId,
-  String? serviceCategoryId,
-  List<OriginAddress>? originAddress,
-  List<DestinationAddress>? destinationAddress,
-  num? status,
-  String? requestedTime,
-  num? requestedId,
-  dynamic startTime,
-  dynamic endTime,
-  num? estimatedPrice,
-  dynamic driverId,
-  List<dynamic>? driverDetails,
-  List<dynamic>? vehicleDetails,
-  String? serviceProviderId,
-  dynamic otp,
-  String? hostId,
-  dynamic cancelReason,
-  String? id,
-  List<dynamic>? rideReview,
-  num? v,
-}) => RequestRideData(  uniqueId: uniqueId ?? _uniqueId,
-  userId: userId ?? _userId,
-  serviceCategoryId: serviceCategoryId ?? _serviceCategoryId,
-  originAddress: originAddress ?? _originAddress,
-  destinationAddress: destinationAddress ?? _destinationAddress,
-  status: status ?? _status,
-  requestedTime: requestedTime ?? _requestedTime,
-  requestedId: requestedId ?? _requestedId,
-  startTime: startTime ?? _startTime,
-  endTime: endTime ?? _endTime,
-  estimatedPrice: estimatedPrice ?? _estimatedPrice,
-  driverId: driverId ?? _driverId,
-  driverDetails: driverDetails ?? _driverDetails,
-  vehicleDetails: vehicleDetails ?? _vehicleDetails,
-  serviceProviderId: serviceProviderId ?? _serviceProviderId,
-  otp: otp ?? _otp,
-  hostId: hostId ?? _hostId,
-  cancelReason: cancelReason ?? _cancelReason,
-  id: id ?? _id,
-  rideReview: rideReview ?? _rideReview,
-  v: v ?? _v,
-);
+  RequestRideData copyWith({
+    String? uniqueId,
+    String? userId,
+    String? serviceCategoryId,
+    List<OriginAddress>? originAddress,
+    List<DestinationAddress>? destinationAddress,
+    num? status,
+    String? requestedTime,
+    num? requestedId,
+    dynamic startTime,
+    dynamic endTime,
+    num? estimatedPrice,
+    dynamic driverId,
+    List<dynamic>? driverDetails,
+    List<dynamic>? vehicleDetails,
+    String? serviceProviderId,
+    dynamic otp,
+    String? hostId,
+    dynamic cancelReason,
+    String? id,
+    List<dynamic>? rideReview,
+    num? v,
+  }) =>
+      RequestRideData(
+        uniqueId: uniqueId ?? _uniqueId,
+        userId: userId ?? _userId,
+        serviceCategoryId: serviceCategoryId ?? _serviceCategoryId,
+        originAddress: originAddress ?? _originAddress,
+        destinationAddress: destinationAddress ?? _destinationAddress,
+        status: status ?? _status,
+        requestedTime: requestedTime ?? _requestedTime,
+        requestedId: requestedId ?? _requestedId,
+        startTime: startTime ?? _startTime,
+        endTime: endTime ?? _endTime,
+        estimatedPrice: estimatedPrice ?? _estimatedPrice,
+        driverId: driverId ?? _driverId,
+        driverDetails: driverDetails ?? _driverDetails,
+        vehicleDetails: vehicleDetails ?? _vehicleDetails,
+        serviceProviderId: serviceProviderId ?? _serviceProviderId,
+        otp: otp ?? _otp,
+        hostId: hostId ?? _hostId,
+        cancelReason: cancelReason ?? _cancelReason,
+        id: id ?? _id,
+        rideReview: rideReview ?? _rideReview,
+        v: v ?? _v,
+      );
   String? get uniqueId => _uniqueId;
   String? get userId => _userId;
   String? get serviceCategoryId => _serviceCategoryId;
@@ -259,7 +279,8 @@ RequestRideData copyWith({  String? uniqueId,
       map['origin_address'] = _originAddress?.map((v) => v.toJson()).toList();
     }
     if (_destinationAddress != null) {
-      map['destination_address'] = _destinationAddress?.map((v) => v.toJson()).toList();
+      map['destination_address'] =
+          _destinationAddress?.map((v) => v.toJson()).toList();
     }
     map['status'] = _status;
     map['requested_time'] = _requestedTime;
@@ -285,7 +306,6 @@ RequestRideData copyWith({  String? uniqueId,
     map['__v'] = _v;
     return map;
   }
-
 }
 
 /// lat : "12.90"
@@ -294,21 +314,25 @@ RequestRideData copyWith({  String? uniqueId,
 /// address_id : null
 /// _id : "667ab2081a333f86b41462e0"
 
-DestinationAddress destinationAddressFromJson(String str) => DestinationAddress.fromJson(json.decode(str));
-String destinationAddressToJson(DestinationAddress data) => json.encode(data.toJson());
+DestinationAddress destinationAddressFromJson(String str) =>
+    DestinationAddress.fromJson(json.decode(str));
+String destinationAddressToJson(DestinationAddress data) =>
+    json.encode(data.toJson());
+
 class DestinationAddress {
   DestinationAddress({
-      String? lat, 
-      String? long, 
-      String? address, 
-      dynamic addressId, 
-      String? id,}){
+    String? lat,
+    String? long,
+    String? address,
+    dynamic addressId,
+    String? id,
+  }) {
     _lat = lat;
     _long = long;
     _address = address;
     _addressId = addressId;
     _id = id;
-}
+  }
 
   DestinationAddress.fromJson(dynamic json) {
     _lat = json['lat'].toString();
@@ -322,17 +346,20 @@ class DestinationAddress {
   String? _address;
   dynamic _addressId;
   String? _id;
-DestinationAddress copyWith({  String? lat,
-  String? long,
-  String? address,
-  dynamic addressId,
-  String? id,
-}) => DestinationAddress(  lat: lat ?? _lat,
-  long: long ?? _long,
-  address: address ?? _address,
-  addressId: addressId ?? _addressId,
-  id: id ?? _id,
-);
+  DestinationAddress copyWith({
+    String? lat,
+    String? long,
+    String? address,
+    dynamic addressId,
+    String? id,
+  }) =>
+      DestinationAddress(
+        lat: lat ?? _lat,
+        long: long ?? _long,
+        address: address ?? _address,
+        addressId: addressId ?? _addressId,
+        id: id ?? _id,
+      );
   String? get lat => _lat;
   String? get long => _long;
   String? get address => _address;
@@ -348,7 +375,6 @@ DestinationAddress copyWith({  String? lat,
     map['_id'] = _id;
     return map;
   }
-
 }
 
 /// lat : "12.9147399"
@@ -357,21 +383,24 @@ DestinationAddress copyWith({  String? lat,
 /// address_id : null
 /// _id : "667ab2081a333f86b41462df"
 
-OriginAddress originAddressFromJson(String str) => OriginAddress.fromJson(json.decode(str));
+OriginAddress originAddressFromJson(String str) =>
+    OriginAddress.fromJson(json.decode(str));
 String originAddressToJson(OriginAddress data) => json.encode(data.toJson());
+
 class OriginAddress {
   OriginAddress({
-      String? lat, 
-      String? long, 
-      String? address, 
-      dynamic addressId, 
-      String? id,}){
+    String? lat,
+    String? long,
+    String? address,
+    dynamic addressId,
+    String? id,
+  }) {
     _lat = lat;
     _long = long;
     _address = address;
     _addressId = addressId;
     _id = id;
-}
+  }
 
   OriginAddress.fromJson(dynamic json) {
     _lat = json['lat'].toString();
@@ -385,17 +414,20 @@ class OriginAddress {
   String? _address;
   dynamic _addressId;
   String? _id;
-OriginAddress copyWith({  String? lat,
-  String? long,
-  String? address,
-  dynamic addressId,
-  String? id,
-}) => OriginAddress(  lat: lat ?? _lat,
-  long: long ?? _long,
-  address: address ?? _address,
-  addressId: addressId ?? _addressId,
-  id: id ?? _id,
-);
+  OriginAddress copyWith({
+    String? lat,
+    String? long,
+    String? address,
+    dynamic addressId,
+    String? id,
+  }) =>
+      OriginAddress(
+        lat: lat ?? _lat,
+        long: long ?? _long,
+        address: address ?? _address,
+        addressId: addressId ?? _addressId,
+        id: id ?? _id,
+      );
   String? get lat => _lat;
   String? get long => _long;
   String? get address => _address;
@@ -411,5 +443,4 @@ OriginAddress copyWith({  String? lat,
     map['_id'] = _id;
     return map;
   }
-
 }

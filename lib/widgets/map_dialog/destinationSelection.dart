@@ -183,13 +183,14 @@ class DestinationSelection extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: controller.addressHeading.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return  ListTile(
+                      return ListTile(
                         leading: Icon(Icons.location_on_outlined),
                         title: CommonText(
                           text: controller.addressHeading[index],
                           fontWeight: FontWeight.w600,
                         ),
-                        subtitle: CommonText(text: controller.addressDescription[index]),
+                        subtitle: CommonText(
+                            text: controller.addressDescription[index]),
                       );
                     },
                   ),
@@ -204,7 +205,8 @@ class DestinationSelection extends StatelessWidget {
 }
 
 class RideNotFoundWidget extends StatelessWidget {
-  const RideNotFoundWidget({super.key});
+  final String? message;
+  const RideNotFoundWidget({super.key, this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -221,10 +223,14 @@ class RideNotFoundWidget extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           const SizedBox(height: 20),
-          const CommonText(
-            text: "Please try again in few minutes",
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: CommonText(
+              text: message ?? "Please try again in few minutes",
+              textAlign: TextAlign.center,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 20),
           Padding(

@@ -355,8 +355,17 @@ class HomeController extends GetxController {
                                     selectedPickupCoordinates.value =
                                         locationCoordinates[
                                             addressHeading[index]];
-                                    if (isDestinationSelected.value == true) {
+                                    if (isDestinationSelected.value == true &&
+                                        (!(selectedPickUp.value ==
+                                            selectedDropOff.value))) {
                                       getEstimations();
+                                    }
+                                    if (selectedPickUp.value ==
+                                        selectedDropOff.value) {
+                                      ScaffoldMessenger.maybeOf(context)
+                                          ?.showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "Pickup and Drop off  locations cannot be same")));
                                     }
                                   } else {
                                     selectedDropOff.value =
@@ -366,7 +375,18 @@ class HomeController extends GetxController {
                                         locationCoordinates[
                                             addressHeading[index]];
 
-                                    getEstimations();
+                                    if (isDestinationSelected.value == true &&
+                                        (!(selectedPickUp.value ==
+                                            selectedDropOff.value))) {
+                                      getEstimations();
+                                    }
+                                    if (selectedPickUp.value ==
+                                        selectedDropOff.value) {
+                                      ScaffoldMessenger.maybeOf(context)
+                                          ?.showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "Pickup and Drop off  locations cannot be same")));
+                                    }
                                   }
                                   Navigator.pop(context);
 
@@ -724,6 +744,7 @@ class HomeController extends GetxController {
         "long": selectedDropoffCoordinates['long']
       }
     }).then((value) {
+      cabMapController.rideEstimationResponse(value);
       if (value.data != [] && (value.status == 200)) {
         estimationList.addAll(value.data ?? []);
         isEstimationLoading(false);

@@ -88,7 +88,7 @@ class ApiService extends GetConnect implements GetxService {
         debugPrint(
             "============================================================================");
 
-        log("response : ${response.body}");
+        log("response : ${response.body}", name: "$url");
         if (response.body == null && nullResCount < 2) {
           log("body is null");
           nullResCount++;

@@ -53,6 +53,10 @@ class HomeRepository implements HomeService {
     debugPrint(response.statusCode.toString());
     try {
       requestRideResponse = RequestRideResponse.fromJson(response.body);
+      if (requestRideResponse.messages != null) {
+        requestRideResponse =
+            requestRideResponse.copyWith(message: requestRideResponse.messages);
+      }
       debugPrint('inside repo ${requestRideResponse.status}');
       return requestRideResponse;
     } catch (e, s) {
