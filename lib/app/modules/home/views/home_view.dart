@@ -176,21 +176,21 @@ class _HomeViewState extends State<HomeView> {
                             storyData: [
                               SuperGrydStoryData(
                                   imageUrl:
-                                      "https://img.freepik.com/free-psd/delicious-food-menu-social-media-template_505751-3002.jpg?w=826&t=st=1722234950~exp=1722235550~hmac=55f42baad9a5764755592c04d1c02305a6ae244b888adad9b236fd7202f226a8",
+                                      "https://img.freepik.com/free-psd/delicious-food-menu-social-media-template_505751-3002.jpg?w=826&t=st=1722234950",
                                   title: "Story 1")
                             ],
                             thumbUrl:
-                                "https://img.freepik.com/free-psd/delicious-food-menu-social-media-template_505751-3002.jpg?w=826&t=st=1722234950~exp=1722235550~hmac=55f42baad9a5764755592c04d1c02305a6ae244b888adad9b236fd7202f226a8"),
+                                "https://img.freepik.com/free-psd/delicious-food-menu-social-media-template_505751-3002.jpg?w=826&t=st=1722234950"),
                         SuperGrydStory(
                             title: "50% off",
                             storyData: [
                               SuperGrydStoryData(
                                   imageUrl:
-                                      "https://img.freepik.com/free-psd/food-social-media-promotion-instagram-banner-post-design-template_202595-475.jpg?w=826&t=st=1722235009~exp=1722235609~hmac=c3b5376f60a6b510a3f75d29b40c89092a493f45bf9ea28fa4a53c080becf875",
+                                      "https://img.freepik.com/free-psd/food-social-media-promotion-instagram-banner-post-design-template_202595-475.jpg?w=826&t=st=1722235009",
                                   title: "Story 2")
                             ],
                             thumbUrl:
-                                "https://img.freepik.com/free-psd/food-social-media-promotion-instagram-banner-post-design-template_202595-475.jpg?w=826&t=st=1722235009~exp=1722235609~hmac=c3b5376f60a6b510a3f75d29b40c89092a493f45bf9ea28fa4a53c080becf875"),
+                                "https://img.freepik.com/free-psd/food-social-media-promotion-instagram-banner-post-design-template_202595-475.jpg?w=826&t=st=1722235009"),
                       ],
                     ),
                     // SizedBox(
