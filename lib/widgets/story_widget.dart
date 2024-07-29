@@ -1,8 +1,10 @@
+import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:mynewpackage/model/super_gryd_story.dart';
 import 'package:story/story.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'common_text.dart';
 
@@ -71,47 +73,7 @@ class CircleDottedStoryWidget extends StatelessWidget {
                 ),
                 child: InkWell(
                     onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Container(
-                              width: double.infinity,
-                              height: double.infinity,
-                              color: Colors.black,
-                              child: Scaffold(
-                                backgroundColor: Colors.black,
-                                body: StoryPageView(
-                                  backgroundColor: Colors.black,
-                                  onPageLimitReached: () {
-                                    Navigator.pop(context);
-                                  },
-                                  itemBuilder:
-                                      (context, pageIndex, storyIndex) {
-                                    final storyUrl = stories[pageIndex]
-                                        .storyData![storyIndex];
-                                    return Stack(
-                                      children: [
-                                        Positioned.fill(
-                                          child: Container(color: Colors.black),
-                                        ),
-                                        Positioned.fill(
-                                          child: StoryImage(
-                                              key: ValueKey(
-                                                  stories[pageIndex].thumbUrl),
-                                              imageProvider: NetworkImage(
-                                                  storyUrl.imageUrl!)),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                  storyLength: (int pageIndex) {
-                                    return stories[pageIndex].storyData!.length;
-                                  },
-                                  pageLength: stories.length,
-                                ),
-                              ),
-                            );
-                          });
+                      showStory(context, index: index, list: stories);
                     },
                     child: Image.network(stories[index].thumbUrl!)),
               ),
@@ -133,6 +95,107 @@ class CircleDottedStoryWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void showStory(BuildContext context,
+      {required int index, required List<SuperGrydStory> list}) {
+    log("index is ${index}");
+    if (index > 0) {
+      list.removeRange(0, index);
+    }
+    final size = MediaQuery.of(context).size;
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.black,
+            child: Scaffold(
+              backgroundColor: Colors.black,
+              body: StoryPageView(
+                backgroundColor: Colors.black,
+                gestureItemBuilder: (context, pageInd, storyIndex) {
+                  final storyUrl = list[pageInd].storyData![storyIndex];
+                  if (storyUrl.url != null) {
+                    return Center(
+                      child: Container(
+                        width: size.width - 120,
+                        height: size.height,
+                        child: InkWell(
+                          onTap: () async {
+                            final uri = Uri.parse(storyUrl.url ?? "");
+                            final canLaunch = await canLaunchUrl(uri);
+                            if (canLaunch) {
+                              Navigator.pop(context);
+                              await launchUrl(uri);
+                            }
+                          },
+                          child: SizedBox(
+                            width: size.width - 30,
+                            height: size.height,
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                },
+                onPageLimitReached: () {
+                  Navigator.pop(context);
+                },
+                itemBuilder: (context, pageIndex, storyIndex) {
+                  final storyUrl = list[pageIndex].storyData![storyIndex];
+                  return Stack(
+                    alignment: storyUrl.imageUrl == null
+                        ? Alignment.center
+                        : AlignmentDirectional.topStart,
+                    children: [
+                      Positioned.fill(
+                        child: Container(color: Colors.black),
+                      ),
+                      if (storyUrl.imageUrl != null)
+                        Positioned.fill(
+                          child: StoryImage(
+                              key: ValueKey(storyUrl.imageUrl!),
+                              imageProvider: NetworkImage(storyUrl.imageUrl!)),
+                        ),
+                      if (storyUrl.title != null)
+                        Positioned(
+                          bottom: storyUrl.imageUrl != null ? 12 : null,
+                          width: size.width,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Center(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(18)),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      storyUrl.title!,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+                storyLength: (int pageIndex) {
+                  return list[pageIndex].storyData!.length;
+                },
+                pageLength: list.length,
+              ),
+            ),
+          );
+        });
   }
 }
 

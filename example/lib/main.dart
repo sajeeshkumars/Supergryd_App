@@ -92,9 +92,10 @@ class MyHomePage extends StatelessWidget {
               SuperGrydStory(
                   storyData: [
                     SuperGrydStoryData(
+                        url: "https://amzn.in/d/01lpvNt7",
                         imageUrl:
                             "https://images.pexels.com/photos/16715674/pexels-photo-16715674.jpeg?cs=srgb&dl=pexels-stephen-noulton-421904730-16715674.jpg&fm=jpg&w=640&h=640",
-                        title: "Story 1")
+                        title: "Click to see new offers")
                   ],
                   thumbUrl:
                       "https://images.pexels.com/photos/16715674/pexels-photo-16715674.jpeg?cs=srgb&dl=pexels-stephen-noulton-421904730-16715674.jpg&fm=jpg&w=640&h=640"),
@@ -107,6 +108,16 @@ class MyHomePage extends StatelessWidget {
                   ],
                   thumbUrl:
                       "https://images.pexels.com/photos/10311994/pexels-photo-10311994.jpeg?cs=srgb&dl=pexels-nurlantortbayev-10311994.jpg&fm=jpg&w=640&h=640"),
+              SuperGrydStory(
+                  storyData: [
+                    SuperGrydStoryData(
+                        title: ""
+                            "Buy 2 Get 1 for purchases worth 1999\n"
+                            "Buy 1 get 1 for purchases worth 3999\n"
+                            "#Offers")
+                  ],
+                  thumbUrl:
+                      "https://img.freepik.com/premium-psd/editable-text-promo-offer-with-3d-style-effect_16148-2865.jpg?w=1380"),
             ],
           ),
           Center(
