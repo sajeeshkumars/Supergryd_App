@@ -9,7 +9,9 @@ import 'package:mynewpackage/generated/assets.dart';
 import 'package:mynewpackage/widgets/common_Image_view.dart';
 import 'package:mynewpackage/widgets/loading_view.dart';
 
+import '../../../../model/super_gryd_story.dart';
 import '../../../../widgets/common_text.dart';
+import '../../../../widgets/story_widget.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends StatefulWidget {
@@ -149,46 +151,88 @@ class _HomeViewState extends State<HomeView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 160,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.specialOfferTitle.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: InkWell(
-                              splashColor: Colors.transparent,
-                              onTap: () {
-                                // Get.to(() => AddCashToWalletView());
-                              },
-                              child: Column(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: CommonImageView(
-                                      height: 100,
-                                      width: 100,
-                                      imagePath:
-                                          "packages/mynewpackage/${controller.specialOfferImages[index]}",
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  CommonText(
-                                    fontSize: 12,
-                                    textAlign: TextAlign.center,
-                                    text: controller.specialOfferTitle[index]
-                                        .toString(),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                    StoryWidget(
+                      storyData: [
+                        // SuperGrydStory(
+                        //     storyData: [
+                        //       SuperGrydStoryData(
+                        //           imageUrl:
+                        //               "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?cs=srgb&dl=pexels-chloekalaartist-1043471.jpg&fm=jpg&w=640&h=960",
+                        //           title: "Story 1")
+                        //     ],
+                        //     thumbUrl:
+                        //         "https://images.pexels.com/photos/16715674/pexels-photo-16715674.jpeg?cs=srgb&dl=pexels-stephen-noulton-421904730-16715674.jpg&fm=jpg&w=640&h=640"),
+                        // SuperGrydStory(
+                        //     storyData: [
+                        //       SuperGrydStoryData(
+                        //           imageUrl:
+                        //               "https://images.pexels.com/photos/1559486/pexels-photo-1559486.jpeg?cs=srgb&dl=pexels-jack-winbow-460463-1559486.jpg&fm=jpg&w=640&h=960",
+                        //           title: "Story 2")
+                        //     ],
+                        //     thumbUrl:
+                        //         "https://images.pexels.com/photos/10311994/pexels-photo-10311994.jpeg?cs=srgb&dl=pexels-nurlantortbayev-10311994.jpg&fm=jpg&w=640&h=640"),
+                        SuperGrydStory(
+                            title: "Special \n Food Menu",
+                            storyData: [
+                              SuperGrydStoryData(
+                                  imageUrl:
+                                      "https://img.freepik.com/free-psd/delicious-food-menu-social-media-template_505751-3002.jpg?w=826&t=st=1722234950~exp=1722235550~hmac=55f42baad9a5764755592c04d1c02305a6ae244b888adad9b236fd7202f226a8",
+                                  title: "Story 1")
+                            ],
+                            thumbUrl:
+                                "https://img.freepik.com/free-psd/delicious-food-menu-social-media-template_505751-3002.jpg?w=826&t=st=1722234950~exp=1722235550~hmac=55f42baad9a5764755592c04d1c02305a6ae244b888adad9b236fd7202f226a8"),
+                        SuperGrydStory(
+                            title: "50% off",
+                            storyData: [
+                              SuperGrydStoryData(
+                                  imageUrl:
+                                      "https://img.freepik.com/free-psd/food-social-media-promotion-instagram-banner-post-design-template_202595-475.jpg?w=826&t=st=1722235009~exp=1722235609~hmac=c3b5376f60a6b510a3f75d29b40c89092a493f45bf9ea28fa4a53c080becf875",
+                                  title: "Story 2")
+                            ],
+                            thumbUrl:
+                                "https://img.freepik.com/free-psd/food-social-media-promotion-instagram-banner-post-design-template_202595-475.jpg?w=826&t=st=1722235009~exp=1722235609~hmac=c3b5376f60a6b510a3f75d29b40c89092a493f45bf9ea28fa4a53c080becf875"),
+                      ],
                     ),
+                    // SizedBox(
+                    //   height: 160,
+                    //   child: ListView.builder(
+                    //     scrollDirection: Axis.horizontal,
+                    //     itemCount: controller.specialOfferTitle.length,
+                    //     itemBuilder: (context, index) {
+                    //       return Padding(
+                    //         padding: const EdgeInsets.all(5.0),
+                    //         child: InkWell(
+                    //           splashColor: Colors.transparent,
+                    //           onTap: () {
+                    //             // Get.to(() => AddCashToWalletView());
+                    //           },
+                    //           child: Column(
+                    //             children: [
+                    //               ClipRRect(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 child: CommonImageView(
+                    //                   height: 100,
+                    //                   width: 100,
+                    //                   imagePath:
+                    //                       "packages/mynewpackage/${controller.specialOfferImages[index]}",
+                    //                 ),
+                    //               ),
+                    //               const SizedBox(
+                    //                 height: 5,
+                    //               ),
+                    //               CommonText(
+                    //                 fontSize: 12,
+                    //                 textAlign: TextAlign.center,
+                    //                 text: controller.specialOfferTitle[index]
+                    //                     .toString(),
+                    //               )
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                     CommonText(
                       fontSize: 26,
                       fontWeight: FontWeight.w800,
