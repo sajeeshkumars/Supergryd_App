@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/modules/cart/data/models/add_to_cart_response.dart';
@@ -20,10 +22,15 @@ class CartRepository implements CartService {
     AddToCartResponse addToCartResponse;
     Response response =
         await apiService.reqst(url: 'food/add-update-cart', params: params);
+    log("ADD TO CART: ${response.body}", name: "CARTREPO");
     try {
       addToCartResponse = AddToCartResponse.fromJson(response.body);
+      log("inside repo message ${addToCartResponse.messages}",
+          name: "CARTREPO");
       return addToCartResponse;
     } catch (e, s) {
+      log("ADD TO CART Catch: ${e.toString()} , ${s.toString()}",
+          name: "CARTREPO");
       debugPrint(s.toString());
       debugPrint(e.toString());
       return AddToCartResponse(message: "Server Error", status: 401);
@@ -80,7 +87,8 @@ class CartRepository implements CartService {
     CancelReasonsResponse cancelReasonsResponse;
     Response response = await apiService.reqst(
         urlType: UrlType.food,
-        url: 'api/cancel/reasons/user', method: Method.GET);
+        url: 'api/cancel/reasons/user',
+        method: Method.GET);
     debugPrint(response.statusCode.toString());
     try {
       cancelReasonsResponse = CancelReasonsResponse.fromJson(response.body);

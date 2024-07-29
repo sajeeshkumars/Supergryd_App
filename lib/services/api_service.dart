@@ -88,24 +88,32 @@ class ApiService extends GetConnect implements GetxService {
         debugPrint(
             "============================================================================");
 
-        log("response : ${response.body}");
+        log("response : ${response.body}", name: "$url");
         if (response.body == null && nullResCount < 2) {
+          log("body is null");
           nullResCount++;
           return reqst(url: url, method: method, params: params);
         } else {
           if (response.statusCode == 200 ||
               response.statusCode == 201 ||
               response.statusCode == 400) {
+            log("""response.statusCode == 200 ||
+              response.statusCode == 201 ||
+              response.statusCode == 400""");
             nullResCount = 0;
             return response;
           } else if (response.statusCode == 401) {
+            log("""response.statusCode == 401""");
             //  throw Exception("Something Went Wrong");
             return await refreshTokenApi(url, params, method);
           } else if (response.statusCode == 403) {
+            log("""response.statusCode == 403""");
             return await refreshTokenApi(url, params, method);
           } else if (response.statusCode == 500) {
+            log("""response.statusCode == 500""");
             throw Exception("Server Error");
           } else {
+            log("""response.statusCode == else error""");
             throw Exception("Something Went Wrong");
           }
         }

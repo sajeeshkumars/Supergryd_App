@@ -93,6 +93,7 @@ class _RideDialogState extends State<RideDialog> {
             case CabStates.loading:
             case CabStates.rideSelection:
               cabController.cabStatus(CabStates.initial);
+              cabController.setExitFalse();
             case CabStates.searchingCab:
               cabController.cabStatus(CabStates.rideSelection);
               cabController.setExitFalse();
@@ -338,7 +339,12 @@ class _RideDialogState extends State<RideDialog> {
                                                   ),
                                                 ),
                                               CabStates.rideNotFound =>
-                                                RideNotFoundWidget(),
+                                                RideNotFoundWidget(
+                                                  message: cabController
+                                                      .rideEstimationResponse
+                                                      .value
+                                                      .messages,
+                                                ),
                                             };
                                           });
                                         });
@@ -357,9 +363,14 @@ class _RideDialogState extends State<RideDialog> {
                               if (cabController.cabStatus.value ==
                                   CabStates.initial) {
                                 Navigator.pop(context);
+                                Navigator.pop(context);
                               } else if (cabController.cabStatus.value ==
                                   CabStates.rideSelection) {
-                                Navigator.pop(context);
+                                cabController.setExitFalse();
+                                cabController.cabStatus.value =
+                                    CabStates.initial;
+
+                                // Navigator.pop(context);
                               } else if (cabController.cabStatus.value ==
                                   CabStates.searchingCab) {
                                 cabController.setExitFalse();

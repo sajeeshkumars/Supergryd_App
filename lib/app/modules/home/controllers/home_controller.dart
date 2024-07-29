@@ -243,12 +243,11 @@ class HomeController extends GetxController {
                               padding: const EdgeInsets.all(8.0),
                               child: InkWell(
                                 onTap: () {
-                                  selectedPickUp.value =
-                                      addressDescription[index].toString();
-
                                   controller?.restaurantList.clear();
                                   controller?.dishList.clear();
                                   address.value =
+                                      addressDescription[index].toString();
+                                  selectedPickUp.value =
                                       addressDescription[index].toString();
                                   debugPrint('value ${address.value}');
                                   selectedLocationCoordinates.value =
@@ -356,6 +355,18 @@ class HomeController extends GetxController {
                                     selectedPickupCoordinates.value =
                                         locationCoordinates[
                                             addressHeading[index]];
+                                    if (isDestinationSelected.value == true &&
+                                        (!(selectedPickUp.value ==
+                                            selectedDropOff.value))) {
+                                      getEstimations();
+                                    }
+                                    if (selectedPickUp.value ==
+                                        selectedDropOff.value) {
+                                      ScaffoldMessenger.maybeOf(context)
+                                          ?.showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "Pickup and Drop off  locations cannot be same")));
+                                    }
                                   } else {
                                     selectedDropOff.value =
                                         addressDescription[index].toString();
@@ -364,7 +375,18 @@ class HomeController extends GetxController {
                                         locationCoordinates[
                                             addressHeading[index]];
 
-                                    getEstimations();
+                                    if (isDestinationSelected.value == true &&
+                                        (!(selectedPickUp.value ==
+                                            selectedDropOff.value))) {
+                                      getEstimations();
+                                    }
+                                    if (selectedPickUp.value ==
+                                        selectedDropOff.value) {
+                                      ScaffoldMessenger.maybeOf(context)
+                                          ?.showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "Pickup and Drop off  locations cannot be same")));
+                                    }
                                   }
                                   Navigator.pop(context);
 
@@ -541,6 +563,15 @@ class HomeController extends GetxController {
     isLoadingServices(true);
     await homeRepository.getServiceList().then((value) {
       if (value.data?.serviceCategories != [] && (value.status == 200)) {
+        AppColors.primaryColor =
+            fromHex(value.data!.themes!.first.primaryColor.toString());
+        AppColors.accentColor =
+            fromHex(value.data!.themes!.first.accentColor.toString());
+        debugPrint("color ${AppColors.primaryColor}");
+        colorController.updateColors(
+          value.data!.themes!.first.primaryColor.toString(),
+          value.data!.themes!.first.accentColor.toString(),
+        );
         serviceList.addAll(value.data?.serviceCategories ?? []);
         // debugPrint("list service ${serviceList.first.categoryName}");
         isLoadingServices(false);
@@ -713,6 +744,7 @@ class HomeController extends GetxController {
         "long": selectedDropoffCoordinates['long']
       }
     }).then((value) {
+      cabMapController.rideEstimationResponse(value);
       if (value.data != [] && (value.status == 200)) {
         estimationList.addAll(value.data ?? []);
         isEstimationLoading(false);
@@ -745,7 +777,7 @@ class HomeController extends GetxController {
         // "long": "76.321888",
         "long": selectedPickupCoordinates['long'],
         // "address": "Devalokam,Thevakal"
-        "address": selectedPickUp.value
+        "address": address.value
       },
       "end_location": {
         // "lat": "10.064588",
@@ -776,7 +808,7 @@ class HomeController extends GetxController {
       } else {
         if (value.status == 400) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Booking Failed")));
+              .showSnackBar(SnackBar(content: Text(value.message.toString())));
         } else {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(value.message.toString())));
@@ -797,5 +829,6 @@ class HomeController extends GetxController {
     fareId = "".obs;
     price = 0.0.obs;
     estimationList.clear();
+    isDestinationSelected = false.obs;
   }
 }

@@ -1,11 +1,8 @@
 import 'dart:convert';
 
-/// status : 200
-/// message : "Data retrieve successfully."
-/// data : {"_id":"664705340820502ae399d9b8","ServiceCategories":[{"_id":"6646f17c6538869d3399af45","category_name":"Food","category_code":"FD","status":1,"images":[{"primary":"https://icons8.com/icon/5w3XGkaXrcaV/edible"}]},{"_id":"6646f2196538869d3399af46","category_name":"Cabs","category_code":"BR","status":1,"images":[{"primary":"https://icons8.com/icon/111270/car"}]},{"_id":"6646f22b6538869d3399af47","category_name":"Salon Services","category_code":"SS","status":1,"images":[{"primary":"https://icons8.com/icon/pwpz1tqVnCQy/ticket"}]},{"_id":"6646f24e6538869d3399af48","category_name":"Home Services","category_code":"BS","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]},{"_id":"664c67f8f56c737334730ff3","category_name":"Gifts","category_code":"GS","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]},{"_id":"664c680ef56c737334730ff4","category_name":"Furniture","category_code":"FE","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]},{"_id":"664c683ef56c737334730ff6","category_name":"Grocery","category_code":"GY","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]}]}
-
 ServiceCategoryResponse serviceCategoryResponseFromJson(String str) =>
     ServiceCategoryResponse.fromJson(json.decode(str));
+
 String serviceCategoryResponseToJson(ServiceCategoryResponse data) =>
     json.encode(data.toJson());
 
@@ -25,19 +22,11 @@ class ServiceCategoryResponse {
     _message = json['message'].toString();
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
+
   num? _status;
   String? _message;
   Data? _data;
-  ServiceCategoryResponse copyWith({
-    num? status,
-    String? message,
-    Data? data,
-  }) =>
-      ServiceCategoryResponse(
-        status: status ?? _status,
-        message: message ?? _message,
-        data: data ?? _data,
-      );
+
   num? get status => _status;
   String? get message => _message;
   Data? get data => _data;
@@ -53,19 +42,15 @@ class ServiceCategoryResponse {
   }
 }
 
-/// _id : "664705340820502ae399d9b8"
-/// ServiceCategories : [{"_id":"6646f17c6538869d3399af45","category_name":"Food","category_code":"FD","status":1,"images":[{"primary":"https://icons8.com/icon/5w3XGkaXrcaV/edible"}]},{"_id":"6646f2196538869d3399af46","category_name":"Cabs","category_code":"BR","status":1,"images":[{"primary":"https://icons8.com/icon/111270/car"}]},{"_id":"6646f22b6538869d3399af47","category_name":"Salon Services","category_code":"SS","status":1,"images":[{"primary":"https://icons8.com/icon/pwpz1tqVnCQy/ticket"}]},{"_id":"6646f24e6538869d3399af48","category_name":"Home Services","category_code":"BS","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]},{"_id":"664c67f8f56c737334730ff3","category_name":"Gifts","category_code":"GS","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]},{"_id":"664c680ef56c737334730ff4","category_name":"Furniture","category_code":"FE","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]},{"_id":"664c683ef56c737334730ff6","category_name":"Grocery","category_code":"GY","status":1,"images":[{"primary":" https://icons8.com/icon/2Buj9vnf__qe/barbershop"}]}]
-
-Data dataFromJson(String str) => Data.fromJson(json.decode(str));
-String dataToJson(Data data) => json.encode(data.toJson());
-
 class Data {
   Data({
     String? id,
     List<ServiceCategories>? serviceCategories,
+    List<Themes>? themes,
   }) {
     _id = id;
     _serviceCategories = serviceCategories;
+    _themes = themes;
   }
 
   Data.fromJson(dynamic json) {
@@ -76,19 +61,21 @@ class Data {
         _serviceCategories?.add(ServiceCategories.fromJson(v));
       });
     }
+    if (json['themes'] != null) {
+      _themes = [];
+      json['themes'].forEach((v) {
+        _themes?.add(Themes.fromJson(v));
+      });
+    }
   }
+
   String? _id;
   List<ServiceCategories>? _serviceCategories;
-  Data copyWith({
-    String? id,
-    List<ServiceCategories>? serviceCategories,
-  }) =>
-      Data(
-        id: id ?? _id,
-        serviceCategories: serviceCategories ?? _serviceCategories,
-      );
+  List<Themes>? _themes;
+
   String? get id => _id;
   List<ServiceCategories>? get serviceCategories => _serviceCategories;
+  List<Themes>? get themes => _themes;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -97,20 +84,12 @@ class Data {
       map['ServiceCategories'] =
           _serviceCategories?.map((v) => v.toJson()).toList();
     }
+    if (_themes != null) {
+      map['themes'] = _themes?.map((v) => v.toJson()).toList();
+    }
     return map;
   }
 }
-
-/// _id : "6646f17c6538869d3399af45"
-/// category_name : "Food"
-/// category_code : "FD"
-/// status : 1
-/// images : [{"primary":"https://icons8.com/icon/5w3XGkaXrcaV/edible"}]
-
-ServiceCategories serviceCategoriesFromJson(String str) =>
-    ServiceCategories.fromJson(json.decode(str));
-String serviceCategoriesToJson(ServiceCategories data) =>
-    json.encode(data.toJson());
 
 class ServiceCategories {
   ServiceCategories({
@@ -139,25 +118,13 @@ class ServiceCategories {
       });
     }
   }
+
   String? _id;
   String? _categoryName;
   String? _categoryCode;
   num? _status;
   List<Images>? _images;
-  ServiceCategories copyWith({
-    String? id,
-    String? categoryName,
-    String? categoryCode,
-    num? status,
-    List<Images>? images,
-  }) =>
-      ServiceCategories(
-        id: id ?? _id,
-        categoryName: categoryName ?? _categoryName,
-        categoryCode: categoryCode ?? _categoryCode,
-        status: status ?? _status,
-        images: images ?? _images,
-      );
+
   String? get id => _id;
   String? get categoryName => _categoryName;
   String? get categoryCode => _categoryCode;
@@ -177,33 +144,76 @@ class ServiceCategories {
   }
 }
 
-/// primary : "https://icons8.com/icon/5w3XGkaXrcaV/edible"
-
-Images imagesFromJson(String str) => Images.fromJson(json.decode(str));
-String imagesToJson(Images data) => json.encode(data.toJson());
-
 class Images {
   Images({
     String? primary,
+    String? id,
   }) {
     _primary = primary;
+    _id = id;
   }
 
   Images.fromJson(dynamic json) {
     _primary = json['primary'].toString();
+    _id = json['_id'].toString();
   }
+
   String? _primary;
-  Images copyWith({
-    String? primary,
-  }) =>
-      Images(
-        primary: primary ?? _primary,
-      );
+  String? _id;
+
   String? get primary => _primary;
+  String? get id => _id;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['primary'] = _primary;
+    map['_id'] = _id;
+    return map;
+  }
+}
+
+class Themes {
+  Themes({
+    String? primaryColor,
+    String? secondaryColor,
+    String? accentColor,
+    String? font,
+    String? id,
+  }) {
+    _primaryColor = primaryColor;
+    _secondaryColor = secondaryColor;
+    _accentColor = accentColor;
+    _font = font;
+    _id = id;
+  }
+
+  Themes.fromJson(dynamic json) {
+    _primaryColor = json['primary_color'].toString();
+    _secondaryColor = json['secondary_color'].toString();
+    _accentColor = json['accent_color'].toString();
+    _font = json['font'].toString();
+    _id = json['_id'].toString();
+  }
+
+  String? _primaryColor;
+  String? _secondaryColor;
+  String? _accentColor;
+  String? _font;
+  String? _id;
+
+  String? get primaryColor => _primaryColor;
+  String? get secondaryColor => _secondaryColor;
+  String? get accentColor => _accentColor;
+  String? get font => _font;
+  String? get id => _id;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['primary_color'] = _primaryColor;
+    map['secondary_color'] = _secondaryColor;
+    map['accent_color'] = _accentColor;
+    map['font'] = _font;
+    map['_id'] = _id;
     return map;
   }
 }

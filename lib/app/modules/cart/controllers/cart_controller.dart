@@ -145,7 +145,9 @@ class CartController extends GetxController {
       } else {
         isAddToCartLoading(false);
         ScaffoldMessenger.of(context!).showSnackBar(
-          SnackBar(content: Text(value.data!.statusMessage.toString())),
+          SnackBar(
+              content: Text(value.data?.statusMessage.toString() ??
+                  value.messages.toString())),
         );
       }
     });
@@ -352,7 +354,9 @@ class CartController extends GetxController {
         productQuantities.clear();
         if (value.data?.statusCode == 1) {
           onSuccess();
-          if (orderTrackResponse?.status != 11) {
+
+          /// 11 order delivered
+          if (orderTrackResponse?.status != 11 && !canceled.value) {
             Timer.periodic(Duration(seconds: 5), (timer) async {
               await trackOrder(
                   orderId: createOrderResponse!
@@ -360,7 +364,7 @@ class CartController extends GetxController {
                       .toInt(),
                   deviceId: viewCartResponse!.data!.deviceId.toString());
             });
-          } else if (orderTrackResponse?.status == 11) {
+          } else if (orderTrackResponse?.status == 11 || canceled.value) {
             debugPrint("stoping on top");
             orderTrackResponse = null;
             count = 1;
@@ -439,19 +443,18 @@ class CartController extends GetxController {
         isOrderCancelLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
-          value.message.toString(),
+          value.data!.statusMessage.toString(),
         )));
         if (value.data?.statusCode == 1) {
           canceled.value = true;
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.pop(context);
         }
-
-        Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.pop(context);
       } else {
         isOrderCancelLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

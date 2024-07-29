@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:mynewpackage/app/core/utility.dart';
-import 'package:mynewpackage/app/modules/history/controllers/history_controller.dart';
 
 import '../../app/modules/cab/controllers/cab_map_controller.dart';
-import '../../app/modules/history/views/history_view.dart';
 import '../../app/modules/home/controllers/home_controller.dart';
-import '../../app/modules/trip_rating/views/trip_rating_view.dart';
 import '../../app_colors.dart';
 import '../../generated/assets.dart';
 import '../common_Image_view.dart';
@@ -293,14 +290,14 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
                                   Expanded(
                                     child: InkWell(
                                       onTap: () {
-                                        HistoryController historyController =
-                                            Get.find();
-                                        historyController.getRideHistory();
-
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const HistoryView()));
+                                        // HistoryController historyController =
+                                        //     Get.find();
+                                        // historyController.getRideHistory();
+                                        //
+                                        // Navigator.of(context).push(
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             const HistoryView()));
                                       },
                                       child: Container(
                                         height: 45,
@@ -322,15 +319,15 @@ class _TripCompleteDialogState extends State<TripCompleteDialog> {
                                   Expanded(
                                     child: InkWell(
                                       onTap: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    TripRatingView(cabMapController
-                                                            .rideDetailsResponse
-                                                            ?.data
-                                                            ?.first
-                                                            .requestId ??
-                                                        0)));
+                                        // Navigator.of(context).push(
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             TripRatingView(cabMapController
+                                        //                     .rideDetailsResponse
+                                        //                     ?.data
+                                        //                     ?.first
+                                        //                     .requestId ??
+                                        //                 0)));
                                       },
                                       child: Container(
                                         height: 45,

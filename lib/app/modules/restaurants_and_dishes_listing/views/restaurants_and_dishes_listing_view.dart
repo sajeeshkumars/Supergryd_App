@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -300,60 +301,65 @@ class _RestaurantsAndDishesListingViewState
                                                         initial: true,
                                                         context: context);
                                                   },
-                                                  child: Obx(
-                                                     () {
-                                                      return Padding(
-                                                        padding: cartController
-                                                                .finalCartItems
-                                                                .isNotEmpty
-                                                            ? EdgeInsets.only(
-                                                                bottom: 100)
-                                                            : EdgeInsets.zero,
-                                                        child: ListView.builder(
-                                                          itemCount: controller
-                                                              .dishList.length,
-                                                          itemBuilder:
-                                                              (context, index) {
-                                                                final dish = controller
-                                                                    .dishList[index];
+                                                  child: Obx(() {
+                                                    return Padding(
+                                                      padding: cartController
+                                                              .finalCartItems
+                                                              .isNotEmpty
+                                                          ? EdgeInsets.only(
+                                                              bottom: 100)
+                                                          : EdgeInsets.zero,
+                                                      child: ListView.builder(
+                                                        itemCount: controller
+                                                            .dishList.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          final dish =
+                                                              controller
+                                                                      .dishList[
+                                                                  index];
 
-                                                                RxInt _count = (cartController
-                                                                    .productQuantities[dish.storeProducts?.productId]??
-                                                                    0).obs;
+                                                          RxInt _count =
+                                                              (cartController.productQuantities[dish
+                                                                          .storeProducts
+                                                                          ?.productId] ??
+                                                                      0)
+                                                                  .obs;
 
-                                                            //
-                                                            // int _count = cartController
-                                                            //         .cartItems
-                                                            //         .firstWhereOrNull(
-                                                            //             (item) =>
-                                                            //                 item.productId ==
-                                                            //                 dish.id)
-                                                            //         ?.quantity
-                                                            //         ?.toInt() ??
-                                                                0;
-                                                            return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: DishCard(
-                                                                restaurantsAndDishesListingController:
-                                                                    controller,
-                                                                dish: controller
-                                                                        .dishList[
-                                                                    index],
-                                                                index: index,
-                                                                isDishes: true,
-                                                                count: _count,
-                                                                storeId: controller
-                                                                    .dishList[index]
-                                                                    .storeId!,
-                                                              ),
-                                                            );
-                                                          },
-                                                        ),
-                                                      );
-                                                    }
-                                                  ),
+                                                          //
+                                                          // int _count = cartController
+                                                          //         .cartItems
+                                                          //         .firstWhereOrNull(
+                                                          //             (item) =>
+                                                          //                 item.productId ==
+                                                          //                 dish.id)
+                                                          //         ?.quantity
+                                                          //         ?.toInt() ??
+                                                          0;
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: DishCard(
+                                                              restaurantsAndDishesListingController:
+                                                                  controller,
+                                                              dish: controller
+                                                                      .dishList[
+                                                                  index],
+                                                              index: index,
+                                                              isDishes: true,
+                                                              count: _count,
+                                                              storeId:
+                                                                  controller
+                                                                      .dishList[
+                                                                          index]
+                                                                      .storeId!,
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    );
+                                                  }),
                                                 ),
                                               )
                                             : SizedBox(
@@ -484,7 +490,8 @@ class DishCard extends StatefulWidget {
   RxInt count;
   final Restaurant? restaurant;
   final bool isDishes;
-  final RestaurantsAndDishesListingController? restaurantsAndDishesListingController;
+  final RestaurantsAndDishesListingController?
+      restaurantsAndDishesListingController;
   final RestaurantsDetailsController? restaurantsDetailsController;
   int storeId;
   CartController cartController = Get.find();
@@ -497,64 +504,41 @@ class _DishCardState extends State<DishCard> {
   HomeController homeController = Get.find();
   CartController cartController = Get.find();
 
-
-
   void _incrementCount() {
+    if (cartController.viewCartResponse?.data?.statusCode != 3) {
+      RxBool isSameShop = (cartController.cartItems.isEmpty ||
+              cartController.cartItems.first.storeId == widget.storeId)
+          .obs;
+      log("widgetStoreid:${widget.storeId},\ncartStoreId:${cartController.cartItems.firstOrNull?.storeId}",
+          name: "RESTAURENTANDDISHES");
+      debugPrint("same shop ${isSameShop}");
 
-    bool isSameShop = cartController.cartItems.isEmpty || cartController.cartItems.first.storeId == widget.storeId;
-
-    if (!isSameShop) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: CommonText(text: 'Items from different shop, cart will be discarded'),
-            actions: [
-              Row(
-                children: [
-                  Expanded(
-                    child: CommonButton(
-                      onPressed: () async {
-                        Navigator.pop(context);
-                      },
-                      text: 'No',
+      if (!isSameShop.value) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: CommonText(
+                  text: 'Items from different shop, cart will be discarded'),
+              actions: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: CommonButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                        },
+                        text: 'No',
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 5),
-                  Expanded(
-                    child: CommonButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        cartController.cartItems.clear();
-                        cartController.productQuantities.clear();
-                        cartController.finalCartItems.clear();
-
-
-
-                        WidgetsBinding.instance.addPostFrameCallback((_) async {
-                         await cartController
-                              .addToCart(
-                                  context: context, storeId: widget.storeId)
-                              .then((_) {
-                            if (cartController
-                                    .addToCartResponse?.data?.statusCode ==
-                                1) {
-                              // if(cartController.productQuantities.containsKey(widget.restaurant?.productId) == true){
-                              // int qty =  cartController.productQuantities[widget.restaurant?.productId] ?? 1;
-                              // cartController.productQuantities[widget.restaurant!.productId!.toInt()] = qty + 1;
-                              //
-                              // }else{
-                              //   cartController.productQuantities[widget.restaurant!.productId!.toInt()] =  1;
-                              // }
-                              // widget.count.value = 1;
-                              debugPrint(
-                                  "product quantities ${cartController.productQuantities}");
-                              cartController.productQuantities[!widget.isDishes
-                                  ? widget.restaurant!.productId!.toInt()
-                                  : widget.dish!.storeProducts!.productId!
-                                      .toInt()] = 1;
-                            }
-                          });
+                    SizedBox(width: 5),
+                    Expanded(
+                      child: CommonButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          cartController.cartItems.clear();
+                          cartController.productQuantities.clear();
+                          cartController.finalCartItems.clear();
 
                           if (!widget.isDishes) {
                             cartController.addProductToCart(widget.restaurant!);
@@ -562,18 +546,76 @@ class _DishCardState extends State<DishCard> {
                             cartController
                                 .addProductToCartFromListing(widget.dish!);
                           }
+
+                          // cartController
+                          //     .addToCart(
+                          //         context: context, storeId: widget.storeId)
+                          //     .then((_) {
+                          //   if (cartController
+                          //           .addToCartResponse?.data?.statusCode ==
+                          //       1) {
+                          //     // widget.count.value++;
+                          //     (cartController.productQuantities[int.tryParse(
+                          //                 (widget.isDishes
+                          //                         ? widget.dish?.storeProducts
+                          //                                 ?.productId ??
+                          //                             0
+                          //                         : widget.restaurant
+                          //                                 ?.productId ??
+                          //                             0)
+                          //                     .toString()) ??
+                          //             0]) ??
+                          //         0 + 1;
+                          //   }
+                          // });
+
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((_) async {
+                            await cartController
+                                .addToCart(
+                                    context: context, storeId: widget.storeId)
+                                .then((_) {
+                              if (cartController
+                                      .addToCartResponse?.data?.statusCode ==
+                                  1) {
+                                // if(cartController.productQuantities.containsKey(widget.restaurant?.productId) == true){
+                                // int qty =  cartController.productQuantities[widget.restaurant?.productId] ?? 1;
+                                // cartController.productQuantities[widget.restaurant!.productId!.toInt()] = qty + 1;
+                                //
+                                // }else{
+                                //   cartController.productQuantities[widget.restaurant!.productId!.toInt()] =  1;
+                                // }
+                                // widget.count.value = 1;
+                                debugPrint(
+                                    "product quantities ${cartController.productQuantities}");
+                                cartController.productQuantities[
+                                    !widget.isDishes
+                                        ? widget.restaurant!.productId!.toInt()
+                                        : widget.dish!.storeProducts!.productId!
+                                            .toInt()] = 1;
+                              }
+                            });
+
+                            if (!widget.isDishes) {
+                              cartController
+                                  .addProductToCart(widget.restaurant!);
+                            } else {
+                              cartController
+                                  .addProductToCartFromListing(widget.dish!);
+                            }
                           });
-                      },
-                      text: 'Replace',
+                        },
+                        text: 'Yes',
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
-      );
-      return;
+                  ],
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
     }
 
     if (!widget.isDishes) {
@@ -582,48 +624,85 @@ class _DishCardState extends State<DishCard> {
       cartController.addProductToCartFromListing(widget.dish!);
     }
 
-    cartController.addToCart(context: context, storeId: widget.storeId).then((_) {
+    cartController
+        .addToCart(context: context, storeId: widget.storeId)
+        .then((_) {
       if (cartController.addToCartResponse?.data?.statusCode == 1) {
         // widget.count.value++;
-        cartController.productQuantities[int.tryParse((widget.isDishes ? widget.dish?.storeProducts?.productId ?? 0: widget.restaurant?.productId ?? 0).toString()) ?? 0]!+1;
+        (cartController.productQuantities[int.tryParse((widget.isDishes
+                        ? widget.dish?.storeProducts?.productId ?? 0
+                        : widget.restaurant?.productId ?? 0)
+                    .toString()) ??
+                0]) ??
+            0 + 1;
       }
     });
   }
 
   void _decrementCount() {
     debugPrint("count in decrement${widget.count.value}");
-    if (cartController.productQuantities[widget.isDishes ? widget.dish?.storeProducts?.productId : widget.restaurant?.productId]! <= 0) {
+    if (cartController.productQuantities[widget.isDishes
+            ? widget.dish?.storeProducts?.productId
+            : widget.restaurant?.productId]! <=
+        0) {
       // cartController.cartItems.clear();
       cartController.finalCartItems.clear();
       cartController.cartItems.clear();
       debugPrint("final cart count ${cartController.finalCartItems.length}");
     } else {
-      if (!widget.isDishes) {
-        cartController.removeFromCart(
-          cartController.cartItems.firstWhere((item) => item.productId == widget.restaurant?.productId),
-        );
-      } else {
-        cartController.removeFromCart(
-          cartController.cartItems.firstWhere((item) => item.productId == widget.dish?.storeProducts?.productId),
-        );
+      if (cartController.productQuantities.containsKey(widget.isDishes
+          ? widget.dish?.storeProducts?.productId
+          : widget.restaurant?.productId)) {
+        int q = cartController.productQuantities[widget.isDishes
+            ? widget.dish?.storeProducts?.productId
+            : widget.restaurant?.productId]!;
+        if (q > 1) {
+          cartController.productQuantities[(widget.isDishes
+                  ? widget.dish?.storeProducts?.productId
+                  : widget.restaurant?.productId)!
+              .toInt()] = q - 1;
+        } else {
+          cartController.productQuantities.remove((widget.isDishes
+                  ? widget.dish?.storeProducts?.productId
+                  : widget.restaurant?.productId)!
+              .toInt());
+        }
+      }
+      if (cartController.cartItems.isNotEmpty) {
+        if (!widget.isDishes) {
+          cartController.removeFromCart(
+            cartController.cartItems.firstWhere(
+                (item) => item.productId == widget.restaurant?.productId),
+          );
+        } else {
+          cartController.removeFromCart(
+            cartController.cartItems.firstWhere((item) =>
+                item.productId == widget.dish?.storeProducts?.productId),
+          );
+        }
       }
 
-
-      cartController.addToCart(context: context, storeId: widget.storeId).then((value) {
+      cartController
+          .addToCart(context: context, storeId: widget.storeId)
+          .then((value) {
         if (cartController.addToCartResponse?.data?.statusCode == 1) {
           // widget.count.value--;
 
-          (widget.isDishes ? widget.dish?.storeProducts?.productId : widget.restaurant!.productId!)! -1;
-        }if(cartController.addToCartResponse?.data?.statusCode == 3){
+          (widget.isDishes
+                  ? widget.dish?.storeProducts?.productId
+                  : widget.restaurant!.productId!)! -
+              1;
+        }
+        if (cartController.addToCartResponse?.data?.statusCode == 3) {
           debugPrint("inside 3");
           // widget.count.value--;
-          if(widget.isDishes){
-           ( widget.dish?.storeProducts?.productId ?? 0)-1;
-          }else{
-            (widget.restaurant!.productId ?? 0)-1;
+          if (widget.isDishes) {
+            (widget.dish?.storeProducts?.productId ?? 0) - 1;
+          } else {
+            (widget.restaurant!.productId ?? 0) - 1;
           }
           cartController.productQuantities.clear();
-         // ( widget.isDishes ? widget.dish?.storeProducts?.productId : widget.restaurant!.productId!)! -1;
+          // ( widget.isDishes ? widget.dish?.storeProducts?.productId : widget.restaurant!.productId!)! -1;
 
           cartController.finalCartItems.clear();
         }
@@ -633,6 +712,8 @@ class _DishCardState extends State<DishCard> {
 
   @override
   Widget build(BuildContext context) {
+    log("${widget.isDishes},${widget.dish?.storeProducts?.productId},${widget.restaurant?.productId}",
+        name: "RESTAURENTANDDISHES");
     return Container(
       color: AppColors.backgroundColor,
       child: Card(
@@ -648,11 +729,15 @@ class _DishCardState extends State<DishCard> {
                   bottomLeft: Radius.circular(10),
                 ),
                 child: CommonImageView(
-                  cacheKey: widget.isDishes ? widget.dish?.storeProducts?.id : widget.restaurant?.id,
+                  cacheKey: widget.isDishes
+                      ? widget.dish?.storeProducts?.id
+                      : widget.restaurant?.id,
                   height: widget.isDishes ? 178 : 198,
                   width: 150,
                   fit: BoxFit.cover,
-                  url: widget.isDishes ? widget.dish?.storeProducts?.images?.productImageUrl : widget.restaurant?.images?.imageMobile,
+                  url: widget.isDishes
+                      ? widget.dish?.storeProducts?.images?.productImageUrl
+                      : widget.restaurant?.images?.imageMobile,
                 ),
               ),
               Expanded(
@@ -662,7 +747,10 @@ class _DishCardState extends State<DishCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CommonText(
-                        text: (widget.isDishes ? widget.dish?.storeProducts?.name : widget.restaurant?.name) ?? "",
+                        text: (widget.isDishes
+                                ? widget.dish?.storeProducts?.name
+                                : widget.restaurant?.name) ??
+                            "",
                         maxLines: widget.isDishes ? 2 : 3,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -670,7 +758,8 @@ class _DishCardState extends State<DishCard> {
                       ),
                       const SizedBox(height: 8),
                       CommonText(
-                        text: '₹ ${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.price)}',
+                        text:
+                            '₹ ${(widget.isDishes ? widget.dish?.storeProducts?.price : widget.restaurant?.price)}',
                         fontWeight: FontWeight.w500,
                       ),
                       const SizedBox(height: 8),
@@ -678,9 +767,11 @@ class _DishCardState extends State<DishCard> {
                         label: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SvgPicture.asset("packages/mynewpackage/${Assets.iconsStar}"),
+                            SvgPicture.asset(
+                                "packages/mynewpackage/${Assets.iconsStar}"),
                             CommonText(
-                              text: '${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating?.toInt() ?? 0 : widget.restaurant?.productDetails?.countOfRating?.toInt() ?? 0)})',
+                              text:
+                                  '${(widget.isDishes ? widget.dish?.storeProducts?.rating : widget.restaurant?.rating)}(${Utility.countConverter(widget.isDishes ? widget.dish?.storeProducts?.productDetails?.countOfRating?.toInt() ?? 0 : widget.restaurant?.productDetails?.countOfRating?.toInt() ?? 0)})',
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),
@@ -698,14 +789,17 @@ class _DishCardState extends State<DishCard> {
                         children: [
                           if (widget.isDishes)
                             ColorFiltered(
-                              colorFilter: ColorFilter.mode(AppColors.accentColor, BlendMode.modulate),
-                              child: SvgPicture.asset("packages/mynewpackage/${Assets.iconsShopIcon}"),
+                              colorFilter: ColorFilter.mode(
+                                  AppColors.accentColor, BlendMode.modulate),
+                              child: SvgPicture.asset(
+                                  "packages/mynewpackage/${Assets.iconsShopIcon}"),
                             ),
                           const SizedBox(width: 5),
                           if (widget.isDishes)
                             Expanded(
                               child: CommonText(
-                                text: "${widget.dish?.restaurantDetails?.first.name}",
+                                text:
+                                    "${widget.dish?.restaurantDetails?.first.name}",
                                 textOverflow: TextOverflow.ellipsis,
                                 textColor: AppColors.textLightColor,
                               ),
@@ -715,7 +809,18 @@ class _DishCardState extends State<DishCard> {
                             return Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                if (cartController.productQuantities.containsKey(!widget.isDishes ? widget.restaurant?.productId:widget.dish?.storeProducts?.productId) == false || cartController.productQuantities[!widget.isDishes ? widget.restaurant?.productId:widget.dish?.storeProducts?.productId] == 0 )
+                                if (cartController.productQuantities
+                                            .containsKey(!widget.isDishes
+                                                ? widget.restaurant?.productId
+                                                : widget.dish?.storeProducts
+                                                    ?.productId) ==
+                                        false ||
+                                    cartController.productQuantities[
+                                            !widget.isDishes
+                                                ? widget.restaurant?.productId
+                                                : widget.dish?.storeProducts
+                                                    ?.productId] ==
+                                        0)
                                   InkWell(
                                     onTap: _incrementCount,
                                     child: SvgPicture.asset(
@@ -723,26 +828,43 @@ class _DishCardState extends State<DishCard> {
                                       color: AppColors.primaryColor,
                                     ),
                                   ),
-                                if (cartController.productQuantities.containsKey(!widget.isDishes ? widget.restaurant?.productId:widget.dish?.storeProducts?.productId )) ...[
+                                if (cartController.productQuantities
+                                    .containsKey(!widget.isDishes
+                                        ? widget.restaurant?.productId
+                                        : widget.dish?.storeProducts
+                                            ?.productId)) ...[
                                   Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(50),
                                       color: AppColors.primaryColor,
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           InkWell(
                                             onTap: _decrementCount,
-                                            child: const Icon(size: 30, Icons.remove, color: Colors.white),
+                                            child: const Icon(
+                                                size: 30,
+                                                Icons.remove,
+                                                color: Colors.white),
                                           ),
                                           const SizedBox(width: 8),
                                           Obx(() {
                                             return CommonText(
                                               fontSize: 14,
-                                              text: cartController.productQuantities[!widget.isDishes ?widget.restaurant?.productId:widget.dish?.storeProducts?.productId].toString(),
+                                              text: cartController
+                                                  .productQuantities[
+                                                      !widget.isDishes
+                                                          ? widget.restaurant
+                                                              ?.productId
+                                                          : widget
+                                                              .dish
+                                                              ?.storeProducts
+                                                              ?.productId]
+                                                  .toString(),
                                               // text: widget.count.toString(),
                                               textColor: Colors.white,
                                             );
@@ -750,7 +872,10 @@ class _DishCardState extends State<DishCard> {
                                           const SizedBox(width: 8),
                                           InkWell(
                                             onTap: _incrementCount,
-                                            child: const Icon(size: 30, Icons.add, color: Colors.white),
+                                            child: const Icon(
+                                                size: 30,
+                                                Icons.add,
+                                                color: Colors.white),
                                           ),
                                         ],
                                       ),
@@ -773,8 +898,6 @@ class _DishCardState extends State<DishCard> {
     );
   }
 }
-
-
 
 class RestaurantList extends StatelessWidget {
   const RestaurantList({
