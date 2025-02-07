@@ -838,6 +838,7 @@ class _DishCardState extends State<DishCard> {
                                       borderRadius: BorderRadius.circular(50),
                                       color: AppColors.primaryColor,
                                     ),
+                                    height: 30,
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 15),
@@ -847,7 +848,7 @@ class _DishCardState extends State<DishCard> {
                                           InkWell(
                                             onTap: _decrementCount,
                                             child: const Icon(
-                                                size: 30,
+                                                size: 18,
                                                 Icons.remove,
                                                 color: Colors.white),
                                           ),
@@ -873,7 +874,7 @@ class _DishCardState extends State<DishCard> {
                                           InkWell(
                                             onTap: _incrementCount,
                                             child: const Icon(
-                                                size: 30,
+                                                size: 18,
                                                 Icons.add,
                                                 color: Colors.white),
                                           ),

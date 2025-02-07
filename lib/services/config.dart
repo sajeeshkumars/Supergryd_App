@@ -10,7 +10,8 @@ class ConfigEnvironments {
   static final List<Map<String, String>> _availableEnvironments = [
     {
       'env': Environments.LOCAL,
-      'url': 'http://52.66.208.144/api/v1/',
+      // 'url': 'http://52.66.208.144/api/v1/',
+      'url': "http://13.203.2.215/api/v1/",
       'cabUrl': "https://supergrydapi.ritikasingh.site/uber/v1/",
       'foodUrl':'https://supergrydapi.ritikasingh.site/behrouzbiryani/v1/'
     },

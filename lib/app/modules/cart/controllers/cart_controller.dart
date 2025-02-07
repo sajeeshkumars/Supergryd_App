@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -50,7 +51,9 @@ class CartController extends GetxController {
   RxBool canceled = false.obs;
   String? formattedTotal;
   RxBool isOrderCancelReasonsLoading = false.obs;
-
+  Restaurant? currentRestaurant;
+  Dishes? currentDish;
+  ViewCartItems? currentCartItem;
   int count = 1;
 
   @override
@@ -75,6 +78,7 @@ class CartController extends GetxController {
   void addProductToCart(Restaurant dish) {
     final existingItem =
         cartItems.firstWhereOrNull((item) => item.productId == dish.productId);
+    currentRestaurant = dish;
     if (existingItem != null) {
       existingItem.incrementQuantity();
     } else {
@@ -85,6 +89,7 @@ class CartController extends GetxController {
   void addProductToCartFromCart(ViewCartItems dish) {
     final existingItem =
         cartItems.firstWhereOrNull((item) => item.productId == dish.productId);
+    currentCartItem = dish;
     if (existingItem != null) {
       existingItem.incrementQuantity();
     } else {
@@ -95,6 +100,7 @@ class CartController extends GetxController {
   void addProductToCartFromListing(Dishes dish) {
     final existingItem = cartItems.firstWhereOrNull(
         (item) => item.productId == dish.storeProducts?.productId);
+    currentDish = dish;
     if (existingItem != null) {
       existingItem.incrementQuantity();
     } else {
@@ -138,6 +144,25 @@ class CartController extends GetxController {
           finalCartItems.addAll(cartItems);
           viewCart(context: context!);
         } else {
+          final existingRestaurentItem = cartItems.firstWhereOrNull(
+              (item) => item.productId == currentRestaurant?.productId);
+          final existingDishesItem = cartItems.firstWhereOrNull((item) =>
+              item.productId == currentDish?.storeProducts?.productId);
+          final existingCartItem = cartItems.firstWhereOrNull(
+              (item) => item.productId == currentCartItem?.productId);
+          if (existingRestaurentItem != null) {
+            log("inside existingRestaurentItem quantity");
+            existingRestaurentItem.decrementQuantity();
+            currentRestaurant = null;
+          } else if (existingDishesItem != null) {
+            log("inside existingDishesItem quantity");
+            existingDishesItem.decrementQuantity();
+            currentDish = null;
+          } else if (existingCartItem != null) {
+            log("inside existingCartItem quantity");
+            existingCartItem.decrementQuantity();
+            currentCartItem = null;
+          }
           ScaffoldMessenger.of(context!).showSnackBar(
             SnackBar(content: Text(value.data!.statusMessage.toString())),
           );
